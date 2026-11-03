@@ -9,8 +9,10 @@ authors = [
 # Pinned to 3.12: widest wheel support for ML / OCR libraries.
 requires-python = "==3.12.*"
 dependencies = [
+    "google-genai>=2.34.0",
     "httpx>=0.28.1",
     "pymupdf>=2.1",
+    "python-dotenv>=1.2.4",
 ]
 
 [dependency-groups]
