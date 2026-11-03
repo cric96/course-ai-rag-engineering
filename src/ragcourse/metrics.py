@@ -8,6 +8,11 @@ def recall_at_k(retrieved: list[Hashable], relevant: set, k: int) -> float:
     return len(set(retrieved[:k]) & relevant) / len(relevant)
 
 
+def hit_at_k(retrieved: list[Hashable], relevant: set, k: int) -> float:
+    """1 if at least one relevant item is in the first k results, else 0."""
+    return float(bool(set(retrieved[:k]) & relevant))
+
+
 def reciprocal_rank(retrieved: list[Hashable], relevant: set) -> float:
     """1 / position of the first relevant result, 0 if there is none."""
     for position, item in enumerate(retrieved, start=1):
