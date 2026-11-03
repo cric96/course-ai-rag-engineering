@@ -7,15 +7,17 @@ import pandas as pd
 from matplotlib.figure import Figure
 
 BLUE = "#2a78d6"  # the data
-GRAY = "#c3c2b7"  # context, de-emphasized
+GRAY = "#c3c2b7"  # context, de-emphasized; also axis lines
 INK = "#1f2937"  # text, same as the slides
+FONTS = ["Source Sans 3", "DejaVu Sans"]  # the first one installed wins
 
 STYLE = {
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Fira Sans", "DejaVu Sans"],
-    "font.size": 16,
+    # Real names, not "sans-serif": generic names resolve at draw time, outside STYLE.
+    "font.family": FONTS,
+    "font.size": 18,
     "text.color": INK,
     "ytick.color": INK,
+    "axes.edgecolor": GRAY,
     "axes.titlesize": 20,
     "axes.titleweight": "semibold",
     "axes.titlelocation": "left",

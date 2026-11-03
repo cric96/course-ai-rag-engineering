@@ -1,7 +1,7 @@
 import pandas as pd
 from matplotlib.colors import to_hex
 
-from ragcourse.viz import BLUE, GRAY, bar_chart
+from ragcourse.viz import BLUE, FONTS, GRAY, bar_chart
 
 
 def test_bar_chart_draws_one_bar_per_item_with_its_value():
@@ -25,3 +25,8 @@ def test_bar_chart_grays_out_context_items():
     a, b = fig.axes[0].patches
     assert to_hex(a.get_facecolor()) == BLUE
     assert to_hex(b.get_facecolor()) == GRAY
+
+
+def test_bar_chart_names_its_font_so_it_survives_outside_the_style_context():
+    fig = bar_chart(pd.Series({"a": 1}), title="t")
+    assert fig.axes[0].title.get_fontfamily()[0] == FONTS[0]
