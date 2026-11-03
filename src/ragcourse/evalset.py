@@ -98,3 +98,61 @@ def to_questions(
             {**faq, "source": "faq", "evidence": label.evidence, "gold": gold}
         )
     return questions
+
+
+# --- Questions whose answer exists only as an image ---------------------------
+
+IMAGE_QUESTION_PROMPT = """\
+Below are pages of Italian funding-call documents, each shown as an image and labeled
+like [P12]. Their text layer is empty or only a title: the content is in the image.
+
+Write {n} questions, in Italian, that a company or a public officer could ask and that
+can be answered ONLY by reading one of these pages: deadlines, amounts, percentages,
+counts, procedure steps, eligible items. Prefer different documents and topics.
+Skip covers, section dividers, logos, photos and pages without specific facts.
+For each question give the page label and the short, exact answer read from the page.
+"""
+
+
+class ImageQuestion(BaseModel):
+    """A question generated from one image page."""
+
+    page: str  # label of the page that contains the answer
+    question: str
+    answer: str
+
+
+def visual_pages(pages: list[dict]) -> list[dict]:
+    """Pages whose content is invisible to text extraction."""
+    return [page for page in pages if len(page["text"]) < MIN_TEXT_CHARS]
+
+
+def image_question_contents(labeled_pages: dict[str, dict], n_questions: int) -> list:
+    """Request asking for questions answerable only from the page images."""
+    contents = [IMAGE_QUESTION_PROMPT.format(n=n_questions)]
+    for label, page in labeled_pages.items():
+        contents += [f"[{label}] {page['title']}, p. {page['page']}", page_image(page)]
+    return contents
+
+
+def to_image_questions(
+    generated: list[ImageQuestion], labeled_pages: dict[str, dict]
+) -> list[dict]:
+    """Turn generated questions into eval records: the source page is the gold."""
+    questions = []
+    for item in generated:
+        page = labeled_pages.get(item.page)
+        if page is None:
+            continue  # the model cited a page that does not exist
+        questions.append(
+            {
+                "question": item.question,
+                "answer": item.answer,
+                "call": page["call"],
+                "url": page["url"],
+                "source": "image",
+                "evidence": "image",
+                "gold": [{"url": page["url"], "page": page["page"]}],
+            }
+        )
+    return questions

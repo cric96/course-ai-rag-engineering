@@ -5,11 +5,15 @@ from google.genai import types
 
 from ragcourse.evalset import (
     FaqLabel,
+    ImageQuestion,
     dedupe_faqs,
+    image_question_contents,
     label_pages,
     labeling_contents,
     page_parts,
+    to_image_questions,
     to_questions,
+    visual_pages,
 )
 
 
@@ -20,6 +24,7 @@ def faq(question: str, call: str = "bando-a", answer: str = "Sì.") -> dict:
 def page(text: str, number: int = 1, path: str = "x.pdf", kind: str = "file") -> dict:
     return {
         "url": "https://fesr/bando.pdf",
+        "call": "bando-a",
         "title": "Bando",
         "page": number,
         "text": text,
@@ -54,12 +59,7 @@ def test_page_parts_sends_text_when_the_page_has_enough():
 
 
 def test_page_parts_sends_an_image_when_text_is_missing(tmp_path: Path):
-    path = tmp_path / "slide.pdf"
-    with pymupdf.open() as doc:
-        doc.new_page()
-        doc.save(path)
-
-    label, image = page_parts("P7", page("", path=str(path)))
+    label, image = page_parts("P7", page("", path=blank_pdf(tmp_path)))
     assert label.startswith("[P7]")
     assert isinstance(image, types.Part)
     assert image.inline_data.mime_type == "image/png"
@@ -84,3 +84,34 @@ def test_to_questions_maps_labels_to_gold_pages_and_ignores_unknown_labels():
 def test_to_questions_marks_faq_without_label_as_unsupported():
     [question] = to_questions([faq("Chi?")], [], {})
     assert (question["gold"], question["evidence"]) == ([], "none")
+
+
+def blank_pdf(tmp_path: Path) -> str:
+    path = tmp_path / "slide.pdf"
+    with pymupdf.open() as doc:
+        doc.new_page()
+        doc.save(path)
+    return str(path)
+
+
+def test_visual_pages_keeps_pages_with_little_text():
+    pages = [page("SPESE AMMISSIBILI"), page("Testo lungo " * 10)]
+    assert visual_pages(pages) == [pages[0]]
+
+
+def test_image_question_contents_shows_every_page_as_image(tmp_path: Path):
+    labeled = label_pages([page("Titolo", path=blank_pdf(tmp_path))])
+    contents = image_question_contents(labeled, n_questions=5)
+
+    assert any(isinstance(part, types.Part) for part in contents)
+    assert "5" in contents[0]  # the prompt asks for the requested number
+
+
+def test_to_image_questions_use_the_source_page_as_gold():
+    labeled = label_pages([page("", number=14)])
+    generated = [ImageQuestion(page="P1", question="Entro quando?", answer="30/9/2027")]
+
+    [question] = to_image_questions(generated, labeled)
+
+    assert question["gold"] == [{"url": "https://fesr/bando.pdf", "page": 14}]
+    assert (question["source"], question["evidence"]) == ("image", "image")
