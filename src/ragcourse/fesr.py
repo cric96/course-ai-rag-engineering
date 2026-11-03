@@ -3,7 +3,10 @@
 import re
 from dataclasses import dataclass
 
+import httpx
+
 BASE_URL = "https://fesr.regione.emilia-romagna.it"
+API_URL = f"{BASE_URL}/++api++"
 
 # Funding calls live at /opportunita/opportunita-di-finanziamento/<year>/<call>/...
 CALL_PATTERN = re.compile(r"/opportunita-di-finanziamento/\d{4}/([^/]+)")
@@ -48,3 +51,31 @@ def _answer_text(node: dict) -> str:
         if blocks.get(block_id, {}).get("@type") == "slate"
     ]
     return "\n".join(text for text in texts if text)
+
+
+def api_url(url: str) -> str:
+    """Turn a public page URL into its REST API URL."""
+    return url.replace(BASE_URL, API_URL, 1)
+
+
+def search(client: httpx.Client, **query) -> list[dict]:
+    """Search the site, following pagination until the last page."""
+    url, params = f"{API_URL}/@search", {"b_size": 500, **query}
+    items = []
+    while url:
+        page = client.get(url, params=params).raise_for_status().json()
+        items += page["items"]
+        # The "next" link already carries the whole query.
+        url, params = page.get("batching", {}).get("next"), None
+    return items
+
+
+def fetch_faqs(client: httpx.Client) -> list[Faq]:
+    """Download the FAQ of every funding call."""
+    faqs = []
+    for folder in search(client, portal_type="FaqFolder"):
+        if call_slug(folder["@id"]) is None:
+            continue  # FAQ not tied to a call (e.g. STAMI): skip
+        response = client.get(api_url(folder["@id"]) + "/@faq-structure")
+        faqs += parse_faq_structure(response.raise_for_status().json())
+    return faqs

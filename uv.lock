@@ -1087,6 +1087,9 @@ sdist = { url = "https://files.pythonhosted.org/packages/c7/77/71ab053f0d7876494
 name = "ragcourse"
 version = "0.1.0"
 source = { editable = "." }
+dependencies = [
+    { name = "httpx" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -1101,6 +1104,7 @@ slides = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "httpx", specifier = ">=0.28.1" }]
 
 [package.metadata.requires-dev]
 dev = [

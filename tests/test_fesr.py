@@ -1,9 +1,17 @@
-from ragcourse.fesr import Faq, call_slug, parse_faq_structure
+import httpx
 
-CALL_URL = (
-    "https://fesr.regione.emilia-romagna.it"
-    "/opportunita/opportunita-di-finanziamento/2026/bando-preciseu"
+from ragcourse.fesr import (
+    API_URL,
+    BASE_URL,
+    Faq,
+    call_slug,
+    fetch_faqs,
+    parse_faq_structure,
+    search,
 )
+
+CALL_PATH = "/opportunita/opportunita-di-finanziamento/2026/bando-preciseu"
+CALL_URL = BASE_URL + CALL_PATH
 
 
 def slate(text: str) -> dict:
@@ -64,3 +72,37 @@ def test_parse_walks_nested_folders():
     inner = folder(faq("Domanda?", {"a": slate("Risposta.")}))
     payload = {"items": [folder(inner)]}
     assert len(parse_faq_structure(payload)) == 1
+
+
+def fake_client(respond) -> httpx.Client:
+    # Offline client: `respond(request)` returns the JSON the "site" sends back.
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json=respond(request))
+
+    return httpx.Client(transport=httpx.MockTransport(handler))
+
+
+def test_search_follows_pagination():
+    pages = {
+        None: {
+            "items": [{"@id": "a"}],
+            "batching": {"next": f"{API_URL}/@search?b_start=1"},
+        },
+        "1": {"items": [{"@id": "b"}]},
+    }
+    client = fake_client(lambda request: pages[request.url.params.get("b_start")])
+
+    assert [item["@id"] for item in search(client, portal_type="File")] == ["a", "b"]
+
+
+def test_fetch_faqs_reads_only_folders_of_funding_calls():
+    call_folder = f"{CALL_URL}/faq-domande-e-risposte"
+    other_folder = f"{BASE_URL}/progetti-attivita/stami/faq"
+    structure = {"items": [folder(faq("Domanda?", {"a": slate("Risposta.")}))]}
+    routes = {
+        "/++api++/@search": {"items": [{"@id": call_folder}, {"@id": other_folder}]},
+        f"/++api++{CALL_PATH}/faq-domande-e-risposte/@faq-structure": structure,
+    }
+    client = fake_client(lambda request: routes[request.url.path])
+
+    assert [item.call for item in fetch_faqs(client)] == ["bando-preciseu"]
