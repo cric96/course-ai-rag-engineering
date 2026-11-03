@@ -1,0 +1,37 @@
+[project]
+name = "ragcourse"
+version = "0.1.0"
+description = "Hands-on course: building, evaluating and optimizing a RAG pipeline"
+readme = "README.md"
+authors = [
+    { name = "Gianluca Aguzzi", email = "gianluca.aguzzi@unibo.it" }
+]
+# Pinned to 3.12: widest wheel support for ML / OCR libraries.
+requires-python = "==3.12.*"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.12",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+# pycodestyle, pyflakes, isort, pyupgrade, bugbear, simplify
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "slow: downloads or runs local models (skipped in CI)",
+    "llm: calls a remote LLM/API, needs credentials (skipped in CI)",
+]
