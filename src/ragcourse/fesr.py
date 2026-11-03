@@ -76,12 +76,23 @@ def api_url(url: str) -> str:
     return url.replace(BASE_URL, API_URL, 1)
 
 
+def get(client: httpx.Client, url: str, attempts: int = 4, **kwargs) -> httpx.Response:
+    """GET a URL, retrying when the site drops the connection."""
+    for attempt in range(1, attempts):
+        try:
+            return client.get(url, follow_redirects=True, **kwargs).raise_for_status()
+        except httpx.TransportError:
+            time.sleep(2**attempt)  # wait 2s, 4s, 8s: the server may be busy
+    # Last attempt: let any error reach the caller.
+    return client.get(url, follow_redirects=True, **kwargs).raise_for_status()
+
+
 def search(client: httpx.Client, within: str = BASE_URL, **query) -> list[dict]:
     """Search the site (or only below `within`), following pagination."""
     url, params = f"{api_url(within)}/@search", {"b_size": 500, **query}
     items = []
     while url:
-        page = client.get(url, params=params).raise_for_status().json()
+        page = get(client, url, params=params).json()
         items += page["items"]
         # The "next" link already carries the whole query.
         url, params = page.get("batching", {}).get("next"), None
@@ -94,8 +105,8 @@ def fetch_faqs(client: httpx.Client) -> list[Faq]:
     for folder in search(client, portal_type="FaqFolder"):
         if call_slug(folder["@id"]) is None:
             continue  # FAQ not tied to a call (e.g. STAMI): skip
-        response = client.get(api_url(folder["@id"]) + "/@faq-structure")
-        faqs += parse_faq_structure(response.raise_for_status().json())
+        response = get(client, api_url(folder["@id"]) + "/@faq-structure")
+        faqs += parse_faq_structure(response.json())
     return faqs
 
 
@@ -141,20 +152,10 @@ def local_path(document: Document, root: Path) -> Path:
     return root / (document.call or "programma") / name
 
 
-def download(
-    client: httpx.Client, document: Document, path: Path, attempts: int = 4
-) -> None:
-    """Save a document to `path` (if missing), retrying dropped connections."""
+def download(client: httpx.Client, document: Document, path: Path) -> None:
+    """Save a document to `path`, unless it is already there."""
     if path.exists():
         return
-    url = f"{document.url}/@@download/{document.kind}"
-    for attempt in range(1, attempts + 1):
-        try:
-            response = client.get(url, follow_redirects=True).raise_for_status()
-            break
-        except httpx.TransportError:
-            if attempt == attempts:
-                raise
-            time.sleep(2**attempt)  # wait 2s, 4s, 8s: the server may be busy
+    response = get(client, f"{document.url}/@@download/{document.kind}")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(response.content)

@@ -11,6 +11,7 @@ from ragcourse.fesr import (
     call_url,
     download,
     fetch_faqs,
+    get,
     is_corpus_image,
     is_corpus_pdf,
     list_documents,
@@ -211,10 +212,9 @@ def test_download_reads_the_image_field(tmp_path: Path):
     assert requests == ["/programmi/asse-1.png/@@download/image"]
 
 
-def test_download_retries_when_the_server_drops_the_connection(tmp_path, monkeypatch):
+def test_get_retries_when_the_server_drops_the_connection(monkeypatch):
     monkeypatch.setattr("ragcourse.fesr.time.sleep", lambda seconds: None)
-    document = Document(title="Bando", url=f"{CALL_URL}/bando", call="bando-preciseu")
-    answers = iter([httpx.RemoteProtocolError("disconnected"), b"%PDF-1.7"])
+    answers = iter([httpx.RemoteProtocolError("disconnected"), b"ok"])
 
     def handler(request: httpx.Request) -> httpx.Response:
         answer = next(answers)
@@ -222,6 +222,5 @@ def test_download_retries_when_the_server_drops_the_connection(tmp_path, monkeyp
             raise answer
         return httpx.Response(200, content=answer)
 
-    path = tmp_path / "bando.pdf"
-    download(httpx.Client(transport=httpx.MockTransport(handler)), document, path)
-    assert path.read_bytes() == b"%PDF-1.7"
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    assert get(client, f"{BASE_URL}/page").content == b"ok"
