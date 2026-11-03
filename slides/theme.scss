@@ -35,6 +35,11 @@ $code-color: #0b3d63;
   color: #6b7280;
 }
 
+// Dense text, e.g. a question and its answer next to a page image.
+.small {
+  font-size: 0.68em;
+}
+
 // Pipeline map: lanes of boxes; add `.active` to highlight the current stage.
 .pipeline p {
   display: flex;
