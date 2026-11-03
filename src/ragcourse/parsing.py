@@ -25,4 +25,5 @@ def clean_text(text: str) -> str:
 def render_page(path: Path, page: int, dpi: int = 100) -> bytes:
     """Render one PDF page (1-based) as PNG bytes, e.g. to show it to a vision model."""
     with pymupdf.open(path) as pdf:
-        return pdf[page - 1].get_pixmap(dpi=dpi).tobytes("png")
+        # int(): pandas hands over numpy integers, which PyMuPDF rejects.
+        return pdf[int(page) - 1].get_pixmap(dpi=dpi).tobytes("png")

@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import numpy as np
 import pymupdf
 import pytest
 
@@ -35,4 +36,9 @@ def test_clean_text_keeps_hyphens_inside_lines():
 
 def test_render_page_returns_png_of_the_requested_page(pdf: Path):
     png = render_page(pdf, page=2, dpi=50)
+    assert png.startswith(b"\x89PNG")
+
+
+def test_render_page_accepts_page_numbers_read_by_pandas(pdf: Path):
+    png = render_page(pdf, page=np.int64(2), dpi=50)  # pandas gives numpy integers
     assert png.startswith(b"\x89PNG")
