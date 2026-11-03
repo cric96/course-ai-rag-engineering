@@ -16,8 +16,9 @@ jobs:
         with:
           enable-cache: true
 
+      # The heavy slides group (Quarto) is not needed for tests.
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync --locked --no-group slides
 
       - name: Format check
         run: uv run ruff format --check .
@@ -28,3 +29,24 @@ jobs:
       # Heavy (local models) and online (LLM APIs) tests run only locally.
       - name: Tests
         run: uv run pytest -m "not slow and not llm"
+
+  slides:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      # Uses committed outputs in slides/_freeze/: no models or API keys needed.
+      - name: Render slides
+        run: uv run quarto render slides
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: slides
+          path: slides/_site
