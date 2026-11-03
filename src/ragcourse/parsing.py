@@ -20,3 +20,9 @@ def clean_text(text: str) -> str:
     text = re.sub(r" *\n *", "\n", text)  # no spaces around line breaks
     text = re.sub(r"\n{3,}", "\n\n", text)  # at most one blank line
     return text.strip()
+
+
+def render_page(path: Path, page: int, dpi: int = 100) -> bytes:
+    """Render one PDF page (1-based) as PNG bytes, e.g. to show it to a vision model."""
+    with pymupdf.open(path) as pdf:
+        return pdf[page - 1].get_pixmap(dpi=dpi).tobytes("png")

@@ -3,7 +3,7 @@ from pathlib import Path
 import pymupdf
 import pytest
 
-from ragcourse.parsing import clean_text, extract_pages
+from ragcourse.parsing import clean_text, extract_pages, render_page
 
 
 @pytest.fixture
@@ -31,3 +31,8 @@ def test_clean_text_joins_words_hyphenated_at_line_end():
 
 def test_clean_text_keeps_hyphens_inside_lines():
     assert clean_text("PR FESR 2021-2027") == "PR FESR 2021-2027"
+
+
+def test_render_page_returns_png_of_the_requested_page(pdf: Path):
+    png = render_page(pdf, page=2, dpi=50)
+    assert png.startswith(b"\x89PNG")
