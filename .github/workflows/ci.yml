@@ -16,9 +16,9 @@ jobs:
         with:
           enable-cache: true
 
-      # The heavy slides group (Quarto) is not needed for tests.
+      # Tests need neither Quarto (slides) nor PyTorch (models).
       - name: Install dependencies
-        run: uv sync --locked --no-group slides
+        run: uv sync --locked --no-group slides --no-group models
 
       - name: Format check
         run: uv run ruff format --check .
@@ -40,7 +40,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync --locked --no-group models
 
       # Uses committed outputs in slides/_freeze/: no models or API keys needed.
       - name: Render slides
