@@ -25,8 +25,10 @@ STYLE = {
 }
 
 
-def bar_chart(counts: pd.Series, title: str, gray: Sequence[str] = ()) -> Figure:
-    """Horizontal bars in series order, each labeled with its value."""
+def bar_chart(
+    counts: pd.Series, title: str, gray: Sequence[str] = (), fmt: str = "{:g}"
+) -> Figure:
+    """Horizontal bars in series order, each labeled with its value (e.g. "{:.0%}")."""
     with plt.rc_context(STYLE):
         # A bare Figure (not pyplot): Jupyter shows it once, as the cell result.
         fig = Figure(figsize=(10, 1.2 + 0.6 * len(counts)), layout="constrained")
@@ -36,7 +38,7 @@ def bar_chart(counts: pd.Series, title: str, gray: Sequence[str] = ()) -> Figure
         bars = ax.barh(labels, counts.to_numpy(), color=colors, height=0.6)
 
         ax.invert_yaxis()  # first item on top
-        ax.bar_label(bars, padding=6)  # values at the tips: no x axis needed
+        ax.bar_label(bars, fmt=fmt, padding=6)  # values at the tips: no x axis
         ax.set_title(title)
         ax.xaxis.set_visible(False)
         ax.spines[["top", "right", "bottom"]].set_visible(False)

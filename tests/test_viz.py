@@ -30,3 +30,8 @@ def test_bar_chart_grays_out_context_items():
 def test_bar_chart_names_its_font_so_it_survives_outside_the_style_context():
     fig = bar_chart(pd.Series({"a": 1}), title="t")
     assert fig.axes[0].title.get_fontfamily()[0] == FONTS[0]
+
+
+def test_bar_chart_formats_values_for_example_as_percentages():
+    fig = bar_chart(pd.Series({"hit@5": 0.282}), title="t", fmt="{:.0%}")
+    assert fig.axes[0].texts[0].get_text() == "28%"
