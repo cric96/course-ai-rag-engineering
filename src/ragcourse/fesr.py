@@ -144,12 +144,12 @@ def list_images(client: httpx.Client, within: str) -> list[Document]:
 
 
 def local_path(document: Document, root: Path) -> Path:
-    """Where a document is saved: <root>/<call>/<file name>."""
-    name = document.url.rstrip("/").rsplit("/", 1)[1]
-    if document.kind == "file" and not name.endswith(".pdf"):
-        name += ".pdf"
-    # Documents outside calls (e.g. the programme) share one folder.
-    return root / (document.call or "programma") / name
+    """Where a document is saved: <root>/<same path as on the website>."""
+    # Mirroring the site keeps same-named files of different folders apart.
+    path = document.url.removeprefix(BASE_URL).strip("/")
+    if document.kind == "file" and not path.endswith(".pdf"):
+        path += ".pdf"
+    return root / path
 
 
 def download(client: httpx.Client, document: Document, path: Path) -> None:

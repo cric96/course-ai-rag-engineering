@@ -153,9 +153,16 @@ def test_list_documents_searches_inside_the_call():
     ]
 
 
-def test_local_path_groups_files_by_call_and_keeps_pdf_suffix():
-    document = Document(title="Bando", url=f"{CALL_URL}/bando", call="bando-preciseu")
-    assert local_path(document, Path("data")) == Path("data/bando-preciseu/bando.pdf")
+def test_local_path_mirrors_the_site_and_adds_pdf_suffix():
+    document = Document("Bando", f"{CALL_URL}/webinar/slide", call="bando-preciseu")
+    expected = Path(f"data{CALL_PATH}/webinar/slide.pdf")
+    assert local_path(document, Path("data")) == expected
+
+
+def test_local_path_keeps_same_names_in_different_folders_apart():
+    first = Document("Slide", f"{CALL_URL}/webinar/slide.pdf", call="bando-preciseu")
+    second = Document("Slide", f"{CALL_URL}/domanda/slide.pdf", call="bando-preciseu")
+    assert local_path(first, Path("data")) != local_path(second, Path("data"))
 
 
 def test_download_saves_file_once(tmp_path: Path):
@@ -195,7 +202,7 @@ def test_list_images_marks_documents_as_images():
 
 def test_local_path_keeps_image_suffix():
     image = Document("Asse 1", f"{BASE_URL}/programmi/asse-1.png", None, kind="image")
-    assert local_path(image, Path("img")) == Path("img/programma/asse-1.png")
+    assert local_path(image, Path("img")) == Path("img/programmi/asse-1.png")
 
 
 def test_download_reads_the_image_field(tmp_path: Path):
