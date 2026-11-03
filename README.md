@@ -12,6 +12,13 @@ uv sync
 uv run pytest -m "not slow and not llm"
 ```
 
+Slide (Quarto + reveal.js, codice eseguito):
+
+```bash
+uv run quarto preview slides   # anteprima live nel browser
+uv run quarto render slides    # genera slides/_site/
+```
+
 ## Struttura
 
 - `src/ragcourse/` — componenti della pipeline (chunking, embedding, retrieval, valutazione)
