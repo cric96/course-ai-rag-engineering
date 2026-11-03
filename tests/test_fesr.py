@@ -209,3 +209,19 @@ def test_download_reads_the_image_field(tmp_path: Path):
         httpx.Client(transport=httpx.MockTransport(handler)), image, tmp_path / "a.png"
     )
     assert requests == ["/programmi/asse-1.png/@@download/image"]
+
+
+def test_download_retries_when_the_server_drops_the_connection(tmp_path, monkeypatch):
+    monkeypatch.setattr("ragcourse.fesr.time.sleep", lambda seconds: None)
+    document = Document(title="Bando", url=f"{CALL_URL}/bando", call="bando-preciseu")
+    answers = iter([httpx.RemoteProtocolError("disconnected"), b"%PDF-1.7"])
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        answer = next(answers)
+        if isinstance(answer, Exception):
+            raise answer
+        return httpx.Response(200, content=answer)
+
+    path = tmp_path / "bando.pdf"
+    download(httpx.Client(transport=httpx.MockTransport(handler)), document, path)
+    assert path.read_bytes() == b"%PDF-1.7"

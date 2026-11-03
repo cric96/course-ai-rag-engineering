@@ -1,6 +1,7 @@
 """Read FAQ and documents from the PR FESR Emilia-Romagna website (Plone 6 REST API)."""
 
 import re
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -140,11 +141,20 @@ def local_path(document: Document, root: Path) -> Path:
     return root / (document.call or "programma") / name
 
 
-def download(client: httpx.Client, document: Document, path: Path) -> None:
-    """Save a document to `path`, unless it is already there."""
+def download(
+    client: httpx.Client, document: Document, path: Path, attempts: int = 4
+) -> None:
+    """Save a document to `path` (if missing), retrying dropped connections."""
     if path.exists():
         return
     url = f"{document.url}/@@download/{document.kind}"
-    response = client.get(url, follow_redirects=True)
+    for attempt in range(1, attempts + 1):
+        try:
+            response = client.get(url, follow_redirects=True).raise_for_status()
+            break
+        except httpx.TransportError:
+            if attempt == attempts:
+                raise
+            time.sleep(2**attempt)  # wait 2s, 4s, 8s: the server may be busy
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(response.raise_for_status().content)
+    path.write_bytes(response.content)
