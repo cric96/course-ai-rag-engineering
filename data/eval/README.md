@@ -36,6 +36,6 @@ Le pagine `gold` sono state proposte da `gemini-4-argon` leggendo tutte le pagin
 
 - **Metriche di retrieval**: solo le domande con `gold` non vuoto.
 - **Valutazione della generazione**: un campione di circa 50 domande con `gold`.
-- **FAQ con `evidence: none`**: la risposta ufficiale sta fuori dal corpus (regolamenti UE,
-  norme nazionali, moduli esterni). Restano fuori dalle metriche e servono a un solo test:
+- **FAQ con `evidence: none`**: la risposta ufficiale non sta nei documenti (indicazioni
+  operative, casi specifici, moduli e norme fuori dal corpus). Restano fuori dalle metriche e servono a un solo test:
   il sistema sa dire "non lo trovo nei documenti" invece di inventare?
