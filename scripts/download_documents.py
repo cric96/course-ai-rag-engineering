@@ -3,7 +3,6 @@
 Run scripts/download_faq.py first: calls with FAQ define the text corpus.
 """
 
-import json
 from dataclasses import asdict
 from pathlib import Path
 
@@ -18,6 +17,7 @@ from ragcourse.fesr import (
     list_images,
     local_path,
 )
+from ragcourse.io import read_jsonl, write_jsonl
 
 FAQ_FILE = Path("data/raw/fesr/faq.jsonl")
 PDF_DIR = Path("data/raw/fesr/pdf")
@@ -55,7 +55,7 @@ def save_all(client: httpx.Client, documents: list[Document], root: Path) -> lis
 
 
 def main() -> None:
-    faq_calls = {call_url(json.loads(line)["url"]) for line in FAQ_FILE.open()}
+    faq_calls = {call_url(faq["url"]) for faq in read_jsonl(FAQ_FILE)}
     folders = sorted(faq_calls) + VISUAL_CALLS + [PROGRAMME]
 
     index = []
@@ -72,9 +72,7 @@ def main() -> None:
             print(f"{len(images):>3} images {folder.rsplit('/', 1)[1][:70]}")
 
     # The index maps every local file back to its title and source URL.
-    with INDEX_FILE.open("w", encoding="utf-8") as file:
-        for row in index:
-            file.write(json.dumps(row, ensure_ascii=False) + "\n")
+    write_jsonl(INDEX_FILE, index)
     print(f"Saved {len(index)} files, index in {INDEX_FILE}")
 
 
