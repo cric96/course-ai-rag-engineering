@@ -1,0 +1,82 @@
+/*-- scss:defaults --*/
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap");
+
+// Typography sized for projectors.
+$font-family-sans-serif: "Inter", "Helvetica Neue", Arial, sans-serif;
+$font-family-monospace: "JetBrains Mono", "Fira Code", monospace;
+$presentation-font-size-root: 32px;
+$presentation-heading-font-weight: 700;
+$presentation-h2-font-size: 1.5em;
+$code-block-font-size: 0.62em;
+
+// Palette shared with charts (see ragcourse plotting helpers).
+$body-bg: #ffffff;
+$body-color: #1f2937;
+$presentation-heading-color: #0b3d63;
+$link-color: #1565c0;
+$code-color: #0b3d63;
+
+/*-- scss:rules --*/
+.reveal h1,
+.reveal h2 {
+  letter-spacing: -0.01em;
+}
+
+// One-sentence takeaway box at the bottom of a slide.
+.takeaway {
+  margin-top: 0.8em;
+  padding: 0.4em 0.8em;
+  border-left: 6px solid #1565c0;
+  background: #eef4fb;
+  font-weight: 600;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+// Pipeline map: lanes of boxes; add `.active` to highlight the current stage.
+.pipeline p {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.72em;
+}
+
+.pipeline .lane {
+  margin: 1.1em 0 0.35em;
+  color: #6b7280;
+  font-size: 0.8em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pipeline .step {
+  flex: 1;
+  min-height: 2.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 0.3em;
+  border: 2px solid #c7d4e2;
+  border-radius: 10px;
+  background: #f5f8fc;
+  color: #0b3d63;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}
+
+// Dashed border: stages that touch the index.
+.pipeline .step.store {
+  border-style: dashed;
+}
+
+.pipeline .step.active {
+  border-color: #1565c0;
+  background: #1565c0;
+  color: #ffffff;
+}

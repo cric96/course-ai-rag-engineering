@@ -1,0 +1,25 @@
+project:
+  type: default
+  output-dir: _site
+
+lang: it
+date-format: "D MMMM YYYY"
+
+execute:
+  echo: true     # reveal.js hides code by default
+  freeze: auto   # re-run a deck only when its source changes
+  warning: false
+
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    width: 1280
+    height: 720
+    slide-number: c/t
+    hash: true
+    transition: none
+    highlight-style: github
+    code-line-numbers: false
+    mermaid:
+      theme: neutral
+    footer: "Ottimizzazione di una pipeline RAG · 11/11/2026"
