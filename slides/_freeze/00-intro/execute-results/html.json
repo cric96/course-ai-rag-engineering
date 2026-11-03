@@ -1,0 +1,12 @@
+{
+  "hash": "86ad4a9f3417052e07537286d28f98cf",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"Ottimizzazione di una pipeline RAG\"\nsubtitle: \"Costruire, misurare, migliorare\"\nauthor: \"Gianluca Aguzzi\"\ndate: 2026-11-11\njupyter: python3\n---\n\n## Il problema\n\n- Un LLM non conosce **i nostri documenti**: delibere, bandi, leggi regionali\n- **RAG** (*Retrieval-Augmented Generation*): prima **cerco** i passaggi giusti,\n  poi **genero** la risposta usando solo quelli\n- Ogni scelta nella pipeline cambia la qualità delle risposte\n\n## La pipeline\n\n::: {.pipeline}\n[Indicizzazione · una volta sola]{.lane}\n\n[Documenti<br>PDF, scansioni]{.step} → [Parsing<br>OCR]{.step} → [Chunking]{.step} → [Embedding]{.step} → [Indice]{.step .store}\n\n[Interrogazione · per ogni domanda]{.lane}\n\n[Domanda]{.step} → [Retrieval<br>cerca nell'indice]{.step .store} → [Reranking]{.step} → [Generazione<br>LLM]{.step} → [Risposta<br>con citazioni]{.step}\n:::\n\n::: {.takeaway}\nOgni box è una leva: la cambiamo, misuriamo, confrontiamo.\n:::\n\n## Le leve che ottimizziamo\n\n| Fase | Scelte da confrontare |\n|------|-----------------------|\n| Lettura dei documenti | testo estratto, OCR, lettura \"visiva\" delle pagine |\n| Chunking | dimensione, sovrapposizione, struttura del documento |\n| Embedding | locale o servizio esterno, generalista o multilingua |\n| Retrieval | quanti risultati, ricerca ibrida, reranking |\n| Archiviazione | FAISS, Qdrant, Chroma, soluzioni cloud |\n| Generazione | modello, prompt, citazioni delle fonti |\n\n## Il metodo: misurare prima di ottimizzare\n\n1. Costruiamo una **baseline** semplice, dall'inizio alla fine\n2. Prepariamo un **set di valutazione**: domande con risposte attese\n3. Cambiamo **una leva alla volta** e confrontiamo i numeri\n\n::: {.takeaway}\nSenza una valutazione, ogni \"ottimizzazione\" è solo un'opinione.\n:::\n\n## Come leggere queste slide\n\nLe slide sono un notebook eseguito: il codice e i risultati sono reali.\n\n::: {#e1301384 .cell execution_count=1}\n``` {.python .cell-code}\nimport ragcourse\n\nprint(f\"ragcourse {ragcourse.__version__}\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nragcourse 0.1.0\n```\n:::\n:::\n\n\n",
+    "supporting": [
+      "00-intro_files/figure-revealjs"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

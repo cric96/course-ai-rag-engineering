@@ -1,0 +1,61 @@
+---
+title: "Ottimizzazione di una pipeline RAG"
+subtitle: "Costruire, misurare, migliorare"
+author: "Gianluca Aguzzi"
+date: 2026-11-11
+jupyter: python3
+---
+
+## Il problema
+
+- Un LLM non conosce **i nostri documenti**: delibere, bandi, leggi regionali
+- **RAG** (*Retrieval-Augmented Generation*): prima **cerco** i passaggi giusti,
+  poi **genero** la risposta usando solo quelli
+- Ogni scelta nella pipeline cambia la qualità delle risposte
+
+## La pipeline
+
+::: {.pipeline}
+[Indicizzazione · una volta sola]{.lane}
+
+[Documenti<br>PDF, scansioni]{.step} → [Parsing<br>OCR]{.step} → [Chunking]{.step} → [Embedding]{.step} → [Indice]{.step .store}
+
+[Interrogazione · per ogni domanda]{.lane}
+
+[Domanda]{.step} → [Retrieval<br>cerca nell'indice]{.step .store} → [Reranking]{.step} → [Generazione<br>LLM]{.step} → [Risposta<br>con citazioni]{.step}
+:::
+
+::: {.takeaway}
+Ogni box è una leva: la cambiamo, misuriamo, confrontiamo.
+:::
+
+## Le leve che ottimizziamo
+
+| Fase | Scelte da confrontare |
+|------|-----------------------|
+| Lettura dei documenti | testo estratto, OCR, lettura "visiva" delle pagine |
+| Chunking | dimensione, sovrapposizione, struttura del documento |
+| Embedding | locale o servizio esterno, generalista o multilingua |
+| Retrieval | quanti risultati, ricerca ibrida, reranking |
+| Archiviazione | FAISS, Qdrant, Chroma, soluzioni cloud |
+| Generazione | modello, prompt, citazioni delle fonti |
+
+## Il metodo: misurare prima di ottimizzare
+
+1. Costruiamo una **baseline** semplice, dall'inizio alla fine
+2. Prepariamo un **set di valutazione**: domande con risposte attese
+3. Cambiamo **una leva alla volta** e confrontiamo i numeri
+
+::: {.takeaway}
+Senza una valutazione, ogni "ottimizzazione" è solo un'opinione.
+:::
+
+## Come leggere queste slide
+
+Le slide sono un notebook eseguito: il codice e i risultati sono reali.
+
+```{python}
+import ragcourse
+
+print(f"ragcourse {ragcourse.__version__}")
+```
