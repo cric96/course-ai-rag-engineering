@@ -21,9 +21,11 @@ def gold_qrels(questions: list[dict]) -> Qrels:
 
 def retrieval_run(retriever: BaseRetriever, questions: list[dict], name: str) -> Run:
     """Ask the retriever every question; rank pages by their first retrieved chunk."""
-    results = retriever.batch([q["question"] for q in questions])  # runs in parallel
     run = {}
-    for question, chunks in zip(questions, results, strict=True):
+    for question in questions:
+        # One at a time: batch() runs threads, and local GPU models then give
+        # slightly different results from run to run.
+        chunks = retriever.invoke(question["question"])
         # Several chunks may come from the same page: keep its best position.
         pages = dict.fromkeys(
             page_id(c.metadata["url"], c.metadata["page"]) for c in chunks
