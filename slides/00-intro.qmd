@@ -40,6 +40,21 @@ Ogni box è una leva: la cambiamo, misuriamo, confrontiamo.
 | Archiviazione | FAISS, Qdrant, Chroma, soluzioni cloud |
 | Generazione | modello, prompt, citazioni delle fonti |
 
+## Gli strumenti {.smaller}
+
+| Che cosa | Strumento | Perché |
+|---|---|---|
+| Orchestrazione | **LangChain** | componenti standard e intercambiabili |
+| Database vettoriale | **Qdrant** | filtri e ricerca ibrida, da locale a cloud |
+| Modelli | **Hugging Face** (locali), **Gemini** (API) | si cambiano con un nome |
+| Metriche di retrieval | **ranx** | metriche standard e test statistici |
+| Valutazione delle risposte | **DeepEval** | fedeltà, pertinenza, correttezza |
+: {tbl-colwidths="[28,34,38]"}
+
+::: {.takeaway}
+Prima il concetto, in poche righe di Python. Poi lo strumento che si usa davvero.
+:::
+
 ## Il metodo: misurare prima di ottimizzare
 
 1. Costruiamo una **baseline** semplice, dall'inizio alla fine
