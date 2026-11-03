@@ -19,6 +19,19 @@ uv run quarto preview slides   # anteprima live nel browser
 uv run quarto render slides    # genera slides/_site/
 ```
 
+## Dati
+
+Corpus: bandi del PR FESR 2021-2027 Emilia-Romagna
+([fesr.regione.emilia-romagna.it](https://fesr.regione.emilia-romagna.it)), scaricati
+tramite la REST API del sito. I file finiscono in `data/raw/` (non versionata).
+
+```bash
+uv run python scripts/download_faq.py        # FAQ dei bandi → set di valutazione
+uv run python scripts/download_documents.py  # PDF dei bandi + infografiche → corpus
+```
+
+Le FAQ non entrano mai nel corpus: contengono le risposte attese.
+
 ## Struttura
 
 - `src/ragcourse/` — componenti della pipeline (chunking, embedding, retrieval, valutazione)
