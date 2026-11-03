@@ -11,8 +11,10 @@ from ragcourse.fesr import (
     call_url,
     download,
     fetch_faqs,
+    is_corpus_image,
     is_corpus_pdf,
     list_documents,
+    list_images,
     local_path,
     parse_faq_structure,
     search,
@@ -170,3 +172,40 @@ def test_download_saves_file_once(tmp_path: Path):
 
     assert path.read_bytes() == b"%PDF-1.7"
     assert requests == [f"{CALL_PATH}/bando/@@download/file"]
+
+
+def image_item(path: str) -> dict:
+    return {"@id": f"{BASE_URL}/programmi/{path}", "title": path}
+
+
+def test_corpus_keeps_infographics_but_not_logos():
+    assert is_corpus_image(image_item("asse-1-31-12-2024.png"))
+    assert not is_corpus_image(image_item("loghi-sequenza-21-27.png"))
+    assert not is_corpus_image(image_item("asse-6-scheda-risorse"))
+
+
+def test_list_images_marks_documents_as_images():
+    routes = {"/++api++/programmi/@search": {"items": [image_item("asse-1.png")]}}
+    client = fake_client(lambda request: routes[request.url.path])
+
+    [image] = list_images(client, f"{BASE_URL}/programmi")
+    assert image.kind == "image"
+
+
+def test_local_path_keeps_image_suffix():
+    image = Document("Asse 1", f"{BASE_URL}/programmi/asse-1.png", None, kind="image")
+    assert local_path(image, Path("img")) == Path("img/programma/asse-1.png")
+
+
+def test_download_reads_the_image_field(tmp_path: Path):
+    image = Document("Asse 1", f"{BASE_URL}/programmi/asse-1.png", None, kind="image")
+    requests = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request.url.path)
+        return httpx.Response(200, content=b"PNG")
+
+    download(
+        httpx.Client(transport=httpx.MockTransport(handler)), image, tmp_path / "a.png"
+    )
+    assert requests == ["/programmi/asse-1.png/@@download/image"]

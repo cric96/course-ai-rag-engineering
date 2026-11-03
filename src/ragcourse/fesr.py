@@ -9,6 +9,8 @@ import httpx
 BASE_URL = "https://fesr.regione.emilia-romagna.it"
 API_URL = f"{BASE_URL}/++api++"
 
+IMAGE_SUFFIXES = (".png", ".jpg", ".jpeg")
+
 # Funding calls live at /opportunita/opportunita-di-finanziamento/<year>/<call>/...
 CALL_PATTERN = re.compile(r".*/opportunita-di-finanziamento/\d{4}/[^/]+")
 
@@ -26,6 +28,7 @@ class Document:
     title: str
     url: str
     call: str | None
+    kind: str = "file"  # Plone field with the content: "file" (PDF) or "image"
 
 
 def call_url(url: str) -> str | None:
@@ -112,10 +115,26 @@ def list_documents(client: httpx.Client, within: str) -> list[Document]:
     ]
 
 
+def is_corpus_image(item: dict) -> bool:
+    """Keep content images (infographics, charts), not logos."""
+    url = item["@id"].lower()
+    return url.endswith(IMAGE_SUFFIXES) and "logo" not in url and "loghi" not in url
+
+
+def list_images(client: httpx.Client, within: str) -> list[Document]:
+    """List the corpus images published below a page."""
+    items = search(client, within, portal_type="Image")
+    return [
+        Document(item["title"].strip(), item["@id"], call_slug(item["@id"]), "image")
+        for item in items
+        if is_corpus_image(item)
+    ]
+
+
 def local_path(document: Document, root: Path) -> Path:
-    """Where a document is saved: <root>/<call>/<file name>.pdf."""
+    """Where a document is saved: <root>/<call>/<file name>."""
     name = document.url.rstrip("/").rsplit("/", 1)[1]
-    if not name.endswith(".pdf"):
+    if document.kind == "file" and not name.endswith(".pdf"):
         name += ".pdf"
     # Documents outside calls (e.g. the programme) share one folder.
     return root / (document.call or "programma") / name
@@ -125,6 +144,7 @@ def download(client: httpx.Client, document: Document, path: Path) -> None:
     """Save a document to `path`, unless it is already there."""
     if path.exists():
         return
-    response = client.get(f"{document.url}/@@download/file", follow_redirects=True)
+    url = f"{document.url}/@@download/{document.kind}"
+    response = client.get(url, follow_redirects=True)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(response.raise_for_status().content)
