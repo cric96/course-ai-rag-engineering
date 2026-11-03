@@ -1387,6 +1387,7 @@ source = { editable = "." }
 dependencies = [
     { name = "google-genai" },
     { name = "httpx" },
+    { name = "pydantic" },
     { name = "pymupdf" },
     { name = "python-dotenv" },
 ]
@@ -1407,6 +1408,7 @@ slides = [
 requires-dist = [
     { name = "google-genai", specifier = ">=2.34.0" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "pydantic", specifier = ">=2.14.2" },
     { name = "pymupdf", specifier = ">=2.1" },
     { name = "python-dotenv", specifier = ">=1.2.4" },
 ]
