@@ -15,6 +15,12 @@ dev = [
     "pytest>=8.3",
     "ruff>=0.12",
 ]
+slides = [
+    "ipykernel>=7.4.0",
+    "nbclient>=0.11.0",
+    "nbformat>=5.11.1",
+    "quarto-cli>=1.11.9",
+]
 
 [build-system]
 requires = ["uv_build>=0.12.10,<0.13.0"]
@@ -35,3 +41,7 @@ markers = [
     "slow: downloads or runs local models (skipped in CI)",
     "llm: calls a remote LLM/API, needs credentials (skipped in CI)",
 ]
+
+[tool.uv]
+# Local `uv sync` installs everything; CI test job skips the heavy slides group.
+default-groups = ["dev", "slides"]
