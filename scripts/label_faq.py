@@ -21,7 +21,7 @@ from ragcourse.evalset import (
     to_questions,
 )
 from ragcourse.io import read_jsonl, write_jsonl
-from ragcourse.llm import LABELING_MODEL, gemini_client
+from ragcourse.models import LABELING_MODEL, gemini_client
 
 FAQ_FILE = Path("data/raw/fesr/faq.jsonl")
 PAGES_FILE = Path("data/processed/pages.jsonl")

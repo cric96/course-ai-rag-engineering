@@ -20,7 +20,7 @@ from ragcourse.evalset import (
     visual_pages,
 )
 from ragcourse.io import read_jsonl, write_jsonl
-from ragcourse.llm import LABELING_MODEL, gemini_client
+from ragcourse.models import LABELING_MODEL, gemini_client
 
 PAGES_FILE = Path("data/processed/pages.jsonl")
 CACHE = Path("data/interim/image_questions.json")
