@@ -1,0 +1,51 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# --- uv / virtualenv ---
+.venv/
+
+# --- Tooling caches ---
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Quarto (keep _freeze/: it stores executed outputs for CI) ---
+.quarto/
+_site/
+slides/**/*_files/
+slides/**/*.html
+
+# --- Data and model artifacts (downloaded or generated, never committed) ---
+data/raw/
+data/interim/
+data/processed/
+indexes/
+*.faiss
+qdrant_storage/
+chroma/
+lancedb/
+.cache/
+
+# --- Secrets ---
+.env
+*.key
+*credentials*.json
+service-account*.json
+
+# --- Editors / OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# --- Local assistant instructions (never committed) ---
+CLAUDE.md
