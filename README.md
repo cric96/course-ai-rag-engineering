@@ -35,6 +35,7 @@ Le FAQ non entrano mai nel corpus: contengono le risposte attese.
 
 ## Struttura
 
-- `src/ragcourse/` — componenti della pipeline (chunking, embedding, retrieval, valutazione)
+- `src/ragcourse/` — collante per LangChain, Qdrant e ranx: corpus, modelli intercambiabili,
+  valutazione, grafici
 - `tests/` — test automatici
 - `slides/` — slide Quarto con codice eseguito e risultati
