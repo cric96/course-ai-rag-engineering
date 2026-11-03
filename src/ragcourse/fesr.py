@@ -2,6 +2,7 @@
 
 import re
 from dataclasses import dataclass
+from pathlib import Path
 
 import httpx
 
@@ -9,7 +10,7 @@ BASE_URL = "https://fesr.regione.emilia-romagna.it"
 API_URL = f"{BASE_URL}/++api++"
 
 # Funding calls live at /opportunita/opportunita-di-finanziamento/<year>/<call>/...
-CALL_PATTERN = re.compile(r"/opportunita-di-finanziamento/\d{4}/([^/]+)")
+CALL_PATTERN = re.compile(r".*/opportunita-di-finanziamento/\d{4}/[^/]+")
 
 
 @dataclass(frozen=True)
@@ -20,10 +21,23 @@ class Faq:
     call: str | None
 
 
+@dataclass(frozen=True)
+class Document:
+    title: str
+    url: str
+    call: str | None
+
+
+def call_url(url: str) -> str | None:
+    """Return the URL of the funding call a page belongs to, or None."""
+    match = CALL_PATTERN.match(url)
+    return match.group(0) if match else None
+
+
 def call_slug(url: str) -> str | None:
-    """Return the funding call a URL belongs to, or None."""
-    match = CALL_PATTERN.search(url)
-    return match.group(1) if match else None
+    """Return the short name of the funding call a URL belongs to, or None."""
+    call = call_url(url)
+    return call.rsplit("/", 1)[1] if call else None
 
 
 def parse_faq_structure(node: dict) -> list[Faq]:
@@ -58,9 +72,9 @@ def api_url(url: str) -> str:
     return url.replace(BASE_URL, API_URL, 1)
 
 
-def search(client: httpx.Client, **query) -> list[dict]:
-    """Search the site, following pagination until the last page."""
-    url, params = f"{API_URL}/@search", {"b_size": 500, **query}
+def search(client: httpx.Client, within: str = BASE_URL, **query) -> list[dict]:
+    """Search the site (or only below `within`), following pagination."""
+    url, params = f"{api_url(within)}/@search", {"b_size": 500, **query}
     items = []
     while url:
         page = client.get(url, params=params).raise_for_status().json()
@@ -79,3 +93,38 @@ def fetch_faqs(client: httpx.Client) -> list[Faq]:
         response = client.get(api_url(folder["@id"]) + "/@faq-structure")
         faqs += parse_faq_structure(response.raise_for_status().json())
     return faqs
+
+
+def is_corpus_pdf(item: dict) -> bool:
+    """Keep PDFs only, never FAQ files: they contain the evaluation answers."""
+    is_pdf = item.get("mime_type") == "application/pdf"
+    is_faq = "faq" in (item["title"] + item["@id"]).lower()
+    return is_pdf and not is_faq
+
+
+def list_documents(client: httpx.Client, within: str) -> list[Document]:
+    """List the corpus PDFs published below a page (e.g. a funding call)."""
+    items = search(client, within, portal_type="File", metadata_fields="mime_type")
+    return [
+        Document(item["title"].strip(), item["@id"], call_slug(item["@id"]))
+        for item in items
+        if is_corpus_pdf(item)
+    ]
+
+
+def local_path(document: Document, root: Path) -> Path:
+    """Where a document is saved: <root>/<call>/<file name>.pdf."""
+    name = document.url.rstrip("/").rsplit("/", 1)[1]
+    if not name.endswith(".pdf"):
+        name += ".pdf"
+    # Documents outside calls (e.g. the programme) share one folder.
+    return root / (document.call or "programma") / name
+
+
+def download(client: httpx.Client, document: Document, path: Path) -> None:
+    """Save a document to `path`, unless it is already there."""
+    if path.exists():
+        return
+    response = client.get(f"{document.url}/@@download/file", follow_redirects=True)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(response.raise_for_status().content)

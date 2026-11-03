@@ -1,11 +1,19 @@
+from pathlib import Path
+
 import httpx
 
 from ragcourse.fesr import (
     API_URL,
     BASE_URL,
+    Document,
     Faq,
     call_slug,
+    call_url,
+    download,
     fetch_faqs,
+    is_corpus_pdf,
+    list_documents,
+    local_path,
     parse_faq_structure,
     search,
 )
@@ -31,6 +39,10 @@ def faq(title: str, blocks: dict, layout: list[str] | None = None) -> dict:
 
 def folder(*items: dict) -> dict:
     return {"@type": "FaqFolder", "items": list(items)}
+
+
+def test_call_url_strips_everything_below_the_call():
+    assert call_url(f"{CALL_URL}/bando-e-modulistica/bando.pdf") == CALL_URL
 
 
 def test_call_slug_extracts_call_from_url():
@@ -106,3 +118,55 @@ def test_fetch_faqs_reads_only_folders_of_funding_calls():
     client = fake_client(lambda request: routes[request.url.path])
 
     assert [item.call for item in fetch_faqs(client)] == ["bando-preciseu"]
+
+
+def file_item(
+    title: str, mime: str = "application/pdf", path: str = "bando.pdf"
+) -> dict:
+    # A "File" entry as returned by @search.
+    return {"@id": f"{CALL_URL}/{path}", "title": title, "mime_type": mime}
+
+
+def test_corpus_keeps_pdfs():
+    assert is_corpus_pdf(file_item("Bando"))
+
+
+def test_corpus_skips_office_files():
+    assert not is_corpus_pdf(file_item("Modulo", mime="application/msword"))
+
+
+def test_corpus_skips_faq_files_to_avoid_leaking_answers():
+    assert not is_corpus_pdf(file_item("Faq bando.pdf"))
+    assert not is_corpus_pdf(file_item("Risposte", path="faq-domande/risposte.pdf"))
+
+
+def test_list_documents_searches_inside_the_call():
+    items = [file_item("Bando"), file_item("Modulo", mime="application/msword")]
+    routes = {f"/++api++{CALL_PATH}/@search": {"items": items}}
+    client = fake_client(lambda request: routes[request.url.path])
+
+    assert list_documents(client, CALL_URL) == [
+        Document(title="Bando", url=f"{CALL_URL}/bando.pdf", call="bando-preciseu")
+    ]
+
+
+def test_local_path_groups_files_by_call_and_keeps_pdf_suffix():
+    document = Document(title="Bando", url=f"{CALL_URL}/bando", call="bando-preciseu")
+    assert local_path(document, Path("data")) == Path("data/bando-preciseu/bando.pdf")
+
+
+def test_download_saves_file_once(tmp_path: Path):
+    document = Document(title="Bando", url=f"{CALL_URL}/bando", call="bando-preciseu")
+    requests = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request.url.path)
+        return httpx.Response(200, content=b"%PDF-1.7")
+
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    path = tmp_path / "bando.pdf"
+    download(client, document, path)
+    download(client, document, path)  # second call: already on disk
+
+    assert path.read_bytes() == b"%PDF-1.7"
+    assert requests == [f"{CALL_PATH}/bando/@@download/file"]
