@@ -1,0 +1,250 @@
+---
+title: "Quanti pezzi al modello?"
+subtitle: "La prima leva: 5, 10 o 20 pezzi di documento nel prompt"
+author: "Gianluca Aguzzi"
+date: 2026-11-11
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+# Pipeline of the previous decks: call filter, default prompt, Gemini Flash, cached calls.
+import ragcourse  # first: turns DeepEval telemetry off
+
+import pandas as pd
+import transformers
+from deepeval import evaluate as deepeval_evaluate
+from deepeval.evaluate.configs import AsyncConfig, DisplayConfig
+from deepeval.metrics import FaithfulnessMetric
+from deepeval.test_case import LLMTestCase
+from huggingface_hub.utils import logging as hub_logging
+from langchain_core.callbacks import get_usage_metadata_callback
+from langchain_core.output_parsers import StrOutputParser
+from langchain_qdrant import QdrantVectorStore
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from ranx import evaluate
+
+from ragcourse.cache import cache_llm_calls
+from ragcourse.corpus import load_pages
+from ragcourse.evaluation import gold_qrels, retrieval_run
+from ragcourse.filters import metadata_filter
+from ragcourse.generation import ABSTAIN, PROMPT, format_context
+from ragcourse.io import read_jsonl
+from ragcourse.judge import correctness_metric, deepeval_table, judge_model
+from ragcourse.models import JUDGE_MODEL, chat_model, embedding_model
+from ragcourse.paths import DATA
+from ragcourse.viz import bar_chart, compare_chart
+
+transformers.logging.disable_progress_bar()
+hub_logging.set_verbosity_error()
+cache_llm_calls()
+
+docs = load_pages()
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+store = QdrantVectorStore.from_documents(
+    splitter.split_documents(docs), embedding_model("e5-small"),
+    location=":memory:", collection_name="fesr",
+)
+chain = PROMPT | chat_model() | StrOutputParser()
+
+faq = read_jsonl(DATA / "eval/faq_questions.jsonl")
+images = read_jsonl(DATA / "eval/image_questions.jsonl")
+with_pages = [q for q in faq + images if q["gold"]]  # 227, for the retrieval metrics
+qrels = gold_qrels(with_pages)
+answerable = pd.DataFrame([q for q in faq if q["gold"]]).sample(50, random_state=0)
+questions = answerable.to_dict("records") + [q for q in faq if not q["gold"]]  # 50 + 48
+has_answer = pd.Series([bool(q["gold"]) for q in questions])
+
+judge = judge_model(JUDGE_MODEL)
+quiet = DisplayConfig(print_results=False, show_indicator=False, inspect_after_run=False)
+
+
+def judged(cases: list, metric) -> pd.Series:
+    """One DeepEval metric over many test cases: a score per question."""
+    result = deepeval_evaluate(cases, [metric], async_config=AsyncConfig(max_concurrent=10),
+                               display_config=quiet)
+    return deepeval_table(result).iloc[:, 0]
+
+
+ABSTAIN_RIGHT = "si astiene se non c'è"
+
+
+def score(answers: list[str], found: list) -> pd.Series:
+    """The numbers of the previous decks, for one configuration."""
+    abstain = pd.Series([a.startswith(ABSTAIN) for a in answers])
+    cases = [LLMTestCase(name=q["id"], input=q["question"], actual_output=a,
+                         expected_output=q["answer"],
+                         retrieval_context=[c.page_content for c in f])
+             for q, a, f in zip(questions, answers, found, strict=True)]
+    with_answer = [c for c, q in zip(cases, questions, strict=True) if q["gold"]]
+    given = [c for c, a in zip(with_answer, abstain[has_answer], strict=True) if not a]
+    faithfulness = FaithfulnessMetric(model=judge, penalize_ambiguous_claims=True)
+    return pd.Series({
+        "risponde se c'è": (~abstain[has_answer]).mean(),
+        ABSTAIN_RIGHT: abstain[~has_answer].mean(),
+        "correttezza": judged(with_answer, correctness_metric(judge)).mean(),
+        "fedeltà": judged(given, faithfulness).mean(),
+    })
+```
+
+## Dove siamo
+
+::: {.pipeline}
+[Interrogazione · per ogni domanda]{.lane}
+
+[Domanda<br>+ bando]{.step} → [Retrieval<br>k pezzi]{.step .store .active} → [Reranking]{.step} → [Generazione<br>LLM]{.step .active} → [Risposta]{.step}
+:::
+
+::: {.takeaway}
+Finora il modello ha letto 5 pezzi. Quanti ne servono davvero?
+:::
+
+## Più pezzi: pro e contro
+
+- **Pro**: più probabile che ci sia il pezzo con la risposta
+- **Contro**: più testo da leggere, più rumore in mezzo al pezzo giusto
+- **Contro**: più token, quindi più costo e più attesa a ogni domanda
+
+::: {.takeaway}
+Una sola leva, tre effetti. Si misura, non si indovina.
+:::
+
+## Il retrieval: la pagina giusta c'è?
+
+```{python}
+in_context = pd.Series(dtype=float)
+for k in (5, 10, 20):
+    retriever = store.as_retriever(search_kwargs={"k": k})
+    run = retrieval_run(retriever, with_pages, name=f"{k} pezzi", by_call=True)
+    in_context[run.name] = evaluate(qrels, run, "hit_rate")  # gold page anywhere in k
+bar_chart(in_context, gray=["5 pezzi"], fmt="{:.0%}",
+          title=f"Pagina giusta tra i pezzi: dal {in_context.iloc[0]:.0%} "
+                f"al {in_context.iloc[-1]:.0%}")
+```
+
+## La generazione, per ogni k
+
+```{python}
+#| output: false
+def answer_with(k: int):
+    """Every answer, with k chunks in the prompt; also counts the tokens."""
+    retriever = store.as_retriever(search_kwargs={"k": k})
+    found = [retriever.invoke(q["question"], filter=metadata_filter(call=q["call"]))
+             for q in questions]
+    inputs = [{"context": format_context(f), "question": q["question"]}
+              for q, f in zip(questions, found, strict=True)]
+    with get_usage_metadata_callback() as usage:
+        answers = chain.batch(inputs, config={"max_concurrency": 8})
+    return answers, found, usage
+
+
+results, tokens, generated = {}, {}, {}
+for k in (5, 10, 20):
+    answers, found, usage = answer_with(k)
+    generated[k] = answers, found
+    results[f"{k} pezzi"] = score(answers, found)  # DeepEval + abstention, as before
+    tokens[f"{k} pezzi"] = sum(u["input_tokens"] for u in usage.usage_metadata.values())
+results = pd.DataFrame(results)
+```
+
+- Stesse 98 domande dei due capitoli precedenti: 50 con risposta, 48 senza
+- `score(...)`: correttezza e fedeltà con DeepEval, astensione con la frase fissa
+
+## Le risposte migliorano?
+
+```{python}
+#| echo: false
+quality = results.loc[["correttezza", "fedeltà"]]
+compare_chart(quality, fmt="{:.2f}",
+              title=f"Correttezza {quality.iloc[0, 0]:.2f} → {quality.iloc[0, 1]:.2f} "
+                    f"→ {quality.iloc[0, 2]:.2f}")
+```
+
+::: {.muted}
+Correttezza sulle 50 domande con risposta; fedeltà solo sulle risposte date.
+:::
+
+## La fedeltà crolla davvero?
+
+```{python}
+#| echo: false
+LABELS = {"yes": "frasi trovate nei pezzi", "borderline": "frasi non verificabili",
+          "no": "frasi contraddette"}
+
+
+def verdicts(k: int) -> pd.Series:
+    """How the judge labels each sentence of the answers given with k chunks."""
+    labels, truths = [], []
+    for q, a, f in zip(questions, *generated[k], strict=True):
+        if not q["gold"] or a.startswith(ABSTAIN):
+            continue
+        metric = FaithfulnessMetric(model=judge, penalize_ambiguous_claims=True,
+                                    async_mode=False)
+        metric.measure(LLMTestCase(input=q["question"], actual_output=a,
+                                   retrieval_context=[c.page_content for c in f]),
+                       _show_indicator=False)
+        labels += [str(v.verdict) for v in metric.verdicts]
+        truths.append(len(metric.truths))
+    counts = {name: labels.count(label) for label, name in LABELS.items()}
+    return pd.Series(counts | {"fatti estratti dai pezzi, per risposta":
+                               round(sum(truths) / len(truths), 1)})
+
+
+table = pd.DataFrame({"5 pezzi": verdicts(5), "20 pezzi": verdicts(20)})
+table.map(lambda value: f"{value:g}")
+```
+
+- Le **contraddizioni** non aumentano: il modello non inventa di più
+- Il giudice riassume i pezzi in pochi "fatti": con 20 pezzi ne estrae quasi quanti con 5,
+  e molte frasi diventano **non verificabili**
+
+::: {.takeaway}
+Anche il giudice è un modello: prima di fidarsi di una metrica, si guarda come decide.
+:::
+
+## E l'astensione?
+
+```{python}
+#| echo: false
+compare_chart(results.loc[["risponde se c'è", ABSTAIN_RIGHT]], fmt="{:.0%}",
+              title="Risponde quando può, si astiene quando deve")
+```
+
+::: {.takeaway}
+Con più testo in mano, il modello trova più spesso qualcosa da dire: anche quando non dovrebbe.
+:::
+
+## Quanto costa
+
+```{python}
+#| echo: false
+per_question = pd.Series(tokens) / len(questions)
+bar_chart(per_question.round(-2), gray=["5 pezzi"], fmt="{:.0f}",
+          title=f"Token in ingresso per domanda: × {per_question.iloc[-1] / per_question.iloc[0]:.1f} "
+                "da 5 a 20 pezzi")
+```
+
+- Il costo di un LLM cresce con il testo che legge: ogni pezzo in più si paga a ogni domanda
+- Anche il giudice legge i pezzi: valutare costa di più
+
+## Quale k scegliere?
+
+```{python}
+#| echo: false
+#| output: asis
+best = results.loc["correttezza"].idxmax()
+print(f"- La correttezza migliore è con **{best}** "
+      f"({results.loc['correttezza', best]:.2f} contro "
+      f"{results.loc['correttezza', '5 pezzi']:.2f} con 5)")
+print(f"- Ma l'astensione corretta passa da {results.loc[ABSTAIN_RIGHT, '5 pezzi']:.0%} "
+      f"a {results.loc[ABSTAIN_RIGHT, best]:.0%}, "
+      f"e i token salgono di × {per_question[best] / per_question['5 pezzi']:.1f}")
+c, a = results.loc["correttezza"], results.loc[ABSTAIN_RIGHT]
+print(f"- **10 pezzi** è un compromesso: correttezza {c['10 pezzi']:.2f}, astensione corretta "
+      f"{a['10 pezzi']:.0%}, la metà dei token di 20")
+print("- La scelta dipende dall'uso: più risposte, o meno rischi e meno costi")
+```
+
+::: {.takeaway}
+Ogni leva si giudica su tutti i numeri insieme: qualità, rischio e costo.
+:::
