@@ -13,6 +13,15 @@ def test_chat_model_is_chosen_by_provider_and_name(monkeypatch):
     assert model.model.endswith("gemini-3.8-flash")
 
 
+def test_chat_model_keeps_provider_defaults_unless_asked(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "fake-key")
+    # Google advises against changing the temperature of Gemini 3 and later.
+    assert chat_model("google_genai:gemini-3.8-flash").temperature is None
+    assert (
+        chat_model("google_genai:gemini-3.8-flash", temperature=0.5).temperature == 0.5
+    )
+
+
 def test_unknown_embedding_model_is_rejected():
     with pytest.raises(ValueError, match="unknown embedding model"):
         embedding_model("not-a-model")

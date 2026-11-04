@@ -32,9 +32,12 @@ def embedding_model(name: str = "e5-small") -> Embeddings:
     raise ValueError(f"unknown embedding model: {name}")
 
 
-def chat_model(name: str = CHAT_MODEL) -> BaseChatModel:
-    """Any LangChain chat model, e.g. "google_genai:gemini-3.8-flash"."""
-    return init_chat_model(name, temperature=0)
+def chat_model(name: str = CHAT_MODEL, **settings) -> BaseChatModel:
+    """Any LangChain chat model, e.g. "google_genai:gemini-3.8-flash".
+
+    Provider defaults are kept: Google advises against changing Gemini 3+ temperature.
+    """
+    return init_chat_model(name, **settings)
 
 
 def gemini_client() -> genai.Client:
