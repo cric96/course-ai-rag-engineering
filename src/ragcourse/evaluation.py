@@ -1,5 +1,6 @@
 """Evaluate retrieval with ranx, the standard library for search metrics."""
 
+from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
 from ranx import Qrels, Run
 
@@ -19,6 +20,12 @@ def gold_qrels(questions: list[dict]) -> Qrels:
             for q in questions
         }
     )
+
+
+def gold_found(chunks: list[Document], question: dict) -> bool:
+    """True when at least one chunk comes from a page that holds the answer."""
+    gold = {page_id(g["url"], g["page"]) for g in question["gold"]}
+    return any(page_id(c.metadata["url"], c.metadata["page"]) in gold for c in chunks)
 
 
 def retrieval_run(

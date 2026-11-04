@@ -1,7 +1,7 @@
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
 
-from ragcourse.evaluation import gold_qrels, retrieval_run
+from ragcourse.evaluation import gold_found, gold_qrels, retrieval_run
 from ragcourse.filters import metadata_filter
 
 QUESTIONS = [
@@ -56,3 +56,8 @@ def test_retrieval_run_can_search_only_the_call_of_each_question():
     retriever = RecordingRetriever()
     retrieval_run(retriever, QUESTIONS, name="per bando", by_call=True)
     assert retriever.options == [{"filter": metadata_filter(call="bando-a")}]
+
+
+def test_gold_found_tells_whether_any_chunk_comes_from_a_gold_page():
+    assert gold_found([chunk(1), chunk(2)], QUESTIONS[0])
+    assert not gold_found([chunk(1), chunk(3)], QUESTIONS[0])
