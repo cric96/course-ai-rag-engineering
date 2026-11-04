@@ -3,6 +3,8 @@
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
 
+ABSTAIN = "Non lo trovo nei documenti."  # fixed, so abstentions can be counted
+
 PROMPT = ChatPromptTemplate.from_messages(
     [
         (
@@ -10,7 +12,7 @@ PROMPT = ChatPromptTemplate.from_messages(
             "Rispondi a domande sui bandi del PR FESR 2021-2027 dell'Emilia-Romagna.\n"
             "Usa solo i documenti forniti e rispondi in modo breve e preciso.\n"
             "Cita le fonti con il loro numero tra parentesi quadre, ad esempio [2].\n"
-            "Se i documenti non contengono la risposta, dillo chiaramente.",
+            f"Se i documenti non contengono la risposta, rispondi solo: {ABSTAIN}",
         ),
         ("human", "Documenti:\n\n{context}\n\nDomanda: {question}"),
     ]
