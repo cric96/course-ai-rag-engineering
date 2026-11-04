@@ -1,6 +1,6 @@
 from langchain_core.documents import Document
 
-from ragcourse.generation import ABSTAIN, PROMPT, format_context
+from ragcourse.generation import ABSTAIN, PROMPT, PRUDENT_PROMPT, format_context
 
 
 def test_format_context_numbers_chunks_so_the_answer_can_cite_them():
@@ -28,3 +28,16 @@ def test_prompt_asks_for_a_fixed_sentence_when_the_answer_is_missing():
     # A fixed sentence makes abstentions countable: answer.startswith(ABSTAIN).
     system = PROMPT.invoke({"context": "", "question": ""}).to_messages()[0].text
     assert ABSTAIN in system
+
+
+def system_text(prompt) -> str:
+    return prompt.invoke({"context": "", "question": ""}).to_messages()[0].text
+
+
+def test_prudent_prompt_differs_only_in_when_to_abstain():
+    default, prudent = system_text(PROMPT), system_text(PRUDENT_PROMPT)
+
+    assert "solo in parte" in default
+    assert "solo in parte" not in prudent
+    assert ABSTAIN in prudent
+    assert default.splitlines()[:4] == prudent.splitlines()[:4]  # same other rules
