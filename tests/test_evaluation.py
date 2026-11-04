@@ -2,8 +2,16 @@ from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
 
 from ragcourse.evaluation import gold_qrels, retrieval_run
+from ragcourse.filters import metadata_filter
 
-QUESTIONS = [{"id": "q1", "question": "Chi?", "gold": [{"url": "u", "page": 2}]}]
+QUESTIONS = [
+    {
+        "id": "q1",
+        "question": "Chi?",
+        "call": "bando-a",
+        "gold": [{"url": "u", "page": 2}],
+    }
+]
 
 
 def chunk(page: int) -> Document:
@@ -26,3 +34,25 @@ def test_retrieval_run_ranks_pages_by_their_first_chunk():
 
     assert run.name == "fake"
     assert run.to_dict() == {"q1": {"u#page=1": 3, "u#page=2": 2, "u#page=3": 1}}
+
+
+class RecordingRetriever(BaseRetriever):
+    """Remembers the search options of every query."""
+
+    options: list[dict] = []
+
+    def _get_relevant_documents(self, query, *, run_manager, **options):
+        self.options.append(options)
+        return [chunk(2)]
+
+
+def test_retrieval_run_searches_everything_by_default():
+    retriever = RecordingRetriever()
+    retrieval_run(retriever, QUESTIONS, name="tutto")
+    assert retriever.options == [{}]
+
+
+def test_retrieval_run_can_search_only_the_call_of_each_question():
+    retriever = RecordingRetriever()
+    retrieval_run(retriever, QUESTIONS, name="per bando", by_call=True)
+    assert retriever.options == [{"filter": metadata_filter(call="bando-a")}]

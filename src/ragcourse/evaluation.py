@@ -3,6 +3,8 @@
 from langchain_core.retrievers import BaseRetriever
 from ranx import Qrels, Run
 
+from ragcourse.filters import metadata_filter
+
 
 def page_id(url: str, page: int) -> str:
     """One id per page; '#page=N' also opens the PDF at that page."""
@@ -19,13 +21,19 @@ def gold_qrels(questions: list[dict]) -> Qrels:
     )
 
 
-def retrieval_run(retriever: BaseRetriever, questions: list[dict], name: str) -> Run:
-    """Ask the retriever every question; rank pages by their first retrieved chunk."""
+def retrieval_run(
+    retriever: BaseRetriever, questions: list[dict], name: str, by_call: bool = False
+) -> Run:
+    """Ask the retriever every question; rank pages by their first retrieved chunk.
+
+    by_call=True searches only the question's call, known from where it is asked.
+    """
     run = {}
     for question in questions:
+        options = {"filter": metadata_filter(call=question["call"])} if by_call else {}
         # One at a time: batch() runs threads, and local GPU models then give
         # slightly different results from run to run.
-        chunks = retriever.invoke(question["question"])
+        chunks = retriever.invoke(question["question"], **options)
         # Several chunks may come from the same page: keep its best position.
         pages = dict.fromkeys(
             page_id(c.metadata["url"], c.metadata["page"]) for c in chunks
