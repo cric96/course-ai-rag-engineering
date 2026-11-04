@@ -1,7 +1,8 @@
 from langchain_core.documents import Document
 from langchain_core.embeddings import DeterministicFakeEmbedding
+from langchain_qdrant import RetrievalMode, SparseEmbeddings, SparseVector
 
-from ragcourse.index import vector_store
+from ragcourse.index import search_mode, vector_store
 
 CHUNKS = [Document("Le spese sono ammissibili.", metadata={"call": "bando-a"})]
 
@@ -25,3 +26,40 @@ def test_index_is_built_once_then_reloaded_from_disk(tmp_path):
 
     assert embeddings.embedded == 1  # the second store came from disk
     assert second.similarity_search("spese", k=1)[0].metadata["call"] == "bando-a"
+
+
+class WordSparse(SparseEmbeddings):
+    """Keyword vectors without a model: one dimension per (lowercase) word."""
+
+    def embed_query(self, text):
+        words = sorted({w.strip(".?").lower() for w in text.split()})
+        return SparseVector(
+            indices=[hash(w) % 10_000 for w in words], values=[1.0] * len(words)
+        )
+
+    def embed_documents(self, texts):
+        return [self.embed_query(t) for t in texts]
+
+
+DOCS = [
+    Document("Il CUP va indicato in ogni fattura.", metadata={"call": "a"}),
+    Document("Le spese di personale sono ammissibili.", metadata={"call": "a"}),
+]
+
+
+def test_one_hybrid_index_searches_by_meaning_by_words_or_both(tmp_path):
+    store = vector_store(
+        DOCS,
+        DeterministicFakeEmbedding(size=8),
+        "h",
+        root=tmp_path,
+        sparse=WordSparse(),
+    )
+    assert store.retrieval_mode == RetrievalMode.HYBRID
+
+    words = search_mode(store, RetrievalMode.SPARSE)
+    assert (
+        words.similarity_search("cup fattura", k=1)[0].page_content
+        == DOCS[0].page_content
+    )
+    assert search_mode(store, RetrievalMode.DENSE).client is store.client  # same index
