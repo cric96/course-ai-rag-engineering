@@ -1,0 +1,290 @@
+---
+title: "Visual RAG"
+subtitle: "Cercare e rispondere guardando le pagine"
+author: "Gianluca Aguzzi"
+date: 2026-11-11
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+# Same evaluation as the OCR deck: 20 questions whose answer is in a picture-only page.
+import ragcourse  # first: turns DeepEval telemetry off
+
+import textwrap
+
+import numpy as np
+import pandas as pd
+import transformers
+from deepeval import evaluate as deepeval_evaluate
+from deepeval.evaluate.configs import AsyncConfig, DisplayConfig
+from deepeval.test_case import LLMTestCase
+from huggingface_hub.utils import logging as hub_logging
+from langchain_core.output_parsers import StrOutputParser
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from ranx import Run, evaluate
+
+from ragcourse.cache import cache_llm_calls
+from ragcourse.corpus import load_pages
+from ragcourse.evaluation import gold_qrels, page_id, retrieval_run
+from ragcourse.evalset import visual_pages
+from ragcourse.filters import metadata_filter
+from ragcourse.generation import PROMPT, format_context
+from ragcourse.index import extended_store, vector_store
+from ragcourse.io import read_jsonl
+from ragcourse.judge import correctness_metric, deepeval_table, judge_model
+from ragcourse.models import JUDGE_MODEL, chat_model, embedding_model, sparse_model
+from ragcourse.ocr import page_picture
+from ragcourse.paths import DATA
+from ragcourse.viz import bar_chart, compare_chart
+
+llm = chat_model()
+transformers.logging.disable_progress_bar()
+hub_logging.set_verbosity_error()
+cache_llm_calls()
+
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+chunks = splitter.split_documents(load_pages())
+embeddings, bm25 = embedding_model("bge-m3"), sparse_model("bm25")
+questions = read_jsonl(DATA / "eval/faq_questions.jsonl")
+questions += read_jsonl(DATA / "eval/image_questions.jsonl")
+with_pages = [q for q in questions if q["gold"]]
+on_images = [q for q in with_pages if q["evidence"] == "image"]
+qrels, qrels_images = gold_qrels(with_pages), gold_qrels(on_images)
+pages = read_jsonl(DATA / "processed/pages.jsonl")
+pictures_only = visual_pages(pages)  # the 476 pages without a text layer
+by_page = {page_id(p["url"], p["page"]): p for p in pages}
+image_ids = [q["id"] for q in on_images]
+
+
+def complete(run, name):
+    """Every question in the run, empty when nothing was found (fusion drops those)."""
+    found = run.to_dict()
+    return Run({q["id"]: found.get(q["id"], {}) for q in with_pages}, name=name)
+
+# The two text indexes of the OCR deck: without OCR, and with Gemini's OCR.
+text_store = vector_store(chunks, embeddings, "bge-m3-1000-bm25", sparse=bm25)
+text_run = retrieval_run(text_store.as_retriever(search_kwargs={"k": 20}), with_pages,
+                         name="solo testo", by_call=True)
+text_store.client.close()
+ocr_chunks = splitter.split_documents(load_pages(DATA / "processed/ocr/gemini.jsonl"))
+ocr_store = extended_store("bge-m3-1000-bm25", ocr_chunks, embeddings,
+                           "bge-m3-1000-bm25-ocr-gemini", sparse=bm25)
+ocr_retriever = ocr_store.as_retriever(search_kwargs={"k": 20})
+ocr_run = retrieval_run(ocr_retriever, with_pages, name="testo + OCR", by_call=True)
+tesseract_chunks = splitter.split_documents(load_pages(DATA / "processed/ocr/tesseract.jsonl"))
+tesseract_retriever = extended_store(
+    "bge-m3-1000-bm25", tesseract_chunks, embeddings, "bge-m3-1000-bm25-ocr-tesseract",
+    sparse=bm25).as_retriever(search_kwargs={"k": 20})
+```
+
+## Dove siamo
+
+::: {.pipeline}
+[Indicizzazione · una volta sola]{.lane}
+
+[Pagine<br>come immagini]{.step .active} → [Embedding<br>delle immagini]{.step .active} → [Indice<br>Qdrant]{.step .store}
+
+[Interrogazione · per ogni domanda]{.lane}
+
+[Domanda<br>+ bando]{.step} → [Retrieval<br>testo + immagini]{.step .store .active} → [Generazione<br>guarda la pagina]{.step .active} → [Risposta]{.step}
+:::
+
+::: {.takeaway}
+Niente OCR: le pagine si cercano e si leggono come immagini.
+:::
+
+## L'idea
+
+- Un modello di embedding **multimodale** mette immagini e testi nello stesso spazio:
+  la domanda (testo) è vicina alla pagina (immagine) che le risponde
+- Nessuna trascrizione: restano **tabelle, grafici, impaginazione**
+- Per rispondere, un LLM che vede le immagini legge direttamente la pagina
+
+| | OCR (capitolo precedente) | Visual RAG |
+|---|---|---|
+| Indice | testo trascritto | un vettore per pagina-immagine |
+| Risposta | l'LLM legge il testo | l'LLM guarda la pagina |
+| Si perde | impaginazione, grafici | niente, ma costa più token |
+: {tbl-colwidths="[16,42,42]"}
+
+## Funziona? Una prova
+
+```{python}
+from ragcourse.visual import PictureEmbeddings
+
+pictures = PictureEmbeddings()  # Qwen3-VL-Embedding-2B, local GPU
+examples = [q for q in on_images if q["id"] in ("img-016", "img-001", "img-009")]
+pages_shown = [by_page[page_id(q["gold"][0]["url"], q["gold"][0]["page"])] for q in examples]
+
+page_vectors = np.array(pictures.embed_pictures(pages_shown))  # images in...
+question = np.array(pictures.embed_query(examples[0]["question"]))  # ...text in
+similarity = pd.Series(page_vectors @ question,
+                       index=[f"{p['title'][:30]}, p. {p['page']}" for p in pages_shown])
+```
+
+```{python}
+#| echo: false
+print(examples[0]["question"])
+bar_chart(similarity, title="Somiglianza della domanda con tre pagine-immagine", fmt="{:.2f}")
+```
+
+## L'indice delle immagini
+
+```{python}
+#| output: false
+from ragcourse.visual import picture_store
+
+store = picture_store(pictures_only, pictures, "qwen3-vl-emb-pictures")  # 476 pictures
+picture_retriever = store.as_retriever(search_kwargs={"k": 20})  # filters work as usual
+picture_run = retrieval_run(picture_retriever, with_pages, name="solo immagini",
+                            by_call=True)
+```
+
+- Solo le 476 pagine senza testo: le altre le trova già bene la ricerca sul testo
+- Stessa interfaccia LangChain: stesso filtro per bando, stessa valutazione con ranx
+
+## Fondere testo e immagini
+
+```{python}
+from ranx import fuse
+
+# Reciprocal Rank Fusion, the same idea as the hybrid search, between two indexes.
+fused = complete(fuse([text_run, picture_run], method="rrf"), "testo + immagini")
+
+runs = {run.name: run for run in [text_run, ocr_run, picture_run, fused]}
+results = pd.DataFrame({name: evaluate(qrels, run, ["hit_rate@5", "mrr@10"])
+                        for name, run in runs.items()})  # all 227 questions
+# ranx keeps a score per question: average the 20 on pictures.
+hit5 = pd.Series({name: pd.Series(run.scores["hit_rate@5"])[image_ids].mean()
+                  for name, run in runs.items()})
+```
+
+```{python}
+#| echo: false
+bar_chart(hit5, gray=["solo testo"], fmt="{:.0%}",
+          title=f"Domande sulle immagini, hit@5: OCR {hit5['testo + OCR']:.0%}, "
+                f"testo + immagini {hit5['testo + immagini']:.0%}")
+```
+
+## E tutte le altre domande?
+
+```{python}
+results.round(3)  # all 227 questions, computed above
+```
+
+```{python}
+#| echo: false
+#| output: asis
+h = results.loc["hit_rate@5"]
+print(f"- \"solo immagini\" conosce 476 pagine su 6.652: da solo non basta ({h['solo immagini']:.0%})")
+print(f"- **Fondere alla cieca peggiora le altre domande**: {h['testo + immagini']:.0%} contro "
+      f"{h['solo testo']:.0%}, perché le pagine-immagine si infilano anche dove non servono")
+print(f"- L'OCR invece aggiunge senza togliere: {h['testo + OCR']:.0%}")
+```
+
+## Rispondere guardando la pagina
+
+```{python}
+#| output: false
+from ragcourse.generation import picture_messages
+
+
+def from_pictures(q):
+    """Answer looking at the 3 best page pictures, with the usual rules."""
+    found = picture_retriever.invoke(q["question"], filter=metadata_filter(call=q["call"]))
+    seen = [by_page[page_id(d.metadata["url"], d.metadata["page"])] for d in found[:3]]
+    return llm.invoke(picture_messages(q["question"], seen)).text
+```
+
+- Compare con le risposte del capitolo sulla generazione: 10 pezzi di testo dagli indici con OCR
+- Stesse 20 domande, stesso giudice (DeepEval, correttezza)
+
+```{python}
+#| echo: false
+#| output: false
+images = {q["id"]: q for q in on_images}
+
+
+def from_text(retriever, q):
+    """Answer from a text index with OCR: 10 chunks, as in the generation deck."""
+    found = retriever.invoke(q["question"], filter=metadata_filter(call=q["call"]))[:10]
+    return (PROMPT | llm | StrOutputParser()).invoke(
+        {"context": format_context(found), "question": q["question"]})
+
+
+from langchain_core.callbacks import get_usage_metadata_callback
+
+answers, tokens = {}, {}
+sources = {"OCR Tesseract": lambda q: from_text(tesseract_retriever, q),
+           "OCR Gemini": lambda q: from_text(ocr_retriever, q),
+           "guarda le pagine": from_pictures}
+for name, answer in sources.items():
+    with get_usage_metadata_callback() as usage:  # input tokens, also from the cache
+        answers[name] = [answer(q) for q in on_images]
+    tokens[name] = sum(u["input_tokens"] for u in usage.usage_metadata.values()) / len(on_images)
+```
+
+## Quale risponde meglio?
+
+```{python}
+#| echo: false
+#| output: false
+quiet = DisplayConfig(print_results=False, show_indicator=False, inspect_after_run=False)
+
+
+def correctness(replies: list[str]) -> pd.Series:
+    cases = [LLMTestCase(name=q["id"], input=q["question"], actual_output=a,
+                         expected_output=q["answer"]) for q, a in zip(on_images, replies, strict=True)]
+    result = deepeval_evaluate(cases, [correctness_metric(judge_model(JUDGE_MODEL))],
+                               async_config=AsyncConfig(max_concurrent=10), display_config=quiet)
+    return deepeval_table(result).iloc[:, 0]
+
+
+scores = pd.DataFrame({name: correctness(replies) for name, replies in answers.items()})
+```
+
+```{python}
+#| echo: false
+compare_chart(scores.mean().to_frame("correttezza").T, fmt="{:.2f}",
+              title=f"Correttezza sulle {len(on_images)} domande sulle immagini")
+```
+
+::: {.muted}
+Risposte attese scritte da Gemini guardando la pagina (capitolo sui dati): un vantaggio per chi guarda.
+:::
+
+## Un esempio
+
+```{python}
+#| echo: false
+#| output: asis
+gap = (scores["guarda le pagine"] - scores["OCR Gemini"]).sort_values()
+qid = gap.index[-1] if gap.iloc[-1] > 0 else gap.index[0]
+q, i = images[qid], list(images).index(qid)
+print(f"> {q['question']}\n\n**Attesa**: {q['answer']}\n")
+for name, replies in answers.items():
+    print(f"- **{name}** ({scores.loc[qid, name]:.1f}): {textwrap.shorten(replies[i], 220)}")
+```
+
+## Che cosa ci dice
+
+```{python}
+#| echo: false
+#| output: asis
+means = scores.mean()
+print(f"- **Trovare**: l'indice delle immagini trova la pagina giusta nel "
+      f"{hit5['solo immagini']:.0%} delle domande sulle immagini, senza leggere una parola")
+print(f"- **Rispondere**: guardare la pagina ({means['guarda le pagine']:.2f}) vale quanto un buon "
+      f"OCR ({means['OCR Gemini']:.2f}); un OCR con errori costa di più "
+      f"({means['OCR Tesseract']:.2f})")
+print(f"- **Costi**: token in ingresso per risposta, {tokens['OCR Gemini']:,.0f} con 10 pezzi "
+      f"di testo e {tokens['guarda le pagine']:,.0f} con 3 immagini; l'indice delle immagini "
+      "vuole una GPU")
+print("- **In pratica**: OCR per tutto, perché è semplice e compatibile; le immagini quando "
+      "contano impaginazione, tabelle e grafici")
+```
+
+::: {.takeaway}
+Leggere o guardare: due strade per le stesse pagine. Si sceglie misurando, come sempre.
+:::
