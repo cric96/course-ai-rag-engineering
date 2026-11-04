@@ -10,9 +10,11 @@ PROMPT = ChatPromptTemplate.from_messages(
         (
             "system",
             "Rispondi a domande sui bandi del PR FESR 2021-2027 dell'Emilia-Romagna.\n"
-            "Usa solo i documenti forniti e rispondi in modo breve e preciso.\n"
+            "Usa solo i documenti forniti. Rispondi in modo preciso, con le condizioni\n"
+            "e le eccezioni che contano.\n"
             "Cita le fonti con il loro numero tra parentesi quadre, ad esempio [2].\n"
-            f"Se i documenti non contengono la risposta, rispondi solo: {ABSTAIN}",
+            "Se i documenti rispondono solo in parte, rispondi con quello che dicono.\n"
+            f"Se non contengono nulla di utile, rispondi solo: {ABSTAIN}",
         ),
         ("human", "Documenti:\n\n{context}\n\nDomanda: {question}"),
     ]
