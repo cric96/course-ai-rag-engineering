@@ -2,7 +2,6 @@
 
 from collections.abc import Callable
 from io import BytesIO
-from pathlib import Path
 
 import httpx
 from langchain_core.language_models import BaseChatModel
@@ -11,7 +10,7 @@ from PIL import Image
 
 from ragcourse.evalset import page_image
 from ragcourse.parsing import render_page
-from ragcourse.paths import DATA
+from ragcourse.paths import DATA, project_path
 
 OCR_PROMPT = (
     "Trascrivi tutto il testo di questa pagina, nell'ordine di lettura. "
@@ -30,8 +29,8 @@ Reader = Callable[[dict], str]
 def page_picture(page: dict, dpi: int = 150) -> Image.Image:
     """The page as a picture: image files as they are, PDF pages rendered."""
     if page["kind"] == "image":
-        return Image.open(page["path"]).convert("RGB")
-    png = render_page(Path(page["path"]), page["page"], dpi=dpi)
+        return Image.open(project_path(page["path"])).convert("RGB")
+    png = render_page(project_path(page["path"]), page["page"], dpi=dpi)
     return Image.open(BytesIO(png)).convert("RGB")
 
 

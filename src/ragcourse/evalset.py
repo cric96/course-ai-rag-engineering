@@ -2,7 +2,6 @@
 
 import base64
 import mimetypes
-from pathlib import Path
 from typing import Literal
 
 from langchain_core.language_models import BaseChatModel
@@ -10,6 +9,7 @@ from langchain_core.messages import HumanMessage
 from pydantic import BaseModel
 
 from ragcourse.parsing import render_page
+from ragcourse.paths import project_path
 
 MIN_TEXT_CHARS = 50  # below this, a page is shown to the model as an image
 
@@ -73,7 +73,7 @@ def page_parts(label: str, page: dict) -> list[dict]:
 
 def page_image(page: dict) -> dict:
     """The page as an image block: image files as they are, PDF pages rendered."""
-    path = Path(page["path"])
+    path = project_path(page["path"])
     if page["kind"] == "image":
         data, mime_type = path.read_bytes(), mimetypes.guess_type(path)[0]
     else:
