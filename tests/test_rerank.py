@@ -4,7 +4,13 @@ from langchain_core.language_models import GenericFakeChatModel
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import RunnableLambda
 
-from ragcourse.rerank import RerankRetriever, cross_encoder, llm_listwise
+from ragcourse.rerank import (
+    CachedRetriever,
+    RerankRetriever,
+    cross_encoder,
+    listwise_prompt,
+    llm_listwise,
+)
 
 CHUNKS = [Document(text) for text in ["scadenze", "spese ammissibili", "CUP", "firma"]]
 
@@ -58,3 +64,18 @@ def test_cross_encoder_puts_the_relevant_chunk_first():
     ]
     hardware, deadline = score("Posso comprare un computer?", docs)[::-1]
     assert hardware > deadline
+
+
+def test_cached_retriever_searches_once_per_question_and_options():
+    base = FakeRetriever()
+    cached = CachedRetriever(base=base)
+    cached.invoke("spese?", filter="a")
+    cached.invoke("spese?", filter="a")
+    cached.invoke("spese?", filter="b")
+    assert base.options == [{"filter": "a"}, {"filter": "b"}]
+
+
+def test_listwise_prompt_numbers_the_candidates_from_one():
+    prompt = listwise_prompt("CUP?", CHUNKS[:2])
+    assert "Domanda: CUP?" in prompt
+    assert "[1] scadenze" in prompt and "[2] spese ammissibili" in prompt

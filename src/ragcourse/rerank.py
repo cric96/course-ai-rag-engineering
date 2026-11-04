@@ -71,22 +71,39 @@ class Ranking(BaseModel):
     order: list[int]
 
 
+def listwise_prompt(query: str, docs: list[Document]) -> str:
+    """The question and the numbered candidates, for an LLM to put in order."""
+    numbered = "\n\n".join(f"[{n}] {doc.page_content}" for n, doc in enumerate(docs, 1))
+    return (
+        f"Domanda: {query}\n\nPassaggi:\n\n{numbered}\n\n"
+        "Ordina i numeri dei passaggi dal più utile al meno utile per rispondere."
+    )
+
+
 def llm_listwise(chat: BaseChatModel) -> Scorer:
     """An LLM reads all candidates and orders them; the order becomes a score."""
 
     def score(query: str, docs: list[Document]) -> list[float]:
-        numbered = "\n\n".join(
-            f"[{n}] {doc.page_content}" for n, doc in enumerate(docs, 1)
+        order = chat.with_structured_output(Ranking).invoke(
+            listwise_prompt(query, docs)
         )
-        prompt = (
-            f"Domanda: {query}\n\nPassaggi:\n\n{numbered}\n\n"
-            "Ordina i numeri dei passaggi dal più utile al meno utile per rispondere."
-        )
-        order = chat.with_structured_output(Ranking).invoke(prompt).order
-        rank = {n: i for i, n in enumerate(order)}
+        rank = {n: i for i, n in enumerate(order.order)}
         # Forgotten candidates share the last place.
         return [
             float(len(docs) - rank.get(n, len(docs))) for n in range(1, len(docs) + 1)
         ]
 
     return score
+
+
+class CachedRetriever(BaseRetriever):
+    """Runs a slow first stage once per question; later calls reuse its chunks."""
+
+    base: BaseRetriever
+    seen: dict = {}
+
+    def _get_relevant_documents(self, query, *, run_manager, **options):
+        key = (query, repr(options))  # e.g. the call filter is part of the question
+        if key not in self.seen:
+            self.seen[key] = self.base.invoke(query, **options)
+        return self.seen[key]
