@@ -35,7 +35,7 @@ Le FAQ non entrano mai nel corpus: contengono le risposte attese.
 
 ## Struttura
 
-- `src/ragcourse/` — collante per LangChain, Qdrant e ranx: corpus, modelli intercambiabili,
-  valutazione, grafici
+- `src/ragcourse/` — collante per LangChain, Qdrant, ranx e DeepEval: corpus, modelli
+  intercambiabili (anche il giudice), filtri, valutazione, grafici
 - `tests/` — test automatici
 - `slides/` — slide Quarto con codice eseguito e risultati
