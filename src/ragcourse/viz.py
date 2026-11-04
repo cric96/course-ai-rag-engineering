@@ -3,6 +3,7 @@
 from collections.abc import Sequence
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
 
@@ -40,6 +41,30 @@ def bar_chart(
         ax.invert_yaxis()  # first item on top
         ax.bar_label(bars, fmt=fmt, padding=6)  # values at the tips: no x axis
         ax.set_title(title)
+        ax.xaxis.set_visible(False)
+        ax.spines[["top", "right", "bottom"]].set_visible(False)
+        ax.tick_params(axis="y", length=0)
+    return fig
+
+
+def compare_chart(table: pd.DataFrame, title: str, fmt: str = "{:g}") -> Figure:
+    """Two runs side by side, a group of bars per row: reference gray, new run blue."""
+    if len(table.columns) != 2:
+        raise ValueError("compare_chart compares exactly two runs")
+    with plt.rc_context(STYLE):
+        fig = Figure(figsize=(10, 1.6 + 1.0 * len(table)), layout="constrained")
+        ax = fig.subplots()
+        rows = np.arange(len(table))
+        reference, new = table.columns
+        for run, color, shift in [(reference, GRAY, -0.2), (new, BLUE, 0.2)]:
+            bars = ax.barh(rows + shift, table[run], 0.38, color=color, label=run)
+            ax.bar_label(bars, fmt=fmt, padding=6)
+
+        ax.set_yticks(rows, [str(label) for label in table.index])
+        ax.invert_yaxis()  # first row on top, reference above the new run
+        # Legend just above the bars, title above the legend.
+        ax.legend(loc="lower left", bbox_to_anchor=(0, 1), ncols=2, frameon=False)
+        ax.set_title(title, pad=52)
         ax.xaxis.set_visible(False)
         ax.spines[["top", "right", "bottom"]].set_visible(False)
         ax.tick_params(axis="y", length=0)

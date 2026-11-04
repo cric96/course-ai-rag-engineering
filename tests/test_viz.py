@@ -1,7 +1,8 @@
 import pandas as pd
+import pytest
 from matplotlib.colors import to_hex
 
-from ragcourse.viz import BLUE, FONTS, GRAY, bar_chart
+from ragcourse.viz import BLUE, FONTS, GRAY, bar_chart, compare_chart
 
 
 def test_bar_chart_draws_one_bar_per_item_with_its_value():
@@ -35,3 +36,30 @@ def test_bar_chart_names_its_font_so_it_survives_outside_the_style_context():
 def test_bar_chart_formats_values_for_example_as_percentages():
     fig = bar_chart(pd.Series({"hit@5": 0.282}), title="t", fmt="{:.0%}")
     assert fig.axes[0].texts[0].get_text() == "28%"
+
+
+TABLE = pd.DataFrame(
+    {"baseline": {"hit@1": 0.1, "hit@5": 0.3}, "filtro": {"hit@1": 0.2, "hit@5": 0.6}}
+)
+
+
+def test_compare_chart_draws_the_reference_gray_and_the_new_run_blue():
+    fig = compare_chart(TABLE, title="t", fmt="{:.0%}")
+
+    ax = fig.axes[0]
+    colors = [to_hex(bar.get_facecolor()) for bar in ax.patches]
+    assert colors == [GRAY, GRAY, BLUE, BLUE]
+    assert [label.get_text() for label in ax.texts] == ["10%", "30%", "20%", "60%"]
+
+
+def test_compare_chart_names_both_runs_in_a_legend():
+    fig = compare_chart(TABLE, title="t")
+    assert [text.get_text() for text in fig.axes[0].get_legend().get_texts()] == [
+        "baseline",
+        "filtro",
+    ]
+
+
+def test_compare_chart_compares_exactly_two_runs():
+    with pytest.raises(ValueError, match="two"):
+        compare_chart(TABLE.assign(altro=0.5), title="t")
