@@ -19,6 +19,7 @@ LABELING_MODEL = (
     "google_genai:gemini-4-argon"  # strongest model: builds the ground truth
 )
 CHAT_MODEL = "google_genai:gemini-3.8-flash"
+JUDGE_MODEL = LABELING_MODEL  # a judge stronger than, and different from, CHAT_MODEL
 
 
 def embedding_model(name: str = "e5-small") -> Embeddings:
