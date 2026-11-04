@@ -49,3 +49,6 @@ service-account*.json
 
 # --- Local assistant instructions (never committed) ---
 CLAUDE.md
+
+# --- DeepEval local runs and cache ---
+.deepeval/

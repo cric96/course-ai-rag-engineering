@@ -9,6 +9,7 @@ authors = [
 # Pinned to 3.12: widest wheel support for ML / OCR libraries.
 requires-python = "==3.12.*"
 dependencies = [
+    "deepeval>=4.3.2",
     "httpx>=0.28.1",
     "langchain>=1.4.8",
     "langchain-google-genai>=4.4.2",
@@ -53,7 +54,9 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra --strict-markers"
+# DeepEval's pytest plugin is for `deepeval test run`: plain pytest does not need it.
+addopts = "-ra --strict-markers -p no:deepeval"
+asyncio_default_fixture_loop_scope = "function"
 markers = [
     "slow: downloads or runs local models (skipped in CI)",
     "llm: calls a remote LLM/API, needs credentials (skipped in CI)",
