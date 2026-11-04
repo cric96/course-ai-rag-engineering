@@ -2,7 +2,7 @@ from langchain_core.documents import Document
 from langchain_core.embeddings import DeterministicFakeEmbedding
 from langchain_qdrant import RetrievalMode, SparseEmbeddings, SparseVector
 
-from ragcourse.index import search_mode, vector_store
+from ragcourse.index import extended_store, search_mode, vector_store
 
 CHUNKS = [Document("Le spese sono ammissibili.", metadata={"call": "bando-a"})]
 
@@ -63,3 +63,23 @@ def test_one_hybrid_index_searches_by_meaning_by_words_or_both(tmp_path):
         == DOCS[0].page_content
     )
     assert search_mode(store, RetrievalMode.DENSE).client is store.client  # same index
+
+
+OCR = [Document("Quadri: 47 euro all'ora.", metadata={"call": "a"})]
+
+
+def test_extended_index_is_a_copy_with_extra_chunks(tmp_path):
+    embeddings = DeterministicFakeEmbedding(size=8)
+    vector_store(DOCS, embeddings, "base", root=tmp_path).client.close()
+
+    extended = extended_store("base", OCR, embeddings, "base-ocr", root=tmp_path)
+    assert extended.client.count(extended.collection_name).count == 3
+    extended.client.close()
+
+    again = extended_store("base", OCR, embeddings, "base-ocr", root=tmp_path)
+    assert (
+        again.client.count(again.collection_name).count == 3
+    )  # reloaded, not re-added
+    again.client.close()
+    original = vector_store(DOCS, embeddings, "base", root=tmp_path)
+    assert original.client.count(original.collection_name).count == 2  # untouched

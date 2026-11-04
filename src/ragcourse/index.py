@@ -1,5 +1,6 @@
 """Vector indexes saved on disk: embedded once per configuration, then reloaded."""
 
+import shutil
 from pathlib import Path
 
 from langchain_core.documents import Document
@@ -55,3 +56,38 @@ def search_mode(store: QdrantVectorStore, mode: RetrievalMode) -> QdrantVectorSt
         sparse_embedding=store.sparse_embeddings,
         retrieval_mode=mode,
     )
+
+
+def extended_store(
+    base: str,
+    extra: list[Document],
+    embeddings: Embeddings,
+    name: str,
+    root: Path = INDEXES,
+    sparse: SparseEmbeddings | None = None,
+) -> QdrantVectorStore:
+    """A copy of index `base` with `extra` chunks added (e.g. OCR text), kept on disk.
+
+    Copying the folder is much faster than embedding the whole corpus again.
+    """
+    mode = RetrievalMode.HYBRID if sparse else RetrievalMode.DENSE
+    path = root / name
+
+    def open_at(folder: Path) -> QdrantVectorStore:
+        return QdrantVectorStore.from_existing_collection(
+            embedding=embeddings,
+            sparse_embedding=sparse,
+            retrieval_mode=mode,
+            path=str(folder),
+            collection_name=base,  # the copy keeps the collection's name
+        )
+
+    if not path.exists():
+        building = root / f"{name}.building"
+        shutil.rmtree(building, ignore_errors=True)  # leftovers of a crashed run
+        shutil.copytree(root / base, building)
+        store = open_at(building)
+        store.add_documents(extra)
+        store.client.close()
+        building.rename(path)
+    return open_at(path)
