@@ -12,6 +12,7 @@ from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_qdrant import FastEmbedSparse, SparseEmbeddings
 
 from ragcourse.paths import ROOT
 
@@ -61,6 +62,13 @@ def embedding_model(name: str = "e5-small") -> Embeddings:
         encode_kwargs={**spec.passage, "normalize_embeddings": True},
         query_encode_kwargs={**spec.query, "normalize_embeddings": True},
     )
+
+
+def sparse_model(name: str = "bm25") -> SparseEmbeddings:
+    """Keyword vectors for hybrid search: BM25 with Italian stopwords and stemming."""
+    if name == "bm25":
+        return FastEmbedSparse(model_name="Qdrant/bm25", language="italian")
+    raise ValueError(f"unknown sparse model: {name}")
 
 
 def chat_model(name: str = CHAT_MODEL, **settings) -> BaseChatModel:

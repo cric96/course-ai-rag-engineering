@@ -3,7 +3,7 @@ import pytest
 from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-from ragcourse.models import EMBEDDERS, chat_model, embedding_model
+from ragcourse.models import EMBEDDERS, chat_model, embedding_model, sparse_model
 
 
 def test_chat_model_is_chosen_by_provider_and_name(monkeypatch):
@@ -54,3 +54,15 @@ def test_e5_puts_related_texts_closer_than_unrelated_ones():
 
     assert len(query) == 384
     assert np.dot(query, hardware) > np.dot(query, deadline)
+
+
+def test_unknown_sparse_model_is_rejected():
+    with pytest.raises(ValueError, match="unknown sparse model"):
+        sparse_model("not-a-model")
+
+
+@pytest.mark.slow  # downloads the BM25 vocabulary files
+def test_italian_bm25_drops_stopwords_and_stems_words():
+    bm25 = sparse_model("bm25")
+    assert len(bm25.embed_query("Le spese ammissibili").indices) == 2  # "le" is dropped
+    assert bm25.embed_query("fattura").indices == bm25.embed_query("fatture").indices
