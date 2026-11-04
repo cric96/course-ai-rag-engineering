@@ -1,6 +1,13 @@
+import pymupdf
 from langchain_core.documents import Document
 
-from ragcourse.generation import ABSTAIN, PROMPT, PRUDENT_PROMPT, format_context
+from ragcourse.generation import (
+    ABSTAIN,
+    PROMPT,
+    PRUDENT_PROMPT,
+    format_context,
+    picture_messages,
+)
 
 
 def test_format_context_numbers_chunks_so_the_answer_can_cite_them():
@@ -41,3 +48,19 @@ def test_prudent_prompt_differs_only_in_when_to_abstain():
     assert "solo in parte" not in prudent
     assert ABSTAIN in prudent
     assert default.splitlines()[:4] == prudent.splitlines()[:4]  # same other rules
+
+
+def test_picture_messages_show_numbered_page_images_then_the_question(tmp_path):
+    path = tmp_path / "slide.pdf"
+    with pymupdf.open() as doc:
+        doc.new_page()
+        doc.save(path)
+    page = {"path": str(path), "page": 1, "kind": "file", "title": "Slide"}
+
+    system, human = picture_messages("Chi?", [page, page])
+
+    assert ABSTAIN in system.text  # same rules as the text prompt
+    kinds = [block["type"] for block in human.content]
+    assert kinds == ["text", "text", "image", "text", "image", "text"]
+    assert human.content[1]["text"] == "[1] Slide, p. 1"
+    assert human.content[-1]["text"].endswith("Domanda: Chi?")

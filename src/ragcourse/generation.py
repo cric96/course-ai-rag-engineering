@@ -1,7 +1,10 @@
 """Generation: the prompt that turns retrieved chunks into a cited answer."""
 
 from langchain_core.documents import Document
+from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate
+
+from ragcourse.evalset import page_image
 
 ABSTAIN = "Non lo trovo nei documenti."  # fixed, so abstentions can be counted
 
@@ -36,3 +39,15 @@ def format_context(chunks: list[Document]) -> str:
         f"{chunk.page_content}"
         for n, chunk in enumerate(chunks, start=1)
     )
+
+
+def picture_messages(question: str, pages: list[dict]) -> list[BaseMessage]:
+    """The default prompt, with page images instead of text chunks (visual RAG)."""
+    blocks = [{"type": "text", "text": "Documenti:"}]
+    for n, page in enumerate(pages, start=1):
+        blocks += [
+            {"type": "text", "text": f"[{n}] {page['title']}, p. {page['page']}"},
+            page_image(page),
+        ]
+    blocks.append({"type": "text", "text": f"Domanda: {question}"})
+    return [SystemMessage(RULES + PARTIAL_OK), HumanMessage(content=blocks)]
