@@ -170,5 +170,5 @@ print("- Costa poco (un secondo vettore per pezzo) e porta candidati più vari: 
 ```
 
 ::: {.takeaway}
-Con un buon embedding le parole aggiungono poco. Con uno debole, o con molte sigle, di più.
+Qui, con un buon embedding, le parole aggiungono poco. Va misurato su ogni corpus.
 :::
