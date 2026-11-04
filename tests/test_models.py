@@ -1,8 +1,9 @@
 import numpy as np
 import pytest
 from langchain_core.language_models import BaseChatModel
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-from ragcourse.models import chat_model, embedding_model
+from ragcourse.models import EMBEDDERS, chat_model, embedding_model
 
 
 def test_chat_model_is_chosen_by_provider_and_name(monkeypatch):
@@ -20,6 +21,19 @@ def test_chat_model_keeps_provider_defaults_unless_asked(monkeypatch):
     assert (
         chat_model("google_genai:gemini-3.8-flash", temperature=0.5).temperature == 0.5
     )
+
+
+def test_api_embedders_are_chosen_by_provider_and_name(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "fake-key")  # built offline, never called
+    embedder = embedding_model("google_genai:gemini-embedding-2")
+
+    assert isinstance(embedder, GoogleGenerativeAIEmbeddings)
+    assert embedder.model.endswith("gemini-embedding-2")
+
+
+def test_local_catalog_names_the_hugging_face_models():
+    assert EMBEDDERS["e5-small"].model == "intfloat/multilingual-e5-small"
+    assert {"e5-large", "bge-m3", "qwen3-0.6b"} <= set(EMBEDDERS)
 
 
 def test_unknown_embedding_model_is_rejected():
