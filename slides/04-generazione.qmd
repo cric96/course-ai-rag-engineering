@@ -1,0 +1,338 @@
+---
+title: "La generazione"
+subtitle: "Dalle pagine giuste alla risposta, e come valutarla"
+author: "Gianluca Aguzzi"
+date: 2026-11-11
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+# The retrieval of the previous decks: baseline index, filtered by call.
+import ragcourse  # first: turns DeepEval telemetry off
+import textwrap
+
+import pandas as pd
+import transformers
+from huggingface_hub.utils import logging as hub_logging
+from langchain_core.callbacks import get_usage_metadata_callback
+from langchain_qdrant import QdrantVectorStore
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+from ragcourse.cache import cache_llm_calls
+from ragcourse.corpus import load_pages
+from ragcourse.evaluation import gold_found
+from ragcourse.filters import metadata_filter
+from ragcourse.generation import ABSTAIN, PROMPT, format_context
+from ragcourse.io import read_jsonl
+from ragcourse.models import JUDGE_MODEL, embedding_model
+from ragcourse.paths import DATA
+from ragcourse.viz import bar_chart, compare_chart
+
+transformers.logging.disable_progress_bar()
+hub_logging.set_verbosity_error()
+cache_llm_calls()  # identical LLM calls come from disk: re-rendering costs nothing
+
+docs = load_pages()
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+chunks = splitter.split_documents(docs)
+store = QdrantVectorStore.from_documents(
+    chunks, embedding_model("e5-small"), location=":memory:", collection_name="fesr"
+)
+retriever = store.as_retriever(search_kwargs={"k": 5})  # 5 chunks to the model
+
+
+def retrieve(question: dict) -> list:
+    """The 5 closest chunks of the question's call."""
+    return retriever.invoke(question["question"], filter=metadata_filter(call=question["call"]))
+
+
+faq = [q for q in read_jsonl(DATA / "eval/faq_questions.jsonl") if q["gold"]]
+by_id = {q["id"]: q for q in faq}
+example = by_id["faq-002"]
+```
+
+## Dove siamo
+
+::: {.pipeline}
+[Indicizzazione · una volta sola]{.lane}
+
+[Documenti]{.step} → [Parsing]{.step} → [Chunking]{.step} → [Embedding]{.step} → [Indice<br>Qdrant]{.step .store}
+
+[Interrogazione · per ogni domanda]{.lane}
+
+[Domanda<br>+ bando]{.step} → [Retrieval<br>con filtro]{.step .store} → [Reranking]{.step} → [Generazione<br>LLM]{.step .active} → [Risposta<br>con citazioni]{.step .active}
+:::
+
+::: {.takeaway}
+Il retrieval porta 5 pezzi di documento. Ora un LLM scrive la risposta, e va misurata anche lei.
+:::
+
+## Il prompt
+
+```{python}
+print(PROMPT.messages[0].prompt.template)
+```
+
+- **Solo i documenti forniti**: la risposta deve venire dai bandi, non dalla memoria del modello
+- **Citazioni** `[n]`: chi legge può controllare la fonte
+- **Una frase fissa** se la risposta non c'è: meglio di una risposta inventata, e si può contare
+
+## La catena: prompt → modello → testo
+
+```{python}
+from langchain_core.output_parsers import StrOutputParser
+from ragcourse.models import chat_model
+
+llm = chat_model("google_genai:gemini-3.8-flash")  # swap it by name, also a local model
+chain = PROMPT | llm | StrOutputParser()  # LCEL: each step feeds the next
+
+found = retrieve(example)  # the 5 chunks of the previous deck
+answer = chain.invoke({"context": format_context(found), "question": example["question"]})
+```
+
+```{python}
+#| echo: false
+#| output: asis
+print(f"> {example['question']}\n")
+print(":::: {.columns}\n::: {.column .small width=\"50%\"}\n**Risposta generata**\n")
+print(answer)
+print("\n:::\n::: {.column .small width=\"50%\"}\n**Risposta ufficiale (FAQ)**\n")
+print(example["answer"])
+print("\n:::\n::::")
+```
+
+# Valutare una risposta
+
+## Che cosa può andare storto
+
+| Domanda | Confronta | Metrica DeepEval |
+|---|---|---|
+| La risposta è **giusta**? | risposta ↔ risposta ufficiale | Correttezza (*GEval*) |
+| Ha **inventato** qualcosa? | risposta ↔ pezzi recuperati | Fedeltà (*Faithfulness*) |
+| **Risponde** alla domanda? | risposta ↔ domanda | Pertinenza (*Answer Relevancy*) |
+| I pezzi recuperati **bastavano**? | pezzi recuperati ↔ risposta ufficiale | Richiamo (*Contextual Recall*) |
+: {tbl-colwidths="[34,36,30]"}
+
+::: {.takeaway}
+Fedeltà e pertinenza non chiedono la risposta ufficiale: si possono misurare anche in produzione.
+:::
+
+## Un LLM come giudice, in poche righe
+
+```{python}
+from pydantic import BaseModel
+
+class Verdict(BaseModel):  # what the judge must return
+    correct: bool
+    reason: str
+
+judge = chat_model(JUDGE_MODEL).with_structured_output(Verdict)
+verdict = judge.invoke(f"Domanda: {example['question']}\nRisposta ufficiale: {example['answer']}\n"
+                       f"Risposta da valutare: {answer}\nÈ corretta rispetto a quella ufficiale?")
+print("Corretta:", verdict.correct, "\n", verdict.reason)
+```
+
+- Qui il giudice è **lo stesso modello** che risponde: veloce ed economico, ma può essere
+  indulgente con se stesso. Un giudice diverso è a un nome di distanza
+- Sì/no è grossolano. DeepEval scompone la risposta e dà un punteggio da 0 a 1
+
+## DeepEval: la fedeltà, frase per frase
+
+```{python}
+#| output: false
+from deepeval.metrics import FaithfulnessMetric
+from deepeval.test_case import LLMTestCase
+from ragcourse.judge import judge_model
+
+invented = answer + " Il contributo massimo è di 5 milioni di euro."  # a claim we made up
+case = LLMTestCase(input=example["question"], actual_output=invented,
+                   retrieval_context=[chunk.page_content for chunk in found])
+faithfulness = FaithfulnessMetric(model=judge_model(JUDGE_MODEL),  # any LangChain model
+                                  penalize_ambiguous_claims=True, async_mode=False)
+faithfulness.measure(case)
+```
+
+```{python}
+#| echo: false
+marks = {"yes": "✓ nei documenti    ", "no": "✗ contraddetta     ",
+         "borderline": "? non nei documenti"}
+for claim, verdict in zip(faithfulness.claims, faithfulness.verdicts, strict=True):
+    print(marks[str(verdict.verdict)], textwrap.shorten(claim, 80))
+print(f"\nFedeltà = frasi nei documenti / frasi = {faithfulness.score:.2f}")
+```
+
+::: {.muted}
+Di default DeepEval punisce solo le contraddizioni; noi anche ciò che i documenti non dicono.
+:::
+
+## Correttezza: i criteri li scriviamo noi
+
+```{python}
+from deepeval.metrics import GEval
+from deepeval.test_case import SingleTurnParams
+
+correctness = GEval(
+    name="Correttezza",
+    evaluation_params=[SingleTurnParams.INPUT, SingleTurnParams.ACTUAL_OUTPUT,
+                       SingleTurnParams.EXPECTED_OUTPUT],
+    evaluation_steps=[
+        "Check whether the facts in the actual output contradict the expected output.",
+        "Penalize omissions of key facts of the expected output.",
+        "Other wording and extra details that do not contradict it are fine.",
+    ],
+    model=judge_model(JUDGE_MODEL),
+)
+```
+
+- **GEval**: un giudice LLM guidato da criteri scritti in linguaggio naturale
+- Per un ufficio: le stesse regole che darebbe un revisore umano
+
+# Sul set di valutazione
+
+## 50 domande, 50 risposte
+
+```{python}
+sample = pd.DataFrame(faq).sample(50, random_state=0).to_dict("records")
+found_all = [retrieve(q) for q in sample]  # one at a time: the local model stays deterministic
+inputs = [{"context": format_context(found), "question": q["question"]}
+          for q, found in zip(sample, found_all, strict=True)]
+
+with get_usage_metadata_callback() as generation_usage:  # count the tokens
+    answers = chain.batch(inputs, config={"max_concurrency": 8})  # 8 requests at a time
+```
+
+- 50 FAQ estratte a caso: le **risposte ufficiali sono scritte da persone**
+- `batch`: le chiamate al modello partono in parallelo, il retrieval resta sequenziale
+
+## Quattro metriche, un giudice
+
+```{python}
+#| output: false
+from deepeval import evaluate
+from deepeval.evaluate.configs import AsyncConfig, DisplayConfig
+from deepeval.metrics import AnswerRelevancyMetric, ContextualRecallMetric
+from ragcourse.judge import deepeval_table
+
+cases = [LLMTestCase(name=q["id"], input=q["question"], actual_output=a,
+                     expected_output=q["answer"], retrieval_context=[c.page_content for c in f])
+         for q, a, f in zip(sample, answers, found_all, strict=True)]
+judge = judge_model(JUDGE_MODEL)
+metrics = [correctness, FaithfulnessMetric(model=judge, penalize_ambiguous_claims=True),
+           AnswerRelevancyMetric(model=judge), ContextualRecallMetric(model=judge)]
+
+with get_usage_metadata_callback() as judge_usage:
+    result = evaluate(cases, metrics, async_config=AsyncConfig(max_concurrent=10),
+                      display_config=DisplayConfig(print_results=False, show_indicator=False,
+                                                   inspect_after_run=False))
+scores = deepeval_table(result)  # one row per question, one column per metric
+```
+
+## I risultati
+
+```{python}
+#| echo: false
+names = {"Correttezza [GEval]": "correttezza", "Faithfulness": "fedeltà",
+         "Answer Relevancy": "pertinenza", "Contextual Recall": "richiamo del contesto"}
+scores = scores.rename(columns=names)[list(names.values())]
+ids = [q["id"] for q in sample]
+abstained = pd.Series([a.startswith(ABSTAIN) for a in answers], index=ids)
+has_gold = pd.Series([gold_found(f, q) for q, f in zip(sample, found_all, strict=True)],
+                     index=ids)
+given = scores[~abstained]  # fidelity and relevancy only make sense for real answers
+means = pd.Series({
+    "pertinenza": given["pertinenza"].mean(),
+    "fedeltà": given["fedeltà"].mean(),
+    "richiamo del contesto": scores["richiamo del contesto"].mean(),
+    "correttezza": scores["correttezza"].mean(),
+})
+bar_chart(means, fmt="{:.2f}",
+          title=f"Fedele {means['fedeltà']:.2f}, ma corretta solo {means['correttezza']:.2f}")
+```
+
+::: {.muted}
+Punteggi medi da 0 a 1. Fedeltà e pertinenza sulle `{python} f"{len(given)}"` risposte date;
+correttezza e richiamo su tutte le 50 (non rispondere è sbagliato: la risposta c'è).
+:::
+
+## Perché così poco corretta?
+
+```{python}
+#| echo: false
+outcome = pd.Series({
+    "risponde": (~abstained).sum(),
+    "non lo trova, la pagina giusta c'era": (abstained & has_gold).sum(),
+    "non lo trova, la pagina giusta mancava": (abstained & ~has_gold).sum(),
+})
+bar_chart(outcome, gray=["risponde"],
+          title=f"{abstained.sum()} risposte su {len(answers)}: «{ABSTAIN}»")
+```
+
+::: {.takeaway}
+Quando i 5 pezzi non bastano, il modello lo dice invece di inventare. Il limite è il retrieval.
+:::
+
+## Se il retrieval sbaglia, la risposta non si salva
+
+```{python}
+#| echo: false
+by_retrieval = scores[["correttezza", "richiamo del contesto"]].groupby(has_gold).mean().T
+by_retrieval.columns = ["pagina giusta assente", "pagina giusta nei 5 pezzi"]
+compare_chart(by_retrieval, fmt="{:.2f}",
+              title=f"Correttezza {by_retrieval.iloc[0, 0]:.2f} → {by_retrieval.iloc[0, 1]:.2f} "
+                    "con la pagina giusta nel contesto")
+```
+
+::: {.muted}
+Pagina giusta nei 5 pezzi: `{python} f"{has_gold.sum()} domande su {len(has_gold)}"`.
+:::
+
+## Un errore da vicino
+
+```{python}
+#| echo: false
+#| output: asis
+reasons = deepeval_table(result, "reason").rename(columns=names)
+# The hard case: the right page was there, the model answered, the answer is wrong.
+hard = scores[has_gold & ~abstained & (scores["correttezza"] < 0.5)].index
+length = {qid: len(by_id[qid]["question"] + by_id[qid]["answer"] + answers[ids.index(qid)])
+          for qid in hard}
+miss = min(hard, key=length.get) if len(hard) else scores["correttezza"].idxmin()
+q = by_id[miss]
+print(f"> {q['question']}\n")
+print(":::: {.columns}\n::: {.column .small width=\"50%\"}\n**Risposta generata**\n")
+print(textwrap.shorten(answers[ids.index(miss)], 420, placeholder=" […]"))
+print("\n:::\n::: {.column .small width=\"50%\"}\n**Risposta ufficiale (FAQ)**\n")
+print(textwrap.shorten(q["answer"], 420, placeholder=" […]"))
+print("\n:::\n::::\n")
+print(f"::: {{.small}}\nFedeltà **{scores.loc[miss, 'fedeltà']:.1f}**, "
+      f"correttezza **{scores.loc[miss, 'correttezza']:.1f}**. Il giudice: "
+      f"*{textwrap.shorten(reasons.loc[miss, 'correttezza'], 230)}*\n:::")
+```
+
+::: {.takeaway}
+Fedele non vuol dire corretta: la risposta usa bene pezzi che non bastano.
+:::
+
+## Quanto costa il giudice
+
+```{python}
+#| echo: false
+def tokens(usage) -> int:
+    return sum(model["total_tokens"] for model in usage.usage_metadata.values())
+
+
+cost = pd.Series({"rispondere": tokens(generation_usage), "giudicare": tokens(judge_usage)})
+bar_chart(cost / 1e6, gray=["rispondere"], fmt="{:.1f} M",
+          title=f"Giudicare costa {cost['giudicare'] / cost['rispondere']:.0f} volte più che rispondere")
+```
+
+- Il giudice è un modello: **sbaglia anche lui**, va controllato a campione da una persona
+- Una **cache** delle chiamate: rieseguire la stessa valutazione non costa nulla
+- Più avanti: i *decision model* (Jev, LiquidAI d1) come giudici veloci ed economici
+
+## Da qui in avanti
+
+- **Astensione**: sa dire "non lo trovo" quando la risposta non c'è?
+- **Retrieval migliore** → risposte migliori: chunking, embedding, ricerca ibrida, reranking
+- **Modelli**: lo stesso set con un altro LLM, anche locale, cambiando un nome
