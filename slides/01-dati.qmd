@@ -244,8 +244,8 @@ In un progetto reale la verità di riferimento la costruiscono, o almeno la vali
 - rendono la valutazione circolare se anche il giudice è un modello simile
 
 ::: {.takeaway}
-Per questo controlliamo a mano un campione di 48 domande e ne dichiariamo il tasso di
-errore.
+Qui lo usiamo così com'è, per scopo didattico. In un progetto vero: validare a mano almeno
+un campione e dichiararne il tasso di errore.
 :::
 
 ## Come useremo il set
