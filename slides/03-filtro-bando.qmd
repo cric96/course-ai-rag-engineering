@@ -1,0 +1,224 @@
+---
+title: "Filtrare per bando"
+subtitle: "I metadati: usare quello che sappiamo già"
+author: "Gianluca Aguzzi"
+date: 2026-11-11
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+# The baseline of the previous deck, rebuilt as it was.
+import pandas as pd
+import transformers
+from huggingface_hub.utils import logging as hub_logging
+from langchain_qdrant import QdrantVectorStore
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from ranx import Run, evaluate
+
+from ragcourse.corpus import load_pages
+from ragcourse.evaluation import gold_qrels, page_id, retrieval_run
+from ragcourse.io import read_jsonl
+from ragcourse.models import embedding_model
+from ragcourse.paths import DATA
+from ragcourse.viz import bar_chart, compare_chart
+
+transformers.logging.disable_progress_bar()
+hub_logging.set_verbosity_error()
+
+docs = load_pages()
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+chunks = splitter.split_documents(docs)
+store = QdrantVectorStore.from_documents(
+    chunks, embedding_model("e5-small"), location=":memory:", collection_name="fesr"
+)
+retriever = store.as_retriever(search_kwargs={"k": 20})
+
+questions = read_jsonl(DATA / "eval/faq_questions.jsonl")
+questions += read_jsonl(DATA / "eval/image_questions.jsonl")
+answerable = [q for q in questions if q["gold"]]
+by_id = {q["id"]: q for q in answerable}
+qrels = gold_qrels(answerable)
+baseline = retrieval_run(retriever, answerable, name="baseline")
+
+
+def show(found, question):
+    """Top 3 pages: ✓ on the gold ones, and which call they come from."""
+    gold = {page_id(g["url"], g["page"]) for g in question["gold"]}
+    for doc in found[:3]:
+        mark = "✓" if page_id(doc.metadata["url"], doc.metadata["page"]) in gold else " "
+        call = "" if doc.metadata["call"] == question["call"] else "  ← altro bando"
+        print(f"{mark} {doc.metadata['title'][:40]}, p. {doc.metadata['page']}{call}")
+```
+
+## Dove siamo
+
+::: {.pipeline}
+[Indicizzazione · una volta sola]{.lane}
+
+[Documenti]{.step} → [Parsing]{.step} → [Chunking]{.step} → [Embedding]{.step} → [Indice<br>Qdrant]{.step .store}
+
+[Interrogazione · per ogni domanda]{.lane}
+
+[Domanda<br>+ bando]{.step .active} → [Retrieval<br>con filtro]{.step .store .active} → [Reranking]{.step} → [Generazione]{.step} → [Risposta]{.step}
+:::
+
+::: {.takeaway}
+Prima leva: la più economica. Nessun modello nuovo, una riga di codice.
+:::
+
+## Il problema, dalla baseline
+
+- Nell'**81%** degli errori in prima posizione, la pagina trovata è **di un altro bando**
+- L'indice contiene i documenti di tanti bandi, e i bandi si somigliano: spese, rendicontazione, scadenze
+
+```{python}
+#| echo: false
+#| output: asis
+example = by_id["faq-002"]
+print(f"> {example['question']}")
+```
+
+- *Tale* misura: quale? Chi fa la domanda lo sa, il sistema no
+
+## Ogni chunk sa da quale bando viene
+
+```{python}
+calls = pd.Series([chunk.metadata["call"] for chunk in chunks])
+print(calls.nunique(), "bandi nell'indice\n")
+
+# The concept, in plain Python: keep only the chunks of the right call.
+same_call = [chunk for chunk in chunks if chunk.metadata["call"] == example["call"]]
+print(len(same_call), "chunk su", len(chunks), "per il bando della domanda:")
+print(example["call"])
+```
+
+::: {.takeaway}
+Filtrare = cercare solo tra i chunk con il metadato giusto.
+:::
+
+## Con Qdrant: il filtro dentro la ricerca
+
+```{python}
+from ragcourse.filters import metadata_filter
+
+call_filter = metadata_filter(call=example["call"])  # metadata.call == the question's call
+
+print("Senza filtro:")
+show(retriever.invoke(example["question"]), example)
+print("\nCon filtro:")
+show(retriever.invoke(example["question"], filter=call_filter), example)
+```
+
+::: {.muted}
+✓ = pagina gold. Il filtro è un oggetto di Qdrant: ogni database ha la sua sintassi.
+:::
+
+## Sul set vero
+
+```{python}
+run_call = retrieval_run(retriever, answerable, name="filtro per bando", by_call=True)
+
+metrics = ["hit_rate@1", "hit_rate@5", "hit_rate@10", "recall@5", "mrr@10"]
+results = pd.DataFrame({run.name: evaluate(qrels, run, metrics) for run in [baseline, run_call]})
+results.round(3)
+```
+
+- `by_call=True`: per ogni domanda, il filtro con il **suo** bando
+- Stesso indice, stesso modello, stesse domande: cambia solo il filtro
+
+## Prima e dopo
+
+```{python}
+hits = results.loc[["hit_rate@1", "hit_rate@5", "hit_rate@10"]]
+was, now = hits.loc["hit_rate@5"]
+compare_chart(hits.rename(lambda m: m.replace("hit_rate", "hit")), fmt="{:.0%}",
+              title=f"Una pagina giusta tra le prime 5: dal {was:.0%} al {now:.0%}")
+```
+
+## È un miglioramento vero?
+
+```{python}
+from ranx import compare
+
+compare(qrels, runs=[baseline, run_call], metrics=["hit_rate@5", "mrr@10"], max_p=0.01)
+```
+
+- Con 227 domande, una piccola differenza può essere **caso**
+- ranx fa un **test statistico** domanda per domanda:
+  ᵃ = migliore della riga *a*, con meno dell'1% di probabilità che sia caso
+
+::: {.takeaway}
+Qui il salto è enorme. Con chunking ed embedding le differenze saranno piccole: servirà.
+:::
+
+## Filtrare prima o dopo la ricerca?
+
+```{python}
+#| echo: false
+call_of = {doc.metadata["url"]: doc.metadata["call"] for doc in docs}
+
+
+def same_call_only(run: Run, name: str) -> Run:
+    """Search everything, then drop pages of other calls."""
+    kept = {qid: {page: score for page, score in pages.items()
+                  if call_of[page.split("#")[0]] == by_id[qid]["call"]}
+            for qid, pages in run.to_dict().items()}
+    return Run(kept, name=name)
+
+
+after = same_call_only(baseline, "filtro dopo")
+left = pd.Series([len(pages) for pages in after.to_dict().values()]).median()
+hit5 = pd.Series({
+    "nessun filtro": results.loc["hit_rate@5", "baseline"],
+    "filtro dopo la ricerca": evaluate(qrels, after, "hit_rate@5", make_comparable=True),
+    "filtro dentro Qdrant": results.loc["hit_rate@5", "filtro per bando"],
+})
+bar_chart(hit5, title="hit@5: il filtro funziona se sta dentro la ricerca",
+          gray=["nessun filtro", "filtro dopo la ricerca"], fmt="{:.0%}")
+```
+
+- **Dopo**: cerco i 20 chunk più vicini in tutto l'indice, poi scarto gli altri bandi.
+  In mediana restano `{python} f"{left:.0f}"` pagine
+- **Dentro**: Qdrant cerca i 20 più vicini **solo** nel bando giusto. Lista sempre piena
+
+## Che cosa resta da fare
+
+```{python}
+#| echo: false
+# ranx again: hit@20 = the gold page is anywhere in the results.
+found = evaluate(qrels, run_call, ["hit_rate@5", "hit_rate@20"])
+where = pd.Series({
+    "tra le prime 5": found["hit_rate@5"],
+    "dalla 6ª alla 20ª": found["hit_rate@20"] - found["hit_rate@5"],
+    "non trovata": 1 - found["hit_rate@20"],
+})
+bar_chart(where, title="Con il filtro, dove finisce la prima pagina giusta",
+          gray=["tra le prime 5"], fmt="{:.0%}")
+```
+
+```{python}
+#| echo: false
+#| output: asis
+missing = [qid for qid, score in run_call.scores["hit_rate@20"].items() if score == 0]
+images = sum(by_id[qid]["evidence"] == "image" for qid in missing)
+print(f"- **In basso** → riordinare i risultati: *reranking*\n"
+      f"- **Non trovata** ({len(missing)} domande, {images} sulle immagini) → "
+      f"leggere le immagini, cambiare chunking ed embedding")
+```
+
+## Da dove arriva il bando?
+
+- **Dal contesto**: la domanda è fatta dalla pagina del bando, o da un menu
+- **Dalla domanda**: se la nomina, un LLM può estrarre il filtro (*self-query*)
+- **Non si sa**: chiederlo all'utente, o cercare in tutto l'indice
+
+::: {.callout-note}
+## Un'ipotesi favorevole
+Nel nostro set ogni FAQ appartiene a un bando, quindi il bando giusto è sempre noto.
+In produzione va verificato: un filtro sbagliato esclude proprio le pagine giuste.
+:::
+
+::: {.takeaway}
+Prima di cambiare modello, usare le informazioni che il sistema ha già.
+:::
