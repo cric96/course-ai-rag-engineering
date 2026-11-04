@@ -8,6 +8,9 @@ import pandas as pd
 from matplotlib.figure import Figure
 
 BLUE = "#2a78d6"  # the data
+NAVY = (
+    "#173f73"  # a third run, after GRAY and BLUE (checked with the dataviz validator)
+)
 GRAY = "#c3c2b7"  # context, de-emphasized; also axis lines
 INK = "#1f2937"  # text, same as the slides
 FONTS = ["Source Sans 3", "DejaVu Sans"]  # the first one installed wins
@@ -48,22 +51,26 @@ def bar_chart(
 
 
 def compare_chart(table: pd.DataFrame, title: str, fmt: str = "{:g}") -> Figure:
-    """Two runs side by side, a group of bars per row: reference gray, new run blue."""
-    if len(table.columns) != 2:
-        raise ValueError("compare_chart compares exactly two runs")
+    """Runs side by side, a group of bars per row: reference gray, then blue, navy."""
+    if len(table.columns) not in (2, 3):
+        raise ValueError("compare_chart compares two or three runs")
     with plt.rc_context(STYLE):
-        fig = Figure(figsize=(10, 1.6 + 1.0 * len(table)), layout="constrained")
+        n = len(table.columns)
+        fig = Figure(figsize=(10, 1.6 + 0.5 * n * len(table)), layout="constrained")
         ax = fig.subplots()
-        rows = np.arange(len(table))
-        reference, new = table.columns
-        for run, color, shift in [(reference, GRAY, -0.2), (new, BLUE, 0.2)]:
-            bars = ax.barh(rows + shift, table[run], 0.38, color=color, label=run)
+        rows, height = np.arange(len(table)), 0.8 / n
+        colors = [GRAY, BLUE, NAVY][:n]
+        for i, (run, color) in enumerate(zip(table.columns, colors, strict=True)):
+            shift = (i - (n - 1) / 2) * height  # bars centered on their row
+            bars = ax.barh(
+                rows + shift, table[run], height * 0.95, color=color, label=run
+            )
             ax.bar_label(bars, fmt=fmt, padding=6)
 
         ax.set_yticks(rows, [str(label) for label in table.index])
         ax.invert_yaxis()  # first row on top, reference above the new run
         # Legend just above the bars, title above the legend.
-        ax.legend(loc="lower left", bbox_to_anchor=(0, 1), ncols=2, frameon=False)
+        ax.legend(loc="lower left", bbox_to_anchor=(0, 1), ncols=n, frameon=False)
         ax.set_title(title, pad=52)
         ax.xaxis.set_visible(False)
         ax.spines[["top", "right", "bottom"]].set_visible(False)

@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 from matplotlib.colors import to_hex
 
-from ragcourse.viz import BLUE, FONTS, GRAY, bar_chart, compare_chart
+from ragcourse.viz import BLUE, FONTS, GRAY, NAVY, bar_chart, compare_chart
 
 
 def test_bar_chart_draws_one_bar_per_item_with_its_value():
@@ -60,6 +60,13 @@ def test_compare_chart_names_both_runs_in_a_legend():
     ]
 
 
-def test_compare_chart_compares_exactly_two_runs():
-    with pytest.raises(ValueError, match="two"):
-        compare_chart(TABLE.assign(altro=0.5), title="t")
+def test_compare_chart_adds_a_third_run_in_a_darker_blue():
+    fig = compare_chart(TABLE.assign(altro=0.5), title="t")
+
+    colors = [to_hex(bar.get_facecolor()) for bar in fig.axes[0].patches]
+    assert colors == [GRAY, GRAY, BLUE, BLUE, NAVY, NAVY]
+
+
+def test_compare_chart_compares_two_or_three_runs():
+    with pytest.raises(ValueError, match="two or three"):
+        compare_chart(TABLE.assign(altro=0.5, ancora=0.1), title="t")
