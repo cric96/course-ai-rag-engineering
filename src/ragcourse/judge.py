@@ -2,7 +2,9 @@
 
 import pandas as pd
 from deepeval.evaluate.types import EvaluationResult
+from deepeval.metrics import GEval
 from deepeval.models import DeepEvalBaseLLM
+from deepeval.test_case import SingleTurnParams
 from langchain_core.language_models import BaseChatModel
 from pydantic import BaseModel
 
@@ -37,6 +39,28 @@ class LangChainJudge(DeepEvalBaseLLM):
 def judge_model(name: str = JUDGE_MODEL) -> LangChainJudge:
     """A judge by "provider:model" name, like chat_model."""
     return LangChainJudge(chat_model(name), name)
+
+
+# The rubric of the generation deck: same words, same scores.
+CORRECTNESS_STEPS = [
+    "Check whether the facts in the actual output contradict the expected output.",
+    "Penalize omissions of key facts of the expected output.",
+    "Other wording and extra details that do not contradict it are fine.",
+]
+
+
+def correctness_metric(judge: DeepEvalBaseLLM) -> GEval:
+    """GEval correctness: the answer against the official one."""
+    return GEval(
+        name="Correttezza",
+        evaluation_params=[
+            SingleTurnParams.INPUT,
+            SingleTurnParams.ACTUAL_OUTPUT,
+            SingleTurnParams.EXPECTED_OUTPUT,
+        ],
+        evaluation_steps=CORRECTNESS_STEPS,
+        model=judge,
+    )
 
 
 def deepeval_table(result: EvaluationResult, field: str = "score") -> pd.DataFrame:

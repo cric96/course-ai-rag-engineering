@@ -8,7 +8,12 @@ from langchain_core.messages import AIMessage
 from langchain_core.runnables import RunnableLambda
 from pydantic import BaseModel
 
-from ragcourse.judge import LangChainJudge, deepeval_table, judge_model
+from ragcourse.judge import (
+    LangChainJudge,
+    correctness_metric,
+    deepeval_table,
+    judge_model,
+)
 
 
 class Verdict(BaseModel):
@@ -72,3 +77,9 @@ def test_faithfulness_catches_an_invented_claim():
 
     assert faithfulness("Sì, le microimprese possono presentare domanda.") == 1.0
     assert faithfulness("Sì, e ricevono un contributo del 90%.") < 1.0
+
+
+def test_correctness_compares_the_answer_with_the_official_one():
+    metric = correctness_metric(fake_judge())
+    assert metric.name == "Correttezza"
+    assert "EXPECTED_OUTPUT" in str(metric.evaluation_params)
