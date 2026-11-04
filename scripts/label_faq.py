@@ -11,17 +11,17 @@ import argparse
 import json
 from pathlib import Path
 
-from google.genai import types
+from langchain_core.language_models import BaseChatModel
 
 from ragcourse.evalset import (
     FaqLabel,
+    ask_labels,
     dedupe_faqs,
     label_pages,
-    labeling_contents,
     to_questions,
 )
 from ragcourse.io import read_jsonl, write_jsonl
-from ragcourse.models import LABELING_MODEL, gemini_client
+from ragcourse.models import LABELING_MODEL, chat_model
 
 FAQ_FILE = Path("data/raw/fesr/faq.jsonl")
 PAGES_FILE = Path("data/processed/pages.jsonl")
@@ -29,22 +29,15 @@ CACHE_DIR = Path("data/interim/labels")
 OUT = Path("data/eval/faq_questions.jsonl")
 
 
-def label_call(client, call: str, faqs: list[dict], pages: list[dict]) -> list:
+def label_call(
+    model: BaseChatModel, call: str, faqs: list[dict], pages: list[dict]
+) -> list[FaqLabel]:
     """Ask the model which pages support each FAQ (or reuse the cached answer)."""
     cache = CACHE_DIR / f"{call}.json"
     if cache.exists():
         return [FaqLabel(**label) for label in json.loads(cache.read_text())]
 
-    response = client.models.generate_content(
-        model=LABELING_MODEL,
-        contents=labeling_contents(faqs, label_pages(pages)),
-        # Structured output: the SDK parses the JSON into FaqLabel objects.
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema=list[FaqLabel],
-        ),
-    )
-    labels = response.parsed
+    labels = ask_labels(model, faqs, label_pages(pages))
     cache.parent.mkdir(parents=True, exist_ok=True)
     cache.write_text(json.dumps([label.model_dump() for label in labels], indent=1))
     return labels
@@ -57,13 +50,13 @@ def main() -> None:
 
     faqs = dedupe_faqs(read_jsonl(FAQ_FILE))
     pages = read_jsonl(PAGES_FILE)
-    client = gemini_client()
+    model = chat_model(LABELING_MODEL)  # any LangChain chat model that reads images
 
     questions = []
     for call in sorted({faq["call"] for faq in faqs if args.call in faq["call"]}):
         call_faqs = [faq for faq in faqs if faq["call"] == call]
         call_pages = [page for page in pages if page["call"] == call]
-        labels = label_call(client, call, call_faqs, call_pages)
+        labels = label_call(model, call, call_faqs, call_pages)
         questions += to_questions(call_faqs, labels, label_pages(call_pages))
         print(f"{len(call_faqs):>3} FAQ labeled  {call[:70]}")
 

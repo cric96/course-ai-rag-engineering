@@ -5,7 +5,6 @@ so a local model and an API are swapped by changing one string.
 """
 
 from dotenv import load_dotenv
-from google import genai
 from langchain.chat_models import init_chat_model
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
@@ -15,9 +14,11 @@ from ragcourse.paths import ROOT
 
 load_dotenv(ROOT / ".env")  # API keys such as GEMINI_API_KEY, also from slides/
 
-# Gemini IDs change fast: checked with client.models.list() on 2026-11-03.
-LABELING_MODEL = "gemini-4-argon"  # strongest model: builds the ground truth
-CHAT_MODEL = "google_genai:gemini-3.8-flash"  # "provider:model", LangChain style
+# "provider:model", LangChain style. Gemini IDs change fast: checked on 2026-11-03.
+LABELING_MODEL = (
+    "google_genai:gemini-4-argon"  # strongest model: builds the ground truth
+)
+CHAT_MODEL = "google_genai:gemini-3.8-flash"
 
 
 def embedding_model(name: str = "e5-small") -> Embeddings:
@@ -38,8 +39,3 @@ def chat_model(name: str = CHAT_MODEL, **settings) -> BaseChatModel:
     Provider defaults are kept: Google advises against changing Gemini 3+ temperature.
     """
     return init_chat_model(name, **settings)
-
-
-def gemini_client() -> genai.Client:
-    """Raw Gemini client, used by the scripts that build the evaluation set."""
-    return genai.Client()

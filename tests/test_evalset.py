@@ -1,20 +1,25 @@
+import base64
 from pathlib import Path
 
 import pymupdf
-from google.genai import types
+import pytest
+from langchain_core.messages import HumanMessage
 
 from ragcourse.evalset import (
     FaqLabel,
     ImageQuestion,
+    ask_image_questions,
+    ask_labels,
     dedupe_faqs,
-    image_question_contents,
+    image_question_message,
     label_pages,
-    labeling_contents,
+    labeling_message,
     page_parts,
     to_image_questions,
     to_questions,
     visual_pages,
 )
+from ragcourse.models import LABELING_MODEL, chat_model
 
 
 def faq(question: str, call: str = "bando-a", answer: str = "Sì.") -> dict:
@@ -54,21 +59,23 @@ def test_label_pages_numbers_pages_from_p1():
 def test_page_parts_sends_text_when_the_page_has_enough():
     text = "Le spese ammissibili sono quelle sostenute dopo la domanda."
     [part] = page_parts("P7", page(text, number=3))
-    assert part.startswith("[P7] Bando, p. 3")
-    assert text in part
+    assert part["type"] == "text"
+    assert part["text"].startswith("[P7] Bando, p. 3")
+    assert text in part["text"]
 
 
 def test_page_parts_sends_an_image_when_text_is_missing(tmp_path: Path):
     label, image = page_parts("P7", page("", path=blank_pdf(tmp_path)))
-    assert label.startswith("[P7]")
-    assert isinstance(image, types.Part)
-    assert image.inline_data.mime_type == "image/png"
+    assert label["text"].startswith("[P7]")
+    assert (image["type"], image["mime_type"]) == ("image", "image/png")
+    assert base64.b64decode(image["base64"]).startswith(b"\x89PNG")
 
 
-def test_labeling_contents_ends_with_numbered_faq():
-    contents = labeling_contents([faq("Chi?"), faq("Quando?")], {})
-    assert "[1] Q: Chi?" in contents[-1]
-    assert "[2] Q: Quando?" in contents[-1]
+def test_labeling_message_ends_with_numbered_faq():
+    message = labeling_message([faq("Chi?"), faq("Quando?")], {})
+    assert isinstance(message, HumanMessage)
+    assert "[1] Q: Chi?" in message.content[-1]["text"]
+    assert "[2] Q: Quando?" in message.content[-1]["text"]
 
 
 def test_to_questions_maps_labels_to_gold_pages_and_ignores_unknown_labels():
@@ -86,10 +93,10 @@ def test_to_questions_marks_faq_without_label_as_unsupported():
     assert (question["gold"], question["evidence"]) == ([], "none")
 
 
-def blank_pdf(tmp_path: Path) -> str:
+def blank_pdf(tmp_path: Path, text: str = "") -> str:
     path = tmp_path / "slide.pdf"
     with pymupdf.open() as doc:
-        doc.new_page()
+        doc.new_page().insert_text((72, 144), text, fontsize=28)
         doc.save(path)
     return str(path)
 
@@ -101,10 +108,10 @@ def test_visual_pages_keeps_pages_with_little_text():
 
 def test_image_question_contents_shows_every_page_as_image(tmp_path: Path):
     labeled = label_pages([page("Titolo", path=blank_pdf(tmp_path))])
-    contents = image_question_contents(labeled, n_questions=5)
+    message = image_question_message(labeled, n_questions=5)
 
-    assert any(isinstance(part, types.Part) for part in contents)
-    assert "5" in contents[0]  # the prompt asks for the requested number
+    assert any(part["type"] == "image" for part in message.content)
+    assert "5" in message.content[0]["text"]  # the prompt asks for that many
 
 
 def test_to_image_questions_use_the_source_page_as_gold():
@@ -115,3 +122,26 @@ def test_to_image_questions_use_the_source_page_as_gold():
 
     assert question["gold"] == [{"url": "https://fesr/bando.pdf", "page": 14}]
     assert (question["source"], question["evidence"]) == ("image", "image")
+
+
+DEADLINE = "Scadenza: 30/9/2027"  # short: the model receives this page as an image
+
+
+@pytest.mark.llm  # one small request to the labeling model
+def test_labeling_model_finds_the_answer_in_an_image_page(tmp_path: Path):
+    image_page = page(DEADLINE, path=blank_pdf(tmp_path, DEADLINE))
+    pages = label_pages([page("Testo lungo " * 10), image_page])
+
+    [label] = ask_labels(chat_model(LABELING_MODEL), [faq("Entro quando?")], pages)
+
+    assert (label.pages, label.evidence) == (["P2"], "image")
+
+
+@pytest.mark.llm  # one small request to the labeling model
+def test_labeling_model_writes_questions_from_an_image_page(tmp_path: Path):
+    pages = label_pages([page(DEADLINE, path=blank_pdf(tmp_path, DEADLINE))])
+
+    [generated] = ask_image_questions(chat_model(LABELING_MODEL), pages, n_questions=1)
+
+    assert generated.page == "P1"
+    assert "2027" in generated.answer

@@ -150,12 +150,13 @@ faq[["question", "answer"]].sample(3, random_state=3)
 :::
 
 ```python
-class FaqLabel(BaseModel):
-    """What the labeling model returns for one FAQ."""
-
+class FaqLabel(BaseModel):  # what the model returns for one FAQ
     faq: int  # FAQ number in the prompt
     pages: list[str]  # supporting page labels, e.g. ["P12", "P13"]
     evidence: Literal["text", "table", "image", "none"]
+
+model = chat_model("google_genai:gemini-4-argon")  # any model that reads images
+labels = model.with_structured_output(FaqLabels).invoke([message])  # FaqLabels: a list
 ```
 
 - **Output strutturato**: Gemini risponde con oggetti validati, non con testo libero

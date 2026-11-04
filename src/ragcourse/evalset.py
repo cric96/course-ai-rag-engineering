@@ -1,10 +1,12 @@
 """Build the evaluation set: FAQ questions linked to the pages that answer them."""
 
+import base64
 import mimetypes
 from pathlib import Path
 from typing import Literal
 
-from google.genai import types
+from langchain_core.language_models import BaseChatModel
+from langchain_core.messages import HumanMessage
 from pydantic import BaseModel
 
 from ragcourse.parsing import render_page
@@ -34,6 +36,12 @@ class FaqLabel(BaseModel):
     evidence: Literal["text", "table", "image", "none"]
 
 
+class FaqLabels(BaseModel):
+    """The whole answer: structured output needs one object, not a bare list."""
+
+    labels: list[FaqLabel]
+
+
 def dedupe_faqs(faqs: list[dict]) -> list[dict]:
     """Drop questions repeated within the same call, keeping the first."""
     seen, unique = set(), []
@@ -50,35 +58,54 @@ def label_pages(pages: list[dict]) -> dict[str, dict]:
     return {f"P{number}": page for number, page in enumerate(pages, start=1)}
 
 
-def page_parts(label: str, page: dict) -> list:
-    """Prompt parts for one page: its text, or its image when text is missing."""
+def text_block(text: str) -> dict:
+    """A piece of text inside a multimodal message (LangChain content block)."""
+    return {"type": "text", "text": text}
+
+
+def page_parts(label: str, page: dict) -> list[dict]:
+    """Content blocks for one page: its text, or its image when text is missing."""
     header = f"[{label}] {page['title']}, p. {page['page']}"
     if len(page["text"]) >= MIN_TEXT_CHARS:
-        return [f"{header}\n{page['text']}"]
-    return [f"{header} (image)", page_image(page)]
+        return [text_block(f"{header}\n{page['text']}")]
+    return [text_block(f"{header} (image)"), page_image(page)]
 
 
-def page_image(page: dict) -> types.Part:
-    """The page as an image: image files as they are, PDF pages rendered."""
+def page_image(page: dict) -> dict:
+    """The page as an image block: image files as they are, PDF pages rendered."""
     path = Path(page["path"])
     if page["kind"] == "image":
-        mime_type = mimetypes.guess_type(path)[0] or "image/png"
-        return types.Part.from_bytes(data=path.read_bytes(), mime_type=mime_type)
-    png = render_page(path, page["page"])
-    return types.Part.from_bytes(data=png, mime_type="image/png")
+        data, mime_type = path.read_bytes(), mimetypes.guess_type(path)[0]
+    else:
+        data, mime_type = render_page(path, page["page"]), "image/png"
+    return {
+        "type": "image",
+        "base64": base64.b64encode(data).decode(),
+        "mime_type": mime_type or "image/png",
+    }
 
 
-def labeling_contents(faqs: list[dict], labeled_pages: dict[str, dict]) -> list:
+def labeling_message(faqs: list[dict], labeled_pages: dict[str, dict]) -> HumanMessage:
     """The whole request: instructions, every page, then the numbered FAQ."""
-    contents = [LABELING_PROMPT]
+    blocks = [text_block(LABELING_PROMPT)]
     for label, page in labeled_pages.items():
-        contents += page_parts(label, page)
+        blocks += page_parts(label, page)
     numbered = [
         f"[{n}] Q: {faq['question']}\nA: {faq['answer']}"
         for n, faq in enumerate(faqs, start=1)
     ]
-    contents.append("FAQ:\n\n" + "\n\n".join(numbered))
-    return contents
+    blocks.append(text_block("FAQ:\n\n" + "\n\n".join(numbered)))
+    return HumanMessage(content=blocks)
+
+
+def ask_labels(
+    model: BaseChatModel, faqs: list[dict], labeled_pages: dict[str, dict]
+) -> list[FaqLabel]:
+    """One request per call; structured output parses the reply into FaqLabel."""
+    answer = model.with_structured_output(FaqLabels).invoke(
+        [labeling_message(faqs, labeled_pages)]
+    )
+    return answer.labels
 
 
 def to_questions(
@@ -122,17 +149,36 @@ class ImageQuestion(BaseModel):
     answer: str
 
 
+class ImageQuestions(BaseModel):
+    """The whole answer, as one object for structured output."""
+
+    questions: list[ImageQuestion]
+
+
 def visual_pages(pages: list[dict]) -> list[dict]:
     """Pages whose content is invisible to text extraction."""
     return [page for page in pages if len(page["text"]) < MIN_TEXT_CHARS]
 
 
-def image_question_contents(labeled_pages: dict[str, dict], n_questions: int) -> list:
+def image_question_message(
+    labeled_pages: dict[str, dict], n_questions: int
+) -> HumanMessage:
     """Request asking for questions answerable only from the page images."""
-    contents = [IMAGE_QUESTION_PROMPT.format(n=n_questions)]
+    blocks = [text_block(IMAGE_QUESTION_PROMPT.format(n=n_questions))]
     for label, page in labeled_pages.items():
-        contents += [f"[{label}] {page['title']}, p. {page['page']}", page_image(page)]
-    return contents
+        header = f"[{label}] {page['title']}, p. {page['page']}"
+        blocks += [text_block(header), page_image(page)]
+    return HumanMessage(content=blocks)
+
+
+def ask_image_questions(
+    model: BaseChatModel, labeled_pages: dict[str, dict], n_questions: int
+) -> list[ImageQuestion]:
+    """One request with every visual page; the reply is parsed into ImageQuestion."""
+    answer = model.with_structured_output(ImageQuestions).invoke(
+        [image_question_message(labeled_pages, n_questions)]
+    )
+    return answer.questions
 
 
 def to_image_questions(
