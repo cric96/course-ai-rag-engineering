@@ -29,6 +29,7 @@ tramite la REST API del sito. I file finiscono in `data/raw/` (non versionata).
 uv run python scripts/download_faq.py        # FAQ dei bandi → set di valutazione
 uv run python scripts/download_documents.py  # PDF dei bandi + infografiche → corpus
 uv run python scripts/extract_pages.py       # testo di ogni pagina → data/processed/
+uv run python scripts/ocr_pages.py gemini    # OCR delle pagine-immagine (anche tesseract, qwen3-vl)
 ```
 
 Le FAQ non entrano mai nel corpus: contengono le risposte attese.
