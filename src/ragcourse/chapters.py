@@ -8,7 +8,8 @@ from qdrant_client import QdrantClient
 
 def close_indexes() -> int:
     """Close every open Qdrant client: a local index folder opens in one client only."""
-    clients = [obj for obj in gc.get_objects() if isinstance(obj, QdrantClient)]
+    # type(), not isinstance(): a dead weakref proxy raises ReferenceError when touched
+    clients = [obj for obj in gc.get_objects() if issubclass(type(obj), QdrantClient)]
     for client in clients:
         client.close()
     return len(clients)
