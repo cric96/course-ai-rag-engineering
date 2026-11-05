@@ -127,7 +127,7 @@ def ask(question: str, settings: dict, status) -> dict:
         )
         where = "nel bando scelto" if settings["call"] else "in tutti i documenti"
         step(
-            f"🔎 **Ricerca {settings['mode']}** {where}: {len(candidates)} pezzi "
+            f"🔎 **Ricerca {settings['mode']}** {where}: {len(candidates)} chunk "
             f"candidati · {seconds(time.perf_counter() - start)}"
         )
 
@@ -181,7 +181,7 @@ def summary(settings: dict) -> str:
             settings["mode"],
             "con OCR" if settings["ocr"] else "senza OCR",
             f"reranking: {settings['reranker']}",
-            f"{settings['k']} pezzi",
+            f"{settings['k']} chunk",
             f"prompt {settings['prompt']}",
         ]
     if settings["thinking"] != "predefinito":
@@ -196,7 +196,7 @@ def show_sources(turn: dict) -> None:
         meta = turn["chunks"][n - 1].metadata
         by_page.setdefault((meta["url"], meta["page"]), []).append(n)
     if not by_page:
-        st.caption("La risposta non cita nessun pezzo.")
+        st.caption("La risposta non cita nessun chunk.")
     cited_pages = list(by_page.items())
     for row in range(0, len(cited_pages), 4):
         columns = st.columns(4)  # the last row may have fewer pages than columns
@@ -239,7 +239,7 @@ def show_chunks(turn: dict) -> None:
         },
     )
     st.caption(
-        "Il testo completo dei pezzi, come lo legge il modello: scheda «Il prompt»."
+        "Il testo completo dei chunk, come lo legge il modello: scheda «Il prompt»."
     )
 
 
@@ -258,7 +258,7 @@ def show_faq(turn: dict) -> None:
         found = gold_found(turn["chunks"], faq)
         st.markdown(
             ("✅ La pagina giusta è" if found else "❌ La pagina giusta non è")
-            + " tra i pezzi letti dal modello."
+            + " tra i chunk letti dal modello."
         )
 
 
@@ -278,7 +278,7 @@ def details(turn: dict) -> None:
     tabs = {}
     if turn["chunks"]:
         tabs["Fonti citate"] = show_sources
-        tabs[f"Pezzi letti ({len(turn['chunks'])})"] = show_chunks
+        tabs[f"Chunk letti ({len(turn['chunks'])})"] = show_chunks
     tabs["Il prompt"] = show_prompt
     if turn["faq"]:
         tabs["La FAQ"] = show_faq
@@ -287,7 +287,7 @@ def details(turn: dict) -> None:
             show_tab(turn)
     if turn["answer"].startswith(ABSTAIN):
         st.caption(
-            "Il modello si è astenuto: nei pezzi letti non ha trovato la risposta."
+            "Il modello si è astenuto: nei chunk letti non ha trovato la risposta."
         )
 
 
@@ -324,7 +324,7 @@ with st.sidebar:
         "reranker": st.radio(
             "Reranking", ["nessuno", "bge-reranker (locale)", "Gemini (API)"]
         ),
-        "k": st.slider("Pezzi al modello", 3, 20, 10),
+        "k": st.slider("Chunk al modello", 3, 20, 10),
         "prompt": st.radio(
             "Prompt",
             ["normale", "prudente"],
