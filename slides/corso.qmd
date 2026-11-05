@@ -1,0 +1,45 @@
+---
+title: "Progettare e ottimizzare una pipeline RAG"
+subtitle: "Un percorso pratico tra valutazione e sperimentazione"
+author: "Gianluca Aguzzi · gianluca.aguzzi@unibo.it"
+date: 2026-11-11
+jupyter: python3
+execute:
+  cache: true  # jupyter-cache: when only the text changes, the code does not run again
+---
+
+{{< include _capitoli/00-apertura.qmd >}}
+
+{{< include _capitoli/01-dati.qmd >}}
+
+{{< include _capitoli/02-baseline.qmd >}}
+
+{{< include _capitoli/03-filtro-bando.qmd >}}
+
+## Pausa {.standout .center background-color="#23373b"}
+
+15 minuti
+
+{{< include _capitoli/04-generazione.qmd >}}
+
+{{< include _capitoli/05-astensione.qmd >}}
+
+{{< include _capitoli/06-quanti-pezzi.qmd >}}
+
+{{< include _capitoli/07-chunking.qmd >}}
+
+{{< include _capitoli/08-embedding.qmd >}}
+
+{{< include _capitoli/09-ibrida.qmd >}}
+
+{{< include _capitoli/10-reranking.qmd >}}
+
+## Pausa {.standout .center background-color="#23373b"}
+
+10 minuti
+
+{{< include _capitoli/11-ocr.qmd >}}
+
+{{< include _capitoli/12-visual-rag.qmd >}}
+
+{{< include _capitoli/13-percorso.qmd >}}

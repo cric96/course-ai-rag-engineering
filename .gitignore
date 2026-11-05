@@ -20,6 +20,8 @@ htmlcov/
 
 # --- Quarto (keep _freeze/: it stores executed outputs for CI) ---
 .quarto/
+# jupyter-cache of the slides: local, rebuilt by rendering
+.jupyter_cache/
 _site/
 slides/**/*_files/
 slides/**/*.html

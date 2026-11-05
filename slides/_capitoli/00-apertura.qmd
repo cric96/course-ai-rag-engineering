@@ -1,0 +1,81 @@
+## Obiettivi della lezione {.smaller}
+
+- Nelle scorse lezioni, avete visto la teoria e i componenti di una pipeline RAG (*Retrieval-Augmented Generation*).
+- In questa lezione cercheremo di **mettere in pratica** quanto appreso.
+- In particolare:
+	- Analizzeremo in dettaglio i vari step da un punto di vista pratico, usando **LangChain, Qdrant, modelli locali e via API**.
+	- **Misureremo** le prestazioni della pipeline, per capire come ottimizzarla.
+	- **Confronteremo** diverse strategie per ogni step, per capire quali funzionano meglio.
+- Alla fine della lezione, saprete:
+	- **Analizzare e ottimizzare** una pipeline RAG.
+	- **Misurare** le prestazioni della pipeline.
+	- **Confrontare** diverse strategie per ogni step della pipeline.
+
+## La pipeline - Recap
+
+::: {.pipeline}
+[Indicizzazione · una volta sola]{.lane}
+
+[Documenti<br>PDF, immagini]{.step} [Parsing<br>OCR]{.step} [Chunking]{.step} [Embedding]{.step} [Indice]{.step .store}
+
+[Interrogazione · per ogni domanda]{.lane}
+
+[Domanda]{.step} [Retrieval<br>cerca nell'indice]{.step .store} [Reranking]{.step} [Generazione<br>LLM]{.step} [Risposta<br>con citazioni]{.step}
+:::
+
+::: {.takeaway}
+Ogni box è una leva: va misurata, confrontata, ottimizzata.
+:::
+
+## Le leve che proveremo
+
+| Fase | Che cosa confrontiamo |
+|------|-----------------------|
+| Retrieval | filtro per bando, quanti chunk in input al modello, ricerca ibrida, reranking |
+| Generazione | che prompt scegliere, che vincoli applicare |
+| Chunking | dimensione dei chunk, metodi di splitting, trade-off |
+| Embedding | modelli di embedding, dimensioni, on-device vs. cloud |
+| Lettura dei documenti | OCR, vs pagine guardate come immagini |
+: {tbl-colwidths="[30,70]"}
+
+## Gli strumenti {.smaller}
+
+| Che cosa | Strumento | Perché |
+|---|---|---|
+| Orchestrazione | **LangChain** | componenti standard e intercambiabili |
+| Database vettoriale | **Qdrant** | filtri e ricerca ibrida, sia in locale che in cloud |
+| Modelli | **Hugging Face** (locali), **Gemini** (API) | Swap dei modelli semplificato grazie a LangChain |
+| Metriche di retrieval | **ranx** | metriche standard e test statistici |
+| Valutazione delle risposte | **DeepEval** | fedeltà, pertinenza, correttezza |
+: {tbl-colwidths="[28,34,38]"}
+
+::: {.takeaway}
+_Nota_: vedremo prima i concetti ad alto livello, con esempi semplici, poi useremo le librerie per capire quali benefici offrono.
+:::
+
+## Il metodo: "Measure, don't guess" {.smaller}
+
+Quando si costruisce o si ottimizza un sistema software (incluso un RAG), è fondamentale **misurare** le prestazioni, a maggior ragione se vi è un elemento di intelligenza artificiale, che introduce variabilità e incertezza.
+
+Quindi, proveremo a:
+
+1. Costruire una **baseline** semplice e completa, dall'inizio alla fine
+2. Preparare un **set di valutazione** (*golden set*): domande con risposte attese
+3. Cambiare **una leva alla volta** e vedere l'impatto sulle prestazioni
+
+
+
+> _Nota_: non faremo in tempo a rieseguire tutti gli esperimenti, ma i risultati mostrati
+nelle slide derivano dall'esecuzione della pipeline. Potete riusare il codice per fare
+le vostre prove o come base per costruire la vostra pipeline RAG.
+
+## Demo: RAG su documenti regionali {.standout .center background-color="#23373b"}
+
+
+::: {.notes}
+`uv run streamlit run app/chat.py`, aperta prima della lezione (carica i modelli in ~20 s).
+Bando «Sostegno allo sviluppo delle startup innovative», ragionamento basso.
+Domanda: «Le startup innovative possono chiedere il contributo per l'affitto dei locali?».
+Mostrare: Dietro le quinte, le citazioni cliccabili, le fonti, il prompt. Poi spegnere
+«Usa i documenti» e rifare la domanda: risponde «sì», in modo generico. ≈ 5 minuti.
+:::

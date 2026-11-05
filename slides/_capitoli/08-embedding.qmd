@@ -1,0 +1,198 @@
+# L'embedding
+
+::: {.pipeline}
+[Indicizzazione · una volta sola]{.lane}
+
+[Documenti]{.step} [Parsing]{.step} [Chunking]{.step} [Embedding]{.step .active} [Indice<br>Qdrant]{.step .store}
+
+[Interrogazione · per ogni domanda]{.lane}
+
+[Domanda<br>+ bando]{.step .active} [Retrieval<br>con filtro]{.step .store} [Reranking]{.step} [Generazione]{.step} [Risposta]{.step}
+:::
+
+Lo stesso modello trasforma in numeri sia i chunk sia le domande: cambiarlo cambia tutto l'indice.
+
+::: {.notes}
+≈ 10 minuti · da 2:37 a 2:47
+:::
+
+```{python}
+#| echo: false
+#| output: false
+from ragcourse.chapters import new_chapter
+
+new_chapter()  # a clean start: indexes closed, variables forgotten (but `percorso`)
+
+# Same evaluation as before: 1000-character chunks, filter by call, ranx on 227 questions.
+import ragcourse  # first: turns DeepEval telemetry off
+
+import time
+
+import pandas as pd
+import transformers
+from deepeval import evaluate as deepeval_evaluate
+from deepeval.evaluate.configs import AsyncConfig, DisplayConfig
+from deepeval.test_case import LLMTestCase
+from huggingface_hub.utils import logging as hub_logging
+from langchain_core.output_parsers import StrOutputParser
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from ranx import evaluate
+
+from ragcourse.cache import cache_llm_calls
+from ragcourse.corpus import load_pages
+from ragcourse.evaluation import gold_found, gold_qrels, p_value, retrieval_run
+from ragcourse.filters import metadata_filter
+from ragcourse.generation import PROMPT, format_context
+from ragcourse.index import vector_store
+from ragcourse.io import read_jsonl
+from ragcourse.judge import correctness_metric, deepeval_table, judge_model
+from ragcourse.models import JUDGE_MODEL, chat_model, embedding_model
+from ragcourse.paths import DATA
+from ragcourse.viz import bar_chart, compare_chart
+
+transformers.logging.disable_progress_bar()
+hub_logging.set_verbosity_error()
+cache_llm_calls()
+
+docs = load_pages()
+chunks = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200).split_documents(docs)
+faq = read_jsonl(DATA / "eval/faq_questions.jsonl")
+with_pages = [q for q in faq + read_jsonl(DATA / "eval/image_questions.jsonl") if q["gold"]]
+qrels = gold_qrels(with_pages)
+metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
+```
+
+## I candidati
+
+| Modello | Dove gira | Parametri | Note |
+|---|---|---|---|
+| `e5-small` (baseline) | locale | 118 M | piccolo e veloce, legge 512 token |
+| `e5-large` | locale | 560 M | stessa famiglia, più grande |
+| `bge-m3` | locale | 568 M | multilingua, testi lunghi (8192 token) |
+| `qwen3-0.6b` | locale | 600 M | recente, con un'istruzione prima della domanda |
+| `gemini-embedding-2` | API Google | — | a pagamento, dati inviati fuori |
+: {tbl-colwidths="[26,16,14,44]"}
+
+::: {.muted}
+Tutti si scelgono con `embedding_model("nome")`: per il resto della pipeline sono identici.
+:::
+
+## Il cambio è un nome
+
+```{python}
+#| output: false
+from ragcourse.models import embedding_model
+
+names = ["e5-small", "e5-large", "bge-m3", "qwen3-0.6b", "google_genai:gemini-embedding-2"]
+runs, latency = {}, {}
+for name in names:
+    short = name.split(":")[-1]  # e.g. "gemini-embedding-2"
+    embeddings = embedding_model(name)  # local or API: the same LangChain interface
+    store = vector_store(chunks, embeddings, f"{short}-1000")  # embedded once, on disk
+    retriever = store.as_retriever(search_kwargs={"k": 20})
+    runs[short] = retrieval_run(retriever, with_pages, name=short, by_call=True)
+    start = time.perf_counter()
+    for q in with_pages[:50]:
+        embeddings.embed_query(q["question"])  # what each question costs in time
+    latency[short] = (time.perf_counter() - start) / 50 * 1000  # milliseconds
+    store.client.close()  # free the memory before the next index
+```
+
+- Ogni indice si calcola **una volta sola** e resta su disco: `vector_store(...)`
+
+## Il migliore
+
+```{python}
+#| echo: false
+results = pd.DataFrame({name: evaluate(qrels, run, metrics) for name, run in runs.items()})
+hit5 = results.loc["hit_rate@5"].sort_values(ascending=False)
+best = hit5.index[0]
+percorso["hit@5"]["+ embedding bge-m3"] = hit5["bge-m3"]
+bar_chart(hit5, gray=["e5-small"], fmt="{:.0%}",
+          title=f"hit@5: {best} {hit5[best]:.0%}, la baseline e5-small {hit5['e5-small']:.0%}")
+```
+
+## Quanto costa una domanda
+
+```{python}
+#| echo: false
+ms = pd.Series(latency)[hit5.index]
+bar_chart(ms, gray=[name for name in ms.index if name != "gemini-embedding-2"], fmt="{:.0f} ms",
+          title="Tempo per trasformare una domanda in numeri")
+```
+
+- **Locale**: serve una GPU (o pazienza), ma i documenti non escono dall'ufficio
+- **API**: niente hardware, ma si paga a token, si dipende dalla rete e i testi vanno a terzi
+- Cambiare embedding vuol dire **ricalcolare tutto l'indice**
+
+## E le risposte?
+
+```{python}
+#| echo: false
+llm_chain = PROMPT | chat_model() | StrOutputParser()
+sample = pd.DataFrame([q for q in faq if q["gold"]]).sample(50, random_state=0).to_dict("records")
+
+
+full_name = {name.split(":")[-1]: name for name in names}
+
+
+def correctness_with(short: str) -> pd.Series:
+    """Answers with 5 chunks from one index, judged as in the generation deck."""
+    store = vector_store(chunks, embedding_model(full_name[short]), f"{short}-1000")
+    retriever = store.as_retriever(search_kwargs={"k": 5})
+    found = [retriever.invoke(q["question"], filter=metadata_filter(call=q["call"]))
+             for q in sample]
+    answers = llm_chain.batch([{"context": format_context(f), "question": q["question"]}
+                               for q, f in zip(sample, found, strict=True)],
+                              config={"max_concurrency": 8})
+    cases = [LLMTestCase(name=q["id"], input=q["question"], actual_output=a,
+                         expected_output=q["answer"]) for q, a in zip(sample, answers, strict=True)]
+    result = deepeval_evaluate(cases, [correctness_metric(judge_model(JUDGE_MODEL))],
+                               async_config=AsyncConfig(max_concurrent=10),
+                               display_config=DisplayConfig(print_results=False,
+                                                            show_indicator=False,
+                                                            inspect_after_run=False))
+    in_context = sum(gold_found(f, q) for q, f in zip(sample, found, strict=True)) / len(sample)
+    store.client.close()
+    return pd.Series({"pagina giusta nei 5 chunk": in_context,
+                      "correttezza": deepeval_table(result).iloc[:, 0].mean()})
+
+
+contender = best if best != "e5-small" else hit5.index[1]  # always compare two models
+```
+
+```{python}
+#| output: false
+# The generation deck again (50 questions, 5 chunks, DeepEval), changing only the index.
+end_to_end = pd.DataFrame({name: correctness_with(name) for name in ["e5-small", contender]})
+```
+
+```{python}
+#| echo: false
+compare_chart(end_to_end, fmt="{:.2f}",
+              title=f"Dalla ricerca alla risposta: {contender} contro la baseline")
+```
+
+::: {.muted}
+Stesse 50 domande del capitolo sulla generazione, 5 chunk, stesso prompt e stesso giudice:
+cambia solo l'indice.
+:::
+
+## Che cosa ci dice
+
+```{python}
+#| echo: false
+#| output: asis
+gain = hit5[best] - hit5["e5-small"]
+p = p_value(qrels, runs[best], runs["e5-small"], "hit_rate@5")
+print(f"- **{best}** è il migliore: hit@5 {hit5[best]:.0%}, **+{gain * 100:.0f} punti** "
+      f"sulla baseline (p = {p:.3f}: non è caso)")
+print(f"- Un modello locale vale l'API: gemini-embedding-2 arriva a {hit5['gemini-embedding-2']:.0%}, "
+      f"ma impiega {ms['gemini-embedding-2']:.0f} ms a domanda contro {ms[best]:.0f}")
+print(f"- Correttezza delle risposte: {end_to_end.loc['correttezza', 'e5-small']:.2f} → "
+      f"{end_to_end.loc['correttezza', contender]:.2f} cambiando solo l'embedding")
+```
+
+::: {.takeaway}
+Finora la leva più forte: un embedding migliore, in locale, senza cambiare altro.
+:::

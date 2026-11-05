@@ -12,12 +12,17 @@ uv sync
 uv run pytest -m "not slow and not llm"
 ```
 
-Slide (Quarto + reveal.js, codice eseguito):
+Slide (Quarto + reveal.js, codice eseguito): una sola presentazione, `slides/corso.qmd`,
+che include un file per capitolo da `slides/_capitoli/`. Durata: 4 ore, pause comprese.
 
 ```bash
-uv run quarto preview slides   # anteprima live nel browser
-uv run quarto render slides    # genera slides/_site/
+uv run quarto render slides             # dalle uscite salvate in slides/_freeze/: niente modelli
+uv run quarto render slides/corso.qmd   # riesegue il codice (con la cache di Jupyter)
 ```
+
+Le uscite eseguite sono salvate in `slides/_freeze/` (versionata): CI e chi non ha GPU o
+chiavi API rigenerano le slide senza eseguire nulla. Con la cache di Jupyter, se cambia
+solo il testo il codice non riparte; se cambia una cella, si riesegue tutto (circa un'ora).
 
 ## Dati
 
@@ -37,8 +42,8 @@ Le FAQ non entrano mai nel corpus: contengono le risposte attese.
 ## La chat
 
 La pipeline del corso in una chat, con tutto quello che succede dietro le quinte:
-pezzi trovati, riordino, prompt inviato al modello, tempi, token e pagine citate.
-Le leve nella barra laterale (bando, OCR, ricerca, reranking, pezzi, prompt) cambiano
+chunk trovati, riordino, prompt inviato al modello, tempi, token e pagine citate.
+Le leve nella barra laterale (bando, OCR, ricerca, reranking, chunk, prompt) cambiano
 la risposta dal vivo; le domande di esempio sono quelle del set di valutazione.
 
 ```bash
@@ -54,5 +59,5 @@ con la chat aperta.
 - `src/ragcourse/` — collante per LangChain, Qdrant, ranx e DeepEval: corpus, modelli
   intercambiabili (anche il giudice), filtri, valutazione, grafici
 - `tests/` — test automatici
-- `slides/` — slide Quarto con codice eseguito e risultati
+- `slides/` — la presentazione (Quarto, tema in stile Metropolis), codice eseguito e risultati
 - `app/` — la chat dimostrativa (Streamlit)

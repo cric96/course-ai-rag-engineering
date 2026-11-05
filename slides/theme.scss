@@ -104,23 +104,24 @@ $gutter: 56px; // left and right margin of the slide content
   p {
     text-align: left;
     color: $m-muted;
+    font-size: 0.8em;
   }
 }
 
-// Standout slides: one sentence, dark background (add {.standout} to the title).
+// Standout slides: one sentence on dark teal.
+// Use {.standout .center background-color="#23373b"} on the slide title.
 .reveal .slides section.slide.standout {
-  background: $m-dark-teal;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-
   h2 {
     margin: 0;
     padding: 0;
     background: none;
     color: $m-background;
     font-size: 1.6em;
+    text-align: center;
+  }
+
+  p {
+    color: $m-rule;
     text-align: center;
   }
 }
@@ -132,6 +133,7 @@ $gutter: 56px; // left and right margin of the slide content
 
 .reveal .slide-number {
   color: $m-muted;
+  font-family: $font-family-sans-serif;
   background: transparent;
   font-size: 0.5em;
 }
@@ -165,6 +167,14 @@ $gutter: 56px; // left and right margin of the slide content
     border-left: none;
     border-right: none;
   }
+
+  td {
+    border-bottom: 1px solid $m-rule; // light rules between rows
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
 }
 
 // Notebook output (stdout, tables) next to the code that made it.
@@ -191,10 +201,18 @@ $gutter: 56px; // left and right margin of the slide content
 }
 
 // Pipeline map: lanes of boxes; add `.active` to highlight the current stage.
+// Write the boxes one after the other: the arrows between them are drawn here.
+.pipeline {
+  margin-bottom: 0.6em; // air before the code or text that follows
+}
+
+$arrow-gap: 2em;
+$arrow: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 18'%3E%3Cpath d='M3 9h26M22 3l7 6-7 6' fill='none' stroke='%2323373b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
+
 .pipeline p {
   display: flex;
   align-items: center;
-  gap: 0.4em;
+  gap: $arrow-gap;
   margin: 0;
   color: $m-muted;
   font-size: 0.72em;
@@ -210,6 +228,7 @@ $gutter: 56px; // left and right margin of the slide content
 }
 
 .pipeline .step {
+  position: relative; // anchors the arrow to the next box
   flex: 1;
   min-height: 2.8em;
   display: flex;
@@ -225,9 +244,22 @@ $gutter: 56px; // left and right margin of the slide content
   text-align: center;
 }
 
+// The arrow to the next box, centered in the gap: the same ink as the text.
+.pipeline .step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: $arrow-gap;
+  height: 1.2em;
+  transform: translateY(-50%);
+  background: url($arrow) center / 82% auto no-repeat;
+}
+
 // Dashed border: stages that touch the index.
 .pipeline .step.store {
   border-style: dashed;
+  border-color: #aab4b6; // a dashed line needs more ink to be seen
 }
 
 .pipeline .step.active {

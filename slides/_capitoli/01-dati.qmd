@@ -1,0 +1,235 @@
+# I dati e il set di valutazione
+
+::: {.pipeline}
+[Indicizzazione]{.lane}
+
+[Documenti<br>PDF, immagini]{.step .active} [Parsing<br>testo per pagina]{.step .active} [Chunking]{.step} [Embedding]{.step} [Indice]{.step .store}
+:::
+
+Il primo punto di partenza: analisi dei documenti e costruzione del set di valutazione.
+
+::: {.notes}
+≈ 25 minuti · da 0:15 a 0:40
+:::
+
+```{python}
+#| echo: false
+#| output: false
+from ragcourse.chapters import new_chapter
+
+new_chapter()  # a clean start: indexes closed, variables forgotten (but `percorso`)
+
+from textwrap import shorten
+
+import pandas as pd
+from IPython.display import Image, Markdown
+
+from ragcourse.parsing import render_page
+from ragcourse.paths import ROOT
+
+pd.set_option("display.max_colwidth", 60)
+
+
+def show_page(path: str, number: int, width: int = 700) -> Image:
+    """One corpus page as an image (paths in the data are relative to the repo)."""
+    return Image(render_page(ROOT / path, number, dpi=80), width=width)
+
+
+def show_qa(question: pd.Series) -> Markdown:
+    """Question and expected answer, shortened to fit a slide."""
+    q = shorten(question.question, 200, placeholder=" …")
+    a = shorten(question.answer, 220, placeholder=" …")
+    return Markdown(f"**Domanda.** {q}\n\n**Risposta attesa.** {a}")
+```
+
+## Documenti e FAQ ufficiali
+
+
+- **PR FESR 2021-2027**: i bandi della Regione per imprese, enti locali e cultura
+  - Ho scaricato i documenti **veri**: bandi, delibere, manuali, slide dei webinar, infografiche
+  - Inoltre, sono dati aperti (CC BY 4.0) dal sito
+  [fesr.regione.emilia-romagna.it](https://fesr.regione.emilia-romagna.it)
+- Le **FAQ ufficiali**: domande vere dei beneficiari, con la risposta della Regione
+  - Queste possono essere usate come **set di valutazione**: per ogni domanda, sappiamo qual è la risposta attesa e quali pagine del bando la contengono.
+
+::: {.takeaway}
+Le FAQ sono il nostro banco di prova: cioè, il **set di valutazione** per misurare le prestazioni della pipeline RAG.
+:::
+
+## Il corpus in numeri
+
+```{python}
+import pandas as pd
+from ragcourse.paths import DATA
+from ragcourse.viz import bar_chart
+
+documents = pd.read_json(DATA / "raw/fesr/documents.jsonl", lines=True)
+pages = pd.read_json(DATA / "processed/pages.jsonl", lines=True)
+
+pdfs, images = sum(documents.kind == "file"), sum(documents.kind == "image")
+print(f"{documents.call.nunique()} bandi, più i documenti del programma")
+print(f"{len(documents)} documenti: {pdfs} PDF e {images} immagini")
+print(f"{len(pages)} pagine")
+```
+
+
+## Quanto testo c'è in ogni pagina?
+
+```{python}
+chars = pages.text.str.len()  # characters on each page
+labels = ["nessuno", "da 1 a 49", "da 50 a 499", "500 e oltre"]
+groups = pd.cut(chars, bins=[-1, 0, 49, 499, chars.max()], labels=labels)
+bar_chart(groups.value_counts(sort=False), gray=labels[2:],
+          title=f"{sum(chars < 50)} pagine su {len(pages)} hanno meno di 50 caratteri")
+```
+
+::: {.takeaway}
+Copertine e divisori, ma anche slide e infografiche piene di informazioni.
+:::
+
+## Una pagina "vuota"
+
+```{python}
+#| echo: false
+questions = pd.read_json(DATA / "eval/image_questions.jsonl", lines=True)
+gold = questions.set_index("id").loc["img-020", "gold"][0]
+slide = pages[(pages.url == gold["url"]) & (pages.page == gold["page"])].iloc[0]
+slide_pdf = ROOT / slide.path
+```
+
+:::: {.columns}
+::: {.column width="48%"}
+```{python}
+from ragcourse.parsing import extract_pages
+
+text = extract_pages(slide_pdf)
+text[10]  # page 11
+```
+
+Per l'estrazione del testo la pagina è **vuota**.
+
+Per una persona contiene date, orari e importi.
+:::
+
+::: {.column width="52%"}
+```{python}
+#| echo: false
+show_page(slide.path, slide.page, width=600)
+```
+:::
+::::
+
+## Che cos'è un set di valutazione
+
+Per ogni domanda, che cosa ci aspettiamo:
+
+| | Esempio |
+|---|---|
+| **Domanda** | "L'hardware è una spesa ammissibile?" |
+| **Risposta attesa** | "Sì, alla voce C: macchinari e attrezzature" |
+| **Pagine gold** | Bando, pagine 14 e 15 |
+
+- Pagine gold → misuriamo il **retrieval**: le abbiamo trovate?
+- Risposta attesa → misuriamo la **generazione**: la risposta è corretta?
+
+## Partiamo dalle FAQ ufficiali
+
+```{python}
+faq = pd.read_json(DATA / "eval/faq_questions.jsonl", lines=True)
+
+print(f"{len(faq)} FAQ da {faq.call.nunique()} bandi (senza doppioni)")
+faq[["question", "answer"]].sample(3, random_state=3)
+```
+
+## Dove sta la risposta? Lo chiediamo a Gemini
+
+::: {.pipeline}
+[FAQ di un bando<br>domanda + risposta]{.step} [Gemini legge tutte<br>le pagine del bando]{.step .active} [Pagine gold<br>e tipo di evidenza]{.step} [Set di<br>valutazione]{.step .store}
+:::
+
+```python
+class FaqLabel(BaseModel):  # what the model returns for one FAQ
+    faq: int  # FAQ number in the prompt
+    pages: list[str]  # supporting page labels, e.g. ["P12", "P13"]
+    evidence: Literal["text", "table", "image", "none"]
+
+model = chat_model("google_genai:gemini-4-argon")  # any model that reads images
+labels = model.with_structured_output(FaqLabels).invoke([message])  # FaqLabels: a list
+```
+
+- **Output strutturato**: Gemini risponde con oggetti validati, non con testo libero
+- Una richiesta per bando, 2,9 milioni di token: circa 6 $, una volta sola
+
+## Domande sulle immagini
+
+Nessuna FAQ ha la risposta in un'immagine: Gemini ha scritto **20 domande** leggendo
+le pagine senza testo.
+
+:::: {.columns}
+::: {.column .small width="40%"}
+```{python}
+#| echo: false
+example = questions.set_index("id").loc["img-016"]
+gold = example.gold[0]
+page = pages[(pages.url == gold["url"]) & (pages.page == gold["page"])].iloc[0]
+display(show_qa(example))
+Markdown(f"**Testo estratto.** `{page.text!r}`")
+```
+:::
+
+::: {.column width="60%"}
+```{python}
+#| echo: false
+show_page(page.path, page.page, width=640)
+```
+:::
+::::
+
+## Il set in numeri
+
+```{python}
+images = pd.read_json(DATA / "eval/image_questions.jsonl", lines=True)
+both = pd.concat([faq, images])
+names = {"text": "testo", "table": "tabella", "image": "immagine", "none": "non nei documenti"}
+counts = both.evidence.map(names).value_counts()
+bar_chart(counts, gray=["non nei documenti"],
+          title=f"{len(both)} domande: la risposta sta soprattutto nel testo")
+```
+
+## Le domande senza risposta nei documenti
+
+```{python}
+#| echo: false
+show_qa(faq.set_index("id").loc["faq-062"])
+```
+
+- **48 FAQ**: indicazioni operative, casi specifici, moduli e norme fuori dal corpus
+- Fuori dalle metriche. Servono a un solo test: il sistema sa dire
+  "non lo trovo nei documenti"?
+
+::: {.takeaway}
+Su un bando, una risposta inventata è peggio di nessuna risposta.
+:::
+
+## Una scorciatoia da dichiarare
+
+In un progetto reale la verità di riferimento la costruiscono, o almeno la validano,
+**le persone che conoscono i bandi**. Etichette e domande scritte da un modello:
+
+- possono sbagliare: pagine mancanti, "non nei documenti" errati, valori letti male
+- favoriscono le domande facili per un modello
+- rendono la valutazione circolare se anche il giudice è un modello simile
+
+::: {.takeaway}
+Qui lo usiamo così com'è, per scopo didattico. In un progetto vero: validare a mano almeno
+un campione e dichiararne il tasso di errore.
+:::
+
+## Come useremo il set
+
+| Che cosa misuriamo | Domande | Come |
+|---|---|---|
+| Il retrieval trova le pagine giuste? | 227 con pagine gold | metriche di retrieval |
+| La risposta è corretta, fedele, con citazioni? | circa 50 | DeepEval, giudice LLM |
+| Il sistema sa dire "non lo so"? | 48 | test di astensione |
+: {tbl-colwidths="[52,24,24]"}

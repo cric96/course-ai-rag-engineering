@@ -1,0 +1,87 @@
+# Il percorso
+
+Dalla prima misura all'ultima: che cosa ha funzionato, e quanto.
+
+::: {.notes}
+≈ 20 minuti · da 3:40 a 4:00
+:::
+
+```{python}
+#| echo: false
+#| output: false
+from ragcourse.chapters import new_chapter
+
+new_chapter()  # a clean start: indexes closed, variables forgotten (but `percorso`)
+
+import pandas as pd
+
+from ragcourse.viz import bar_chart
+
+hits = pd.Series(percorso["hit@5"])  # recorded chapter by chapter
+correct = pd.Series(percorso["correttezza"])
+ocr = percorso["ocr"]
+```
+
+## Trovare la pagina giusta
+
+```{python}
+#| echo: false
+bar_chart(hits, gray=[hits.index[0]], fmt="{:.0%}",
+          title=f"Una pagina giusta tra le prime 5: dal {hits.iloc[0]:.0%} al {hits.iloc[-1]:.0%}")
+```
+
+::: {.muted}
+Ogni barra aggiunge una leva alla precedente, sulle stesse 227 domande. Il chunking da 1000
+caratteri era già nella partenza: 500 e 2000 non hanno fatto meglio.
+:::
+
+## Rispondere bene
+
+```{python}
+#| echo: false
+bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
+          title=f"Correttezza delle risposte: da {correct.iloc[0]:.2f} a {correct.iloc[-1]:.2f}")
+```
+
+::: {.muted}
+Stesse 50 domande, stesso prompt, stesso giudice. Ogni barra aggiunge una leva alla precedente.
+:::
+
+## Che cosa ha contato di più
+
+```{python}
+#| echo: false
+gains = hits.diff().dropna() * 100  # points of hit@5 added by each lever
+gains["+ OCR delle pagine-immagine"] = (ocr.drop("senza OCR").max() - ocr["senza OCR"]) * 100
+bar_chart(gains.sort_values(ascending=False), fmt="+{:.0f}",
+          title="Punti di hit@5 aggiunti da ogni leva")
+```
+
+::: {.muted}
+L'OCR è misurato sulla ricerca ibrida senza reranking. La ricerca ibrida aggiunge poco,
+e quel poco può essere caso.
+:::
+
+## Che cosa portarsi a casa
+
+1. **Prima la misura**: un set di valutazione, validato da chi conosce i documenti
+2. **Una leva alla volta**, con un test statistico: tante piccole differenze sono caso
+3. **Prima il retrieval**: se la pagina giusta non arriva al modello, la risposta non si salva
+4. **Anche il giudice è un modello**: si guarda come decide, e si controlla a campione
+5. **Qualità, rischio e costo insieme**: rispondere di più vuol dire anche inventare di più
+
+## Demo: tutte le leve {.standout .center background-color="#23373b"}
+
+Le stesse domande, cambiando una leva alla volta
+
+::: {.notes}
+Nella chat, bando «Supporto ad interventi energetici e prevenzione sismica delle imprese»:
+domanda di esempio sul 70% dei rifiuti da costruzione (risposta in una slide senza testo).
+Con OCR la trova («letto con OCR» nei chunk letti); spegnere l'OCR e rifarla.
+Poi su un'altra domanda: reranking nessuno → bge → Gemini (guardare «posizione nella ricerca»),
+prompt prudente, 5 o 20 chunk. ≈ 10 minuti.
+:::
+
+## Domande? {.standout .center background-color="#23373b"}
+
+Grazie

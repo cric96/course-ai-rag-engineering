@@ -42,6 +42,7 @@ models = [
 ]
 slides = [
     "ipykernel>=7.4.0",
+    "jupyter-cache>=1.0.1",
     "nbclient>=0.11.0",
     "nbformat>=5.11.1",
     "quarto-cli>=1.11.9",

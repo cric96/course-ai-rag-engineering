@@ -1,0 +1,211 @@
+# Saper dire «non lo so»
+
+::: {.pipeline}
+[Interrogazione · per ogni domanda]{.lane}
+
+[Domanda<br>+ bando]{.step} [Retrieval<br>con filtro]{.step .store} [Reranking]{.step} [Generazione<br>LLM]{.step .active} [Risposta<br>o «non lo so»]{.step .active}
+:::
+
+Per un ufficio pubblico, una risposta inventata con sicurezza è peggio di nessuna risposta.
+
+::: {.notes}
+≈ 15 minuti · da 2:05 a 2:20
+:::
+
+```{python}
+#| echo: false
+#| output: false
+from ragcourse.chapters import new_chapter
+
+new_chapter()  # a clean start: indexes closed, variables forgotten (but `percorso`)
+
+# Pipeline of the previous deck: call-filtered retrieval, 5 chunks, Gemini Flash.
+import ragcourse  # first: turns DeepEval telemetry off
+import textwrap
+
+import pandas as pd
+import transformers
+from huggingface_hub.utils import logging as hub_logging
+from langchain_core.output_parsers import StrOutputParser
+from langchain_qdrant import QdrantVectorStore
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+from ragcourse.cache import cache_llm_calls
+from ragcourse.corpus import load_pages
+from ragcourse.filters import metadata_filter
+from ragcourse.generation import ABSTAIN, PROMPT, format_context
+from ragcourse.io import read_jsonl
+from ragcourse.models import JUDGE_MODEL, chat_model, embedding_model
+from ragcourse.paths import DATA
+from ragcourse.viz import compare_chart
+
+transformers.logging.disable_progress_bar()
+hub_logging.set_verbosity_error()
+cache_llm_calls()  # identical LLM calls come from disk: re-rendering costs nothing
+
+docs = load_pages()
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+store = QdrantVectorStore.from_documents(
+    splitter.split_documents(docs), embedding_model("e5-small"),
+    location=":memory:", collection_name="fesr",
+)
+retriever = store.as_retriever(search_kwargs={"k": 5})
+
+
+def retrieve(question: dict) -> list:
+    """The 5 closest chunks of the question's call."""
+    return retriever.invoke(question["question"], filter=metadata_filter(call=question["call"]))
+
+
+llm = chat_model()
+chain = PROMPT | llm | StrOutputParser()
+faq = read_jsonl(DATA / "eval/faq_questions.jsonl")
+answerable = pd.DataFrame([q for q in faq if q["gold"]]).sample(50, random_state=0)
+answerable = answerable.to_dict("records")  # the 50 questions of the previous deck
+by_id = {q["id"]: q for q in faq}
+```
+
+## Due modi di sbagliare
+
+| | Risponde | Si astiene |
+|---|---|---|
+| **La risposta è nei documenti** | ✓ | ✗ **rinuncia**: un aiuto perso |
+| **La risposta non è nei documenti** | ✗ **inventa**: un rischio | ✓ |
+: {tbl-colwidths="[40,30,30]"}
+
+- Il prompt chiede una frase fissa: «Non lo trovo nei documenti.»
+- Così l'astensione si conta con una riga: `answer.startswith(ABSTAIN)`
+
+## Le domande senza risposta
+
+```{python}
+#| echo: false
+#| output: asis
+unanswerable = [q for q in faq if not q["gold"]]
+print(f"**{len(unanswerable)} FAQ** hanno una risposta ufficiale che **non** sta nei "
+      "documenti del bando: prassi operative, casi specifici, moduli e sistemi informatici.\n")
+for qid in ["faq-043", "faq-234"]:
+    q = by_id[qid]
+    print(f"> {q['question']}\n>\n> *FAQ:* {textwrap.shorten(q['answer'], 150)}\n")
+```
+
+::: {.muted}
+Etichettate da un LLM, come il resto del set: qualcuna potrebbe avere una risposta parziale.
+:::
+
+## Il test, in poche righe
+
+```{python}
+questions = answerable + unanswerable  # 50 with the answer in the documents, 48 without
+has_answer = pd.Series([bool(q["gold"]) for q in questions])
+
+found_all = [retrieve(q) for q in questions]
+inputs = [{"context": format_context(f), "question": q["question"]}
+          for q, f in zip(questions, found_all, strict=True)]
+answers = chain.batch(inputs, config={"max_concurrency": 8})
+
+abstained = pd.Series([a.startswith(ABSTAIN) for a in answers])
+pd.crosstab(has_answer.map({True: "risposta nei documenti", False: "non nei documenti"}),
+            abstained.map({True: "si astiene", False: "risponde"})).rename_axis(index=None, columns=None)
+```
+
+## Un prompt più prudente
+
+```{python}
+from ragcourse.generation import COMPLETE_ONLY, PARTIAL_OK, PRUDENT_PROMPT
+
+print("Attuale: ", PARTIAL_OK.replace("\n", "\n          "))
+print("Prudente:", COMPLETE_ONLY)
+
+prudent = (PRUDENT_PROMPT | llm | StrOutputParser()).batch(inputs, config={"max_concurrency": 8})
+```
+
+- Stesse regole, stessi documenti, stesse domande: cambia **solo** quando astenersi
+
+## Il compromesso
+
+```{python}
+#| echo: false
+def rates(answers: list[str]) -> pd.Series:
+    """Abstention where it is right, and answers where they are possible."""
+    abstain = pd.Series([a.startswith(ABSTAIN) for a in answers])
+    return pd.Series({
+        "si astiene se la risposta non c'è": abstain[~has_answer].mean(),
+        "risponde se la risposta c'è": (~abstain[has_answer]).mean(),
+    })
+
+
+both = pd.DataFrame({"prompt attuale": rates(answers), "prompt prudente": rates(prudent)})
+compare_chart(both, fmt="{:.0%}",
+              title=f"Prudente: non inventa mai, ma risponde solo al "
+                    f"{both.iloc[1, 1]:.0%} delle domande")
+```
+
+::: {.takeaway}
+Il prompt sposta l'equilibrio tra i due errori, non li elimina.
+:::
+
+## Quando risponde senza appoggio, inventa?
+
+```{python}
+#| output: false
+from deepeval import evaluate
+from deepeval.evaluate.configs import AsyncConfig, DisplayConfig
+from deepeval.metrics import FaithfulnessMetric
+from deepeval.test_case import LLMTestCase
+from ragcourse.judge import deepeval_table, judge_model
+
+risky = [LLMTestCase(name=q["id"], input=q["question"], actual_output=a,
+                     retrieval_context=[c.page_content for c in f])
+         for q, a, f in zip(questions, answers, found_all, strict=True)
+         if not q["gold"] and not a.startswith(ABSTAIN)]  # answered, but nothing to rely on
+faithfulness = FaithfulnessMetric(model=judge_model(JUDGE_MODEL), penalize_ambiguous_claims=True)
+result = evaluate(risky, [faithfulness], async_config=AsyncConfig(max_concurrent=10),
+                  display_config=DisplayConfig(print_results=False, show_indicator=False,
+                                               inspect_after_run=False))
+```
+
+```{python}
+#| echo: false
+#| output: asis
+scores = deepeval_table(result)["Faithfulness"]
+print(f"- **{len(risky)} risposte** a domande senza risposta nei documenti: "
+      f"fedeltà media **{scores.mean():.2f}**, {(scores == 1).sum()} del tutto fedeli")
+print("- Spesso sono risposte parziali: «i documenti non dicono X, però dicono Y»")
+print("- Il rischio vero è il «sì» sicuro di sé, quando la regola ha un'eccezione "
+      "che i documenti non riportano")
+```
+
+## Un «sì» di troppo
+
+```{python}
+#| echo: false
+#| output: asis
+qid = "faq-220" if "faq-220" in scores.index else scores.idxmin()
+q = by_id[qid]
+print(f"> {q['question']}\n")
+print(":::: {.columns}\n::: {.column .small width=\"50%\"}\n**Risposta generata**\n")
+print(textwrap.shorten(answers[questions.index(q)], 420, placeholder=" […]"))
+print("\n:::\n::: {.column .small width=\"50%\"}\n**Risposta ufficiale (FAQ)**\n")
+print(textwrap.shorten(q["answer"], 420, placeholder=" […]"))
+print(f"\n:::\n::::\n\n::: {{.small}}\nFedeltà **{scores[qid]:.1f}**: "
+      "la regola generale è nei documenti, l'eccezione ammessa dall'ufficio no.\n:::")
+```
+
+::: {.takeaway}
+Documenti e prassi dell'ufficio non sempre coincidono. In produzione anche le FAQ andrebbero
+indicizzate (qui no: sono la nostra verifica).
+:::
+
+## Chi decide la soglia?
+
+- **L'ufficio, non il modello**: dipende da chi legge la risposta
+  - cittadini e imprese → meglio prudente, con un rinvio all'ufficio
+  - personale interno → meglio una risposta parziale, con le fonti
+- Con un prompt abbiamo **due punti** soli. Un *decision model* (Jev, LiquidAI d1) darebbe
+  una probabilità di "rispondibile": la soglia diventerebbe una manopola (qui non lo misuriamo)
+- Ogni miglioramento del retrieval va ricontrollato **anche** qui
+
+::: {.takeaway}
+Si misurano sempre insieme: quante volte inventa, e quante volte rinuncia.
+:::
