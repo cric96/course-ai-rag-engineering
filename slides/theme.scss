@@ -1,38 +1,188 @@
 /*-- scss:defaults --*/
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap");
+// A reveal.js take on Metropolis, the Beamer theme by Matthias Vogelgesang:
+// Fira Sans, a dark teal title bar, orange accents, plenty of white space.
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500&display=swap");
 
-// Typography sized for projectors.
-$font-family-sans-serif: "Inter", "Helvetica Neue", Arial, sans-serif;
-$font-family-monospace: "JetBrains Mono", "Fira Code", monospace;
-$presentation-font-size-root: 32px;
-$presentation-heading-font-weight: 700;
-$presentation-h2-font-size: 1.5em;
-$code-block-font-size: 0.62em;
+$m-dark-teal: #23373b; // title bars, text
+$m-orange: #eb811b; // accents: rules, progress, bullets
+$m-orange-text: #b35500; // orange dark enough for text (4.8:1)
+$m-background: #fafafa;
+$m-muted: #5d6b6e; // secondary text (5.3:1)
+$m-rule: #d6dcdd; // thin lines and box borders
+$m-tint: #eef1f1; // boxes and code
 
-// Palette shared with charts (see ragcourse plotting helpers).
-$body-bg: #ffffff;
-$body-color: #1f2937;
-$presentation-heading-color: #0b3d63;
-$link-color: #1565c0;
-$code-color: #0b3d63;
+$font-family-sans-serif: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
+$font-family-monospace: "Fira Code", "Fira Mono", monospace;
+$presentation-font-size-root: 30px;
+$presentation-line-height: 1.35;
+$presentation-heading-font-weight: 400;
+$presentation-heading-letter-spacing: 0;
+$presentation-heading-text-transform: none;
+$presentation-h1-font-size: 1.7em;
+$presentation-h2-font-size: 1.25em;
+$presentation-title-slide-text-align: left;
+$code-block-font-size: 0.6em;
+
+$body-bg: $m-background;
+$body-color: $m-dark-teal;
+$presentation-heading-color: $m-dark-teal;
+$link-color: $m-orange-text;
+$code-color: $m-dark-teal;
+$code-block-bg: $m-tint;
+$code-block-border-color: $m-tint;
 
 /*-- scss:rules --*/
-.reveal h1,
-.reveal h2 {
-  letter-spacing: -0.01em;
+$gutter: 56px; // left and right margin of the slide content
+
+// The slide fills the screen (margin: 0 in _quarto.yml); the gutter is inside it.
+.reveal .slides section.slide {
+  box-sizing: border-box;
+  padding: 0 $gutter;
 }
 
-// One-sentence takeaway box at the bottom of a slide.
-.takeaway {
-  margin-top: 0.8em;
-  padding: 0.4em 0.8em;
-  border-left: 6px solid #1565c0;
-  background: #eef4fb;
+// Slide titles: a full-width dark bar, as in Metropolis.
+.reveal .slides section.slide.level2 > h2 {
+  margin: 0 (-$gutter) 0.7em;
+  padding: 0.55em $gutter 0.5em;
+  background: $m-dark-teal;
+  color: $m-background;
+  font-weight: 400;
+}
+
+// Title slide: left aligned, an orange rule between title and author.
+.reveal .quarto-title-block {
+  padding: 0 $gutter * 1.5;
+  text-align: left;
+
+  h1.title {
+    font-size: 1.8em;
+    font-weight: 400;
+  }
+
+  .subtitle {
+    margin-top: 0.3em;
+    color: $m-muted;
+    font-size: 1.05em;
+  }
+
+  .quarto-title-authors {
+    margin-top: 1em;
+    padding-top: 0.8em;
+    border-top: 2px solid $m-orange;
+    justify-content: flex-start;
+  }
+
+  .quarto-title-author-name,
+  .date {
+    font-size: 0.8em;
+    color: $m-dark-teal;
+  }
+}
+
+// Section slides: big title over a progress bar (filled by progress.html).
+.reveal .slides section.slide.level1 {
+  padding: 0 $gutter * 1.5;
+
+  h1 {
+    font-size: 1.6em;
+    font-weight: 400;
+    text-align: left;
+  }
+
+  h1::after {
+    content: "";
+    display: block;
+    height: 4px;
+    margin-top: 0.5em;
+    background: linear-gradient(
+      to right,
+      $m-orange var(--progress, 0%),
+      $m-rule var(--progress, 0%)
+    );
+  }
+
+  p {
+    text-align: left;
+    color: $m-muted;
+  }
+}
+
+// Standout slides: one sentence, dark background (add {.standout} to the title).
+.reveal .slides section.slide.standout {
+  background: $m-dark-teal;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  h2 {
+    margin: 0;
+    padding: 0;
+    background: none;
+    color: $m-background;
+    font-size: 1.6em;
+    text-align: center;
+  }
+}
+
+.reveal .progress {
+  height: 4px;
+  color: $m-orange;
+}
+
+.reveal .slide-number {
+  color: $m-muted;
+  background: transparent;
+  font-size: 0.5em;
+}
+
+// Lists: orange markers, a little air between items.
+.reveal ul li::marker,
+.reveal ol li::marker {
+  color: $m-orange;
+}
+
+.reveal li + li {
+  margin-top: 0.25em;
+}
+
+.reveal strong {
   font-weight: 600;
 }
 
+// Tables in the booktabs style: three rules, no grid.
+.reveal table {
+  border-top: 2px solid $m-dark-teal;
+  border-bottom: 2px solid $m-dark-teal;
+
+  th {
+    border-bottom: 1px solid $m-dark-teal;
+    font-weight: 500;
+  }
+
+  td,
+  th {
+    border-left: none;
+    border-right: none;
+  }
+}
+
+// Notebook output (stdout, tables) next to the code that made it.
+.reveal .cell-output pre code {
+  color: $m-dark-teal;
+}
+
+// One-sentence takeaway: Metropolis' alert block, orange on the left.
+.takeaway {
+  margin-top: 0.8em;
+  padding: 0.45em 0.8em;
+  border-left: 5px solid $m-orange;
+  background: $m-tint;
+  font-weight: 500;
+}
+
 .muted {
-  color: #6b7280;
+  color: $m-muted;
 }
 
 // Dense text, e.g. a question and its answer next to a page image.
@@ -46,15 +196,15 @@ $code-color: #0b3d63;
   align-items: center;
   gap: 0.4em;
   margin: 0;
-  color: #6b7280;
+  color: $m-muted;
   font-size: 0.72em;
 }
 
 .pipeline .lane {
   margin: 1.1em 0 0.35em;
-  color: #6b7280;
+  color: $m-muted;
   font-size: 0.8em;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -66,11 +216,11 @@ $code-color: #0b3d63;
   align-items: center;
   justify-content: center;
   padding: 0.5em 0.3em;
-  border: 2px solid #c7d4e2;
-  border-radius: 10px;
-  background: #f5f8fc;
-  color: #0b3d63;
-  font-weight: 600;
+  border: 2px solid $m-rule;
+  border-radius: 4px;
+  background: #ffffff;
+  color: $m-dark-teal;
+  font-weight: 500;
   line-height: 1.2;
   text-align: center;
 }
@@ -81,7 +231,7 @@ $code-color: #0b3d63;
 }
 
 .pipeline .step.active {
-  border-color: #1565c0;
-  background: #1565c0;
+  border-color: $m-dark-teal;
+  background: $m-dark-teal;
   color: #ffffff;
 }

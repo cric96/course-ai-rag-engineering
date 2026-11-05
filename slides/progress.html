@@ -1,0 +1,9 @@
+<script>
+  // Metropolis-style progress on section slides: the share of slides already shown.
+  document.addEventListener("DOMContentLoaded", () => {
+    const slides = [...document.querySelectorAll(".reveal .slides section.slide")];
+    slides.forEach((slide, i) => {
+      slide.style.setProperty("--progress", `${(100 * i) / (slides.length - 1)}%`);
+    });
+  });
+</script>

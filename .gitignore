@@ -23,6 +23,8 @@ htmlcov/
 _site/
 slides/**/*_files/
 slides/**/*.html
+# ...but not the script included in every deck
+!slides/progress.html
 
 # --- Data and model artifacts (downloaded or generated, never committed) ---
 data/raw/
