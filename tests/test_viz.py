@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 from matplotlib.colors import to_hex
 
-from ragcourse.viz import BLUE, FONTS, GRAY, NAVY, bar_chart, compare_chart
+from ragcourse.viz import FONTS, GRAY, ORANGE, TEAL, bar_chart, compare_chart
 
 
 def test_bar_chart_draws_one_bar_per_item_with_its_value():
@@ -24,7 +24,7 @@ def test_bar_chart_grays_out_context_items():
     fig = bar_chart(pd.Series({"a": 1, "b": 2}), title="t", gray=["b"])
 
     a, b = fig.axes[0].patches
-    assert to_hex(a.get_facecolor()) == BLUE
+    assert to_hex(a.get_facecolor()) == ORANGE
     assert to_hex(b.get_facecolor()) == GRAY
 
 
@@ -43,12 +43,12 @@ TABLE = pd.DataFrame(
 )
 
 
-def test_compare_chart_draws_the_reference_gray_and_the_new_run_blue():
+def test_compare_chart_draws_the_reference_gray_and_the_new_run_orange():
     fig = compare_chart(TABLE, title="t", fmt="{:.0%}")
 
     ax = fig.axes[0]
     colors = [to_hex(bar.get_facecolor()) for bar in ax.patches]
-    assert colors == [GRAY, GRAY, BLUE, BLUE]
+    assert colors == [GRAY, GRAY, ORANGE, ORANGE]
     assert [label.get_text() for label in ax.texts] == ["10%", "30%", "20%", "60%"]
 
 
@@ -60,11 +60,11 @@ def test_compare_chart_names_both_runs_in_a_legend():
     ]
 
 
-def test_compare_chart_adds_a_third_run_in_a_darker_blue():
+def test_compare_chart_adds_a_third_run_in_dark_teal():
     fig = compare_chart(TABLE.assign(altro=0.5), title="t")
 
     colors = [to_hex(bar.get_facecolor()) for bar in fig.axes[0].patches]
-    assert colors == [GRAY, GRAY, BLUE, BLUE, NAVY, NAVY]
+    assert colors == [GRAY, GRAY, ORANGE, ORANGE, TEAL, TEAL]
 
 
 def test_compare_chart_compares_two_or_three_runs():

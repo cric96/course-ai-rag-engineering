@@ -7,13 +7,12 @@ import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
 
-BLUE = "#2a78d6"  # the data
-NAVY = (
-    "#173f73"  # a third run, after GRAY and BLUE (checked with the dataviz validator)
-)
-GRAY = "#c3c2b7"  # context, de-emphasized; also axis lines
-INK = "#1f2937"  # text, same as the slides
-FONTS = ["Source Sans 3", "DejaVu Sans"]  # the first one installed wins
+# The slides' Metropolis palette: orange highlights, dark teal for text and a third run.
+ORANGE = "#eb811b"  # the data; values are always labeled (bars alone are 2.6:1)
+TEAL = "#23373b"  # a third run, after GRAY and ORANGE
+GRAY = "#c3c9ca"  # context, de-emphasized; also axis lines
+INK = TEAL  # text, same as the slides
+FONTS = ["Fira Sans", "DejaVu Sans"]  # the first one installed wins
 
 STYLE = {
     # Real names, not "sans-serif": generic names resolve at draw time, outside STYLE.
@@ -23,7 +22,9 @@ STYLE = {
     "ytick.color": INK,
     "axes.edgecolor": GRAY,
     "axes.titlesize": 20,
-    "axes.titleweight": "semibold",
+    "axes.titleweight": "medium",
+    "figure.facecolor": "none",  # transparent: the slide's background shows through
+    "axes.facecolor": "none",
     "axes.titlelocation": "left",
     "axes.titlepad": 16,
 }
@@ -38,7 +39,7 @@ def bar_chart(
         fig = Figure(figsize=(10, 1.2 + 0.6 * len(counts)), layout="constrained")
         ax = fig.subplots()
         labels = [str(label) for label in counts.index]
-        colors = [GRAY if label in gray else BLUE for label in labels]
+        colors = [GRAY if label in gray else ORANGE for label in labels]
         bars = ax.barh(labels, counts.to_numpy(), color=colors, height=0.6)
 
         ax.invert_yaxis()  # first item on top
@@ -51,7 +52,7 @@ def bar_chart(
 
 
 def compare_chart(table: pd.DataFrame, title: str, fmt: str = "{:g}") -> Figure:
-    """Runs side by side, a group of bars per row: reference gray, then blue, navy."""
+    """Runs side by side, a group of bars per row: reference gray, then orange, teal."""
     if len(table.columns) not in (2, 3):
         raise ValueError("compare_chart compares two or three runs")
     with plt.rc_context(STYLE):
@@ -59,7 +60,7 @@ def compare_chart(table: pd.DataFrame, title: str, fmt: str = "{:g}") -> Figure:
         fig = Figure(figsize=(10, 1.6 + 0.5 * n * len(table)), layout="constrained")
         ax = fig.subplots()
         rows, height = np.arange(len(table)), 0.8 / n
-        colors = [GRAY, BLUE, NAVY][:n]
+        colors = [GRAY, ORANGE, TEAL][:n]
         for i, (run, color) in enumerate(zip(table.columns, colors, strict=True)):
             shift = (i - (n - 1) / 2) * height  # bars centered on their row
             bars = ax.barh(
