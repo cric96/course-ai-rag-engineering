@@ -2,7 +2,7 @@
 
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
-from ranx import Qrels, Run
+from ranx import Qrels, Run, compare
 
 from ragcourse.filters import metadata_filter
 
@@ -47,3 +47,9 @@ def retrieval_run(
         )
         run[question["id"]] = {p: len(pages) - rank for rank, p in enumerate(pages)}
     return Run(run, name=name)
+
+
+def p_value(qrels: Qrels, a: Run, b: Run, metric: str) -> float:
+    """How likely the gap between two runs is luck: ranx's paired test."""
+    report = compare(qrels, runs=[a, b], metrics=[metric])
+    return float(report.to_dict()[a.name]["comparisons"][b.name][metric])

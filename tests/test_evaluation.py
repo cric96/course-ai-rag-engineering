@@ -61,3 +61,25 @@ def test_retrieval_run_can_search_only_the_call_of_each_question():
 def test_gold_found_tells_whether_any_chunk_comes_from_a_gold_page():
     assert gold_found([chunk(1), chunk(2)], QUESTIONS[0])
     assert not gold_found([chunk(1), chunk(3)], QUESTIONS[0])
+
+
+def test_p_value_is_small_only_when_one_run_wins_on_many_questions():
+    from ranx import Qrels, Run
+
+    from ragcourse.evaluation import p_value
+
+    ids = [f"q{i}" for i in range(30)]
+    qrels = Qrels({q: {"gold": 1} for q in ids})
+    good = Run({q: {"gold": 2, "x": 1} for q in ids}, name="good")
+    bad = Run(
+        {q: {"x": 2, "gold": 1} if i % 3 else {"gold": 2} for i, q in enumerate(ids)},
+        name="bad",
+    )
+
+    almost = Run(
+        {q: {"x": 2, "gold": 1} if q == "q0" else {"gold": 2} for q in ids},
+        name="almost",
+    )  # loses one question out of 30
+
+    assert p_value(qrels, good, bad, "hit_rate@1") < 0.01
+    assert p_value(qrels, good, almost, "hit_rate@1") > 0.05
