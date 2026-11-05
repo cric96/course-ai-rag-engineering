@@ -3,6 +3,7 @@ title: "Progettare e ottimizzare una pipeline RAG"
 subtitle: "Un percorso pratico tra valutazione e sperimentazione"
 author: "Gianluca Aguzzi · gianluca.aguzzi@unibo.it"
 date: 2026-11-11
+output-file: index.html  # the site address opens the deck
 jupyter: python3
 execute:
   cache: true  # jupyter-cache: when only the text changes, the code does not run again

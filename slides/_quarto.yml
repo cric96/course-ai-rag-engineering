@@ -7,7 +7,7 @@ date-format: "D MMMM YYYY"
 
 execute:
   echo: true     # reveal.js hides code by default
-  freeze: auto   # re-run a deck only when its source changes
+  freeze: false  # freeze ignores the included chapters: jupyter-cache keeps renders fast
   warning: false
 
 format:

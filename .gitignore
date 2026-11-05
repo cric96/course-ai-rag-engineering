@@ -18,8 +18,10 @@ htmlcov/
 # --- Jupyter ---
 .ipynb_checkpoints/
 
-# --- Quarto (keep _freeze/: it stores executed outputs for CI) ---
+# --- Quarto: outputs and caches are rebuilt by rendering ---
 .quarto/
+slides/_freeze/
+dist/
 # jupyter-cache of the slides: local, rebuilt by rendering
 .jupyter_cache/
 _site/

@@ -14,14 +14,15 @@ uv run pytest -m "not slow and not llm"
 
 Slide (Quarto + reveal.js, codice eseguito): una sola presentazione, `slides/corso.qmd`,
 che include un file per capitolo da `slides/_capitoli/`. Durata: 4 ore, pause comprese.
+Online: <https://gianluca.aguzzi.dev/course-ai-rag-engineering/>
 
 ```bash
-uv run quarto render slides             # dalle uscite salvate in slides/_freeze/: niente modelli
-uv run quarto render slides/corso.qmd   # riesegue il codice (con la cache di Jupyter)
+uv run python scripts/preview_slides.py   # anteprima live, anche quando cambia un capitolo
+cd slides && uv run quarto publish gh-pages --no-prompt --no-browser   # pubblica il sito
 ```
 
-Le uscite eseguite sono salvate in `slides/_freeze/` (versionata): CI e chi non ha GPU o
-chiavi API rigenerano le slide senza eseguire nulla. Con la cache di Jupyter, se cambia
+Il codice gira in locale (GPU e chiavi API) e su GitHub Pages va il sito già pronto:
+GitHub non esegue nulla. Con la cache di Jupyter (`slides/.jupyter_cache/`), se cambia
 solo il testo il codice non riparte; se cambia una cella, si riesegue tutto (circa un'ora).
 
 ## Dati
