@@ -34,9 +34,25 @@ uv run python scripts/ocr_pages.py gemini    # OCR delle pagine-immagine (anche 
 
 Le FAQ non entrano mai nel corpus: contengono le risposte attese.
 
+## La chat
+
+La pipeline del corso in una chat, con tutto quello che succede dietro le quinte:
+pezzi trovati, riordino, prompt inviato al modello, tempi, token e pagine citate.
+Le leve nella barra laterale (bando, OCR, ricerca, reranking, pezzi, prompt) cambiano
+la risposta dal vivo; le domande di esempio sono quelle del set di valutazione.
+
+```bash
+uv run streamlit run app/chat.py
+```
+
+Usa gli indici in `.cache/qdrant/` costruiti dalle slide (se mancano li costruisce,
+lentamente). Qdrant locale apre una cartella in un solo processo: non eseguire le slide
+con la chat aperta.
+
 ## Struttura
 
 - `src/ragcourse/` — collante per LangChain, Qdrant, ranx e DeepEval: corpus, modelli
   intercambiabili (anche il giudice), filtri, valutazione, grafici
 - `tests/` — test automatici
 - `slides/` — slide Quarto con codice eseguito e risultati
+- `app/` — la chat dimostrativa (Streamlit)

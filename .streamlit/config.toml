@@ -1,0 +1,12 @@
+# Streamlit settings for app/chat.py (read when run from the project root).
+[server]
+fileWatcherType = "none"  # watching PyTorch's modules floods the log with errors
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+primaryColor = "#2a78d6"  # the course blue (ragcourse.viz.BLUE)
+
+[client]
+toolbarMode = "viewer"  # no "Deploy" button: the chat runs on the instructor's laptop
