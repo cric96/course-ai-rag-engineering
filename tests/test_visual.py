@@ -1,5 +1,7 @@
 from langchain_core.embeddings import DeterministicFakeEmbedding
 
+from ragcourse import cache
+from ragcourse.cache import cache_searches
 from ragcourse.filters import metadata_filter
 from ragcourse.visual import picture_store
 
@@ -39,3 +41,14 @@ def test_picture_index_is_searched_by_text_like_any_langchain_store(tmp_path):
 
     assert [(d.metadata["url"], d.metadata["page"]) for d in found] == [("u", 2)]
     assert found[0].page_content == "[immagine] Slide, p. 2"
+
+
+def test_picture_searches_are_kept_on_disk_like_text_ones(tmp_path, monkeypatch):
+    monkeypatch.setattr(cache, "SEARCHES", None)  # restored after the test
+    cache_searches(tmp_path / "searches.sqlite")
+    store = picture_store(PAGES, FakePictures(size=8), "pics", root=tmp_path)
+    first = store.similarity_search("spese", k=1)
+
+    store.client.close()  # the index is closed: only the cache can answer
+
+    assert store.similarity_search("spese", k=1) == first

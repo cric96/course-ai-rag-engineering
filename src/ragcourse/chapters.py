@@ -5,6 +5,8 @@ import importlib.util
 
 from qdrant_client import QdrantClient
 
+from ragcourse.cache import cache_searches
+
 
 def close_indexes() -> int:
     """Close every open Qdrant client: a local index folder opens in one client only."""
@@ -16,12 +18,16 @@ def close_indexes() -> int:
 
 
 def new_chapter(shell=None, keep: str = "percorso") -> None:
-    """Close the indexes, forget every variable but `keep`, free the GPU."""
+    """Close the indexes, forget every variable but `keep`, free the GPU.
+
+    Searches are kept on disk: a re-render repeats none of them.
+    """
     if shell is None:
         from IPython import get_ipython  # only inside a notebook
 
         shell = get_ipython()
     close_indexes()
+    cache_searches()
     shell.run_line_magic("reset_selective", f"-f ^(?!{keep}$)")
     gc.collect()
     if importlib.util.find_spec("torch"):  # models group only

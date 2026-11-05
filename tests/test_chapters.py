@@ -3,7 +3,16 @@ import weakref
 import pytest
 from qdrant_client import QdrantClient
 
+from ragcourse import chapters
 from ragcourse.chapters import close_indexes, new_chapter
+
+
+@pytest.fixture(autouse=True)
+def turned_on(monkeypatch):
+    """new_chapter() turns the search cache on: record it, leave .cache/ alone."""
+    calls = []
+    monkeypatch.setattr(chapters, "cache_searches", lambda: calls.append("searches"))
+    return calls
 
 
 def test_close_indexes_frees_a_local_index_for_the_next_chapter(tmp_path):
@@ -35,3 +44,11 @@ def test_new_chapter_forgets_variables_but_keeps_the_journey():
 
     assert "store" not in shell.user_ns
     assert shell.user_ns["percorso"] == {"baseline": 0.31}
+
+
+def test_new_chapter_keeps_searches_on_disk(turned_on):
+    interactive = pytest.importorskip("IPython.core.interactiveshell")
+
+    new_chapter(interactive.InteractiveShell.instance())
+
+    assert turned_on == ["searches"]

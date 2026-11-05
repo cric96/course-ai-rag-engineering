@@ -1,7 +1,16 @@
+import pytest
 from langchain_core.documents import Document
 from langchain_core.embeddings import DeterministicFakeEmbedding
-from langchain_qdrant import RetrievalMode, SparseEmbeddings, SparseVector
+from langchain_qdrant import (
+    QdrantVectorStore,
+    RetrievalMode,
+    SparseEmbeddings,
+    SparseVector,
+)
 
+from ragcourse import cache
+from ragcourse.cache import cache_searches
+from ragcourse.filters import metadata_filter
 from ragcourse.index import extended_store, search_mode, vector_store
 
 CHUNKS = [Document("Le spese sono ammissibili.", metadata={"call": "bando-a"})]
@@ -83,3 +92,64 @@ def test_extended_index_is_a_copy_with_extra_chunks(tmp_path):
     again.client.close()
     original = vector_store(DOCS, embeddings, "base", root=tmp_path)
     assert original.client.count(original.collection_name).count == 2  # untouched
+
+
+@pytest.fixture
+def asked(monkeypatch):
+    """The searches that reach Qdrant; the search cache starts off."""
+    monkeypatch.setattr(cache, "SEARCHES", None)  # restored after each test
+    queries = []
+    search = QdrantVectorStore.similarity_search_with_score
+
+    def counting(self, query, *args, **kwargs):
+        queries.append(query)
+        return search(self, query, *args, **kwargs)
+
+    monkeypatch.setattr(QdrantVectorStore, "similarity_search_with_score", counting)
+    return queries
+
+
+def test_a_search_reaches_the_index_once_then_comes_from_disk(tmp_path, asked):
+    cache_searches(tmp_path / "searches.sqlite")
+    store = vector_store(DOCS, DeterministicFakeEmbedding(size=8), "c", root=tmp_path)
+    retriever = store.as_retriever(search_kwargs={"k": 2})
+    first = retriever.invoke("fattura", filter=metadata_filter(call="a"))
+
+    assert retriever.invoke("fattura", filter=metadata_filter(call="a")) == first
+    cache_searches(tmp_path / "searches.sqlite")  # e.g. the next render
+    assert retriever.invoke("fattura", filter=metadata_filter(call="a")) == first
+    assert asked == ["fattura"]
+
+
+def test_the_cache_tells_apart_mode_k_filter_and_index(tmp_path, asked):
+    cache_searches(tmp_path / "searches.sqlite")
+    fake = DeterministicFakeEmbedding(size=8)
+    store = vector_store(DOCS, fake, "h", root=tmp_path, sparse=WordSparse())
+    searches = [
+        lambda: store.similarity_search("fattura", k=1),
+        lambda: store.similarity_search("fattura", k=2),
+        lambda: search_mode(store, RetrievalMode.SPARSE).similarity_search(
+            "fattura", k=1
+        ),
+        lambda: store.similarity_search(
+            "fattura", k=1, filter=metadata_filter(call="b")
+        ),
+    ]
+    for search in searches * 2:  # the second round comes from disk
+        search()
+    store.client.close()
+    # A copy of the index keeps the collection's name, not the results.
+    extended = extended_store(
+        "h", OCR, fake, "h-ocr", root=tmp_path, sparse=WordSparse()
+    )
+    assert len(extended.similarity_search("fattura", k=3)) == 3
+
+    assert len(asked) == len(searches) + 1
+
+
+def test_searches_are_not_cached_unless_asked(tmp_path, asked):
+    store = vector_store(DOCS, DeterministicFakeEmbedding(size=8), "n", root=tmp_path)
+    store.similarity_search("fattura", k=1)
+    store.similarity_search("fattura", k=1)
+
+    assert asked == ["fattura", "fattura"]
