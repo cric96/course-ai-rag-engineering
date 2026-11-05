@@ -1,7 +1,7 @@
 /*-- scss:defaults --*/
 // A reveal.js take on Metropolis, the Beamer theme by Matthias Vogelgesang:
 // Fira Sans, a dark teal title bar, orange accents, plenty of white space.
-@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500;700&display=swap");
 
 $m-dark-teal: #23373b; // title bars, text
 $m-orange: #eb811b; // accents: rules, progress, bullets
@@ -175,6 +175,11 @@ $gutter: 56px; // left and right margin of the slide content
   tbody tr:last-child td {
     border-bottom: none;
   }
+}
+
+// Code as typed: no ligatures (<= stays <=, not a single symbol).
+.reveal pre code {
+  font-variant-ligatures: none;
 }
 
 // Notebook output (stdout, tables) next to the code that made it.

@@ -1,0 +1,43 @@
+{
+    "metadata": {
+        "name": "Metropolis code",
+        "license": "MIT",
+        "revision": 1
+    },
+    "editor-colors": {
+        "BackgroundColor": "#eef1f1"
+    },
+    "text-styles": {
+        "Normal": { "text-color": "#23373b" },
+        "Keyword": { "text-color": "#a94a00", "bold": true },
+        "ControlFlow": { "text-color": "#a94a00", "bold": true },
+        "Import": { "text-color": "#a94a00", "bold": true },
+        "Extension": { "text-color": "#a94a00", "bold": true },
+        "BuiltIn": { "text-color": "#0e6e84" },
+        "DataType": { "text-color": "#0e6e84" },
+        "Function": { "text-color": "#0e6e84" },
+        "String": { "text-color": "#2e7d32" },
+        "VerbatimString": { "text-color": "#2e7d32" },
+        "SpecialString": { "text-color": "#2e7d32" },
+        "Char": { "text-color": "#2e7d32" },
+        "SpecialChar": { "text-color": "#2e7d32" },
+        "DecVal": { "text-color": "#7b3fa0" },
+        "BaseN": { "text-color": "#7b3fa0" },
+        "Float": { "text-color": "#7b3fa0" },
+        "Constant": { "text-color": "#7b3fa0" },
+        "Comment": { "text-color": "#5f6f74", "italic": true },
+        "Documentation": { "text-color": "#5f6f74", "italic": true },
+        "CommentVar": { "text-color": "#5f6f74", "italic": true },
+        "Annotation": { "text-color": "#5f6f74", "italic": true },
+        "Information": { "text-color": "#5f6f74", "italic": true },
+        "Operator": { "text-color": "#23373b" },
+        "Variable": { "text-color": "#7b3fa0" },
+        "Attribute": { "text-color": "#23373b" },
+        "Others": { "text-color": "#23373b" },
+        "Preprocessor": { "text-color": "#a94a00" },
+        "RegionMarker": { "text-color": "#5f6f74" },
+        "Alert": { "text-color": "#b3261e", "bold": true },
+        "Error": { "text-color": "#b3261e", "underline": true },
+        "Warning": { "text-color": "#b3261e", "bold": true }
+    }
+}

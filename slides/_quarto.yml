@@ -19,7 +19,7 @@ format:
     slide-number: c/t
     hash: true
     transition: none
-    highlight-style: github
+    syntax-highlighting: code.theme  # bold orange keywords, Metropolis palette
     code-line-numbers: false
     fig-format: svg  # sharp charts on any projector
     navigation-mode: linear  # arrows walk through sections and slides alike
