@@ -18,7 +18,7 @@ jobs:
 
       # Tests need neither Quarto (slides) nor PyTorch (models).
       - name: Install dependencies
-        run: uv sync --locked --no-group slides --no-group models
+        run: uv sync --locked --no-group slides --no-group models --no-group app
 
       - name: Format check
         run: uv run ruff format --check .
@@ -40,7 +40,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: uv sync --locked --no-group models
+        run: uv sync --locked --no-group models --no-group app
 
       # Uses committed outputs in slides/_freeze/: no models or API keys needed.
       - name: Render slides

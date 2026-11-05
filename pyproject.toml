@@ -26,6 +26,9 @@ dependencies = [
 ]
 
 [dependency-groups]
+app = [
+    "streamlit>=1.66.1",
+]
 dev = [
     "pytest>=8.3",
     "ruff>=0.12",
@@ -71,4 +74,4 @@ markers = [
 # recent Hugging Face Hub (needed by transformers>=5.19, i.e. LiquidAI d1) wants 8.4.2.
 override-dependencies = ["click>=8.4.2"]
 # Local `uv sync` installs everything; CI skips the heavy groups it does not need.
-default-groups = ["dev", "models", "slides"]
+default-groups = ["dev", "models", "slides", "app"]
