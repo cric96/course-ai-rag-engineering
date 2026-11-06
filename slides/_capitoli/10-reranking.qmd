@@ -77,6 +77,10 @@ rerank_seconds = {}
 
 def timed(name, scorer):
     """The same scorer, also recording how long each reranking takes."""
+    if hasattr(scorer, "seconds"):  # scores kept on disk: the seconds measured back then
+        rerank_seconds[name] = scorer.seconds
+        return scorer
+
     def score(query, docs):
         start = time.perf_counter()
         scores = scorer(query, docs)
@@ -174,15 +178,16 @@ for name in ["nessuno", *rerankers]:
 ```{python}
 #| echo: false
 #| output: false
-# Gemini's orderings came from the cache: time 10 real calls instead.
+# Gemini's orderings came from the cache: time 10 real calls instead, once (kept on disk).
 from langchain_core.globals import set_llm_cache
+from ragcourse.rerank import cached_scorer
 
 set_llm_cache(None)
-rerank_seconds["gemini (lista)"] = []
-gemini = timed("gemini (lista)", llm_listwise(listwise_chat))
+gemini = cached_scorer("gemini listwise, real calls", lambda: llm_listwise(listwise_chat))
 for q, docs in list(zip(with_pages, pool, strict=True))[:10]:
     gemini(q["question"], docs)
 cache_llm_calls()
+rerank_seconds["gemini (lista)"] = gemini.seconds
 ```
 
 

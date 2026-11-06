@@ -1,4 +1,4 @@
-"""Disk caches for chat model calls, index searches and embeddings: a repeat is free."""
+"""Disk caches for chat calls, index searches, embeddings and reranker scores."""
 
 import json
 import sqlite3
@@ -187,3 +187,45 @@ def cache_embeddings(path: Path | None = ROOT / ".cache/embeddings.sqlite") -> N
         return
     path.parent.mkdir(parents=True, exist_ok=True)
     EMBEDDINGS = EmbeddingCache(path)
+
+
+class ScoreCache:
+    """Reranker scores, and the seconds they took, in a SQLite file."""
+
+    def __init__(self, path: Path):
+        self.db = sqlite3.connect(path, check_same_thread=False)
+        self.lock = threading.Lock()
+        with self.lock, self.db:
+            self.db.execute(
+                "CREATE TABLE IF NOT EXISTS scores (key TEXT PRIMARY KEY, value TEXT)"
+            )
+
+    def get(self, key: str) -> tuple[list[float], float] | None:
+        with self.lock:
+            row = self.db.execute(
+                "SELECT value FROM scores WHERE key = ?", (key,)
+            ).fetchone()
+        if row is None:
+            return None
+        scores, seconds = json.loads(row[0])
+        return scores, seconds
+
+    def put(self, key: str, scores: list[float], seconds: float) -> None:
+        with self.lock, self.db:
+            self.db.execute(
+                "INSERT OR REPLACE INTO scores VALUES (?, ?)",
+                (key, json.dumps([scores, seconds])),
+            )
+
+
+SCORES: ScoreCache | None = None  # set by cache_scores(), read by the rerankers
+
+
+def cache_scores(path: Path | None = ROOT / ".cache/rerank-scores.sqlite") -> None:
+    """Keep every reranker score on disk, with its time: a re-render reuses them."""
+    global SCORES
+    if path is None:
+        SCORES = None
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    SCORES = ScoreCache(path)

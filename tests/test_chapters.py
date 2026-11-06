@@ -15,6 +15,7 @@ def turned_on(monkeypatch):
     monkeypatch.setattr(
         chapters, "cache_embeddings", lambda: calls.append("embeddings")
     )
+    monkeypatch.setattr(chapters, "cache_scores", lambda: calls.append("scores"))
     return calls
 
 
@@ -49,9 +50,9 @@ def test_new_chapter_forgets_variables_but_keeps_the_journey():
     assert shell.user_ns["percorso"] == {"baseline": 0.31}
 
 
-def test_new_chapter_keeps_searches_and_embeddings_on_disk(turned_on):
+def test_new_chapter_keeps_searches_embeddings_and_scores_on_disk(turned_on):
     interactive = pytest.importorskip("IPython.core.interactiveshell")
 
     new_chapter(interactive.InteractiveShell.instance())
 
-    assert turned_on == ["searches", "embeddings"]
+    assert turned_on == ["searches", "embeddings", "scores"]

@@ -4,9 +4,12 @@ from langchain_core.language_models import GenericFakeChatModel
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import RunnableLambda
 
+from ragcourse import cache
+from ragcourse.cache import cache_scores
 from ragcourse.rerank import (
     CachedRetriever,
     RerankRetriever,
+    cached_scorer,
     cross_encoder,
     listwise_prompt,
     llm_listwise,
@@ -79,3 +82,45 @@ def test_listwise_prompt_numbers_the_candidates_from_one():
     prompt = listwise_prompt("CUP?", CHUNKS[:2])
     assert "Domanda: CUP?" in prompt
     assert "[1] scadenze" in prompt and "[2] spese ammissibili" in prompt
+
+
+@pytest.fixture
+def scores_on(monkeypatch, tmp_path):
+    """The reranker scores go to a fresh file; the cache is off again after the test."""
+    monkeypatch.setattr(cache, "SCORES", None)
+    cache_scores(tmp_path / "scores.sqlite")
+    return tmp_path / "scores.sqlite"
+
+
+def test_scores_and_their_seconds_are_computed_once_then_read_from_disk(scores_on):
+    loads = []
+
+    def load():
+        loads.append("model")
+        return by_length
+
+    first = cached_scorer("fake", load)
+    scores = first("spese?", CHUNKS)
+
+    cache_scores(scores_on)  # e.g. the next render of the slides
+    again = cached_scorer("fake", load)
+    assert again("spese?", CHUNKS) == scores
+    assert again.seconds == first.seconds  # as measured the first time
+    assert loads == ["model"]  # no model loaded for scores already on disk
+
+
+def test_new_candidates_or_another_reranker_are_scored_again(scores_on):
+    asked = []
+
+    def scorer(query, docs):
+        asked.append(len(docs))
+        return by_length(query, docs)
+
+    for name, docs in [("a", CHUNKS), ("a", CHUNKS[:2]), ("b", CHUNKS), ("a", CHUNKS)]:
+        cached_scorer(name, lambda: scorer)("spese?", docs)
+    assert asked == [4, 2, 4]
+
+
+def test_without_the_cache_the_scorer_is_used_as_it_is(monkeypatch):
+    monkeypatch.setattr(cache, "SCORES", None)
+    assert cached_scorer("fake", lambda: by_length) is by_length

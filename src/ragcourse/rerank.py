@@ -1,11 +1,16 @@
 """Reranking: fetch many chunks, then let a finer, slower model reorder them."""
 
+import json
+import time
 from collections.abc import Callable
 
 from langchain_core.documents import Document
 from langchain_core.language_models import BaseChatModel
 from langchain_core.retrievers import BaseRetriever
 from pydantic import BaseModel
+
+from ragcourse import cache
+from ragcourse.cache import ScoreCache
 
 # A reranker scores how much each chunk helps answer the question: higher is better.
 Scorer = Callable[[str, list[Document]], list[float]]
@@ -32,6 +37,11 @@ class RerankRetriever(BaseRetriever):
 
 def cross_encoder(name: str) -> Scorer:
     """A Hugging Face reranker from RERANKERS, run locally."""
+    return cached_scorer(name, lambda: load_cross_encoder(name))
+
+
+def load_cross_encoder(name: str) -> Scorer:
+    """The cross-encoder itself, loaded into memory (GPU if any)."""
     from sentence_transformers import CrossEncoder  # heavy: models group only
 
     model = CrossEncoder(RERANKERS[name])
@@ -44,6 +54,11 @@ def cross_encoder(name: str) -> Scorer:
 
 def decision_model(name: str = "LiquidAI/d1-2B") -> Scorer:
     """A decision model: P(yes) of "does this passage help answer the question?"."""
+    return cached_scorer(name, lambda: load_decision_model(name))
+
+
+def load_decision_model(name: str) -> Scorer:
+    """The decision model itself, loaded into memory (GPU if any)."""
     import torch  # heavy: models group only
     from transformers import AutoModel
 
@@ -63,6 +78,35 @@ def decision_model(name: str = "LiquidAI/d1-2B") -> Scorer:
         return [out["answers"]["helps"]["noul"] for out in outputs]
 
     return score
+
+
+class CachedScorer:
+    """A reranker whose scores, and the seconds each took, are kept on disk."""
+
+    def __init__(self, load: Callable[[], Scorer], name: str, scores: ScoreCache):
+        self.load, self.name, self.scores = load, name, scores
+        self.scorer: Scorer | None = None  # loaded only for new candidates
+        self.seconds: list[float] = []  # one per reranking, as first measured
+
+    def __call__(self, query: str, docs: list[Document]) -> list[float]:
+        key = json.dumps([self.name, query, [doc.page_content for doc in docs]])
+        found = self.scores.get(key)
+        if found is None:
+            if self.scorer is None:
+                self.scorer = self.load()
+            start = time.perf_counter()
+            found = (self.scorer(query, docs), time.perf_counter() - start)
+            self.scores.put(key, *found)
+        scores, seconds = found
+        self.seconds.append(seconds)
+        return scores
+
+
+def cached_scorer(name: str, load: Callable[[], Scorer]) -> Scorer:
+    """The scorer `load()` gives, its scores kept on disk once cache_scores() is on."""
+    if cache.SCORES is None:
+        return load()
+    return CachedScorer(load, name, cache.SCORES)
 
 
 class Ranking(BaseModel):
