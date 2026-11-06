@@ -152,6 +152,12 @@ class CachedEmbeddings(Embeddings):
             [text], "query", lambda new: [self.loaded().embed_query(new[0])]
         )[0]
 
+    def __getattr__(self, name: str):
+        # Called only for what this class lacks, e.g. the tokenizer of a local model.
+        if "load" not in vars(self):  # not built yet, e.g. while being copied
+            raise AttributeError(name)
+        return getattr(self.loaded(), name)
+
     def loaded(self) -> Embeddings:
         if self.model is None:
             self.model = self.load()

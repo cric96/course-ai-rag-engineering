@@ -1,3 +1,5 @@
+import copy
+
 import pytest
 from langchain_core.embeddings import DeterministicFakeEmbedding, Embeddings
 from langchain_core.globals import set_llm_cache
@@ -88,3 +90,10 @@ def test_the_model_is_loaded_only_for_new_texts(tmp_path):
     assert loads == []  # every vector came from disk: no model in memory
     again.embed_documents(["b"])
     assert loads == ["model"]
+
+
+def test_other_attributes_come_from_the_model(tmp_path):
+    embedder = cached(CountingEmbedding(size=4), tmp_path / "e.sqlite")
+
+    assert embedder.size == 4  # e.g. the tokenizer of a local model, read on a slide
+    assert copy.copy(embedder).embed_documents(["a"]) == embedder.embed_documents(["a"])
