@@ -26,8 +26,6 @@ new_chapter()  # a clean start: indexes closed, variables forgotten (but `percor
 # Same evaluation as before: 1000-character chunks, filter by call, ranx on 227 questions.
 import ragcourse  # first: turns DeepEval telemetry off
 
-import time
-
 import pandas as pd
 import transformers
 from deepeval import evaluate as deepeval_evaluate
@@ -81,7 +79,7 @@ Tutti si scelgono con `embedding_model("nome")`: per il resto della pipeline son
 
 ```{python}
 #| output: false
-from ragcourse.models import embedding_model
+from ragcourse.models import embedding_model, query_ms
 
 names = ["e5-small", "e5-large", "bge-m3", "qwen3-0.6b", "google_genai:gemini-embedding-2"]
 runs, latency = {}, {}
@@ -91,10 +89,8 @@ for name in names:
     store = vector_store(chunks, embeddings, f"{short}-1000")  # embedded once, on disk
     retriever = store.as_retriever(search_kwargs={"k": 20})
     runs[short] = retrieval_run(retriever, with_pages, name=short, by_call=True)
-    start = time.perf_counter()
-    for q in with_pages[:50]:
-        embeddings.embed_query(q["question"])  # what each question costs in time
-    latency[short] = (time.perf_counter() - start) / 50 * 1000  # milliseconds
+    questions = [q["question"] for q in with_pages[:50]]
+    latency[short] = query_ms(name, questions)  # ms to embed one question, timed once
     store.client.close()  # free the memory before the next index
 ```
 

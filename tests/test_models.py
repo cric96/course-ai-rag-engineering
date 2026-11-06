@@ -1,11 +1,18 @@
 import numpy as np
 import pytest
+from langchain_core.embeddings import DeterministicFakeEmbedding
 from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-from ragcourse import cache
+from ragcourse import cache, models
 from ragcourse.cache import CachedEmbeddings, cache_embeddings
-from ragcourse.models import EMBEDDERS, chat_model, embedding_model, sparse_model
+from ragcourse.models import (
+    EMBEDDERS,
+    chat_model,
+    embedding_model,
+    query_ms,
+    sparse_model,
+)
 
 
 def test_chat_model_is_chosen_by_provider_and_name(monkeypatch):
@@ -82,3 +89,25 @@ def test_italian_bm25_drops_stopwords_and_stems_words():
     bm25 = sparse_model("bm25")
     assert len(bm25.embed_query("Le spese ammissibili").indices) == 2  # "le" is dropped
     assert bm25.embed_query("fattura").indices == bm25.embed_query("fatture").indices
+
+
+class CountingEmbedding(DeterministicFakeEmbedding):
+    """Records the questions it really embeds."""
+
+    queries: list[str] = []
+
+    def embed_query(self, text):
+        self.queries.append(text)
+        return super().embed_query(text)
+
+
+def test_query_time_is_measured_on_the_real_model_once(monkeypatch, tmp_path):
+    monkeypatch.setattr(cache, "MEASURES", tmp_path / "measures.json")
+    model = CountingEmbedding(size=4)
+    monkeypatch.setattr(models, "load_embedder", lambda name: model)
+
+    first = query_ms("e5-small", ["Chi?", "Quando?"])
+    assert first >= 0
+    assert model.queries == ["riscaldamento", "Chi?", "Quando?"]  # not from a cache
+    assert query_ms("e5-small", ["Chi?", "Quando?"]) == first  # kept on disk
+    assert len(model.queries) == 3

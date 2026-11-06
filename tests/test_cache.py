@@ -6,7 +6,8 @@ from langchain_core.globals import set_llm_cache
 from langchain_core.language_models import GenericFakeChatModel
 from langchain_core.messages import AIMessage
 
-from ragcourse.cache import CachedEmbeddings, EmbeddingCache, cache_llm_calls
+from ragcourse import cache
+from ragcourse.cache import CachedEmbeddings, EmbeddingCache, cache_llm_calls, measured
 
 
 @pytest.fixture
@@ -97,3 +98,16 @@ def test_other_attributes_come_from_the_model(tmp_path):
 
     assert embedder.size == 4  # e.g. the tokenizer of a local model, read on a slide
     assert copy.copy(embedder).embed_documents(["a"]) == embedder.embed_documents(["a"])
+
+
+def test_a_measurement_is_taken_once_then_read_back(monkeypatch, tmp_path):
+    monkeypatch.setattr(cache, "MEASURES", tmp_path / "measures.json")
+    taken = []
+
+    def measure():
+        taken.append("now")
+        return 12.5
+
+    assert measured("ms per question", measure) == 12.5
+    assert measured("ms per question", measure) == 12.5  # e.g. the next render
+    assert taken == ["now"]

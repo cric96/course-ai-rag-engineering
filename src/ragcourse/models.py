@@ -4,6 +4,7 @@ The pipeline only sees LangChain interfaces (Embeddings, BaseChatModel),
 so a local model and an API are swapped by changing one string.
 """
 
+import time
 from dataclasses import dataclass, field
 
 from dotenv import load_dotenv
@@ -15,7 +16,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_qdrant import FastEmbedSparse, SparseEmbeddings
 
 from ragcourse import cache
-from ragcourse.cache import CachedEmbeddings
+from ragcourse.cache import CachedEmbeddings, measured
 from ragcourse.paths import ROOT
 
 load_dotenv(ROOT / ".env")  # API keys such as GEMINI_API_KEY, also from slides/
@@ -62,6 +63,20 @@ def embedding_model(name: str = "e5-small") -> Embeddings:
     if cache.EMBEDDINGS is None:
         return load_embedder(name)
     return CachedEmbeddings(lambda: load_embedder(name), name, cache.EMBEDDINGS)
+
+
+def query_ms(name: str, questions: list[str]) -> float:
+    """Milliseconds to embed one question with the model itself; measured once."""
+
+    def measure() -> float:
+        model = load_embedder(name)  # not the cache: its vectors take no time
+        model.embed_query("riscaldamento")  # the first call also sets up the GPU
+        start = time.perf_counter()
+        for question in questions:
+            model.embed_query(question)
+        return (time.perf_counter() - start) / len(questions) * 1000
+
+    return measured(f"ms per question: {name}", measure)
 
 
 def load_embedder(name: str) -> Embeddings:
