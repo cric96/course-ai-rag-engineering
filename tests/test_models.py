@@ -3,6 +3,8 @@ import pytest
 from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
+from ragcourse import cache
+from ragcourse.cache import CachedEmbeddings, cache_embeddings
 from ragcourse.models import EMBEDDERS, chat_model, embedding_model, sparse_model
 
 
@@ -29,6 +31,20 @@ def test_api_embedders_are_chosen_by_provider_and_name(monkeypatch):
 
     assert isinstance(embedder, GoogleGenerativeAIEmbeddings)
     assert embedder.model.endswith("gemini-embedding-2")
+
+
+def test_embedders_keep_their_vectors_on_disk_once_the_cache_is_on(
+    monkeypatch, tmp_path
+):
+    monkeypatch.setenv("GEMINI_API_KEY", "fake-key")
+    monkeypatch.setattr(cache, "EMBEDDINGS", None)  # restored after the test
+    cache_embeddings(tmp_path / "embeddings.sqlite")
+
+    embedder = embedding_model("google_genai:gemini-embedding-2")
+    assert isinstance(embedder, CachedEmbeddings)
+    assert isinstance(embedder.loaded(), GoogleGenerativeAIEmbeddings)
+    with pytest.raises(ValueError, match="unknown embedding model"):
+        embedding_model("not-a-model")  # still at once, not at the first new text
 
 
 def test_local_catalog_names_the_hugging_face_models():

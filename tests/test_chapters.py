@@ -9,9 +9,12 @@ from ragcourse.chapters import close_indexes, new_chapter
 
 @pytest.fixture(autouse=True)
 def turned_on(monkeypatch):
-    """new_chapter() turns the search cache on: record it, leave .cache/ alone."""
+    """new_chapter() turns the disk caches on: record it, leave .cache/ alone."""
     calls = []
     monkeypatch.setattr(chapters, "cache_searches", lambda: calls.append("searches"))
+    monkeypatch.setattr(
+        chapters, "cache_embeddings", lambda: calls.append("embeddings")
+    )
     return calls
 
 
@@ -46,9 +49,9 @@ def test_new_chapter_forgets_variables_but_keeps_the_journey():
     assert shell.user_ns["percorso"] == {"baseline": 0.31}
 
 
-def test_new_chapter_keeps_searches_on_disk(turned_on):
+def test_new_chapter_keeps_searches_and_embeddings_on_disk(turned_on):
     interactive = pytest.importorskip("IPython.core.interactiveshell")
 
     new_chapter(interactive.InteractiveShell.instance())
 
-    assert turned_on == ["searches"]
+    assert turned_on == ["searches", "embeddings"]

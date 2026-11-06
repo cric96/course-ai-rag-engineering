@@ -14,6 +14,8 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_qdrant import FastEmbedSparse, SparseEmbeddings
 
+from ragcourse import cache
+from ragcourse.cache import CachedEmbeddings
 from ragcourse.paths import ROOT
 
 load_dotenv(ROOT / ".env")  # API keys such as GEMINI_API_KEY, also from slides/
@@ -51,11 +53,21 @@ EMBEDDERS = {
 
 
 def embedding_model(name: str = "e5-small") -> Embeddings:
-    """A local embedder from EMBEDDERS, or an API one as "google_genai:<model>"."""
+    """A local embedder from EMBEDDERS, or an API one as "google_genai:<model>".
+
+    Once cache_embeddings() is on, vectors are kept on disk and the model loads lazily.
+    """
+    if not name.startswith("google_genai:") and name not in EMBEDDERS:
+        raise ValueError(f"unknown embedding model: {name}")
+    if cache.EMBEDDINGS is None:
+        return load_embedder(name)
+    return CachedEmbeddings(lambda: load_embedder(name), name, cache.EMBEDDINGS)
+
+
+def load_embedder(name: str) -> Embeddings:
+    """The embedder itself: a local model is loaded into memory (GPU if any)."""
     if name.startswith("google_genai:"):
         return GoogleGenerativeAIEmbeddings(model=name.removeprefix("google_genai:"))
-    if name not in EMBEDDERS:
-        raise ValueError(f"unknown embedding model: {name}")
     spec = EMBEDDERS[name]
     return HuggingFaceEmbeddings(
         model_name=spec.model,
