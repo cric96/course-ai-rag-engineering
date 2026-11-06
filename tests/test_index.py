@@ -7,6 +7,7 @@ from langchain_qdrant import (
     SparseEmbeddings,
     SparseVector,
 )
+from qdrant_client import QdrantClient
 
 from ragcourse import cache
 from ragcourse.cache import cache_searches
@@ -164,3 +165,38 @@ def test_an_index_in_memory_keeps_its_searches_on_disk_by_name(tmp_path, asked):
     assert again.similarity_search("fattura", k=1) == first
     memory_store(DOCS, fake, "other").similarity_search("fattura", k=1)
     assert asked == ["fattura", "fattura"]  # only the other index was searched again
+
+
+def test_an_index_on_disk_opens_only_for_a_search_missing_from_the_cache(
+    tmp_path, asked
+):
+    cache_searches(tmp_path / "searches.sqlite")
+    fake = DeterministicFakeEmbedding(size=8)
+    built = vector_store(DOCS, fake, "c", root=tmp_path)
+    first = built.similarity_search("fattura", k=1)
+    built.client.close()
+
+    store = vector_store(DOCS, fake, "c", root=tmp_path)  # e.g. the next render
+    assert store.similarity_search("fattura", k=1) == first
+    assert store.client.opened is None  # loading a large index takes seconds
+    store.similarity_search("spese", k=1)
+    assert store.client.opened is not None
+    store.client.close()
+
+
+def test_another_search_mode_does_not_open_the_index_either(tmp_path, asked):
+    cache_searches(tmp_path / "searches.sqlite")
+    fake = DeterministicFakeEmbedding(size=8)
+    built = vector_store(DOCS, fake, "h", root=tmp_path, sparse=WordSparse())
+    search_mode(built, RetrievalMode.SPARSE).similarity_search("fattura", k=1)
+    built.client.close()
+
+    store = vector_store(DOCS, fake, "h", root=tmp_path, sparse=WordSparse())
+    search_mode(store, RetrievalMode.SPARSE).similarity_search("fattura", k=1)
+    assert store.client.opened is None
+
+
+def test_without_the_search_cache_an_index_opens_at_once(tmp_path, asked):
+    store = vector_store(DOCS, DeterministicFakeEmbedding(size=8), "c", root=tmp_path)
+    assert isinstance(store.client, QdrantClient)  # the chat app: ready at once
+    store.client.close()

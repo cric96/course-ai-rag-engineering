@@ -7,11 +7,32 @@ from pathlib import Path
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 from langchain_qdrant import QdrantVectorStore, RetrievalMode, SparseEmbeddings
+from qdrant_client import QdrantClient
 
 from ragcourse import cache
 from ragcourse.paths import ROOT
 
 INDEXES = ROOT / ".cache/qdrant"
+
+
+class LazyClient:
+    """A local Qdrant folder, opened at its first use: cached searches never open it."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self.opened: QdrantClient | None = None
+
+    def __getattr__(self, name: str):
+        # Called only for what this class lacks: every QdrantClient method.
+        if "path" not in vars(self):  # not built yet, e.g. while being copied
+            raise AttributeError(name)
+        if self.opened is None:
+            self.opened = QdrantClient(path=str(self.path))  # loads the whole index
+        return getattr(self.opened, name)
+
+    def close(self, **options) -> None:
+        if self.opened is not None:
+            self.opened.close(**options)
 
 
 class CachedQdrant(QdrantVectorStore):
@@ -60,14 +81,27 @@ def vector_store(
         )
         store.client.close()
         building.rename(path)
-    store = CachedQdrant.from_existing_collection(
+    return open_store(path, name, embeddings, sparse)
+
+
+def open_store(
+    path: Path,
+    collection: str,
+    embeddings: Embeddings,
+    sparse: SparseEmbeddings | None = None,
+) -> CachedQdrant:
+    """An index folder built earlier; with cached searches, it opens only on a miss."""
+    # Without the search cache (e.g. the chat app), open now: ready for question one.
+    client = LazyClient(path) if cache.SEARCHES else QdrantClient(path=str(path))
+    store = CachedQdrant(
+        client=client,
+        collection_name=collection,
         embedding=embeddings,
         sparse_embedding=sparse,
-        retrieval_mode=mode,
-        path=str(path),
-        collection_name=name,
+        retrieval_mode=RetrievalMode.HYBRID if sparse else RetrievalMode.DENSE,
+        validate_collection_config=False,  # checked when built; it opens the folder
     )
-    store.index = str(path)
+    store.index = str(path)  # the folder keys the cached searches
     return store
 
 
@@ -93,6 +127,7 @@ def search_mode(store: QdrantVectorStore, mode: RetrievalMode) -> QdrantVectorSt
         embedding=store.embeddings,
         sparse_embedding=store.sparse_embeddings,
         retrieval_mode=mode,
+        validate_collection_config=False,  # the same collection: checking opens it
     )
     same.index = getattr(store, "index", "")  # unknown index: not cached
     return same
@@ -110,26 +145,14 @@ def extended_store(
 
     Copying the folder is much faster than embedding the whole corpus again.
     """
-    mode = RetrievalMode.HYBRID if sparse else RetrievalMode.DENSE
     path = root / name
-
-    def open_at(folder: Path) -> CachedQdrant:
-        return CachedQdrant.from_existing_collection(
-            embedding=embeddings,
-            sparse_embedding=sparse,
-            retrieval_mode=mode,
-            path=str(folder),
-            collection_name=base,  # the copy keeps the collection's name
-        )
-
     if not path.exists():
         building = root / f"{name}.building"
         shutil.rmtree(building, ignore_errors=True)  # leftovers of a crashed run
         shutil.copytree(root / base, building)
-        store = open_at(building)
+        store = open_store(building, base, embeddings, sparse)
         store.add_documents(extra)
         store.client.close()
         building.rename(path)
-    store = open_at(path)
-    store.index = str(path)  # its own folder: same collection name, other chunks
-    return store
+    # The copy keeps the collection's name; its own folder keys its searches.
+    return open_store(path, base, embeddings, sparse)

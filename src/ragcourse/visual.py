@@ -7,7 +7,7 @@ from langchain_core.embeddings import Embeddings
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient, models
 
-from ragcourse.index import INDEXES, CachedQdrant
+from ragcourse.index import INDEXES, open_store
 from ragcourse.ocr import page_picture
 
 # The model card advises instructions in English, also for other languages.
@@ -70,8 +70,4 @@ def picture_store(
         client.upsert(name, points=points)
         client.close()
         building.rename(path)
-    store = CachedQdrant(
-        client=QdrantClient(path=str(path)), collection_name=name, embedding=embeddings
-    )
-    store.index = str(path)  # its searches go through the disk cache too
-    return store
+    return open_store(path, name, embeddings)  # searches cached, opened lazily
