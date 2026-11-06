@@ -71,6 +71,20 @@ def vector_store(
     return store
 
 
+def memory_store(
+    chunks: list[Document], embeddings: Embeddings, name: str
+) -> QdrantVectorStore:
+    """A Qdrant index in memory, built at each call; `name` keys its cached searches.
+
+    `name` must identify chunking and model, as in vector_store().
+    """
+    store = CachedQdrant.from_documents(
+        chunks, embeddings, location=":memory:", collection_name="fesr"
+    )
+    store.index = f"memory:{name}"  # never a folder: no clash with the indexes on disk
+    return store
+
+
 def search_mode(store: QdrantVectorStore, mode: RetrievalMode) -> QdrantVectorStore:
     """The same hybrid index, searched by meaning (DENSE), words (SPARSE) or both."""
     same = CachedQdrant(

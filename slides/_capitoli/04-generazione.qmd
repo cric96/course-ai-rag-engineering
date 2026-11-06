@@ -31,7 +31,6 @@ import pandas as pd
 import transformers
 from huggingface_hub.utils import logging as hub_logging
 from langchain_core.callbacks import get_usage_metadata_callback
-from langchain_qdrant import QdrantVectorStore
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from ragcourse.cache import cache_llm_calls
@@ -39,6 +38,7 @@ from ragcourse.corpus import load_pages
 from ragcourse.evaluation import gold_found
 from ragcourse.filters import metadata_filter
 from ragcourse.generation import ABSTAIN, PROMPT, format_context
+from ragcourse.index import memory_store
 from ragcourse.io import read_jsonl
 from ragcourse.models import JUDGE_MODEL, embedding_model
 from ragcourse.paths import DATA
@@ -51,9 +51,7 @@ cache_llm_calls()  # identical LLM calls come from disk: re-rendering costs noth
 docs = load_pages()
 splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 chunks = splitter.split_documents(docs)
-store = QdrantVectorStore.from_documents(
-    chunks, embedding_model("e5-small"), location=":memory:", collection_name="fesr"
-)
+store = memory_store(chunks, embedding_model("e5-small"), "e5-small-1000")  # searches cached
 retriever = store.as_retriever(search_kwargs={"k": 5})  # 5 chunks to the model
 
 

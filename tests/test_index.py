@@ -11,7 +11,7 @@ from langchain_qdrant import (
 from ragcourse import cache
 from ragcourse.cache import cache_searches
 from ragcourse.filters import metadata_filter
-from ragcourse.index import extended_store, search_mode, vector_store
+from ragcourse.index import extended_store, memory_store, search_mode, vector_store
 
 CHUNKS = [Document("Le spese sono ammissibili.", metadata={"call": "bando-a"})]
 
@@ -153,3 +153,14 @@ def test_searches_are_not_cached_unless_asked(tmp_path, asked):
     store.similarity_search("fattura", k=1)
 
     assert asked == ["fattura", "fattura"]
+
+
+def test_an_index_in_memory_keeps_its_searches_on_disk_by_name(tmp_path, asked):
+    cache_searches(tmp_path / "searches.sqlite")
+    fake = DeterministicFakeEmbedding(size=8)
+    first = memory_store(DOCS, fake, "e5-1000").similarity_search("fattura", k=1)
+
+    again = memory_store(DOCS, fake, "e5-1000")  # rebuilt in the next chapter
+    assert again.similarity_search("fattura", k=1) == first
+    memory_store(DOCS, fake, "other").similarity_search("fattura", k=1)
+    assert asked == ["fattura", "fattura"]  # only the other index was searched again

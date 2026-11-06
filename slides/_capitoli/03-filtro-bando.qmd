@@ -27,12 +27,12 @@ new_chapter()  # a clean start: indexes closed, variables forgotten (but `percor
 import pandas as pd
 import transformers
 from huggingface_hub.utils import logging as hub_logging
-from langchain_qdrant import QdrantVectorStore
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from ranx import Run, evaluate
 
 from ragcourse.corpus import load_pages
 from ragcourse.evaluation import gold_qrels, page_id, retrieval_run
+from ragcourse.index import memory_store
 from ragcourse.io import read_jsonl
 from ragcourse.models import embedding_model
 from ragcourse.paths import DATA
@@ -44,9 +44,7 @@ hub_logging.set_verbosity_error()
 docs = load_pages()
 splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 chunks = splitter.split_documents(docs)
-store = QdrantVectorStore.from_documents(
-    chunks, embedding_model("e5-small"), location=":memory:", collection_name="fesr"
-)
+store = memory_store(chunks, embedding_model("e5-small"), "e5-small-1000")  # searches cached
 retriever = store.as_retriever(search_kwargs={"k": 20})
 
 questions = read_jsonl(DATA / "eval/faq_questions.jsonl")
