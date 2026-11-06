@@ -12,7 +12,7 @@ from langchain.chat_models import init_chat_model
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEmbeddings
 from langchain_qdrant import FastEmbedSparse, SparseEmbeddings
 
 from ragcourse import cache
@@ -103,4 +103,52 @@ def chat_model(name: str = CHAT_MODEL, **settings) -> BaseChatModel:
 
     Provider defaults are kept: Google advises against changing Gemini 3+ temperature.
     """
+    if name.startswith("local:"):
+        return local_chat_model(name.removeprefix("local:"), **settings)
     return init_chat_model(name, **settings)
+
+
+class LocalChatHuggingFace(ChatHuggingFace):
+    """Include model and generation settings in LangChain's chat cache key."""
+
+    @property
+    def _identifying_params(self) -> dict:
+        return {
+            "model_id": self.llm.model_id,
+            "model_kwargs": self.llm.model_kwargs,
+            "pipeline_kwargs": self.llm.pipeline_kwargs,
+        }
+
+
+def local_chat_model(
+    model_id: str, max_new_tokens: int = 1024, load_in_4bit: bool = False
+) -> BaseChatModel:
+    """A local Transformers generator, wrapped in LangChain's chat interface."""
+    import torch
+    from langchain_huggingface import HuggingFacePipeline
+
+    model_settings = {"dtype": torch.bfloat16}
+    placement = {"device": 0 if torch.cuda.is_available() else -1}
+    if load_in_4bit:
+        from transformers import BitsAndBytesConfig
+
+        model_settings["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16,
+            bnb_4bit_use_double_quant=True,
+        )
+        placement = {"device_map": "auto"}
+    llm = HuggingFacePipeline.from_model_id(
+        model_id=model_id,
+        task="text-generation",
+        **placement,
+        model_kwargs=model_settings,
+        pipeline_kwargs={
+            "max_new_tokens": max_new_tokens,
+            "do_sample": False,
+            "return_full_text": False,
+        },
+        batch_size=1,
+    )
+    return LocalChatHuggingFace(llm=llm, tokenizer=llm.pipeline.tokenizer)

@@ -3,6 +3,7 @@ import pytest
 from langchain_core.embeddings import DeterministicFakeEmbedding
 from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_huggingface import HuggingFacePipeline
 
 from ragcourse import cache, models
 from ragcourse.cache import CachedEmbeddings, cache_embeddings
@@ -30,6 +31,37 @@ def test_chat_model_keeps_provider_defaults_unless_asked(monkeypatch):
     assert (
         chat_model("google_genai:gemini-3.8-flash", temperature=0.5).temperature == 0.5
     )
+
+
+def test_chat_model_routes_local_models_without_loading_them(monkeypatch):
+    calls = []
+
+    def local(model_id, **settings):
+        calls.append((model_id, settings))
+        return "local chat"
+
+    monkeypatch.setattr(models, "local_chat_model", local)
+    assert (
+        chat_model("local:Qwen/Qwen3-4B-Instruct-2507", max_new_tokens=512)
+        == "local chat"
+    )
+    assert calls == [("Qwen/Qwen3-4B-Instruct-2507", {"max_new_tokens": 512})]
+
+
+def test_local_chat_cache_distinguishes_models_and_generation_settings():
+    def wrapper(model_id, precision, tokens):
+        llm = HuggingFacePipeline(
+            model_id=model_id,
+            model_kwargs={"precision": precision},
+            pipeline_kwargs={"max_new_tokens": tokens},
+        )
+        return models.LocalChatHuggingFace(llm=llm, tokenizer=object())
+
+    original = wrapper("model-a", "bf16", 512)._get_llm_string()
+    assert original == wrapper("model-a", "bf16", 512)._get_llm_string()
+    assert original != wrapper("model-b", "bf16", 512)._get_llm_string()
+    assert original != wrapper("model-a", "nf4", 512)._get_llm_string()
+    assert original != wrapper("model-a", "bf16", 1024)._get_llm_string()
 
 
 def test_api_embedders_are_chosen_by_provider_and_name(monkeypatch):

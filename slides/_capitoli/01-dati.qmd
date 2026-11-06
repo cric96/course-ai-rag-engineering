@@ -51,10 +51,8 @@ def show_qa(question: pd.Series) -> Markdown:
   [fesr.regione.emilia-romagna.it](https://fesr.regione.emilia-romagna.it)
 - Le **FAQ ufficiali**: domande vere dei beneficiari, con la risposta della Regione
   - Queste possono essere usate come **set di valutazione**: per ogni domanda, sappiamo qual è la risposta attesa e quali pagine del bando la contengono.
-
-::: {.takeaway}
-Le FAQ sono il nostro banco di prova: cioè, il **set di valutazione** per misurare le prestazioni della pipeline RAG.
-:::
+- In una pipeline reale, questi dati potrebbero già essere disponibili in un **database** o in un **repository di documenti**. 
+  - Nota: immagini, file, audio, potrebbero essere tutti parte del corpus!
 
 ## Il corpus in numeri
 
@@ -72,6 +70,18 @@ print(f"{len(documents)} documenti: {pdfs} PDF e {images} immagini")
 print(f"{len(pages)} pagine")
 ```
 
+Circa **2,9 milioni di token** nel testo estratto (tokenizzatore multilingual-e5-small).
+Le immagini e il testo non estratto sono esclusi.
+
+## Quali documenti contiene il corpus?
+
+- **[Bandi](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2022/interventi-di-riqualificazione-energetica-e-miglioramento-adeguamento-sismico-degli-edifici-pubblici-e-dell2019edilizia-residenziale-pubblica-2022/presentazione-domanda/allegato-1-parte-integrante_bando-edifici-pubblici.pdf) e [delibere](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2026/progetti-di-trasferimento-tecnologico/presentazione-domanda/bando-e-modulistica/dgr-1221_2026_approv-bando-trasf-tecnologico.pdf)**: testi amministrativi con requisiti, scadenze e importi
+- **[Manuali e guide](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2023/sostegno-all2019innovazione-e-agli-investimenti-delle-imprese-culturali-e-creative/rendicontazione/manuale-di-rendicontazione.pdf)**: istruzioni operative, spesso con tabelle e schermate
+- **[Slide dei webinar](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2023/bando-digitalizzazione-del-patrimonio-culturale-digital-humanities/presentazione-domanda/leombroni_webinar_fesr_2023_dh.pdf) e [infografiche](https://fesr.regione.emilia-romagna.it/programmi-e-strategie/por-fesr/documenti/infografiche-assi/asse-2-31-12-2024.png)**: informazioni presentate anche come immagini
+
+Un PDF non contiene necessariamente testo estraibile: alcune pagine richiedono
+di leggere immagini e tabelle.
+
 
 ## Quanto testo c'è in ogni pagina?
 
@@ -83,9 +93,7 @@ bar_chart(groups.value_counts(sort=False), gray=labels[2:],
           title=f"{sum(chars < 50)} pagine su {len(pages)} hanno meno di 50 caratteri")
 ```
 
-::: {.takeaway}
-Copertine e divisori, ma anche slide e infografiche piene di informazioni.
-:::
+
 
 ## Una pagina "vuota"
 
@@ -106,9 +114,12 @@ text = extract_pages(slide_pdf)
 text[10]  # page 11
 ```
 
-Per l'estrazione del testo la pagina è **vuota**.
+- Per l'estrazione del testo la pagina è **vuota**.
 
-Per una persona contiene date, orari e importi.
+- Per una persona contiene date, orari e importi.
+
+- Per leggerle: **Visual RAG**, image captioning + RAG o modelli multimodali.
+  Ne parleremo più avanti.
 :::
 
 ::: {.column width="52%"}
@@ -121,16 +132,18 @@ show_page(slide.path, slide.page, width=600)
 
 ## Che cos'è un set di valutazione
 
-Per ogni domanda, che cosa ci aspettiamo:
+> Un set di valutazione è un insieme di domande contenti la risposta, i documenti e le pagine che la contengono. Serve a misurare la qualità di un sistema RAG.
+
+Per ogni domanda quindi, ci aspettiamo di avere:
 
 | | Esempio |
 |---|---|
 | **Domanda** | "L'hardware è una spesa ammissibile?" |
 | **Risposta attesa** | "Sì, alla voce C: macchinari e attrezzature" |
-| **Pagine gold** | Bando, pagine 14 e 15 |
+| **Pagine "gold"** | Bando, pagine 14 e 15 |
 
-- Pagine gold → misuriamo il **retrieval**: le abbiamo trovate?
-- Risposta attesa → misuriamo la **generazione**: la risposta è corretta?
+- **Pagine "gold"** [⟶]{style="color: #eb811b; font-weight: bold;"} misuriamo la precisione del retrieval: il sistema trova le pagine giuste?
+- **Risposta attesa** [⟶]{style="color: #eb811b; font-weight: bold;"} misuriamo la correttezza della risposta: il sistema sa rispondere correttamente, con citazioni e senza inventare?
 
 ## Partiamo dalle FAQ ufficiali
 
@@ -138,7 +151,9 @@ Per ogni domanda, che cosa ci aspettiamo:
 faq = pd.read_json(DATA / "eval/faq_questions.jsonl", lines=True)
 
 print(f"{len(faq)} FAQ da {faq.call.nunique()} bandi (senza doppioni)")
-faq[["question", "answer"]].sample(3, random_state=3)
+examples = faq.set_index("id").loc[["faq-030", "faq-076", "faq-196"], ["question", "answer"]]
+with pd.option_context("display.max_colwidth", 120):
+  display(examples)
 ```
 
 ## Dove sta la risposta? Lo chiediamo a Gemini
@@ -157,13 +172,14 @@ model = chat_model("google_genai:gemini-4-argon")  # any model that reads images
 labels = model.with_structured_output(FaqLabels).invoke([message])  # FaqLabels: a list
 ```
 
-- **Output strutturato**: Gemini risponde con oggetti validati, non con testo libero
-- Una richiesta per bando, 2,9 milioni di token: circa 6 $, una volta sola
+- **Output strutturato**: il formato è validato, non necessariamente il contenuto
+- Le pagine proposte sono una **prima stima**, da verificare con esperti dei bandi
+  - In un sistema reale, per ogni FAQ, si deve creare attentamente i documenti rilevanti. Per oggi supponiamo che Gemini abbia fatto un buon lavoro.
 
 ## Domande sulle immagini
 
-Nessuna FAQ ha la risposta in un'immagine: Gemini ha scritto **20 domande** leggendo
-le pagine senza testo.
+Abbiamo creato **20 domande sulle immagini** con Gemini, per verificare se il sistema
+trova informazioni che l'estrazione del testo può perdere, come date e importi.
 
 :::: {.columns}
 ::: {.column .small width="40%"}
@@ -185,7 +201,7 @@ show_page(page.path, page.page, width=640)
 :::
 ::::
 
-## Il set in numeri
+## Riassunto: struttura del validation set
 
 ```{python}
 images = pd.read_json(DATA / "eval/image_questions.jsonl", lines=True)
@@ -204,12 +220,9 @@ show_qa(faq.set_index("id").loc["faq-062"])
 ```
 
 - **48 FAQ**: indicazioni operative, casi specifici, moduli e norme fuori dal corpus
-- Fuori dalle metriche. Servono a un solo test: il sistema sa dire
-  "non lo trovo nei documenti"?
-
-::: {.takeaway}
-Su un bando, una risposta inventata è peggio di nessuna risposta.
-:::
+- Escluse dalle metriche di retrieval e generazione; servono a testare l'**astensione**
+- Il sistema sa dire "non lo trovo nei documenti" o fornisce una risposta non supportata?
+- Saper riconoscere i limiti delle fonti è importante per l'**affidabilità**
 
 ## Una scorciatoia da dichiarare
 
@@ -227,9 +240,11 @@ un campione e dichiararne il tasso di errore.
 
 ## Come useremo il set
 
-| Che cosa misuriamo | Domande | Come |
-|---|---|---|
-| Il retrieval trova le pagine giuste? | 227 con pagine gold | metriche di retrieval |
-| La risposta è corretta, fedele, con citazioni? | circa 50 | DeepEval, giudice LLM |
-| Il sistema sa dire "non lo so"? | 48 | test di astensione |
-: {tbl-colwidths="[52,24,24]"}
+- **Ricerca delle fonti**: su 227 domande, misuriamo se il sistema trova le pagine di riferimento.
+- **Qualità delle risposte**: su 50 FAQ, usiamo DeepEval e un modello giudice per valutarne correttezza e fedeltà.
+- **Astensione**: confrontiamo 48 FAQ senza risposta nei documenti con 50 che ce l'hanno. Il sistema sa quando dire "non lo trovo"?
+
+::: {.takeaway}
+Ora iniziamo a mettere in pratica quanto visto nelle lezioni precedenti: indicizzazione, retrieval e generazione di risposte. 
+:::
+

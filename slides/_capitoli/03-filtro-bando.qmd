@@ -3,14 +3,14 @@
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
 
-[Documenti]{.step} [Parsing]{.step} [Chunking]{.step} [Embedding]{.step} [Indice<br>Qdrant]{.step .store}
+[Documenti]{.step .deferred} [Parsing]{.step .deferred} [Chunking]{.step .deferred} [Embedding]{.step .deferred} [Indice<br>Qdrant]{.step .store .deferred}
 
 [Interrogazione · per ogni domanda]{.lane}
 
-[Domanda<br>+ bando]{.step .active} [Retrieval<br>con filtro]{.step .store .active} [Reranking]{.step} [Generazione]{.step} [Risposta]{.step}
+[Domanda<br>+ bando]{.step .active} [Retrieval<br>con filtro]{.step .store .active} [Reranking]{.step .deferred} [Generazione]{.step .deferred} [Risposta]{.step .deferred}
 :::
 
-Prima leva: la più economica. Nessun modello nuovo, una riga di codice.
+Prima correzione: filtriamo la ricerca per bando, senza cambiare modello.
 
 ::: {.notes}
 ≈ 15 minuti · da 1:05 a 1:20, poi la pausa
@@ -66,7 +66,6 @@ def show(found, question):
 
 ## Il problema, dalla baseline
 
-- Nell'**81%** degli errori in prima posizione, la pagina trovata è **di un altro bando**
 - L'indice contiene i documenti di tanti bandi, e i bandi si somigliano: spese, rendicontazione, scadenze
 
 ```{python}
@@ -76,9 +75,9 @@ example = by_id["faq-002"]
 print(f"> {example['question']}")
 ```
 
-- *Tale* misura: quale? Chi fa la domanda lo sa, il sistema no
+- *Tale* misura: quale? L'utente vuole sapere se la sua domanda è **risposta da un bando specifico**.
 
-## Ogni chunk sa da quale bando viene
+## Metadati: restringere la ricerca
 
 ```{python}
 calls = pd.Series([chunk.metadata["call"] for chunk in chunks])
@@ -91,7 +90,8 @@ print(example["call"])
 ```
 
 ::: {.takeaway}
-Filtrare = cercare solo tra i chunk con il metadato giusto.
+Per selezionare un bando non serve la semantica: basta confrontare il metadato.
+Poi cerchiamo per significato tra i chunk del bando scelto.
 :::
 
 ## Con Qdrant: il filtro dentro la ricerca
@@ -108,7 +108,8 @@ show(retriever.invoke(example["question"], filter=call_filter), example)
 ```
 
 ::: {.muted}
-✓ = pagina gold. Il filtro è un oggetto di Qdrant: ogni database ha la sua sintassi.
+✓ = pagina di riferimento. Il filtro usa la sintassi di Qdrant, che può essere
+diversa negli altri database.
 :::
 
 ## Sul set vero
@@ -127,7 +128,7 @@ percorso["hit@5"]["+ filtro per bando"] = results.loc["hit_rate@5", "filtro per 
 ```
 
 - `by_call=True`: per ogni domanda, il filtro con il **suo** bando
-- Stesso indice, stesso modello, stesse domande: cambia solo il filtro
+- Una pagina corretta tra le prime 5: da circa **1 domanda su 3** a **2 su 3**
 
 ## Prima e dopo
 
@@ -138,7 +139,37 @@ compare_chart(hits.rename(lambda m: m.replace("hit_rate", "hit")), fmt="{:.0%}",
               title=f"Una pagina giusta tra le prime 5: dal {was:.0%} al {now:.0%}")
 ```
 
-## È un miglioramento vero?
+## Come funziona il test statistico?
+
+Confrontiamo le due configurazioni sulle **stesse 227 domande**.
+
+::: {.columns}
+::: {.column width="33%"}
+**1. Confronto**
+
+Per ogni domanda calcoliamo la differenza tra i punteggi con e senza filtro.
+:::
+
+::: {.column width="33%"}
+**2. Ipotesi**
+
+Supponiamo che, in media, il filtro non cambi la qualità della ricerca.
+:::
+
+::: {.column width="33%"}
+**3. Test**
+
+Il test t appaiato valuta quanto la differenza media osservata sia compatibile
+con questa ipotesi.
+:::
+:::
+
+::: {.takeaway}
+Il **p-value** misura quanto sarebbe insolito osservare una differenza almeno
+così estrema, se l'ipotesi di nessuna differenza fosse vera.
+:::
+
+## Il filtro migliora davvero?
 
 ```{python}
 from ranx import compare
@@ -146,12 +177,12 @@ from ranx import compare
 compare(qrels, runs=[baseline, run_call], metrics=["hit_rate@5", "mrr@10"], max_p=0.01)
 ```
 
-- Con 227 domande, una piccola differenza può essere **caso**
-- ranx fa un **test statistico** domanda per domanda:
-  ᵃ = migliore della riga *a*, con meno dell'1% di probabilità che sia caso
+- `max_p=0.01`: scegliamo una soglia di significatività dell'**1%**
+- **ᵃ**: il filtro è migliore della baseline (*a*) e il test dà **p ≤ 0,01**
 
 ::: {.takeaway}
-Qui il salto è enorme. Con chunking ed embedding le differenze saranno piccole: servirà.
+Il risultato è statisticamente significativo per entrambe le metriche. Non è
+una garanzia che il miglioramento si ripeta su ogni nuova domanda.
 :::
 
 ## Filtrare prima o dopo la ricerca?
@@ -183,9 +214,10 @@ bar_chart(hit5, title="hit@5: il filtro funziona se sta dentro la ricerca",
 ```{python}
 #| echo: false
 #| output: asis
-print("- **Dopo**: cerco i 20 chunk più vicini in tutto l'indice, poi scarto gli altri "
-      f"bandi. In mediana restano {left:.0f} pagine")
-print("- **Dentro**: Qdrant cerca i 20 più vicini **solo** nel bando giusto. Lista sempre piena")
+print("- **Dopo la ricerca**: cerchiamo i 20 chunk più vicini nell'intero indice, "
+    f"poi escludiamo le pagine degli altri bandi. Restano in mediana {left:.0f} pagine.")
+print("- **Durante la ricerca**: Qdrant cerca fino a 20 chunk **solo** nei documenti "
+    "del bando scelto.")
 ```
 
 ## Che cosa resta da fare
@@ -199,7 +231,7 @@ where = pd.Series({
     "dalla 6ª alla 20ª": found["hit_rate@20"] - found["hit_rate@5"],
     "non trovata": 1 - found["hit_rate@20"],
 })
-bar_chart(where, title="Con il filtro, dove finisce la prima pagina giusta",
+bar_chart(where, title="Con il filtro, dove finisce la prima pagina giusta?",
           gray=["tra le prime 5"], fmt="{:.0%}")
 ```
 
@@ -223,8 +255,4 @@ print(f"- **In basso** → riordinare i risultati: *reranking*\n"
 ## Un'ipotesi favorevole
 Nel nostro set ogni FAQ appartiene a un bando, quindi il bando giusto è sempre noto.
 In produzione va verificato: un filtro sbagliato esclude proprio le pagine giuste.
-:::
-
-::: {.takeaway}
-Prima di cambiare modello, usare le informazioni che il sistema ha già.
 :::

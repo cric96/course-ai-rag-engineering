@@ -3,14 +3,15 @@
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
 
-[Documenti]{.step} [Parsing]{.step} [Chunking]{.step} [Embedding]{.step} [Indice<br>Qdrant]{.step .store}
+[Documenti]{.step .deferred} [Parsing]{.step .deferred} [Chunking]{.step .deferred} [Embedding]{.step .deferred} [Indice<br>Qdrant]{.step .store .deferred}
 
 [Interrogazione · per ogni domanda]{.lane}
 
-[Domanda<br>+ bando]{.step} [Retrieval<br>con filtro]{.step .store} [Reranking]{.step} [Generazione<br>LLM]{.step .active} [Risposta<br>con citazioni]{.step .active}
+[Domanda<br>+ bando]{.step .deferred} [Retrieval<br>con filtro]{.step .store .deferred} [Reranking]{.step .deferred} [Generazione<br>LLM]{.step .active} [Risposta<br>con citazioni]{.step .active}
 :::
 
-Il retrieval porta 5 chunk di documento. Ora un LLM scrive la risposta, e va misurata anche lei.
+Il retrieval fornisce fino a 5 chunk. Un LLM li usa per generare una risposta:
+ora valutiamo anche la qualità della risposta.
 
 ::: {.notes}
 ≈ 30 minuti · da 1:35 a 2:05
@@ -71,9 +72,9 @@ example = by_id["faq-002"]
 print(PROMPT.messages[0].prompt.template)
 ```
 
-- **Solo i documenti forniti**: la risposta deve venire dai bandi, non dalla memoria del modello
-- **Citazioni** `[n]`: chi legge può controllare la fonte
-- **Una frase fissa** se la risposta non c'è: meglio di una risposta inventata, e si può contare
+- **Fonti**: chiediamo al modello di basare la risposta solo sui documenti forniti
+- **Citazioni** `[n]`: indicano le fonti, così chi legge può verificarle
+- **Astensione**: se i documenti non contengono nulla di utile, chiediamo una frase prestabilita, che possiamo riconoscere e contare
 
 ## La catena: prompt → modello → testo
 
@@ -82,7 +83,7 @@ from langchain_core.output_parsers import StrOutputParser
 from ragcourse.models import chat_model
 
 llm = chat_model("google_genai:gemini-3.8-flash")  # swap it by name, also a local model
-chain = PROMPT | llm | StrOutputParser()  # LCEL: each step feeds the next
+chain = PROMPT | llm | StrOutputParser()
 
 found = retrieve(example)  # the 5 chunks of the previous deck
 answer = chain.invoke({"context": format_context(found), "question": example["question"]})
@@ -101,16 +102,14 @@ print("\n:::\n::::")
 
 ## Che cosa può andare storto
 
-| Domanda | Confronta | Metrica DeepEval |
-|---|---|---|
-| La risposta è **giusta**? | risposta ↔ risposta ufficiale | Correttezza (*GEval*) |
-| Ha **inventato** qualcosa? | risposta ↔ chunk recuperati | Fedeltà (*Faithfulness*) |
-| **Risponde** alla domanda? | risposta ↔ domanda | Pertinenza (*Answer Relevancy*) |
-| I chunk recuperati **bastavano**? | chunk recuperati ↔ risposta ufficiale | Richiamo (*Contextual Recall*) |
-: {tbl-colwidths="[34,36,30]"}
+- **Correttezza** (*GEval*): la risposta concorda con quella ufficiale?
+- **Fedeltà** (*Faithfulness*): ciò che afferma è supportato dai chunk recuperati?
+- **Pertinenza** (*Answer Relevancy*): risponde alla domanda posta?
+- **Richiamo del contesto** (*Contextual Recall*): i chunk contengono le informazioni necessarie per la risposta ufficiale?
 
 ::: {.takeaway}
-Fedeltà e pertinenza non chiedono la risposta ufficiale: si possono misurare anche in produzione.
+Fedeltà e pertinenza non richiedono una risposta ufficiale: si possono valutare
+anche in produzione, con un modello giudice.
 :::
 
 ## Un LLM come giudice, in poche righe
@@ -128,9 +127,10 @@ verdict = judge.invoke(f"Domanda: {example['question']}\nRisposta ufficiale: {ex
 print("Corretta:", verdict.correct, "\n", verdict.reason)
 ```
 
-- Qui il giudice è **lo stesso modello** che risponde: veloce ed economico, ma può essere
-  indulgente con se stesso. Un giudice diverso è a un nome di distanza
-- Sì/no è grossolano. DeepEval scompone la risposta e dà un punteggio da 0 a 1
+- Qui usiamo come giudice **lo stesso modello** che genera la risposta: può avere
+    preferenze simili a quelle del generatore. Possiamo scegliere anche un modello diverso.
+- Il giudizio è **sì o no**, con una motivazione. Nella prossima slide DeepEval
+    valuta le singole affermazioni e calcola un punteggio da 0 a 1.
 
 ## DeepEval: la fedeltà, frase per frase
 
@@ -158,7 +158,23 @@ print(f"\nFedeltà = frasi nei documenti / frasi = {faithfulness.score:.2f}")
 ```
 
 ::: {.muted}
-Di default DeepEval punisce solo le contraddizioni; noi anche ciò che i documenti non dicono.
+Con `penalize_ambiguous_claims=True` penalizziamo anche le affermazioni non verificabili.
+:::
+
+## Fedeltà: quando mancano le prove
+
+Il giudice confronta ogni affermazione della risposta con i **chunk recuperati**:
+
+- **Supportata**: i chunk confermano l'affermazione.
+- **Contraddetta**: i chunk riportano un'informazione incompatibile.
+- **Non verificabile**: i chunk non contengono abbastanza informazioni per confermarla o smentirla.
+
+Per esempio, se la risposta indica **5 milioni di euro** ma i chunk non indicano
+alcun importo, l'affermazione non è verificabile.
+
+::: {.takeaway}
+Di default DeepEval penalizza le contraddizioni; qui penalizziamo anche le
+affermazioni non verificabili. Il contenuto potrebbe comunque trovarsi altrove.
 :::
 
 ## Correttezza: i criteri li scriviamo noi
@@ -180,10 +196,22 @@ correctness = GEval(
 )
 ```
 
-- **GEval**: un giudice LLM guidato da criteri scritti in linguaggio naturale
-- Per un ufficio: le stesse regole che darebbe un revisore umano
+- Nell'esempio precedente il giudice rispondeva **sì o no**; con **GEval**
+    specifichiamo i criteri di valutazione e otteniamo un **punteggio da 0 a 1**.
 
-## 50 domande, 50 risposte
+## GEval: come valutiamo la correttezza?
+
+Il giudice confronta la **risposta generata** con la **risposta ufficiale**,
+seguendo tre criteri:
+
+1. Verificare che i fatti non contraddicano la risposta ufficiale.
+2. Penalizzare l'assenza di informazioni importanti.
+3. Accettare formulazioni diverse e dettagli aggiuntivi non contraddittori.
+
+Un ufficio può definire criteri adatti ai propri documenti e confrontare i
+giudizi del modello con quelli di revisori umani.
+
+## Valutare la generazione su 50 FAQ
 
 ```{python}
 sample = pd.DataFrame(faq).sample(50, random_state=0).to_dict("records")
@@ -198,9 +226,8 @@ with get_usage_metadata_callback() as generation_usage:  # count the tokens
 - 50 FAQ estratte a caso: le **risposte ufficiali sono scritte da persone**
 - `batch`: le chiamate al modello partono in parallelo, il retrieval resta sequenziale
 
-## Quattro metriche, un giudice
-
 ```{python}
+#| echo: false
 #| output: false
 from deepeval import evaluate
 from deepeval.evaluate.configs import AsyncConfig, DisplayConfig
@@ -269,11 +296,9 @@ bar_chart(outcome, gray=["risponde"],
           title=f"{abstained.sum()} risposte su {len(answers)}: «{ABSTAIN}»")
 ```
 
-::: {.takeaway}
-Quando i 5 chunk non bastano, il modello lo dice invece di inventare. Il limite è il retrieval.
-:::
+- Per adesso, la RAG è troppo con
 
-## Se il retrieval sbaglia, la risposta non si salva
+## Quanto conta trovare la pagina giusta?
 
 ```{python}
 #| echo: false
@@ -290,6 +315,11 @@ compare_chart(by_retrieval, fmt="{:.2f}",
 print(f"::: {{.muted}}\nPagina giusta nei 5 chunk: {has_gold.sum()} domande su "
       f"{len(has_gold)}.\n:::")
 ```
+
+- Confrontiamo le domande con e senza un chunk dalla pagina di riferimento.
+- Quando la pagina è stata trovata, la correttezza media è più alta.
+- La pagina giusta non garantisce una risposta corretta: il chunk può non contenere
+    l'informazione necessaria oppure il modello può interpretarla male.
 
 ## Un errore da vicino
 
@@ -314,11 +344,9 @@ print(f"::: {{.small}}\nFedeltà **{scores.loc[miss, 'fedeltà']:.1f}**, "
       f"*{textwrap.shorten(reasons.loc[miss, 'correttezza'], 230)}*\n:::")
 ```
 
-::: {.takeaway}
-Fedele non vuol dire corretta: la risposta usa bene chunk che non bastano.
-:::
+⚠️ **Attenzione:** una risposta fedele ai chunk può essere incompleta o scorretta.
 
-## Quanto costa il giudice
+## Quanto costa generare e giudicare?
 
 ```{python}
 #| echo: false
@@ -331,7 +359,9 @@ bar_chart(cost / 1e6, gray=["rispondere"], fmt="{:.1f} M",
           title=f"Giudicare costa {cost['giudicare'] / cost['rispondere']:.0f} volte più che rispondere")
 ```
 
-- Il giudice è un modello: **sbaglia anche lui**, va controllato a campione da una persona
-- Una **cache** delle chiamate: rieseguire la stessa valutazione non costa nulla
-- Esistono giudici più piccoli ed economici, nati per le decisioni sì/no: i *decision model*
-  (Jev, LiquidAI d1). Qui non li abbiamo messi alla prova come giudici
+- Questa valutazione si svolge **in fase di analisi**: il giudice non serve
+    normalmente per ogni risposta in produzione, ma può essere usato per il monitoraggio.
+- Anche il giudice può sbagliare: è utile controllarne i risultati a campione.
+- Si possono valutare modelli più piccoli o *decision model* (come Jev e LiquidAI d1),
+    potenzialmente meno costosi; qui non li abbiamo provati come giudici.
+- Una **cache** riutilizza le risposte delle chiamate identiche già eseguite.

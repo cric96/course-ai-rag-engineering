@@ -66,14 +66,13 @@ by_id = {q["id"]: q for q in faq}
 
 ## Due modi di sbagliare
 
-| | Risponde | Si astiene |
-|---|---|---|
-| **La risposta è nei documenti** | ✓ | ✗ **rinuncia**: un aiuto perso |
-| **La risposta non è nei documenti** | ✗ **inventa**: un rischio | ✓ |
-: {tbl-colwidths="[40,30,30]"}
+- **Rispondere senza informazioni sufficienti**: il modello può inventare dettagli
+    o fornire una risposta non supportata dai documenti.
+- **Rinunciare quando le informazioni sono disponibili**: il modello si astiene
+    anche se avrebbe potuto aiutare chi ha posto la domanda.
 
-- Il prompt chiede una frase fissa: «Non lo trovo nei documenti.»
-- Così l'astensione si conta con una riga: `answer.startswith(ABSTAIN)`
+Quando non trova informazioni utili, il prompt chiede al modello di rispondere:
+«Non lo trovo nei documenti.»
 
 ## Le domande senza risposta
 
@@ -119,7 +118,8 @@ print("Prudente:", COMPLETE_ONLY)
 prudent = (PRUDENT_PROMPT | llm | StrOutputParser()).batch(inputs, config={"max_concurrency": 8})
 ```
 
-- Stesse regole, stessi documenti, stesse domande: cambia **solo** quando astenersi
+- Le istruzioni, i documenti e le domande restano gli stessi
+    - cambia solo il criterio con cui il modello decide se astenersi.
 
 ## Il compromesso
 
@@ -136,13 +136,12 @@ def rates(answers: list[str]) -> pd.Series:
 
 both = pd.DataFrame({"prompt attuale": rates(answers), "prompt prudente": rates(prudent)})
 compare_chart(both, fmt="{:.0%}",
-              title=f"Prudente: non inventa mai, ma risponde solo al "
-                    f"{both.iloc[1, 1]:.0%} delle domande")
+          title="Prompt prudente: più astensioni, meno risposte")
 ```
 
-::: {.takeaway}
-Il prompt sposta l'equilibrio tra i due errori, non li elimina.
-:::
+⚠️ **Attenzione:** il prompt prudente si astiene più spesso quando la risposta manca, ma anche
+quando è presente nei documenti: riduce il rischio di risposte senza supporto,
+al costo di rinunciare a più risposte utili.
 
 ## Quando risponde senza appoggio, inventa?
 

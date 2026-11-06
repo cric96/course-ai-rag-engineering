@@ -5,5 +5,32 @@
     slides.forEach((slide, i) => {
       slide.style.setProperty("--progress", `${(100 * i) / (slides.length - 1)}%`);
     });
+
+    const walker = document.createTreeWalker(document.querySelector(".reveal .slides"), NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const parent = node.parentElement;
+        if (!/[→←✓]/.test(node.textContent) || parent.closest("script, style, svg, .sourceCode")) {
+          return NodeFilter.FILTER_REJECT;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      },
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach((node) => {
+      const fragment = document.createDocumentFragment();
+      node.textContent.split(/([→←✓])/).forEach((part) => {
+        if (/[→←✓]/.test(part)) {
+          const symbol = document.createElement("span");
+          symbol.textContent = {"→": "⟶", "←": "⟵", "✓": "✓"}[part];
+          symbol.style.color = "#eb811b";
+          symbol.style.fontWeight = "bold";
+          fragment.append(symbol);
+        } else {
+          fragment.append(document.createTextNode(part));
+        }
+      });
+      node.replaceWith(fragment);
+    });
   });
 </script>

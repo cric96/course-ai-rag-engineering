@@ -5,9 +5,27 @@ from ragcourse.generation import (
     ABSTAIN,
     PROMPT,
     PRUDENT_PROMPT,
+    expand_pages,
     format_context,
     picture_messages,
 )
+
+
+def test_expand_pages_preserves_selected_pages_and_rank_without_duplicates():
+    pages = {
+        (url, number): Document(
+            f"Full page {url} {number}",
+            metadata={"url": url, "page": number, "title": "Bando"},
+        )
+        for url, number in [("a", 1), ("a", 2), ("b", 1)]
+    }
+    chunks = [pages[("b", 1)], pages[("a", 2)], pages[("b", 1)]]
+    chunks = [Document("Fragment", metadata=c.metadata) for c in chunks]
+
+    expanded = expand_pages(chunks, pages)
+
+    assert expanded == [pages[("b", 1)], pages[("a", 2)]]
+    assert all(c.page_content.startswith("Full page") for c in expanded)
 
 
 def test_format_context_numbers_chunks_so_the_answer_can_cite_them():

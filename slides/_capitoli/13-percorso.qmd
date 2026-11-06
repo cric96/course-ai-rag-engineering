@@ -47,6 +47,46 @@ bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
 Stesse 50 domande, stesso prompt, stesso giudice. Ogni barra aggiunge una leva alla precedente.
 :::
 
+## Più contesto dopo la ricerca
+
+![](assets/experiment-page-context.svg){.r-stretch}
+
+- **Stessi 10 chunk selezionati** dal reranker Gemini: li passiamo al generatore,
+  oppure recuperiamo le rispettive pagine complete, senza duplicati
+- Correttezza **0,510 → 0,538**; contesto medio **8.533 → 20.614 caratteri**
+- 12 risposte migliorano, 12 peggiorano, 26 restano uguali
+
+::: {.muted}
+Esperimento aggiuntivo sulle stesse 50 FAQ, senza OCR. IC bootstrap appaiato al 95%
+della differenza: −0,022 / +0,080; il guadagno è ancora incerto. Si cercano sempre
+chunk: non è l'embedding della pagina intera provato nel capitolo sul chunking.
+:::
+
+## Una pipeline tutta locale
+
+![](assets/experiment-pipeline-comparison.svg){.r-stretch}
+
+- **Locale:** bge-m3 + BM25 → reranker bge → Qwen3-4B (4 bit)
+- **Stesso reranker e pagine:** Gemini **0,508**, Qwen **0,368**
+
+::: {.muted}
+50 FAQ, stesso prompt e giudice (Gemini Flash), senza OCR. Riferimento commerciale:
+Gemini Flash. Modello locale su RTX 4070 da 12 GB; risultato su questo campione.
+:::
+
+::: {.notes}
+Il giudice via API è fuori dalla pipeline di inferenza confrontata.
+Qwen si astiene meno (2 casi contro 8 con generatore Gemini), ma commette più errori.
+Qwen usa NF4 con calcolo bf16, decoding greedy, 1024 nuovi token; se raggiunge il
+limite, viene rigenerata solo quella risposta con 2048 token. Nessun output finale
+raggiunge 2048 token. Gli indici e i candidati sono gli stessi degli altri esperimenti.
+Con il reranker bge le pagine complete sono identiche per i due generatori.
+Esempi: faq-006, collaborazione occasionale confusa con lavoro subordinato;
+faq-189, stabilimenti balneari ammessi nonostante l'esclusione nella FAQ attesa.
+Il divario dal riferimento Gemini con pagine è −0,170; IC bootstrap appaiato al 95%
+−0,284 / −0,050. Non è una misura del limite dei modelli open più grandi.
+:::
+
 ## Che cosa ha contato di più
 
 ```{python}

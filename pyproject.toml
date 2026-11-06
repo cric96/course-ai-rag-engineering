@@ -34,6 +34,8 @@ dev = [
     "ruff>=0.12",
 ]
 models = [
+    "accelerate>=1.15.0",
+    "bitsandbytes>=0.50.2",
     "fastembed>=0.9.1",
     "pytesseract>=0.3.13",
     "sentence-transformers>=6.2.0",

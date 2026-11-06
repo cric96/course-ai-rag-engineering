@@ -1,0 +1,56 @@
+"""Project the baseline index and an example query onto a two-dimensional map."""
+
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.figure import Figure
+from qdrant_client import QdrantClient
+
+from ragcourse.models import embedding_model
+from ragcourse.paths import ROOT
+from ragcourse.viz import ORANGE, STYLE, TEAL
+
+index = ROOT / ".cache" / "qdrant" / "e5-small-1000"
+question = "Posso comprare un computer con il contributo?"
+
+client = QdrantClient(path=str(index))
+try:
+    vectors = []
+    offset = None
+    while True:
+        points, offset = client.scroll(
+            "e5-small-1000",
+            offset=offset,
+            limit=512,
+            with_vectors=True,
+            with_payload=False,
+        )
+        vectors.extend(point.vector for point in points)
+        if offset is None:
+            break
+finally:
+    client.close()
+
+matrix = np.asarray(vectors, dtype=np.float32)
+center = matrix.mean(axis=0)
+centered = matrix - center
+_, axes = np.linalg.eigh(centered.T @ centered)
+projection = axes[:, -2:][:, ::-1]
+points = centered @ projection
+query = np.asarray(embedding_model("e5-small").embed_query(question))
+query_point = (query - center) @ projection
+
+with plt.rc_context(STYLE):
+    fig = Figure(figsize=(10, 4.5), layout="constrained")
+    ax = fig.subplots()
+    ax.scatter(points[:, 0], points[:, 1], s=6, c=TEAL, alpha=0.16, rasterized=True)
+    ax.scatter(*query_point, s=300, c=ORANGE, marker="*", label="Domanda", zorder=3)
+    ax.legend(loc="upper right", frameon=False)
+    ax.set_xlabel("Prima componente")
+    ax.set_ylabel("Seconda componente")
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.spines[["top", "right"]].set_visible(False)
+    output = ROOT / "slides" / "assets" / "corpus-embeddings.svg"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output, transparent=True)
+print(f"Saved {len(matrix)} vectors to {output}")

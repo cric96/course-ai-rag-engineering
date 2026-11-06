@@ -205,6 +205,10 @@ $gutter: 56px; // left and right margin of the slide content
   font-size: 0.68em;
 }
 
+.reveal #partiamo-dalle-faq-ufficiali table.dataframe {
+  font-size: 0.7em;
+}
+
 // Pipeline map: lanes of boxes; add `.active` to highlight the current stage.
 // Write the boxes one after the other: the arrows between them are drawn here.
 .pipeline {
@@ -232,6 +236,14 @@ $arrow: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   text-transform: uppercase;
 }
 
+.pipeline .lane.first-phase {
+  width: fit-content;
+  padding-bottom: 0.2em;
+  border-bottom: 3px solid $m-orange;
+  color: $m-dark-teal;
+  font-weight: 700;
+}
+
 .pipeline .step {
   position: relative; // anchors the arrow to the next box
   flex: 1;
@@ -247,6 +259,11 @@ $arrow: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   font-weight: 500;
   line-height: 1.2;
   text-align: center;
+}
+
+.pipeline .step.deferred {
+  background: #edf0f0;
+  color: $m-muted;
 }
 
 // The arrow to the next box, centered in the gap: the same ink as the text.

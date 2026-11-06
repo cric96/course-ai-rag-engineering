@@ -41,6 +41,14 @@ def format_context(chunks: list[Document]) -> str:
     )
 
 
+def expand_pages(
+    chunks: list[Document], pages: dict[tuple[str, int], Document]
+) -> list[Document]:
+    """Replace selected chunks with full pages, deduplicating in retrieval order."""
+    selected = dict.fromkeys((c.metadata["url"], c.metadata["page"]) for c in chunks)
+    return [pages[key] for key in selected]
+
+
 def picture_messages(question: str, pages: list[dict]) -> list[BaseMessage]:
     """The default prompt, with page images instead of text chunks (visual RAG)."""
     blocks = [{"type": "text", "text": "Documenti:"}]
