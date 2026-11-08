@@ -50,6 +50,13 @@ $gutter: 56px; // left and right margin of the slide content
   padding: 0 $gutter;
 }
 
+// Stretched charts (.r-stretch) are sized to the full slide: keep them inside the gutter.
+.reveal .slides section img.r-stretch {
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
 // Slide titles: a full-width dark bar, as in Metropolis.
 .reveal .slides section.slide.level2 > h2 {
   margin: 0 (-$gutter) 0.7em;
@@ -250,12 +257,11 @@ $gutter: 56px; // left and right margin of the slide content
 }
 
 // These examples have their own slides, with room for larger code.
-.reveal #dove-sta-la-risposta-lo-chiediamo-a-gemini pre.sourceCode,
-.reveal #faq-output-strutturato pre.sourceCode {
+.reveal .codice-grande pre.sourceCode {
   font-size: 0.75em;
 }
 
-.reveal #partiamo-dalle-faq-ufficiali table.dataframe {
+.reveal .tabella-faq table.dataframe {
   width: 100%;
   table-layout: fixed;
   font-size: 0.8em;
