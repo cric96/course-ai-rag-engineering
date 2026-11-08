@@ -179,64 +179,63 @@ bar_chart(pd.Series(similarity, index=passages).sort_values(ascending=False),
 
 ## Indici e database vettoriali: che cosa fanno?
 
-Quando cerchiamo i $k$ passaggi più vicini a una domanda in un corpus di migliaia
-o milioni di chunk, non basta conservare i vettori in una lista:
+Cercare i $k$ passaggi più vicini tra migliaia o milioni di chunk richiede più di una semplice lista:
 
-- **Ricerca esatta (*flat*)**: calcola il prodotto scalare tra la domanda e **tutti** i vettori dell'indice. Restituisce sempre i vicini esatti, ma il tempo di ricerca cresce linearmente con il numero di documenti
-- **Ricerca approssimata (*ANN*, es. grafi HNSW)**: organizza i vettori in una struttura navigabile che esplora solo i rami più promettenti, trovando i vicini in pochi millisecondi anche su milioni di vettori
-- **Oltre ai vettori**: in una pipeline RAG servono anche il testo originale, i **metadati** (bando, documento, pagina), i **filtri** sui metadati, la ricerca lessicale (BM25) e la possibilità di aggiornare o cancellare singoli documenti
+- **Ricerca esatta (*flat*)**: confronta la domanda con **tutti** i vettori; trova sempre i vicini esatti, ma il tempo cresce linearmente col corpus
+- **Ricerca approssimata (*ANN*, es. grafi HNSW)**: esplora solo i rami promettenti di un grafo navigabile; risponde in pochi millisecondi anche su milioni di vettori
+- **Oltre ai vettori**: servono anche testo originale, **metadati** (bando, documento, pagina), **filtri**, ricerca lessicale (BM25) e aggiornamento dei documenti
 
 ## Librerie di indicizzazione vs database vettoriali {.approfondimento}
 
-Non tutti gli strumenti che chiamiamo "vector store" fanno lo stesso mestiere:
+Non tutti gli strumenti che chiamiamo "vector store" fanno la stessa cosa:
 
 :::: {.columns}
 ::: {.column width="49%"}
 **Librerie di indicizzazione (es. FAISS)**
 
-- Conservano solo i **vettori numerici** (in RAM o su file binario) e calcolano i vicini ad altissima velocità, anche su GPU
-- Non gestiscono direttamente testi, metadati o filtri: bisogna affiancare un dizionario o un database esterno per risalire ai documenti
-- Aggiungere, aggiornare o filtrare documenti da più processi richiede codice dedicato
+- Conservano solo i **vettori numerici** (in RAM o su file) e calcolano i vicini su CPU/GPU
+- **Nessun testo o metadato**: serve una struttura esterna per risalire ai documenti
+- Filtri, aggiornamenti e accessi concorrenti vanno gestiti nel codice applicativo
 :::
 
 ::: {.column width="51%"}
-**Database vettoriali (es. Qdrant, Chroma, Weaviate, Milvus)**
+**Database vettoriali (Qdrant, Chroma, Weaviate, Milvus)**
 
-- Conservano insieme **vettori, testo e metadati** su disco con persistenza e API di ricerca
-- Applicano i **filtri sui metadati durante la ricerca** nell'indice, senza dover filtrare i risultati a posteriori
-- Supportano accessi concorrenti, aggiornamenti incrementali e spesso la **ricerca ibrida** (vettori densi + BM25)
+- Conservano **vettori, testo e metadati** su disco, con persistenza e API
+- Applicano i **filtri durante la ricerca** nell'indice, non a posteriori
+- Gestiscono concorrenza, aggiornamenti e spesso **ricerca ibrida** (denso + BM25)
 :::
 ::::
 
 ## Dove ospitare l'indice: locale, DB esistente o cloud {.approfondimento}
 
-La scelta dell'infrastruttura dipende dai volumi di dati, dai vincoli di riservatezza e dai sistemi già gestiti dall'ente:
+La scelta dipende da volumi di dati, riservatezza e sistemi già gestiti dall'ente:
 
-1. **In memoria o su file locale** (*FAISS*, *Qdrant local mode*, *Chroma*): non richiede server dedicati ed è adatto per sviluppo, test e corpus fino a qualche centinaio di migliaia di chunk su una singola macchina
-2. **Estensione di un database già in uso** (*PostgreSQL + `pgvector`*, *Elasticsearch / OpenSearch*): permette di tenere vettori e tabelle aziendali nello stesso database, riutilizzando backup, permessi e query SQL senza introdurre un nuovo servizio
-3. **Server dedicato o servizio gestito in cloud** (*Qdrant Cloud*, *Pinecone*, *Weaviate/Milvus Cloud*, *Vertex AI Vector Search*): delega al fornitore scalabilità, replicazione e disponibilità, ma introduce costi ricorrenti e richiede di verificare dove vengono conservati i documenti
+1. **In memoria o su file locale** (*FAISS*, *Qdrant local mode*, *Chroma*): nessun server dedicato, adatto a sviluppo, test e corpus fino a centinaia di migliaia di chunk
+2. **Estensione di un DB già in uso** (*PostgreSQL + `pgvector`*, *Elasticsearch / OpenSearch*): vettori e tabelle aziendali nello stesso database, riusando backup, permessi e query SQL
+3. **Server dedicato o cloud gestito** (*Qdrant Cloud*, *Pinecone*, *Weaviate/Milvus Cloud*, *Vertex AI*): scalabilità e alta affidabilità gestite dal fornitore, ma con costi ricorrenti e dati esterni
 
 ## Indici e database vettoriali a confronto {.approfondimento}
 
 ::: {.small}
 | Tecnologia | Tipo | Punti di forza | Limiti e compromessi |
 |---|---|---|---|
-| **FAISS** | Libreria in-memory | Ricerca vettoriale molto veloce (CPU/GPU), nessuna infrastruttura | Nessuna gestione nativa di metadati, filtri, persistenza DB o rete |
-| **Chroma** | DB vettoriale leggero | Semplice per prototipi e sperimentazione locale | La modalità su file locale non supporta scritture concorrenti da più processi |
+| **FAISS** | Libreria in memoria | Ricerca vettoriale molto veloce (CPU/GPU), nessuna infrastruttura | Nessuna gestione nativa di metadati, filtri, salvataggio su database o accesso in rete |
+| **Chroma** | DB vettoriale leggero | Semplice per prototipi e sperimentazione locale | La modalità su file locale non consente scritture concorrenti da più processi |
 | **Qdrant** | DB vettoriale (locale/server/cloud) | Filtri integrati nell'indice, ricerca ibrida, stessa API ovunque | Per join relazionali complessi serve comunque un database SQL a fianco |
 | **Weaviate / Milvus** | DB vettoriali distribuiti | Ricerca ibrida, pensati per grandi volumi e cluster multi-nodo | Maggiore complessità operativa se gestiti in autonomia (*self-hosted*) |
-| **PostgreSQL + `pgvector`** | Estensione relazionale | Vettori, metadati e dati applicativi in un unico database SQL | Su grandi volumi con filtri selettivi richiede tuning degli indici (`HNSW`) |
-| **Cloud gestiti** (*Pinecone*, *Qdrant Cloud*…) | Servizio SaaS | Zero manutenzione, scalabilità automatica e alta affidabilità | Costi a consumo/capacità e invio dei testi indicizzati fuori dall'ente |
+| **PostgreSQL + `pgvector`** | Estensione relazionale | Vettori, metadati e dati applicativi in un unico database SQL | Su grandi volumi con filtri selettivi richiede la messa a punto degli indici (`HNSW`) |
+| **Cloud gestiti** (*Pinecone*, *Qdrant Cloud*…) | Servizio SaaS | Nessuna manutenzione, scalabilità automatica e alta affidabilità | Costi a consumo/capacità e invio dei testi indicizzati fuori dall'ente |
 : {tbl-colwidths="[20,18,31,31]"}
 :::
 
 ## Perché usiamo Qdrant nella nostra pipeline
 
-**Qdrant** è tra i database vettoriali specializzati [più diffusi](https://db-engines.com/en/ranking/vector+dbms) e si adatta bene sia agli esperimenti del corso sia a una messa in produzione:
+**Qdrant** è tra i database vettoriali specializzati [più diffusi](https://db-engines.com/en/ranking/vector+dbms) e copre sia la sperimentazione sia la produzione:
 
-- Funziona con lo **stesso codice** in memoria (`:memory:`), su disco locale (`path=...`), in un container Docker interno o come servizio cloud
-- Integra i **filtri sui metadati** direttamente nella ricerca vettoriale (che useremo nel prossimo capitolo per restringere la ricerca al singolo bando) e la **ricerca ibrida** denso + BM25 (capitolo 9)
-- Nella pipeline accediamo a Qdrant tramite l'interfaccia comune `VectorStore` di LangChain: se in seguito si sceglie `FAISS`, `Chroma` o `PGVector`, il codice di retrieval e valutazione resta invariato
+- **Stesso codice** in memoria (`:memory:`), su disco (`path=...`), in container Docker o in cloud
+- **Filtri sui metadati** integrati nella ricerca (cap. 3, per bando) e **ricerca ibrida** denso + BM25 (cap. 9)
+- Usato tramite l'interfaccia `VectorStore` di LangChain: passando a `FAISS`, `Chroma` o `PGVector`, il codice di retrieval e valutazione non cambia
 
 ## VectorStore: indice e ricerca con Qdrant {#lindice-qdrant}
 
@@ -284,22 +283,32 @@ for doc, score in store.similarity_search_with_score(question, k=3):
 
 ## Come si misura il retrieval: il concetto di @k {#come-si-misura-tre-formule}
 
-Per ogni domanda il retriever ordina le pagine dalla più simile alla meno simile,
-ma al modello linguistico passiamo solo le **prime *k*** (ad esempio *k* = 5)
+Il retriever ordina le pagine per somiglianza, ma al modello passiamo solo le **prime *k*** (es. *k* = 5)
 
-- **@k ("nei primi *k* risultati")**: tagliamo la classifica alla posizione *k* e valutiamo solo ciò che cade entro quel limite. Tutto ciò che finisce dopo il *k*-esimo posto viene ignorato, perché non entra nel prompt del modello
-- **Cosa ci dice confrontare diversi valori di *k*** (*@1*, *@3*, *@5*, *@10*): mostra **dove cadono le pagine giuste** nella classifica e guida le scelte successive:
-    - se già **@1** è alto, la pagina giusta compare subito al primo posto
-    - se **@1** è basso ma **@5** o **@10** sono alti, l'indice trova la pagina giusta ma la mette in basso: possiamo passare più risultati al modello o riordinarli (*reranking*)
-    - se anche **@10** o **@20** restano bassi, l'indice non trova proprio la pagina: serve intervenire su filtri, chunking, embedding o lettura delle immagini
+- **@k ("nei primi *k* risultati")**: valutiamo solo i primi *k* posti; ciò che cade dopo viene ignorato perché non entra nel prompt
+- Confrontare più soglie (*@1*, *@3*, *@5*, *@10*) mostra **dove cadono le pagine giuste**:
+
+::: {.small}
+| Cosa osserviamo | Dove cade la pagina giusta | Scelta su cui intervenire |
+|---|---|---|
+| **@1** già alto | Subito al 1° posto | Il primo risultato è già quello utile |
+| **@1** basso, **@5** o **@10** alti | Trovata, ma in basso nella classifica | Passare più risultati (*top-k*) o riordinarli (*reranking*) |
+| Anche **@10** o **@20** bassi | Non entra nemmeno nei primi 10–20 | Filtri, chunking, embedding o lettura delle immagini |
+: {tbl-colwidths="[24,33,43]"}
+:::
 
 ## Le tre metriche: Hit@k, Recall@k, MRR
 
-Fissata la soglia *k*, tre metriche misurano aspetti complementari della ricerca:
+Fissata la soglia *k*, tre metriche complementari valutano la classifica (mediate sulle domande):
 
-- **Hit@k** (*almeno una?*): per una domanda vale **1** se nei primi *k* risultati c'è **almeno una** pagina *gold*, altrimenti **0**. Mediato su tutte le domande (*hit rate@k*), indica la **percentuale di domande** per cui almeno una fonte utile arriva al modello
-- **Recall@k** (*quante sul totale?*): vale **pagine giuste nei primi *k* / totale pagine giuste** della domanda. Quando la risposta richiede informazioni distribuite su **più pagine**, **Hit@k** vale già 1 appena ne trova una sola, mentre **Recall@k** misura se le stiamo recuperando **tutte**
-- **MRR — Mean Reciprocal Rank** (*quanto in alto?*): **Hit@5** non distingue se la pagina giusta è al 1° o al 5° posto. Il *Reciprocal Rank* invece vale **1 / posizione** della prima pagina giusta (**1** se è 1ª, **1/2** se è 2ª, **1/3** se è 3ª, **0** se non compare entro *k*), e l'**MRR** è la media su tutte le domande
+::: {.small}
+| Metrica | Domanda | Calcolo su una domanda | Perché ci serve |
+|---|---|---|---|
+| **Hit@k** (*hit rate@k*) | *Almeno una?* | **1** se nei primi *k* c'è almeno una pagina *gold*, altrimenti **0** | Indica la **% di domande** per cui almeno una fonte utile arriva al modello |
+| **Recall@k** | *Quante sul totale?* | **Pagine *gold* nei primi *k* / totale pagine *gold*** | Se la risposta richiede **più pagine**, *Hit@k* vale 1 già con una sola; *Recall@k* misura se le troviamo **tutte** |
+| **MRR** (*Mean Reciprocal Rank*) | *Quanto in alto?* | **1 / posizione** della 1ª pagina *gold* (`1`, `1/2`, `1/3`… o `0` oltre *k*) | *Hit@5* non distingue tra 1° e 5° posto; *MRR* premia chi mette la fonte giusta **in cima** |
+: {tbl-colwidths="[22,16,28,34]"}
+:::
 
 ## Come si misura: un esempio in Python {#come-si-misura-un-esempio-in-python .approfondimento}
 
@@ -374,7 +383,7 @@ percorso = {"hit@5": {"partenza: e5-small": results["hit_rate@5"]}, "correttezza
 - Già con questa configurazione iniziale troviamo una pagina rilevante tra le prime 5 per il **31% delle domande** (e al primo posto per il **13%**)
 - Però, come vedremo, la **qualità della risposta** dipende anche da quale pagina viene trovata
 
-## Risultati per tipo di evidenza {.approfondimento}
+## Risultati per tipo di fonte {.approfondimento}
 
 ```{python}
 scores = pd.DataFrame(run.scores)  # ranx keeps one score per question
@@ -386,7 +395,7 @@ bar_chart(by_evidence, title="hit@5 per tipo di evidenza", fmt="{:.0%}")
 - La ricerca testuale non vede il testo contenuto nelle immagini: servirà l'OCR
 o una ricerca sulle immagini
 
-## Analisi: Cosa sta sbagliando?
+## Analisi: cosa sta sbagliando?
 
 Un esperto di dominio può riconoscere la causa di un errore. La usiamo per
 correggere la pipeline e misurare di nuovo la baseline

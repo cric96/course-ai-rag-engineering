@@ -79,9 +79,9 @@ Nei documenti reali contano anche **tabelle a più colonne, moduli, intestazioni
 ::: {.small}
 | Approccio | Strumenti tipici | Che cosa restituisce | Quando serve |
 |---|---|---|---|
-| **Testo piatto** | `PyMuPDF` (`fitz`), `pypdf` | Flusso di caratteri del PDF, senza struttura | Testi discorsivi e bandi con layout lineare |
+| **Solo testo** | `PyMuPDF` (`fitz`), `pypdf` | Flusso di caratteri del PDF, senza struttura | Testi discorsivi e bandi con impaginazione semplice |
 | **OCR classico** | `Tesseract`, `EasyOCR` | Testo riga per riga dall'immagine della pagina | Scansioni di testo semplice, su CPU |
-| **Parsing strutturato** | `Docling`, `Marker`, `Unstructured` | **Markdown / JSON** con sezioni e tabelle ricostruite | Tabelle complesse, bilanci, layout multi-colonna |
+| **Parsing strutturato** | `Docling`, `Marker`, `Unstructured` | **Markdown / JSON** con sezioni e tabelle ricostruite | Tabelle complesse, bilanci, impaginazione su più colonne |
 | **Modelli visivi (VLM)** | `Qwen3-VL`, `Gemini Flash` | Testo o Markdown letto guardando la pagina | Slide, infografiche e scansioni difficili |
 : {tbl-colwidths="[22,22,28,28]"}
 :::

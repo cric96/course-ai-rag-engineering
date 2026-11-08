@@ -30,11 +30,6 @@ bar_chart(hits, gray=[hits.index[0]], fmt="{:.0%}",
           title=f"Una pagina giusta tra le prime 5: dal {hits.iloc[0]:.0%} al {hits.iloc[-1]:.0%}")
 ```
 
-::: {.muted}
-Ogni barra aggiunge una leva alla precedente, sulle stesse 227 domande. Il chunking da 1000
-caratteri era già nella partenza: 500 e 2000 non hanno fatto meglio
-:::
-
 ## Riepilogo sulla generazione
 
 ```{python}
@@ -42,10 +37,6 @@ caratteri era già nella partenza: 500 e 2000 non hanno fatto meglio
 bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
           title=f"Correttezza delle risposte: da {correct.iloc[0]:.2f} a {correct.iloc[-1]:.2f}")
 ```
-
-::: {.muted}
-Stesse 50 domande, stesso prompt, stesso giudice. Ogni barra aggiunge una leva alla precedente
-:::
 
 ## Esperimento: chunk contro pagine intere {.approfondimento}
 
@@ -56,11 +47,6 @@ Stesse 50 domande, stesso prompt, stesso giudice. Ogni barra aggiunge una leva a
 - Correttezza **0,510 → 0,538**, con un contesto medio che passa da **8.533 a 20.614 caratteri**
 - 12 risposte migliorano, 12 peggiorano, 26 restano uguali
 
-::: {.muted}
-Esperimento aggiuntivo sulle stesse 50 FAQ, senza OCR. IC bootstrap appaiato al 95%
-della differenza: −0,022 / +0,080 (il guadagno resta incerto). Si cercano sempre
-chunk: non è l'embedding della pagina intera provato nel capitolo sul chunking
-:::
 
 ## Esperimento: una pipeline tutta locale {.approfondimento}
 
@@ -69,23 +55,7 @@ chunk: non è l'embedding della pagina intera provato nel capitolo sul chunking
 - **Locale:** bge-m3 + BM25 → reranker bge → Qwen3-4B (4 bit)
 - **Stesso reranker e pagine:** Gemini **0,508**, Qwen **0,368**
 
-::: {.muted}
-50 FAQ, stesso prompt e giudice (Gemini Flash), senza OCR. Riferimento commerciale:
-Gemini Flash. Modello locale su RTX 4070 da 12 GB (risultato su questo campione)
-:::
 
-::: {.notes}
-Il giudice via API è fuori dalla pipeline di inferenza confrontata.
-Qwen si astiene meno (2 casi contro 8 con generatore Gemini), ma commette più errori.
-Qwen usa NF4 con calcolo bf16, decoding greedy, 1024 nuovi token; se raggiunge il
-limite, viene rigenerata solo quella risposta con 2048 token. Nessun output finale
-raggiunge 2048 token. Gli indici e i candidati sono gli stessi degli altri esperimenti.
-Con il reranker bge le pagine complete sono identiche per i due generatori.
-Esempi: faq-006, collaborazione occasionale confusa con lavoro subordinato;
-faq-189, stabilimenti balneari ammessi nonostante l'esclusione nella FAQ attesa.
-Il divario dal riferimento Gemini con pagine è −0,170; IC bootstrap appaiato al 95%
-−0,284 / −0,050. Non è una misura del limite dei modelli open più grandi.
-:::
 
 ## Confronto complessivo tra le pipeline {.approfondimento}
 
@@ -93,36 +63,13 @@ Il divario dal riferimento Gemini con pagine è −0,170; IC bootstrap appaiato 
 
 - Usando le pagine complete e un generatore più capace la correttezza media sul campione sale da **0,538** a **0,592**, anche se su 50 domande il margine di incertezza resta ampio
 
-::: {.muted .small}
-Stesse 50 FAQ e giudice Flash. Il vantaggio sulle pagine è ancora incerto: IC 95% −0,006 / +0,122
-:::
-
-::: {.notes}
-Esperimento del 7 novembre 2026. In tutte le pipeline: bge-m3 + BM25 italiano,
-filtro per bando, senza OCR. Le etichette indicano reranker / generatore.
-Il reranker Flash sceglie 10 chunk tra 30; Flash e Argon ricevono gli stessi
-chunk, oppure le stesse pagine complete da cui provengono. Controllati ID,
-domande, risposte attese, pagine selezionate e lunghezze dei contesti per tutti
-i 50 casi, con lo stesso prompt e lo stesso giudice del riferimento.
-10 chunk: Flash 0,510, Argon 0,584; delta +0,074, IC bootstrap appaiato al 95%
-+0,002 / +0,152. 19 miglioramenti, 18 parità, 13 peggioramenti.
-Pagine complete: Flash 0,538, Argon 0,592; delta +0,054, IC −0,006 / +0,122.
-17 miglioramenti, 23 parità, 10 peggioramenti. Le astensioni passano da 9 a 0
-con i chunk e da 7 a 0 con le pagine. L'IC sulle pagine include zero:
-il vantaggio osservato non è ancora conclusivo. Sono medie GEval da 0 a 1,
-non percentuali di risposte esatte. La valutazione è fatta da Flash e riguarda
-questo campione; non è una classifica generale dei modelli.
-:::
 
 ## Perché la correttezza si ferma intorno a 0,60? {.approfondimento}
 
 ![](assets/experiment-improvements.svg){.r-stretch}
 
-- Con titoli dei documenti e prompt deduttivo saliamo a **0,59** (Flash) e **0,63** (Argon), raggiungendo **0,81** sulle **28 FAQ esplicite nei bandi** e **0,95** rispetto ai soli fatti presenti nel contesto (`grounded_correctness_metric`)
+- Con due interventi mirati la correttezza sale a **0,59** (Flash) e **0,63** (Argon). Sulle FAQ la cui risposta è scritta nei bandi arriviamo a **0,81**, e rispetto ai soli documenti recuperati a **0,95**: nelle prossime slide vediamo da dove vengono questi numeri
 
-::: {.muted .small}
-Le altre 22 FAQ richiedono deduzioni su casi non nominati (13 FAQ, 0,42) o fonti esterne/refusi (9 FAQ, 0,37)
-:::
 
 ::: {.notes}
 Esperimento con scripts/evaluate_improvements.py sulle stesse 50 FAQ (random_state=0).
@@ -139,7 +86,49 @@ Valutando la correttezza senza penalizzare l'assenza di fonti esterne al contest
 (grounded_correctness_metric), il punteggio medio è 0,946–0,968.
 :::
 
-## Quali leve hanno avuto più impatto?
+## Due interventi mirati {.approfondimento .smaller}
+
+Guardando le risposte sbagliate sono emersi due problemi ricorrenti, che abbiamo corretto
+senza cambiare l'indice. Con le pagine complete, la correttezza passa da **0,538 a 0,590**
+con Flash e da **0,592 a 0,628** con Argon.
+
+**1. Ogni passaggio dice da dove viene.** Un chunk isolato spesso non nomina il bando o il
+documento a cui appartiene. Mettiamo titolo e pagina davanti al testo, sia per il reranker
+sia per il generatore:
+
+```text
+[Avviso.pdf, p. 10]
+Le spese devono essere riconducibili alle seguenti categorie:
+A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...
+```
+
+**2. Il prompt permette di trarre conclusioni.** Molte FAQ chiedono un caso che il bando non
+nomina, ma che una sua regola include o esclude. Al prompt aggiungiamo:
+
+> Se i documenti definiscono un elenco tassativo o una regola generale che include o esclude
+> il caso chiesto, trai esplicitamente la conclusione (sì o no) citando la regola.
+
+## Dove sbaglia ancora? Tre tipi di domande {.approfondimento .smaller}
+
+Abbiamo classificato a mano le 50 FAQ in base a dove si trova la loro risposta:
+
+| Tipo di FAQ | Quante | Esempio | Correttezza (Argon) |
+|---|---|---|---|
+| **Risposta scritta nei bandi** | 28 | requisiti, scadenze, importi indicati nel testo | 0,77 → **0,81** |
+| **Deduzione da una regola** | 13 | un ex collaboratore occasionale conta come «nuovo addetto»? Il bando definisce solo i nuovi addetti | 0,37 → **0,42** |
+| **Fonti esterne o refusi** | 9 | una legge regionale non presente nel corpus, un refuso del bando corretto solo nella FAQ | 0,37 → **0,37** |
+: {tbl-colwidths="[24,10,46,20]"}
+
+Il prompt deduttivo aiuta soprattutto Flash: sulle 13 FAQ deduttive passa da **0,29 a
+0,42**. Sulle 9 FAQ con fonti esterne nessun intervento sulla pipeline basta, perché
+l'informazione non è nei documenti indicizzati. Valutando le risposte solo rispetto ai
+documenti recuperati (`grounded_correctness_metric`) il punteggio sale a **0,95**: l'errore
+residuo dipende soprattutto da ciò che manca nel corpus.
+
+**Attenzione:** questa metrica non sostituisce la correttezza rispetto alla FAQ ufficiale:
+una risposta fedele ai documenti può comunque essere incompleta per chi chiede.
+
+## Quali scelte hanno avuto più impatto?
 
 ```{python}
 #| echo: false
@@ -154,6 +143,33 @@ L'OCR è misurato sulla ricerca ibrida senza reranking. La ricerca ibrida aggiun
 su questo set di valutazione
 :::
 
+## Verso un agente RAG {.approfondimento}
+
+La nostra pipeline cerca sempre, una volta sola, e poi risponde. In un **agente** è il
+modello a decidere se cercare, con quale domanda e quante volte. LangChain trasforma lo
+stesso retriever in uno strumento con poche righe:
+
+```python
+from langchain.agents import create_agent
+from langchain_core.tools import create_retriever_tool
+
+cerca = create_retriever_tool(retriever, name="cerca_documenti",
+                              description="Cerca nei documenti del PR FESR 2021-27")
+agente = create_agent(chat_model(), tools=[cerca], system_prompt=REGOLE)
+```
+
+- **Più ricerche**: se i primi chunk non bastano, l'agente riformula la domanda e cerca di nuovo
+- **Filtro scelto dal modello** (*self-query*): uno strumento con un parametro `bando` lascia al modello la scelta del filtro
+- **Costi e controllo**: ogni passaggio è una chiamata al modello in più, e le scelte dell'agente vanno valutate come quelle della pipeline
+
+## Esperimento: agente contro pipeline fissa {.approfondimento}
+
+![](assets/experiment-agent.svg){.r-stretch}
+
+- Stesso retriever (ibrido, filtro per bando, 10 chunk per ricerca), stesso modello e stesso giudice: l'agente risponde meglio in **28** domande su 50 e peggio in **6**
+- Il prezzo è nelle ricerche: in media **6 per domanda** (fino a 21), con circa **5 volte più testo** letto dal modello
+
+
 ## Conclusioni: cosa portarsi a casa
 
 1. **Partire da un set di valutazione**, costruito o validato insieme a chi conosce i documenti di dominio
@@ -162,9 +178,9 @@ su questo set di valutazione
 4. **Verificare anche il giudice automatico**, ispezionando i giudizi su un campione di risposte
 5. **Valutare insieme qualità, astensione e costi**, scegliendo il compromesso più adatto al caso d'uso
 
-## Demo: tutte le leve {.standout .center background-color="#23373b"}
+## Demo: confrontare le scelte {.standout .center background-color="#23373b"}
 
-Le stesse domande, cambiando una leva alla volta
+Le stesse domande, cambiando una scelta alla volta
 
 ::: {.notes}
 Nella chat, bando «Supporto ad interventi energetici e prevenzione sismica delle imprese»:

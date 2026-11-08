@@ -122,4 +122,4 @@ print(f"- **Chunk più grandi peggiorano**, la pagina intera di più ({hit5['pag
 print("- Qui il chunking non è il collo di bottiglia: il prossimo indiziato è l'embedding")
 ```
 
-- Verificare che una modifica non porta miglioramenti significativi è comunque utile, perché ci permette di mantenere la configurazione più semplice ed economica
+- Verificare che una modifica non porti miglioramenti significativi è comunque utile, perché ci permette di mantenere la configurazione più semplice ed economica

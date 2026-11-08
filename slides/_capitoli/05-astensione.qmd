@@ -6,7 +6,7 @@
 [Domanda<br>+ bando]{.step} [Retrieval<br>con filtro]{.step .store} [Reranking]{.step} [Generazione<br>LLM]{.step .active} [Risposta<br>o «non lo so»]{.step .active}
 :::
 
-Quando i documenti non contengono la risposta, è preferibile che il sistema si astenga piuttosto che fornire informazioni non supportate
+Quando i documenti non contengono la risposta, è preferibile che il sistema si astenga piuttosto che fornire informazioni non confermate dai documenti
 
 ::: {.notes}
 ≈ 10 minuti · da 1:30 a 1:40
@@ -67,7 +67,7 @@ by_id = {q["id"]: q for q in faq}
 ## Rispondere o astenersi: i due errori
 
 - **Rispondere senza informazioni sufficienti**: il modello può inventare dettagli
-    o fornire una risposta non supportata dai documenti
+    o fornire una risposta non confermata dai documenti
 - **Rinunciare quando le informazioni sono disponibili**: il modello si astiene
     anche se avrebbe potuto aiutare chi ha posto la domanda
 
@@ -140,7 +140,7 @@ compare_chart(both, fmt="{:.0%}",
 ```
 
 ⚠️ **Attenzione:** il prompt prudente si astiene più spesso quando la risposta manca, ma anche
-quando è presente nei documenti: riduce il rischio di risposte senza supporto,
+quando è presente nei documenti: riduce il rischio di risposte non confermate,
 al costo di rinunciare a più risposte utili
 
 ## Cosa succede quando non si astiene? {.approfondimento}
@@ -197,5 +197,5 @@ print(f"\n:::\n::::\n\n::: {{.small}}\nFedeltà **{scores[qid]:.1f}**: "
 - **La scelta dipende dai destinatari** del servizio:
   - per cittadini e imprese è preferibile un comportamento più prudente, con un rimando agli uffici
   - per il personale interno può essere utile anche una risposta parziale, purché accompagnata dalle fonti
-- Modificando il prompt possiamo solo scegliere tra poche formulazioni discrete, mentre modelli dedicati (*decision model*, come Jev o LiquidAI d1) stimano una probabilità su cui fissare una soglia continua
+- Modificando il prompt possiamo solo scegliere tra poche formulazioni fisse, mentre modelli dedicati (*decision model*, come Jev o LiquidAI d1) stimano una probabilità su cui fissare una soglia continua
 - Ogni modifica al retrieval cambia i passaggi forniti al modello e va quindi rivalutata anche sull'astensione, misurando insieme la capacità di astenersi e la percentuale di risposte utili

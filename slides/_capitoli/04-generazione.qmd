@@ -336,7 +336,7 @@ Con `penalize_ambiguous_claims=True` penalizziamo anche le affermazioni non veri
 
 Il giudice confronta ogni affermazione della risposta con i **chunk recuperati**:
 
-- **Supportata**: i chunk confermano l'affermazione
+- **Confermata**: i chunk confermano l'affermazione
 - **Contraddetta**: i chunk riportano un'informazione incompatibile
 - **Non verificabile**: i chunk non contengono abbastanza informazioni per confermarla o smentirla
 
@@ -347,19 +347,23 @@ alcun importo, l'affermazione non è verificabile
 
 ## Valutare la qualità delle citazioni {.approfondimento}
 
-La **fedeltà** verifica che ogni frase trovi riscontro nell'**insieme dei chunk recuperati**, ma non controlla se i rimandi `[1]`, `[2]` nel testo puntano al passaggio giusto:
+La **fedeltà** controlla l'**insieme dei chunk recuperati**, non se i rimandi `[1]`, `[2]` puntano al passaggio giusto:
 
-- **Validità formale**: gli indici `[n]` citati esistono tutti nei $k$ chunk passati al modello (`1 ≤ n ≤ k`)?
-- **Precisione della citazione**: l'affermazione è sostenuta proprio dal chunk `[n]` citato (verificabile passando solo i chunk citati a `FaithfulnessMetric`)?
-- **Pertinenza della fonte**: i chunk citati corrispondono alle pagine *gold* del set di valutazione?
+- **Validità formale**: gli indici `[n]` citati rientrano tutti nei $k$ chunk forniti (`1 ≤ n ≤ k`)?
+- **Precisione**: la frase è sostenuta proprio dal chunk `[n]` citato (`FaithfulnessMetric` sui soli chunk citati)?
+- **Pertinenza della fonte**: i chunk citati provengono dalle pagine *gold* della domanda?
 
-```python
+```{python}
 from ragcourse.chat import cited
 
-indices = cited(answer, found)                  # e.g. [1, 3]: valid citations in 1..len(found)
+indices = cited(answer, found)                  # valid citations in 1..len(found)
 cited_chunks = [found[n - 1] for n in indices]  # only the passages the answer actually cites
-gold_cited = gold_found(cited_chunks, example)  # True if a cited chunk comes from a gold page
+print("Chunk citati:", indices, "· pagina gold citata:", gold_found(cited_chunks, example))
 ```
+
+::: {.muted .small}
+Sulle 28 risposte date nelle 50 FAQ: **100%** di citazioni valide (`1..5`); se la pagina *gold* è nei 5 chunk, è citata **20 volte su 21**
+:::
 
 ## Correttezza: definire i criteri con GEval {.approfondimento}
 

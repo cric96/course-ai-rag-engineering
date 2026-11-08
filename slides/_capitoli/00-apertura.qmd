@@ -3,13 +3,13 @@
 - Nelle scorse lezioni, avete visto la teoria e i componenti di una pipeline RAG (*Retrieval-Augmented Generation*)
 - In questa lezione cercheremo di **mettere in pratica** quanto appreso
 - In particolare:
-	- Analizzeremo in dettaglio i vari step da un punto di vista pratico, usando **LangChain, Qdrant, modelli locali e via API**
+	- Analizzeremo in dettaglio le varie fasi da un punto di vista pratico, usando **LangChain, Qdrant, modelli locali e via API**
 	- **Misureremo** le prestazioni della pipeline, per capire come ottimizzarla
-	- **Confronteremo** diverse strategie per ogni step, per capire quali funzionano meglio
+	- **Confronteremo** diverse strategie per ogni fase, per capire quali funzionano meglio
 - Alla fine della lezione, saprete:
 	- **Analizzare e ottimizzare** una pipeline RAG
 	- **Misurare** le prestazioni della pipeline
-	- **Confrontare** diverse strategie per ogni step della pipeline
+	- **Confrontare** diverse strategie per ogni fase della pipeline
 
 ## La pipeline - Recap
 
@@ -25,15 +25,15 @@
 
 - Ogni passaggio della pipeline comporta delle scelte progettuali che conviene **valutare** e **confrontare** con delle misure
 
-## Le leve che proveremo
+## Le scelte progettuali che confronteremo
 
 | Fase | Che cosa confrontiamo |
 |------|-----------------------|
-| Retrieval | filtro sintattici (es. per bando), quanti chunk in input al modello, ricerca ibrida, reranking |
+| Retrieval | filtri sui metadati (es. per bando), quanti chunk in input al modello, ricerca ibrida, reranking |
 | Generazione | che prompt scegliere, che vincoli applicare |
 | Chunking | dimensione dei chunk, metodi di splitting |
 | Embedding | modelli di embedding, dimensioni, on-device vs. cloud |
-| Lettura dei documenti | OCR, vs pagine guardate come immagini |
+| Lettura dei documenti | OCR o pagine lette come immagini |
 : {tbl-colwidths="[30,70]"}
 
 ## Gli strumenti {.smaller}
@@ -42,7 +42,7 @@
 |---|---|---|
 | Orchestrazione | **LangChain** | componenti standard e intercambiabili |
 | Database vettoriale | **Qdrant** | filtri e ricerca ibrida, sia in locale che in cloud |
-| Modelli | **Hugging Face** (locali), **Gemini** (API) | Swap dei modelli semplificato grazie a LangChain |
+| Modelli | **Hugging Face** (locali), **Gemini** (API) | Cambiare modello è semplice grazie a LangChain |
 | Metriche di retrieval | **ranx** | metriche standard e test statistici |
 | Valutazione delle risposte | **DeepEval** | fedeltà, pertinenza, correttezza |
 : {tbl-colwidths="[28,34,38]"}
@@ -58,7 +58,7 @@ Quindi, proveremo a:
 
 1. Costruire una **baseline** semplice e completa, dall'inizio alla fine
 2. Preparare un **set di valutazione** (*golden set*): domande con risposte attese
-3. Cambiare **una leva alla volta** e vedere l'impatto sulle prestazioni
+3. Cambiare **una scelta alla volta** e vedere l'impatto sulle prestazioni
 
 
 

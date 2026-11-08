@@ -75,7 +75,7 @@ example = by_id["faq-002"]
 print(f"> {example['question']}")
 ```
 
-- *Tale* misura: quale? L'utente vuole sapere se la sua domanda è **risposta da un bando specifico**
+- *Tale* misura: quale? L'utente vuole sapere se **un bando specifico risponde** alla sua domanda
 
 ## Metadati: restringere la ricerca
 

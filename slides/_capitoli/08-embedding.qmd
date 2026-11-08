@@ -72,7 +72,7 @@ metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 : {tbl-colwidths="[28,16,14,42]"}
 
 ::: {.muted .small}
-Tutti i modelli espongono la stessa interfaccia LangChain tramite `embedding_model("nome")`. Esistono anche modelli **specializzati per settore** (legale, medico, finanziario), spesso però solo in inglese: per l'italiano amministrativo un buon modello **multilingua** a contesto lungo è in genere preferibile
+Tutti i modelli si usano allo stesso modo, con `embedding_model("nome")`, perché condividono l'interfaccia di LangChain. Esistono anche modelli **specializzati per settore** (giuridico, medico, finanziario), ma sono addestrati quasi sempre su testi in inglese: per i documenti amministrativi in italiano conviene di solito un buon modello **multilingua** che accetti testi lunghi
 :::
 
 ## Valutare i modelli sul retrieval {.approfondimento}

@@ -96,7 +96,7 @@ tesseract_retriever = extended_store(
 ## Come funziona il Visual RAG {.approfondimento}
 
 - Un modello di embedding **multimodale** rappresenta testi e immagini nello stesso spazio vettoriale, permettendo di confrontare una domanda testuale con le immagini delle pagine
-- Non serve trascrivere il testo: vengono preservati **tabelle, grafici e layout** della pagina
+- Non serve trascrivere il testo: vengono preservati **tabelle, grafici e impaginazione** della pagina
 - In fase di generazione, il modello multimodale riceve direttamente le immagini delle pagine recuperate
 
 | | OCR (capitolo precedente) | Visual RAG |

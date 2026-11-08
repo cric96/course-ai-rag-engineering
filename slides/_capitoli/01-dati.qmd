@@ -6,7 +6,7 @@
 [Documenti<br>PDF, immagini]{.step .active} [Parsing<br>testo per pagina]{.step .active} [Chunking]{.step} [Embedding]{.step} [Indice]{.step .store}
 :::
 
-Il primo punto di partenza: analisi dei documenti e costruzione del set di valutazione
+Il punto di partenza: analisi dei documenti e costruzione del set di valutazione
 
 ::: {.notes}
 ≈ 15 minuti · da 0:15 a 0:30
@@ -122,7 +122,7 @@ text[10]  # page 11
 
 - Per una persona contiene date, orari e importi
 
-- Per leggerle: **Visual RAG**, image captioning + RAG o modelli multimodali.
+- Per leggerle: **Visual RAG**, descrizione automatica delle immagini + RAG o modelli multimodali.
   Ne parleremo più avanti
 :::
 
@@ -136,7 +136,7 @@ show_page(slide.path, slide.page, width=600)
 
 ## Che cos'è un set di valutazione
 
-> Un set di valutazione è un insieme di domande contenti la risposta, i documenti e le pagine che la contengono. Serve a misurare la qualità di un sistema RAG
+> Un set di valutazione è un insieme di domande contenenti la risposta, i documenti e le pagine che la contengono. Serve a misurare la qualità di un sistema RAG
 
 Per ogni domanda quindi, ci aspettiamo di avere:
 
@@ -149,7 +149,7 @@ Per ogni domanda quindi, ci aspettiamo di avere:
 - **Pagine "gold"** [⟶]{style="color: #eb811b; font-weight: bold;"} misuriamo la precisione del retrieval: il sistema trova le pagine giuste?
 - **Risposta attesa** [⟶]{style="color: #eb811b; font-weight: bold;"} misuriamo la correttezza della risposta: il sistema sa rispondere correttamente, con citazioni e senza inventare?
 
-## Partiamo dalle FAQ ufficiali
+## Partiamo dalle FAQ ufficiali {.tabella-faq}
 
 ```{python}
 faq = pd.read_json(DATA / "eval/faq_questions.jsonl", lines=True)
@@ -160,10 +160,10 @@ with pd.option_context("display.max_colwidth", 120):
   display(examples)
 ```
 
-## Dove sta la risposta? Lo chiediamo a Gemini {.approfondimento}
+## Dove sta la risposta? Lo chiediamo a Gemini {.approfondimento .codice-grande}
 
 ::: {.pipeline}
-[Input di un bando<br>pagine + FAQ]{.step} [Una richiesta<br>a Gemini]{.step .active} [Per ogni FAQ<br>pagine gold + evidenza]{.step .store}
+[Input di un bando<br>pagine + FAQ]{.step} [Una richiesta<br>a Gemini]{.step .active} [Per ogni FAQ<br>pagine gold + tipo di fonte]{.step .store}
 :::
 
 In **una richiesta per bando**, Gemini riceve tutte le pagine (`[P1]`, `[P2]`…)
@@ -188,10 +188,10 @@ invia l'immagine della singola pagina. I PDF sono quindi già separati in pagine
 LABELING_MODEL = Gemini Argon. Per ogni FAQ chiede al massimo 5 pagine di supporto.
 :::
 
-## L'output strutturato: pagine ed evidenza {#faq-output-strutturato .approfondimento}
+## L'output strutturato: pagine e tipo di fonte {#faq-output-strutturato .approfondimento .codice-grande}
 
-Per ogni FAQ chiediamo il suo numero, le pagine che supportano la risposta
-e il tipo di evidenza
+Per ogni FAQ chiediamo il suo numero, le pagine che sostengono la risposta
+e dove sta la risposta (testo, tabella o immagine)
 
 ```python
 class FaqLabel(BaseModel):
@@ -234,7 +234,7 @@ show_page(page.path, page.page, width=640)
 :::
 ::::
 
-## Riassunto: struttura del validation set {.approfondimento}
+## Riassunto: struttura del set di valutazione {.approfondimento}
 
 ```{python}
 images = pd.read_json(DATA / "eval/image_questions.jsonl", lines=True)
@@ -254,7 +254,7 @@ show_qa(faq.set_index("id").loc["faq-062"])
 
 - **48 FAQ**: indicazioni operative, casi specifici, moduli e norme fuori dal corpus
 - Sono escluse dalle metriche di retrieval e generazione e servono a testare l'**astensione**
-- Il sistema sa dire "non lo trovo nei documenti" o fornisce una risposta non supportata?
+- Il sistema sa dire "non lo trovo nei documenti" o fornisce una risposta non confermata dai documenti?
 - Saper riconoscere i limiti delle fonti è importante per l'**affidabilità**
 
 ## Limiti del set di valutazione
