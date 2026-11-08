@@ -69,10 +69,10 @@ metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 | `bge-m3` | locale | 568 M | multilingua, testi lunghi (8192 token) |
 | `qwen3-0.6b` | locale | 600 M | recente, con un'istruzione prima della domanda |
 | `gemini-embedding-2` | API Google | — | a pagamento, dati inviati fuori |
-: {tbl-colwidths="[26,16,14,44]"}
+: {tbl-colwidths="[28,16,14,42]"}
 
-::: {.muted}
-Tutti i modelli espongono la stessa interfaccia LangChain tramite `embedding_model("nome")`
+::: {.muted .small}
+Tutti i modelli espongono la stessa interfaccia LangChain tramite `embedding_model("nome")`. Esistono anche modelli **specializzati per settore** (legale, medico, finanziario), spesso però solo in inglese: per l'italiano amministrativo un buon modello **multilingua** a contesto lungo è in genere preferibile
 :::
 
 ## Valutare i modelli sul retrieval {.approfondimento}

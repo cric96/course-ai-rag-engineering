@@ -150,6 +150,10 @@ Punteggi e motivazioni per caso, da confrontare quando cambiamo la pipeline
 Per confrontare due versioni della pipeline usiamo gli stessi casi e gli stessi
 criteri, registrando il modello giudice scelto
 
+::: {.muted .small}
+Riprende le metriche introdotte da **RAGAS** (*Faithfulness*, *Answer Relevancy*, *Contextual Recall*), integrandole con test di regressione (`pytest`) e criteri personalizzabili (`GEval`)
+:::
+
 ::: {.notes}
 Circa 5 minuti per questo blocco di cinque slide. Nel nostro progetto DeepEval
 è già installato. I test girano localmente, mentre il giudice scelto nel corso
@@ -340,6 +344,22 @@ Per esempio, se la risposta indica **5 milioni di euro** ma i chunk non indicano
 alcun importo, l'affermazione non è verificabile
 
 - Per impostazione predefinita DeepEval penalizza solo le contraddizioni esplicite, mentre qui scegliamo di penalizzare anche le affermazioni che non trovano riscontro nei chunk recuperati
+
+## Valutare la qualità delle citazioni {.approfondimento}
+
+La **fedeltà** verifica che ogni frase trovi riscontro nell'**insieme dei chunk recuperati**, ma non controlla se i rimandi `[1]`, `[2]` nel testo puntano al passaggio giusto:
+
+- **Validità formale**: gli indici `[n]` citati esistono tutti nei $k$ chunk passati al modello (`1 ≤ n ≤ k`)?
+- **Precisione della citazione**: l'affermazione è sostenuta proprio dal chunk `[n]` citato (verificabile passando solo i chunk citati a `FaithfulnessMetric`)?
+- **Pertinenza della fonte**: i chunk citati corrispondono alle pagine *gold* del set di valutazione?
+
+```python
+from ragcourse.chat import cited
+
+indices = cited(answer, found)                  # e.g. [1, 3]: valid citations in 1..len(found)
+cited_chunks = [found[n - 1] for n in indices]  # only the passages the answer actually cites
+gold_cited = gold_found(cited_chunks, example)  # True if a cited chunk comes from a gold page
+```
 
 ## Correttezza: definire i criteri con GEval {.approfondimento}
 

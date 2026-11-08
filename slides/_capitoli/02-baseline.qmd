@@ -177,31 +177,66 @@ bar_chart(pd.Series(similarity, index=passages).sort_values(ascending=False),
 
 - **NB**: Un testo simile non contiene necessariamente la risposta
 
-## Che cos'è Qdrant?
+## Indici e database vettoriali: che cosa fanno?
 
-**Qdrant** è un database vettoriale: conserva embedding e metadati, e cerca i
-documenti più simili a una domanda. È tra i database vettoriali specializzati
-[più popolari](https://db-engines.com/en/ranking/vector+dbms)
+Quando cerchiamo i $k$ passaggi più vicini a una domanda in un corpus di migliaia
+o milioni di chunk, non basta conservare i vettori in una lista:
 
-- Supporta filtri sui metadati e ricerca ibrida, oltre alla ricerca vettoriale
-- Può funzionare in locale, su un server o come servizio cloud
-- **Alternative**: Chroma, Weaviate, Milvus oppure PostgreSQL con `pgvector`
-- Nella nostra pipeline accediamo a Qdrant tramite l'interfaccia `VectorStore` di LangChain, così il codice di ricerca resta indipendente dal database scelto
+- **Ricerca esatta (*flat*)**: calcola il prodotto scalare tra la domanda e **tutti** i vettori dell'indice. Restituisce sempre i vicini esatti, ma il tempo di ricerca cresce linearmente con il numero di documenti
+- **Ricerca approssimata (*ANN*, es. grafi HNSW)**: organizza i vettori in una struttura navigabile che esplora solo i rami più promettenti, trovando i vicini in pochi millisecondi anche su milioni di vettori
+- **Oltre ai vettori**: in una pipeline RAG servono anche il testo originale, i **metadati** (bando, documento, pagina), i **filtri** sui metadati, la ricerca lessicale (BM25) e la possibilità di aggiornare o cancellare singoli documenti
 
-## Database vettoriali: quale scegliere? {.approfondimento}
+## Librerie di indicizzazione vs database vettoriali {.approfondimento}
 
-::: {.small}
-| Tecnologia | Punti di forza | Limiti e compromessi |
-|---|---|---|
-| **Qdrant** | Filtri, ricerca ibrida, uso locale | Per join SQL serve un database relazionale separato |
-| **Chroma** | Semplice per partire e sperimentare | Il percorso locale non supporta scritture concorrenti da più processi |
-| **Weaviate** | Ricerca ibrida e integrazioni | I moduli di embedding possono richiedere modelli locali o API esterne |
-| **Milvus** | Pensato anche per grandi volumi e distribuzione | Un cluster richiede più componenti da gestire |
-| **PostgreSQL + pgvector** | Vettori e dati relazionali nello stesso database | Filtri e indici approssimati possono ridurre il recall |
-: {tbl-colwidths="[24,38,38]"}
+Non tutti gli strumenti che chiamiamo "vector store" fanno lo stesso mestiere:
+
+:::: {.columns}
+::: {.column width="49%"}
+**Librerie di indicizzazione (es. FAISS)**
+
+- Conservano solo i **vettori numerici** (in RAM o su file binario) e calcolano i vicini ad altissima velocità, anche su GPU
+- Non gestiscono direttamente testi, metadati o filtri: bisogna affiancare un dizionario o un database esterno per risalire ai documenti
+- Aggiungere, aggiornare o filtrare documenti da più processi richiede codice dedicato
 :::
 
-La scelta dipende dai **dati**, dai carichi e dall'infrastruttura già disponibile
+::: {.column width="51%"}
+**Database vettoriali (es. Qdrant, Chroma, Weaviate, Milvus)**
+
+- Conservano insieme **vettori, testo e metadati** su disco con persistenza e API di ricerca
+- Applicano i **filtri sui metadati durante la ricerca** nell'indice, senza dover filtrare i risultati a posteriori
+- Supportano accessi concorrenti, aggiornamenti incrementali e spesso la **ricerca ibrida** (vettori densi + BM25)
+:::
+::::
+
+## Dove ospitare l'indice: locale, DB esistente o cloud {.approfondimento}
+
+La scelta dell'infrastruttura dipende dai volumi di dati, dai vincoli di riservatezza e dai sistemi già gestiti dall'ente:
+
+1. **In memoria o su file locale** (*FAISS*, *Qdrant local mode*, *Chroma*): non richiede server dedicati ed è adatto per sviluppo, test e corpus fino a qualche centinaio di migliaia di chunk su una singola macchina
+2. **Estensione di un database già in uso** (*PostgreSQL + `pgvector`*, *Elasticsearch / OpenSearch*): permette di tenere vettori e tabelle aziendali nello stesso database, riutilizzando backup, permessi e query SQL senza introdurre un nuovo servizio
+3. **Server dedicato o servizio gestito in cloud** (*Qdrant Cloud*, *Pinecone*, *Weaviate/Milvus Cloud*, *Vertex AI Vector Search*): delega al fornitore scalabilità, replicazione e disponibilità, ma introduce costi ricorrenti e richiede di verificare dove vengono conservati i documenti
+
+## Indici e database vettoriali a confronto {.approfondimento}
+
+::: {.small}
+| Tecnologia | Tipo | Punti di forza | Limiti e compromessi |
+|---|---|---|---|
+| **FAISS** | Libreria in-memory | Ricerca vettoriale molto veloce (CPU/GPU), nessuna infrastruttura | Nessuna gestione nativa di metadati, filtri, persistenza DB o rete |
+| **Chroma** | DB vettoriale leggero | Semplice per prototipi e sperimentazione locale | La modalità su file locale non supporta scritture concorrenti da più processi |
+| **Qdrant** | DB vettoriale (locale/server/cloud) | Filtri integrati nell'indice, ricerca ibrida, stessa API ovunque | Per join relazionali complessi serve comunque un database SQL a fianco |
+| **Weaviate / Milvus** | DB vettoriali distribuiti | Ricerca ibrida, pensati per grandi volumi e cluster multi-nodo | Maggiore complessità operativa se gestiti in autonomia (*self-hosted*) |
+| **PostgreSQL + `pgvector`** | Estensione relazionale | Vettori, metadati e dati applicativi in un unico database SQL | Su grandi volumi con filtri selettivi richiede tuning degli indici (`HNSW`) |
+| **Cloud gestiti** (*Pinecone*, *Qdrant Cloud*…) | Servizio SaaS | Zero manutenzione, scalabilità automatica e alta affidabilità | Costi a consumo/capacità e invio dei testi indicizzati fuori dall'ente |
+: {tbl-colwidths="[20,18,31,31]"}
+:::
+
+## Perché usiamo Qdrant nella nostra pipeline
+
+**Qdrant** è tra i database vettoriali specializzati [più diffusi](https://db-engines.com/en/ranking/vector+dbms) e si adatta bene sia agli esperimenti del corso sia a una messa in produzione:
+
+- Funziona con lo **stesso codice** in memoria (`:memory:`), su disco locale (`path=...`), in un container Docker interno o come servizio cloud
+- Integra i **filtri sui metadati** direttamente nella ricerca vettoriale (che useremo nel prossimo capitolo per restringere la ricerca al singolo bando) e la **ricerca ibrida** denso + BM25 (capitolo 9)
+- Nella pipeline accediamo a Qdrant tramite l'interfaccia comune `VectorStore` di LangChain: se in seguito si sceglie `FAISS`, `Chroma` o `PGVector`, il codice di retrieval e valutazione resta invariato
 
 ## VectorStore: indice e ricerca con Qdrant {#lindice-qdrant}
 

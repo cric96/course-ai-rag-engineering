@@ -72,6 +72,26 @@ store.client.close()
 
 - Se il testo di una pagina non viene estratto in fase di parsing, quella pagina non entra nell'indice e non potrà essere recuperata da alcun modello di ricerca testuale
 
+## Oltre il testo semplice: il parsing strutturato {.approfondimento}
+
+Nei documenti reali contano anche **tabelle a più colonne, moduli, intestazioni e note**:
+
+::: {.small}
+| Approccio | Strumenti tipici | Che cosa restituisce | Quando serve |
+|---|---|---|---|
+| **Testo piatto** | `PyMuPDF` (`fitz`), `pypdf` | Flusso di caratteri del PDF, senza struttura | Testi discorsivi e bandi con layout lineare |
+| **OCR classico** | `Tesseract`, `EasyOCR` | Testo riga per riga dall'immagine della pagina | Scansioni di testo semplice, su CPU |
+| **Parsing strutturato** | `Docling`, `Marker`, `Unstructured` | **Markdown / JSON** con sezioni e tabelle ricostruite | Tabelle complesse, bilanci, layout multi-colonna |
+| **Modelli visivi (VLM)** | `Qwen3-VL`, `Gemini Flash` | Testo o Markdown letto guardando la pagina | Slide, infografiche e scansioni difficili |
+: {tbl-colwidths="[22,22,28,28]"}
+:::
+
+- Il **Markdown strutturato** permette di dividere i chunk seguendo le sezioni logiche e di non spezzare le righe delle tabelle
+
+::: {.muted .small}
+Qui non usiamo un parser strutturato perché le regole dei bandi FESR sono per lo più in elenchi e paragrafi, e sulle slide-immagine confrontiamo direttamente OCR e modelli visivi
+:::
+
 ## Tre strumenti di OCR a confronto
 
 | | Come legge | Dove | Sa che cosa legge? |
