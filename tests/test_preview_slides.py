@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 spec = importlib.util.spec_from_file_location(
@@ -116,3 +117,9 @@ def test_each_fast_start_uses_a_different_project(tmp_path, monkeypatch):
 
     assert projects[0] != projects[1]
     assert all(not path.exists() for path in projects)
+
+
+def test_fast_preview_copies_every_file_the_quarto_config_names():
+    config = (preview.SLIDES / "_quarto.yml").read_text()
+    named = set(re.findall(r"[\w-]+\.(?:lua|scss|theme|html)\b", config))
+    assert named <= set(preview.RESOURCES)

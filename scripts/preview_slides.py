@@ -23,7 +23,13 @@ from pathlib import Path
 SLIDES = Path(__file__).resolve().parent.parent / "slides"
 MAIN = SLIDES / "corso.qmd"
 FAST = SLIDES.parent / ".cache/slides-preview/corso.ipynb"
-RESOURCES = ["_quarto.yml", "theme.scss", "code.theme", "progress.html"]
+RESOURCES = [
+    "_quarto.yml",
+    "theme.scss",
+    "code.theme",
+    "progress.html",
+    "chapter-ids.lua",
+]
 
 
 def chapter_times() -> dict[Path, float]:

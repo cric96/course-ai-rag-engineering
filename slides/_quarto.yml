@@ -5,6 +5,9 @@ project:
 lang: it
 date-format: "D MMMM YYYY"
 
+filters:
+  - chapter-ids.lua  # chapter number in each slide address: #/03-...
+
 execute:
   echo: true     # reveal.js hides code by default
   freeze: false  # freeze ignores the included chapters: jupyter-cache keeps renders fast
