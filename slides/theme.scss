@@ -34,6 +34,16 @@ $code-block-border-color: $m-tint;
 /*-- scss:rules --*/
 $gutter: 56px; // left and right margin of the slide content
 
+// Keep the slide at the top when the viewport is taller than its 16:9 canvas.
+.reveal .slides {
+  margin: 0 auto;
+}
+
+// Reveal centers scaled slides with an inline top and transform.
+.reveal .slides[style*="top: 50%"] {
+  top: calc(var(--slide-height) * var(--slide-scale) / 2) !important;
+}
+
 // The slide fills the screen (margin: 0 in _quarto.yml); the gutter is inside it.
 .reveal .slides section.slide {
   box-sizing: border-box;
@@ -47,6 +57,12 @@ $gutter: 56px; // left and right margin of the slide content
   background: $m-dark-teal;
   color: $m-background;
   font-weight: 400;
+}
+
+// Screens taller than 16:9 (e.g. 16:10): the slide sits at the top, the spare band below.
+// Reveal centers the scaled slide; top = half its height = 360px * scale.
+.reveal .slides[style*="translate(-50%, -50%)"] {
+  top: min(28.125vw, 50vh) !important; // 360/1280 = 28.125
 }
 
 // Optional material: a distinct title color and an explicit text label.
