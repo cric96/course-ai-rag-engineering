@@ -9,14 +9,9 @@ from langchain_core.globals import set_llm_cache
 from langchain_core.language_models import GenericFakeChatModel
 from langchain_core.messages import AIMessage
 
-from ragcourse import cache
-from ragcourse.cache import (
-    CachedEmbeddings,
-    EmbeddingCache,
-    SearchCache,
-    cache_llm_calls,
-    measured,
-)
+from ragcourse.cache import cache_llm_calls, measured, measures
+from ragcourse.cache.embeddings import CachedEmbeddings, EmbeddingCache
+from ragcourse.cache.searches import SearchCache
 
 
 @pytest.fixture
@@ -110,7 +105,7 @@ def test_other_attributes_come_from_the_model(tmp_path):
 
 
 def test_a_measurement_is_taken_once_then_read_back(monkeypatch, tmp_path):
-    monkeypatch.setattr(cache, "MEASURES", tmp_path / "measures.json")
+    monkeypatch.setattr(measures, "MEASURES", tmp_path / "measures.json")
     taken = []
 
     def measure():

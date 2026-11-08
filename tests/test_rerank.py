@@ -4,8 +4,8 @@ from langchain_core.language_models import GenericFakeChatModel
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables import RunnableLambda
 
-from ragcourse import cache
 from ragcourse.cache import cache_scores
+from ragcourse.cache import scores as score_cache
 from ragcourse.rerank import (
     CachedRetriever,
     RerankRetriever,
@@ -97,7 +97,7 @@ def test_listwise_prompt_can_include_document_titles_and_pages():
 @pytest.fixture
 def scores_on(monkeypatch, tmp_path):
     """The reranker scores go to a fresh file; the cache is off again after the test."""
-    monkeypatch.setattr(cache, "SCORES", None)
+    monkeypatch.setattr(score_cache, "SCORES", None)
     cache_scores(tmp_path / "scores.sqlite")
     return tmp_path / "scores.sqlite"
 
@@ -132,5 +132,5 @@ def test_new_candidates_or_another_reranker_are_scored_again(scores_on):
 
 
 def test_without_the_cache_the_scorer_is_used_as_it_is(monkeypatch):
-    monkeypatch.setattr(cache, "SCORES", None)
+    monkeypatch.setattr(score_cache, "SCORES", None)
     assert cached_scorer("fake", lambda: by_length) is by_length

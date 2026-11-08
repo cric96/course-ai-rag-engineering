@@ -15,8 +15,9 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEmbeddings
 from langchain_qdrant import FastEmbedSparse, SparseEmbeddings
 
-from ragcourse import cache
-from ragcourse.cache import CachedEmbeddings, measured
+from ragcourse.cache import embeddings
+from ragcourse.cache.embeddings import CachedEmbeddings
+from ragcourse.cache.measures import measured
 from ragcourse.paths import ROOT
 
 load_dotenv(ROOT / ".env")  # API keys such as GEMINI_API_KEY, also from slides/
@@ -60,9 +61,9 @@ def embedding_model(name: str = "e5-small") -> Embeddings:
     """
     if not name.startswith("google_genai:") and name not in EMBEDDERS:
         raise ValueError(f"unknown embedding model: {name}")
-    if cache.EMBEDDINGS is None:
+    if embeddings.EMBEDDINGS is None:
         return load_embedder(name)
-    return CachedEmbeddings(lambda: load_embedder(name), name, cache.EMBEDDINGS)
+    return CachedEmbeddings(lambda: load_embedder(name), name, embeddings.EMBEDDINGS)
 
 
 def query_ms(name: str, questions: list[str]) -> float:

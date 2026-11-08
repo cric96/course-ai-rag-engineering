@@ -1,7 +1,7 @@
 from langchain_core.embeddings import DeterministicFakeEmbedding
 
-from ragcourse import cache
 from ragcourse.cache import cache_searches
+from ragcourse.cache import searches as search_cache
 from ragcourse.filters import metadata_filter
 from ragcourse.visual import picture_store
 
@@ -44,7 +44,7 @@ def test_picture_index_is_searched_by_text_like_any_langchain_store(tmp_path):
 
 
 def test_picture_searches_are_kept_on_disk_like_text_ones(tmp_path, monkeypatch):
-    monkeypatch.setattr(cache, "SEARCHES", None)  # restored after the test
+    monkeypatch.setattr(search_cache, "SEARCHES", None)  # restored after the test
     cache_searches(tmp_path / "searches.sqlite")
     store = picture_store(PAGES, FakePictures(size=8), "pics", root=tmp_path)
     first = store.similarity_search("spese", k=1)

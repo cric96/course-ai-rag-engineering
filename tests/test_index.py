@@ -9,8 +9,8 @@ from langchain_qdrant import (
 )
 from qdrant_client import QdrantClient
 
-from ragcourse import cache
 from ragcourse.cache import cache_searches
+from ragcourse.cache import searches as search_cache
 from ragcourse.filters import metadata_filter
 from ragcourse.index import extended_store, memory_store, search_mode, vector_store
 
@@ -98,7 +98,7 @@ def test_extended_index_is_a_copy_with_extra_chunks(tmp_path):
 @pytest.fixture
 def asked(monkeypatch):
     """The searches that reach Qdrant; the search cache starts off."""
-    monkeypatch.setattr(cache, "SEARCHES", None)  # restored after each test
+    monkeypatch.setattr(search_cache, "SEARCHES", None)  # restored after each test
     queries = []
     search = QdrantVectorStore.similarity_search_with_score
 

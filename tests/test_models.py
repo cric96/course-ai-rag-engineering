@@ -5,8 +5,10 @@ from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_huggingface import HuggingFacePipeline
 
-from ragcourse import cache, models
-from ragcourse.cache import CachedEmbeddings, cache_embeddings
+from ragcourse import models
+from ragcourse.cache import cache_embeddings, measures
+from ragcourse.cache import embeddings as embedding_cache
+from ragcourse.cache.embeddings import CachedEmbeddings
 from ragcourse.models import (
     EMBEDDERS,
     chat_model,
@@ -76,7 +78,7 @@ def test_embedders_keep_their_vectors_on_disk_once_the_cache_is_on(
     monkeypatch, tmp_path
 ):
     monkeypatch.setenv("GEMINI_API_KEY", "fake-key")
-    monkeypatch.setattr(cache, "EMBEDDINGS", None)  # restored after the test
+    monkeypatch.setattr(embedding_cache, "EMBEDDINGS", None)  # restored after the test
     cache_embeddings(tmp_path / "embeddings.sqlite")
 
     embedder = embedding_model("google_genai:gemini-embedding-2")
@@ -134,7 +136,7 @@ class CountingEmbedding(DeterministicFakeEmbedding):
 
 
 def test_query_time_is_measured_on_the_real_model_once(monkeypatch, tmp_path):
-    monkeypatch.setattr(cache, "MEASURES", tmp_path / "measures.json")
+    monkeypatch.setattr(measures, "MEASURES", tmp_path / "measures.json")
     model = CountingEmbedding(size=4)
     monkeypatch.setattr(models, "load_embedder", lambda name: model)
 

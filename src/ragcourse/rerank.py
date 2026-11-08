@@ -1,7 +1,5 @@
 """Reranking: fetch many chunks, then let a finer, slower model reorder them."""
 
-import json
-import time
 from collections.abc import Callable
 
 from langchain_core.documents import Document
@@ -9,8 +7,7 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.retrievers import BaseRetriever
 from pydantic import BaseModel
 
-from ragcourse import cache
-from ragcourse.cache import ScoreCache
+from ragcourse.cache.scores import cached_scorer
 
 # A reranker scores how much each chunk helps answer the question: higher is better.
 Scorer = Callable[[str, list[Document]], list[float]]
@@ -87,35 +84,6 @@ def load_decision_model(name: str) -> Scorer:
         return [out["answers"]["helps"]["noul"] for out in outputs]
 
     return score
-
-
-class CachedScorer:
-    """A reranker whose scores, and the seconds each took, are kept on disk."""
-
-    def __init__(self, load: Callable[[], Scorer], name: str, scores: ScoreCache):
-        self.load, self.name, self.scores = load, name, scores
-        self.scorer: Scorer | None = None  # loaded only for new candidates
-        self.seconds: list[float] = []  # one per reranking, as first measured
-
-    def __call__(self, query: str, docs: list[Document]) -> list[float]:
-        key = json.dumps([self.name, query, [doc.page_content for doc in docs]])
-        found = self.scores.get(key)
-        if found is None:
-            if self.scorer is None:
-                self.scorer = self.load()
-            start = time.perf_counter()
-            found = (self.scorer(query, docs), time.perf_counter() - start)
-            self.scores.put(key, *found)
-        scores, seconds = found
-        self.seconds.append(seconds)
-        return scores
-
-
-def cached_scorer(name: str, load: Callable[[], Scorer]) -> Scorer:
-    """The scorer `load()` gives, its scores kept on disk once cache_scores() is on."""
-    if cache.SCORES is None:
-        return load()
-    return CachedScorer(load, name, cache.SCORES)
 
 
 class Ranking(BaseModel):

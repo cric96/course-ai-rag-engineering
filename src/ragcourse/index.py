@@ -1,58 +1,16 @@
 """Vector indexes saved on disk: embedded once per configuration, then reloaded."""
 
-import json
 import shutil
 from pathlib import Path
 
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 from langchain_qdrant import QdrantVectorStore, RetrievalMode, SparseEmbeddings
-from qdrant_client import QdrantClient
 
-from ragcourse import cache
+from ragcourse.cache.searches import CachedQdrant, index_client
 from ragcourse.paths import ROOT
 
 INDEXES = ROOT / ".cache/qdrant"
-
-
-class LazyClient:
-    """A local Qdrant folder, opened at its first use: cached searches never open it."""
-
-    def __init__(self, path: Path):
-        self.path = path
-        self.opened: QdrantClient | None = None
-
-    def __getattr__(self, name: str):
-        # Called only for what this class lacks: every QdrantClient method.
-        if "path" not in vars(self):  # not built yet, e.g. while being copied
-            raise AttributeError(name)
-        if self.opened is None:
-            self.opened = QdrantClient(path=str(self.path))  # loads the whole index
-        return getattr(self.opened, name)
-
-    def close(self, **options) -> None:
-        if self.opened is not None:
-            self.opened.close(**options)
-
-
-class CachedQdrant(QdrantVectorStore):
-    """Qdrant whose searches go through the disk cache, once cache_searches() is on."""
-
-    index = ""  # the index folder: with mode, query, k and filter, it keys the cache
-
-    def similarity_search_with_score(self, query, k=4, filter=None, **options):
-        searches = cache.SEARCHES
-        # Only plain searches (query, k, filter) of a known index are cached.
-        if searches is None or not self.index or any(options.values()):
-            return super().similarity_search_with_score(query, k, filter, **options)
-        key = json.dumps(
-            [self.index, self.retrieval_mode.value, query, k, repr(filter)]
-        )
-        found = searches.get(key)
-        if found is None:
-            found = super().similarity_search_with_score(query, k, filter)
-            searches.put(key, found)
-        return found
 
 
 def vector_store(
@@ -91,8 +49,7 @@ def open_store(
     sparse: SparseEmbeddings | None = None,
 ) -> CachedQdrant:
     """An index folder built earlier; with cached searches, it opens only on a miss."""
-    # Without the search cache (e.g. the chat app), open now: ready for question one.
-    client = LazyClient(path) if cache.SEARCHES else QdrantClient(path=str(path))
+    client = index_client(path)
     store = CachedQdrant(
         client=client,
         collection_name=collection,
