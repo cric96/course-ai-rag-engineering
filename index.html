@@ -406,7 +406,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-il-corpus-in-numeri" class="slide level2">
 <h2>Il corpus in numeri</h2>
-<div id="ed19c216" class="cell" data-execution_count="3">
+<div id="3dd9b6de" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.paths <span class="im">import</span> DATA</span>
 <span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.viz <span class="im">import</span> bar_chart</span>
@@ -438,7 +438,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-quanto-testo-cè-in-ogni-pagina" class="slide level2 approfondimento">
 <h2>Quanto testo c’è in ogni pagina?</h2>
-<div id="f522dd74" class="cell" data-execution_count="4">
+<div id="4e431471" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>chars <span class="op">=</span> pages.text.<span class="bu">str</span>.<span class="bu">len</span>()  <span class="co"># characters on each page</span></span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"nessuno"</span>, <span class="st">"da 1 a 49"</span>, <span class="st">"da 50 a 499"</span>, <span class="st">"500 e oltre"</span>]</span>
 <span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>groups <span class="op">=</span> pd.cut(chars, bins<span class="op">=</span>[<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">49</span>, <span class="dv">499</span>, chars.<span class="bu">max</span>()], labels<span class="op">=</span>labels)</span>
@@ -451,7 +451,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 <h2>Una pagina “vuota”</h2>
 <div class="columns">
 <div class="column" style="width:48%;">
-<div id="4dc46268" class="cell" data-execution_count="6">
+<div id="e0524067" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.parsing <span class="im">import</span> extract_pages</span>
 <span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> extract_pages(slide_pdf)</span>
@@ -466,7 +466,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 <li><p>Per leggerle: <strong>Visual RAG</strong>, descrizione automatica delle immagini + RAG o modelli multimodali. Ne parleremo più avanti</p></li>
 </ul>
 </div><div class="column" style="width:52%;">
-<div id="6d93eebc" class="cell" data-execution_count="7">
+<div id="0a6574cd" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <figure>
@@ -512,7 +512,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-partiamo-dalle-faq-ufficiali" class="slide level2 tabella-faq">
 <h2>Partiamo dalle FAQ ufficiali</h2>
-<div id="8b03f386" class="cell" data-execution_count="8">
+<div id="d73b90df" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>faq <span class="op">=</span> pd.read_json(DATA <span class="op">/</span> <span class="st">"eval/faq_questions.jsonl"</span>, lines<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(faq)<span class="sc">}</span><span class="ss"> FAQ da </span><span class="sc">{</span>faq<span class="sc">.</span>call<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss"> bandi (senza doppioni)"</span>)</span>
@@ -619,7 +619,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 <p>Abbiamo creato <strong>20 domande sulle immagini</strong> con Gemini, per verificare se il sistema trova informazioni che l’estrazione del testo può perdere, come date e importi</p>
 <div class="columns">
 <div class="column small" style="width:40%;">
-<div id="885f4e39" class="cell" data-execution_count="9">
+<div id="a85db622" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display cell-output-markdown">
 <p><strong>Domanda.</strong> Qual è la tariffa oraria standard per i Quadri nei costi semplificati per il personale (Azione 1.6.2) del Bando STEP?</p>
 <p><strong>Risposta attesa.</strong> € 47,00/ora</p>
@@ -629,7 +629,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </div>
 </div>
 </div><div class="column" style="width:60%;">
-<div id="d01947b9" class="cell" data-execution_count="10">
+<div id="d07b494d" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 <figure>
@@ -642,7 +642,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-riassunto-struttura-del-set-di-valutazione" class="slide level2 approfondimento">
 <h2>Riassunto: struttura del set di valutazione</h2>
-<div id="5a74ef5f" class="cell" data-execution_count="11">
+<div id="10764a2e" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a>images <span class="op">=</span> pd.read_json(DATA <span class="op">/</span> <span class="st">"eval/image_questions.jsonl"</span>, lines<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>both <span class="op">=</span> pd.concat([faq, images])</span>
 <span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> {<span class="st">"text"</span>: <span class="st">"testo"</span>, <span class="st">"table"</span>: <span class="st">"tabella"</span>, <span class="st">"image"</span>: <span class="st">"immagine"</span>, <span class="st">"none"</span>: <span class="st">"non nei documenti"</span>}</span>
@@ -654,7 +654,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 <img data-src="corso_files/figure-revealjs/cell-11-output-1.svg" class="r-stretch"></section>
 <section id="01-le-domande-senza-risposta-nei-documenti" class="slide level2">
 <h2>Le domande senza risposta nei documenti</h2>
-<div id="84aa5704" class="cell" data-execution_count="12">
+<div id="20bc2f00" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="11">
 <p><strong>Domanda.</strong> Ad oggi sul sistema SFINGE compare solo la possibilità di caricare il SAL, non compare la possibilità del saldo in un’unica soluzione. Quando sarà disponibile tale possibilità per rispettare le …</p>
 <p><strong>Risposta attesa.</strong> Verrà fatta una puntuale verifica sulla situazione dello specifico beneficiario</p>
@@ -750,7 +750,7 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="02-le-pagine-in-langchain" class="slide level2 approfondimento">
 <h2>Le pagine in LangChain</h2>
-<div id="c37a1681" class="cell" data-execution_count="14">
+<div id="e2a9e980" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.corpus <span class="im">import</span> load_pages</span>
 <span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> load_pages()  <span class="co"># one Document per page with text</span></span>
@@ -785,7 +785,7 @@ Unico di Proge …</code></pre>
 </section>
 <section id="02-chunking-chunk-piccoli-ricerca-precisa" class="slide level2">
 <h2>Chunking: chunk piccoli, ricerca precisa</h2>
-<div id="b9ae692c" class="cell" data-execution_count="15">
+<div id="86d86584" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_text_splitters <span class="im">import</span> RecursiveCharacterTextSplitter</span>
 <span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>splitter <span class="op">=</span> RecursiveCharacterTextSplitter(chunk_size<span class="op">=</span><span class="dv">1000</span>, chunk_overlap<span class="op">=</span><span class="dv">200</span>)</span>
@@ -799,7 +799,7 @@ Unico di Proge …</code></pre>
 <li>Taglia prima ai paragrafi, poi alle righe, poi agli spazi: le frasi restano intere</li>
 <li>Ogni chunk resta dentro la sua pagina: sappiamo sempre da dove viene</li>
 </ul>
-<div id="a25e7a43" class="cell" data-execution_count="16">
+<div id="823a4065" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>Chunk 1 · pagina 50: 50 3.5 Generazione Documento Fac-Simile Prima di procedere alla validazione e all’invio della richiesta, potete generare un documento Fac-Simile della…
 
@@ -822,7 +822,7 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-embedding-dal-testo-ai-numeri-1" class="slide level2">
 <h2>Embedding: dal testo ai numeri</h2>
-<div id="a7ece676" class="cell" data-execution_count="17">
+<div id="eec0dd91" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.models <span class="im">import</span> embedding_model</span>
 <span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>embeddings <span class="op">=</span> embedding_model(<span class="st">"e5-small"</span>)  <span class="co"># local, multilingual; swap it by name</span></span>
@@ -856,7 +856,7 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-somiglianza-tra-domanda-e-documenti" class="slide level2 approfondimento">
 <h2>Somiglianza tra domanda e documenti</h2>
-<div id="fc00db36" class="cell" data-execution_count="18">
+<div id="f66af4fe" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.viz <span class="im">import</span> bar_chart</span>
 <span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -980,7 +980,7 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-lindice-qdrant" class="slide level2">
 <h2>VectorStore: indice e ricerca con Qdrant</h2>
-<div id="a658cd71" class="cell" data-execution_count="19">
+<div id="d8b0f8ff" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_qdrant <span class="im">import</span> QdrantVectorStore</span>
 <span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a>store <span class="op">=</span> QdrantVectorStore.from_documents(</span>
@@ -1000,7 +1000,7 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-un-esempio-di-ricerca" class="slide level2">
 <h2>Un esempio di ricerca</h2>
-<div id="e8542228" class="cell" data-execution_count="21">
+<div id="33993339" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a>question <span class="op">=</span> example[<span class="st">"question"</span>]</span>
 <span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(question, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
 <span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> doc, score <span class="kw">in</span> store.similarity_search_with_score(question, k<span class="op">=</span><span class="dv">3</span>):</span>
@@ -1140,7 +1140,7 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-risultati-della-baseline" class="slide level2 approfondimento">
 <h2>Risultati della baseline</h2>
-<div id="17cb0407" class="cell" data-execution_count="23">
+<div id="e66d3323" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ranx <span class="im">import</span> evaluate</span>
 <span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.evaluation <span class="im">import</span> gold_qrels, retrieval_run</span>
 <span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1152,7 +1152,7 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 <span id="cb29-9"><a href="" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> [<span class="st">"hit_rate@1"</span>, <span class="st">"hit_rate@3"</span>, <span class="st">"hit_rate@5"</span>, <span class="st">"hit_rate@10"</span>, <span class="st">"recall@5"</span>, <span class="st">"mrr@10"</span>]</span>
 <span id="cb29-10"><a href="" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(evaluate(gold_qrels(answerable), run, metrics))</span>
 <span id="cb29-11"><a href="" aria-hidden="true" tabindex="-1"></a>results.<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>hit_rate@1     0.132
 hit_rate@3     0.251
 hit_rate@5     0.313
@@ -1165,7 +1165,7 @@ dtype: float64</code></pre>
 </section>
 <section id="02-la-baseline-in-un-grafico" class="slide level2">
 <h2>La baseline in un grafico</h2>
-<div id="0c8e3608" class="cell" data-execution_count="24">
+<div id="e08dc75e" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>hits <span class="op">=</span> results[[<span class="st">"hit_rate@1"</span>, <span class="st">"hit_rate@3"</span>, <span class="st">"hit_rate@5"</span>, <span class="st">"hit_rate@10"</span>]]</span>
 <span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a>bar_chart(hits.rename(<span class="kw">lambda</span> m: m.replace(<span class="st">"hit_rate"</span>, <span class="st">"hit"</span>)), fmt<span class="op">=</span><span class="st">"</span><span class="sc">{:.0%}</span><span class="st">"</span>,</span>
 <span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>          title<span class="op">=</span><span class="ss">f"Una pagina giusta tra le prime 5: </span><span class="sc">{</span>hits[<span class="st">'hit_rate@5'</span>]<span class="sc">:.0%}</span><span class="ss"> delle domande"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1178,11 +1178,11 @@ dtype: float64</code></pre>
 </section>
 <section id="02-risultati-per-tipo-di-fonte" class="slide level2 approfondimento">
 <h2>Risultati per tipo di fonte</h2>
-<div id="2e065e18" class="cell" data-execution_count="26">
+<div id="6e187911" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pd.DataFrame(run.scores)  <span class="co"># ranx keeps one score per question</span></span>
 <span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a>scores[<span class="st">"evidence"</span>] <span class="op">=</span> [names[by_id[qid][<span class="st">"evidence"</span>]] <span class="cf">for</span> qid <span class="kw">in</span> scores.index]</span>
 <span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a>by_evidence <span class="op">=</span> scores.groupby(<span class="st">"evidence"</span>)[<span class="st">"hit_rate@5"</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb32-4"><a href="" aria-hidden="true" tabindex="-1"></a>bar_chart(by_evidence, title<span class="op">=</span><span class="st">"hit@5 per tipo di evidenza"</span>, fmt<span class="op">=</span><span class="st">"</span><span class="sc">{:.0%}</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb32-4"><a href="" aria-hidden="true" tabindex="-1"></a>bar_chart(by_evidence, title<span class="op">=</span><span class="st">"hit@5 per tipo di fonte"</span>, fmt<span class="op">=</span><span class="st">"</span><span class="sc">{:.0%}</span><span class="st">"</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
 <img data-src="corso_files/figure-revealjs/cell-25-output-1.svg" class="r-stretch"><ul>
@@ -1241,7 +1241,7 @@ dtype: float64</code></pre>
 </section>
 <section id="03-metadati-restringere-la-ricerca" class="slide level2">
 <h2>Metadati: restringere la ricerca</h2>
-<div id="5fb87e28" class="cell" data-execution_count="31">
+<div id="a5f86e00" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a>calls <span class="op">=</span> pd.Series([chunk.metadata[<span class="st">"call"</span>] <span class="cf">for</span> chunk <span class="kw">in</span> chunks])</span>
 <span id="cb33-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(calls.nunique(), <span class="st">"bandi nell'indice</span><span class="ch">\n</span><span class="st">"</span>)</span>
 <span id="cb33-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1263,7 +1263,7 @@ avviso-per-la-concessione-di-contributi-a-favore-delle-imprese-per-progetti-di-r
 </section>
 <section id="03-con-qdrant-il-filtro-dentro-la-ricerca" class="slide level2 approfondimento">
 <h2>Con Qdrant: il filtro dentro la ricerca</h2>
-<div id="5eaee1d1" class="cell" data-execution_count="32">
+<div id="4b9703a9" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.filters <span class="im">import</span> metadata_filter</span>
 <span id="cb35-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-3"><a href="" aria-hidden="true" tabindex="-1"></a>call_filter <span class="op">=</span> metadata_filter(call<span class="op">=</span>example[<span class="st">"call"</span>])  <span class="co"># metadata.call == the question's call</span></span>
@@ -1290,13 +1290,13 @@ Con filtro:
 </section>
 <section id="03-risultati-il-filtro-migliora-la-ricerca" class="slide level2 approfondimento">
 <h2>Risultati: il filtro migliora la ricerca</h2>
-<div id="3b405868" class="cell" data-execution_count="33">
+<div id="cfe235cd" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>run_call <span class="op">=</span> retrieval_run(retriever, answerable, name<span class="op">=</span><span class="st">"filtro per bando"</span>, by_call<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> [<span class="st">"hit_rate@1"</span>, <span class="st">"hit_rate@5"</span>, <span class="st">"hit_rate@10"</span>, <span class="st">"recall@5"</span>, <span class="st">"mrr@10"</span>]</span>
 <span id="cb37-4"><a href="" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.DataFrame({run.name: evaluate(qrels, run, metrics) <span class="cf">for</span> run <span class="kw">in</span> [baseline, run_call]})</span>
 <span id="cb37-5"><a href="" aria-hidden="true" tabindex="-1"></a>results.<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="32">
+<div class="cell-output cell-output-display" data-execution_count="31">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1359,7 +1359,7 @@ Con filtro:
 </section>
 <section id="03-risultati-confronto-con-e-senza-filtro" class="slide level2">
 <h2>Risultati: confronto con e senza filtro</h2>
-<div id="72944ef3" class="cell" data-execution_count="35">
+<div id="3d889c30" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a>hits <span class="op">=</span> results.loc[[<span class="st">"hit_rate@1"</span>, <span class="st">"hit_rate@5"</span>, <span class="st">"hit_rate@10"</span>]]</span>
 <span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a>was, now <span class="op">=</span> hits.loc[<span class="st">"hit_rate@5"</span>]</span>
 <span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>compare_chart(hits.rename(<span class="kw">lambda</span> m: m.replace(<span class="st">"hit_rate"</span>, <span class="st">"hit"</span>)), fmt<span class="op">=</span><span class="st">"</span><span class="sc">{:.0%}</span><span class="st">"</span>,</span>
@@ -1391,11 +1391,11 @@ Con filtro:
 </section>
 <section id="03-il-filtro-migliora-davvero" class="slide level2">
 <h2>Il filtro migliora davvero?</h2>
-<div id="578866d4" class="cell" data-execution_count="36">
+<div id="3ee3d092" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ranx <span class="im">import</span> compare</span>
 <span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a>compare(qrels, runs<span class="op">=</span>[baseline, run_call], metrics<span class="op">=</span>[<span class="st">"hit_rate@5"</span>, <span class="st">"mrr@10"</span>], max_p<span class="op">=</span><span class="fl">0.01</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="35">
+<div class="cell-output cell-output-display" data-execution_count="34">
 <pre><code>#    Model             Hit Rate@5    MRR@10
 ---  ----------------  ------------  --------
 a    baseline          0.313         0.209
@@ -1471,7 +1471,7 @@ b    filtro per bando  0.648ᵃ        0.489ᵃ</code></pre>
 </section>
 <section id="04-il-prompt" class="slide level2">
 <h2>Il prompt</h2>
-<div id="18a3e043" class="cell" data-execution_count="42">
+<div id="4c3523ef" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(PROMPT.messages[<span class="dv">0</span>].prompt.template)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rispondi a domande sui bandi del PR FESR 2021-2027 dell'Emilia-Romagna.
@@ -1490,7 +1490,7 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-la-catena-prompt-modello-testo" class="slide level2 approfondimento">
 <h2>La catena: prompt → modello → testo</h2>
-<div id="55a46b8e" class="cell" data-execution_count="43">
+<div id="a7fac520" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.output_parsers <span class="im">import</span> StrOutputParser</span>
 <span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.models <span class="im">import</span> chat_model</span>
 <span id="cb43-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1518,7 +1518,7 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-llm-as-a-judge-come-viene-fatto-in-pratica" class="slide level2">
 <h2>“LLM as a judge”: come viene fatto in pratica</h2>
-<div id="72ab20ed" class="cell" data-execution_count="45">
+<div id="62a099e3" class="cell" data-execution_count="44">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
 <span id="cb44-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Verdict(BaseModel):  <span class="co"># what the judge must return</span></span>
@@ -1745,7 +1745,7 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-deepeval-in-pratica-verificare-la-fedeltà" class="slide level2">
 <h2>DeepEval in pratica: verificare la fedeltà</h2>
-<div id="a630aa1b" class="cell" data-execution_count="46">
+<div id="ad14e998" class="cell" data-execution_count="45">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.metrics <span class="im">import</span> FaithfulnessMetric</span>
 <span id="cb50-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.test_case <span class="im">import</span> LLMTestCase</span>
 <span id="cb50-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.judge <span class="im">import</span> judge_model</span>
@@ -1757,7 +1757,7 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 <span id="cb50-9"><a href="" aria-hidden="true" tabindex="-1"></a>                                  penalize_ambiguous_claims<span class="op">=</span><span class="va">True</span>, async_mode<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb50-10"><a href="" aria-hidden="true" tabindex="-1"></a>faithfulness.measure(case)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="a0c79281" class="cell" data-execution_count="47">
+<div id="ccebdbb2" class="cell" data-execution_count="46">
 <div class="cell-output cell-output-stdout">
 <pre><code>✓ nei documenti     Le microimprese possono presentare domanda e rientrano tra i beneficiari [...]
 ✗ contraddetta      Il contributo massimo concedibile è di 5 milioni di euro.
@@ -1790,7 +1790,7 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 <li><strong>Precisione</strong>: la frase è sostenuta proprio dal chunk <code>[n]</code> citato (<code>FaithfulnessMetric</code> sui soli chunk citati)?</li>
 <li><strong>Pertinenza della fonte</strong>: i chunk citati provengono dalle pagine <em>gold</em> della domanda?</li>
 </ul>
-<div id="7f22e29a" class="cell" data-execution_count="1">
+<div id="addf5774" class="cell" data-execution_count="47">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.chat <span class="im">import</span> cited</span>
 <span id="cb52-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-3"><a href="" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> cited(answer, found)                  <span class="co"># valid citations in 1..len(found)</span></span>
@@ -1806,7 +1806,7 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-correttezza-definire-i-criteri-con-geval" class="slide level2 approfondimento">
 <h2>Correttezza: definire i criteri con GEval</h2>
-<div id="73a70bd6" class="cell" data-execution_count="48">
+<div id="4c962ce6" class="cell" data-execution_count="48">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.metrics <span class="im">import</span> GEval</span>
 <span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.test_case <span class="im">import</span> SingleTurnParams</span>
 <span id="cb54-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1842,7 +1842,7 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 <section id="04-valutare-la-generazione-su-50-faq" class="slide level2 approfondimento">
 <h2>Valutare la generazione su 50 FAQ</h2>
 <p>Passiamo dal singolo caso al confronto su un insieme fisso di domande</p>
-<div id="40ddc709" class="cell" data-execution_count="49">
+<div id="0ade028b" class="cell" data-execution_count="49">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> pd.DataFrame(faq).sample(<span class="dv">50</span>, random_state<span class="op">=</span><span class="dv">0</span>).to_dict(<span class="st">"records"</span>)</span>
 <span id="cb55-2"><a href="" aria-hidden="true" tabindex="-1"></a>found_all <span class="op">=</span> [retrieve(q) <span class="cf">for</span> q <span class="kw">in</span> sample]  <span class="co"># one at a time: the local model stays deterministic</span></span>
 <span id="cb55-3"><a href="" aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> [{<span class="st">"context"</span>: format_context(found), <span class="st">"question"</span>: q[<span class="st">"question"</span>]}</span>
@@ -2004,7 +2004,7 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="05-valutare-lastensione-sul-set-di-test" class="slide level2 approfondimento">
 <h2>Valutare l’astensione sul set di test</h2>
-<div id="35e2976a" class="cell" data-execution_count="61">
+<div id="f171b441" class="cell" data-execution_count="60">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a>questions <span class="op">=</span> answerable <span class="op">+</span> unanswerable  <span class="co"># 50 with the answer in the documents, 48 without</span></span>
 <span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a>has_answer <span class="op">=</span> pd.Series([<span class="bu">bool</span>(q[<span class="st">"gold"</span>]) <span class="cf">for</span> q <span class="kw">in</span> questions])</span>
 <span id="cb56-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -2016,7 +2016,7 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 <span id="cb56-9"><a href="" aria-hidden="true" tabindex="-1"></a>abstained <span class="op">=</span> pd.Series([a.startswith(ABSTAIN) <span class="cf">for</span> a <span class="kw">in</span> answers])</span>
 <span id="cb56-10"><a href="" aria-hidden="true" tabindex="-1"></a>pd.crosstab(has_answer.<span class="bu">map</span>({<span class="va">True</span>: <span class="st">"risposta nei documenti"</span>, <span class="va">False</span>: <span class="st">"non nei documenti"</span>}),</span>
 <span id="cb56-11"><a href="" aria-hidden="true" tabindex="-1"></a>            abstained.<span class="bu">map</span>({<span class="va">True</span>: <span class="st">"si astiene"</span>, <span class="va">False</span>: <span class="st">"risponde"</span>})).rename_axis(index<span class="op">=</span><span class="va">None</span>, columns<span class="op">=</span><span class="va">None</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="60">
+<div class="cell-output cell-output-display" data-execution_count="59">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -2060,7 +2060,7 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="05-un-prompt-più-prudente" class="slide level2">
 <h2>Un prompt più prudente</h2>
-<div id="6c8402e3" class="cell" data-execution_count="62">
+<div id="a72eb8b2" class="cell" data-execution_count="61">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.generation <span class="im">import</span> COMPLETE_ONLY, PARTIAL_OK, PRUDENT_PROMPT</span>
 <span id="cb57-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb57-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Attuale: "</span>, PARTIAL_OK.replace(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">"</span><span class="ch">\n</span><span class="st">          "</span>))</span>
@@ -2087,7 +2087,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="05-cosa-succede-quando-non-si-astiene" class="slide level2 approfondimento">
 <h2>Cosa succede quando non si astiene?</h2>
-<div id="19da151d" class="cell" data-execution_count="64">
+<div id="914288d9" class="cell" data-execution_count="63">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval <span class="im">import</span> evaluate</span>
 <span id="cb59-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.evaluate.configs <span class="im">import</span> AsyncConfig, DisplayConfig</span>
 <span id="cb59-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.metrics <span class="im">import</span> FaithfulnessMetric</span>
@@ -2165,7 +2165,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-impatto-di-k-sul-retrieval" class="slide level2">
 <h2>Impatto di k sul retrieval</h2>
-<div id="d133dfee" class="cell" data-execution_count="68">
+<div id="51431f3b" class="cell" data-execution_count="67">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a>in_context <span class="op">=</span> pd.Series(dtype<span class="op">=</span><span class="bu">float</span>)</span>
 <span id="cb60-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> (<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>):</span>
 <span id="cb60-3"><a href="" aria-hidden="true" tabindex="-1"></a>    retriever <span class="op">=</span> store.as_retriever(search_kwargs<span class="op">=</span>{<span class="st">"k"</span>: k})</span>
@@ -2179,7 +2179,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <img data-src="corso_files/figure-revealjs/cell-67-output-1.svg" class="r-stretch"></section>
 <section id="06-valutare-la-generazione-al-variare-di-k" class="slide level2 approfondimento">
 <h2>Valutare la generazione al variare di k</h2>
-<div id="f8c800f1" class="cell" data-execution_count="69">
+<div id="c63f33db" class="cell" data-execution_count="68">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> answer_with(k: <span class="bu">int</span>):</span>
 <span id="cb61-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Every answer, with k chunks in the prompt; also counts the tokens."""</span></span>
 <span id="cb61-3"><a href="" aria-hidden="true" tabindex="-1"></a>    retriever <span class="op">=</span> store.as_retriever(search_kwargs<span class="op">=</span>{<span class="st">"k"</span>: k})</span>
@@ -2252,8 +2252,8 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-analisi-perché-la-fedeltà-cala-con-k20" class="slide level2 approfondimento">
 <h2>Analisi: perché la fedeltà cala con k=20?</h2>
-<div id="eafcb422" class="cell" data-execution_count="72">
-<div class="cell-output cell-output-display" data-execution_count="71">
+<div id="06b8cc1f" class="cell" data-execution_count="71">
+<div class="cell-output cell-output-display" data-execution_count="70">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -2363,7 +2363,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <li><strong>Chunk grandi</strong>: conservano più contesto, ma un singolo vettore deve riassumere argomenti diversi</li>
 <li><strong>Limite di lunghezza</strong>: ogni modello di embedding ha un numero massimo di token oltre il quale il testo viene troncato</li>
 </ul>
-<div id="65c206ae" class="cell" data-execution_count="77">
+<div id="2e1e13bb" class="cell" data-execution_count="76">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a>limit <span class="op">=</span> embeddings._client.max_seq_length  <span class="co"># e5-small: tokens it reads, the rest is ignored</span></span>
 <span id="cb62-2"><a href="" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> embeddings._client.tokenizer</span>
 <span id="cb62-3"><a href="" aria-hidden="true" tabindex="-1"></a>tokens <span class="op">=</span> pd.Series([<span class="bu">len</span>(tokenizer(d.page_content)[<span class="st">"input_ids"</span>]) <span class="cf">for</span> d <span class="kw">in</span> docs])</span>
@@ -2376,7 +2376,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="07-confronto-tra-diverse-dimensioni-di-chunk" class="slide level2 approfondimento">
 <h2>Confronto tra diverse dimensioni di chunk</h2>
-<div id="2bdcdcbd" class="cell" data-execution_count="78">
+<div id="8a0da161" class="cell" data-execution_count="77">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.index <span class="im">import</span> vector_store</span>
 <span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a>chunkings <span class="op">=</span> {</span>
@@ -2386,7 +2386,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <span id="cb64-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pagina"</span>: docs,  <span class="co"># no split: one page, one vector</span></span>
 <span id="cb64-8"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb64-9"><a href="" aria-hidden="true" tabindex="-1"></a>pd.Series({name: <span class="bu">len</span>(chunks) <span class="cf">for</span> name, chunks <span class="kw">in</span> chunkings.items()}, name<span class="op">=</span><span class="st">"chunk"</span>).to_frame().T</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="77">
+<div class="cell-output cell-output-display" data-execution_count="76">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -2433,7 +2433,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="07-valutazione-del-retrieval-con-ranx" class="slide level2 approfondimento">
 <h2>Valutazione del retrieval con ranx</h2>
-<div id="f4ffb20f" class="cell" data-execution_count="79">
+<div id="fb578d4a" class="cell" data-execution_count="78">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a>runs <span class="op">=</span> {}</span>
 <span id="cb65-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, chunks <span class="kw">in</span> chunkings.items():</span>
 <span id="cb65-3"><a href="" aria-hidden="true" tabindex="-1"></a>    store <span class="op">=</span> vector_store(chunks, embeddings, <span class="ss">f"e5-small-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">"</span>)  <span class="co"># embedded once, then reloaded</span></span>
@@ -2441,7 +2441,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <span id="cb65-5"><a href="" aria-hidden="true" tabindex="-1"></a>    runs[name] <span class="op">=</span> retrieval_run(retriever, with_pages, name<span class="op">=</span>name, by_call<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb65-6"><a href="" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.DataFrame({name: evaluate(qrels, run, metrics) <span class="cf">for</span> name, run <span class="kw">in</span> runs.items()})</span>
 <span id="cb65-7"><a href="" aria-hidden="true" tabindex="-1"></a>results.<span class="bu">round</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="78">
+<div class="cell-output cell-output-display" data-execution_count="77">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -2592,7 +2592,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="08-valutare-i-modelli-sul-retrieval" class="slide level2 approfondimento">
 <h2>Valutare i modelli sul retrieval</h2>
-<div id="f95e3146" class="cell" data-execution_count="83">
+<div id="6b6f23e9" class="cell" data-execution_count="82">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.models <span class="im">import</span> embedding_model, query_ms</span>
 <span id="cb66-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-3"><a href="" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [<span class="st">"e5-small"</span>, <span class="st">"e5-large"</span>, <span class="st">"bge-m3"</span>, <span class="st">"qwen3-0.6b"</span>, <span class="st">"google_genai:gemini-embedding-2"</span>]</span>
@@ -2626,7 +2626,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="08-impatto-dellembedding-sulla-generazione" class="slide level2 approfondimento">
 <h2>Impatto dell’embedding sulla generazione</h2>
-<div id="1b57c2f8" class="cell" data-execution_count="87">
+<div id="4c8fee96" class="cell" data-execution_count="86">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># The generation deck again (50 questions, 5 chunks, DeepEval), changing only the index.</span></span>
 <span id="cb67-2"><a href="" aria-hidden="true" tabindex="-1"></a>end_to_end <span class="op">=</span> pd.DataFrame({name: correctness_with(name) <span class="cf">for</span> name <span class="kw">in</span> [<span class="st">"e5-small"</span>, contender]})</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -2705,7 +2705,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="09-reciprocal-rank-fusion-unire-i-risultati" class="slide level2 approfondimento">
 <h2>Reciprocal Rank Fusion: unire i risultati</h2>
-<div id="b7127584" class="cell" data-execution_count="91">
+<div id="874a7746" class="cell" data-execution_count="90">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rrf(<span class="op">*</span>rankings, k<span class="op">=</span><span class="dv">60</span>):</span>
 <span id="cb68-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reciprocal Rank Fusion: an item rises if it is high in any list."""</span></span>
 <span id="cb68-3"><a href="" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> {}</span>
@@ -2717,7 +2717,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <span id="cb68-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb68-10"><a href="" aria-hidden="true" tabindex="-1"></a>rrf([<span class="st">"p40"</span>, <span class="st">"p12"</span>, <span class="st">"p7"</span>],  <span class="co"># by meaning</span></span>
 <span id="cb68-11"><a href="" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"p12"</span>, <span class="st">"p3"</span>, <span class="st">"p40"</span>])  <span class="co"># by words</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="90">
+<div class="cell-output cell-output-display" data-execution_count="89">
 <pre><code>['p12', 'p40', 'p3', 'p7']</code></pre>
 </div>
 </div>
@@ -2728,7 +2728,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="09-ricerca-densa-sparsa-e-ibrida-in-qdrant" class="slide level2 approfondimento">
 <h2>Ricerca densa, sparsa e ibrida in Qdrant</h2>
-<div id="9e52912d" class="cell" data-execution_count="92">
+<div id="634a93cc" class="cell" data-execution_count="91">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_qdrant <span class="im">import</span> RetrievalMode</span>
 <span id="cb70-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.index <span class="im">import</span> search_mode, vector_store</span>
 <span id="cb70-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.models <span class="im">import</span> embedding_model, sparse_model</span>
@@ -2749,7 +2749,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="09-risultati-confronto-tra-le-ricerche" class="slide level2">
 <h2>Risultati: confronto tra le ricerche</h2>
-<div id="ac646608" class="cell" data-execution_count="93">
+<div id="6b8266e4" class="cell" data-execution_count="92">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.DataFrame({name: evaluate(qrels, run, metrics) <span class="cf">for</span> name, run <span class="kw">in</span> runs.items()})</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
@@ -2832,7 +2832,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-come-funziona-il-reranking" class="slide level2">
 <h2>Come funziona il reranking</h2>
-<div id="c430e1f4" class="cell" data-execution_count="99">
+<div id="6fd3a36f" class="cell" data-execution_count="98">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rerank(question, candidates, score, top_n<span class="op">=</span><span class="dv">10</span>):</span>
 <span id="cb72-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reorder the candidates by a finer score, keep the best."""</span></span>
 <span id="cb72-3"><a href="" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> score(question, candidates)  <span class="co"># one number per candidate: higher = more useful</span></span>
@@ -2894,7 +2894,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-valutare-i-reranker-sul-retrieval" class="slide level2 approfondimento">
 <h2>Valutare i reranker sul retrieval</h2>
-<div id="68ed4a8f" class="cell" data-execution_count="100">
+<div id="040f560b" class="cell" data-execution_count="99">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.rerank <span class="im">import</span> (CachedRetriever, RerankRetriever, cross_encoder,</span>
 <span id="cb73-2"><a href="" aria-hidden="true" tabindex="-1"></a>                              decision_model, llm_listwise)</span>
 <span id="cb73-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -2907,7 +2907,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <span id="cb73-10"><a href="" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb73-11"><a href="" aria-hidden="true" tabindex="-1"></a>candidates <span class="op">=</span> CachedRetriever(base<span class="op">=</span>hybrid.as_retriever(search_kwargs<span class="op">=</span>{<span class="st">"k"</span>: <span class="dv">30</span>}))  <span class="co"># search once</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="823a9abf" class="cell" data-execution_count="102">
+<div id="aa45377d" class="cell" data-execution_count="101">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a>runs <span class="op">=</span> {}</span>
 <span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> [<span class="st">"nessuno"</span>, <span class="op">*</span>rerankers]:</span>
 <span id="cb74-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="op">==</span> <span class="st">"nessuno"</span>:</span>
@@ -2934,7 +2934,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-impatto-del-reranking-sulla-generazione" class="slide level2">
 <h2>Impatto del reranking sulla generazione</h2>
-<div id="122cb8fc" class="cell" data-execution_count="107">
+<div id="8703c922" class="cell" data-execution_count="106">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a>reranked <span class="op">=</span> RerankRetriever(base<span class="op">=</span>candidates, scorer<span class="op">=</span>rerankers[best](), top_n<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="cb75-2"><a href="" aria-hidden="true" tabindex="-1"></a>end_to_end <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb75-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nessuno"</span>: correctness_with(hybrid.as_retriever(search_kwargs<span class="op">=</span>{<span class="st">"k"</span>: <span class="dv">10</span>})),</span>
@@ -2980,7 +2980,7 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="11-il-problema-pagine-senza-testo-estraibile" class="slide level2">
 <h2>Il problema: pagine senza testo estraibile</h2>
-<div id="c2cbcb58" class="cell" data-execution_count="112">
+<div id="f3ad6fac" class="cell" data-execution_count="111">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(visual_pages(pages)), <span class="st">"pagine con meno di 50 caratteri di testo, su"</span>, <span class="bu">len</span>(pages))</span>
 <span id="cb76-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(on_images), <span class="st">"domande la cui risposta sta in una di queste pagine</span><span class="ch">\n</span><span class="st">"</span>)</span>
 <span id="cb76-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -3099,8 +3099,8 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 <h2>Esempio: tre trascrizioni a confronto</h2>
 <div class="columns">
 <div class="column" style="width:38%;">
-<div id="fe7de134" class="cell" data-execution_count="114">
-<div class="cell-output cell-output-display" data-execution_count="113">
+<div id="b409b8cc" class="cell" data-execution_count="113">
+<div class="cell-output cell-output-display" data-execution_count="112">
 <div>
 <figure>
 <p><img data-src="corso_files/figure-revealjs/cell-113-output-1.png"></p>
@@ -3119,8 +3119,8 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-tempi-di-estrazione-e-testo-prodotto" class="slide level2 approfondimento">
 <h2>Tempi di estrazione e testo prodotto</h2>
-<div id="6999fdc5" class="cell" data-execution_count="116">
-<div class="cell-output cell-output-display" data-execution_count="115">
+<div id="0afeead0" class="cell" data-execution_count="115">
+<div class="cell-output cell-output-display" data-execution_count="114">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -3177,7 +3177,7 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-integrare-il-testo-estratto-nellindice" class="slide level2 approfondimento">
 <h2>Integrare il testo estratto nell’indice</h2>
-<div id="23a935f2" class="cell" data-execution_count="117">
+<div id="f9bda3ef" class="cell" data-execution_count="116">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.index <span class="im">import</span> extended_store</span>
 <span id="cb79-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb79-3"><a href="" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> vector_store(chunks, embeddings, <span class="st">"bge-m3-1000-bm25"</span>, sparse<span class="op">=</span>bm25)</span>
@@ -3281,7 +3281,7 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-esempio-somiglianza-tra-testo-e-immagini" class="slide level2 approfondimento">
 <h2>Esempio: somiglianza tra testo e immagini</h2>
-<div id="074b7444" class="cell" data-execution_count="122">
+<div id="dcffec9a" class="cell" data-execution_count="121">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.visual <span class="im">import</span> PictureEmbeddings</span>
 <span id="cb80-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb80-3"><a href="" aria-hidden="true" tabindex="-1"></a>pictures <span class="op">=</span> PictureEmbeddings()  <span class="co"># Qwen3-VL-Embedding-2B, local GPU</span></span>
@@ -3293,7 +3293,7 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 <span id="cb80-9"><a href="" aria-hidden="true" tabindex="-1"></a>similarity <span class="op">=</span> pd.Series(page_vectors <span class="op">@</span> question,</span>
 <span id="cb80-10"><a href="" aria-hidden="true" tabindex="-1"></a>                       index<span class="op">=</span>[<span class="ss">f"</span><span class="sc">{</span>p[<span class="st">'title'</span>][:<span class="dv">30</span>]<span class="sc">}</span><span class="ss">, p. </span><span class="sc">{</span>p[<span class="st">'page'</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> p <span class="kw">in</span> pages_shown])</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="91cb2099" class="cell" data-execution_count="123">
+<div id="32eb0bb7" class="cell" data-execution_count="122">
 <div class="cell-output cell-output-stdout">
 <pre><code>Nel Bando Energia Imprese, quale percentuale minima in peso dei rifiuti da costruzione e demolizione deve essere avviata al riciclo per considerare assolti ex-ante i requisiti DNSH?</code></pre>
 </div>
@@ -3302,7 +3302,7 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 <img data-src="corso_files/figure-revealjs/cell-122-output-2.svg" class="r-stretch"></section>
 <section id="12-costruire-lindice-delle-immagini" class="slide level2 approfondimento">
 <h2>Costruire l’indice delle immagini</h2>
-<div id="4762c015" class="cell" data-execution_count="124">
+<div id="bb7da1ff" class="cell" data-execution_count="123">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.visual <span class="im">import</span> picture_store</span>
 <span id="cb82-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb82-3"><a href="" aria-hidden="true" tabindex="-1"></a>store <span class="op">=</span> picture_store(pictures_only, pictures, <span class="st">"qwen3-vl-emb-pictures"</span>)  <span class="co"># 476 pictures</span></span>
@@ -3317,7 +3317,7 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-combinare-ricerca-testuale-e-visiva" class="slide level2 approfondimento">
 <h2>Combinare ricerca testuale e visiva</h2>
-<div id="32072883" class="cell" data-execution_count="125">
+<div id="9ef18cb6" class="cell" data-execution_count="124">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ranx <span class="im">import</span> fuse</span>
 <span id="cb83-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb83-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Reciprocal Rank Fusion, the same idea as the hybrid search, between two indexes.</span></span>
@@ -3334,9 +3334,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 <img data-src="corso_files/figure-revealjs/cell-125-output-1.svg" class="r-stretch"></section>
 <section id="12-risultati-sullintero-set-di-valutazione" class="slide level2 approfondimento">
 <h2>Risultati sull’intero set di valutazione</h2>
-<div id="47b15c7d" class="cell" data-execution_count="127">
+<div id="09567e72" class="cell" data-execution_count="126">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="" aria-hidden="true" tabindex="-1"></a>results.<span class="bu">round</span>(<span class="dv">3</span>)  <span class="co"># all 227 questions, computed above</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="126">
+<div class="cell-output cell-output-display" data-execution_count="125">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -3391,7 +3391,7 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-generare-la-risposta-dalle-immagini" class="slide level2 approfondimento">
 <h2>Generare la risposta dalle immagini</h2>
-<div id="1d9a9c21" class="cell" data-execution_count="129">
+<div id="af75f8f3" class="cell" data-execution_count="128">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.generation <span class="im">import</span> picture_messages</span>
 <span id="cb85-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -3861,7 +3861,7 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
       });
     </script>
     <script type="application/vnd.jupyter.widget-state+json">
-    {"state":{"ac4ba161eb4a4b918396b614b7071e4c":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_b55a0a3f5e494716a9755a96b52b7a76","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">✨ You're running DeepEval's latest <span style=\"color: #6a00ff; text-decoration-color: #6a00ff\">Faithfulness Metric</span>! <span style=\"color: #374151; text-decoration-color: #374151\">(using google_genai:gemini-3.8-flash, strict=False, async…</span>\n</pre>\n","text/plain":"✨ You're running DeepEval's latest \u001b[38;2;106;0;255mFaithfulness Metric\u001b[0m! \u001b[38;2;55;65;81m(using google_genai:gemini-3.8-flash, strict=False, async…\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"b55a0a3f5e494716a9755a96b52b7a76":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}}},"version_major":2,"version_minor":0}
+    {"state":{"12ba0a9921a041079f2cd5e40ea53e05":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"8de22b60b9444179a344a256bb007346":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_12ba0a9921a041079f2cd5e40ea53e05","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">✨ You're running DeepEval's latest <span style=\"color: #6a00ff; text-decoration-color: #6a00ff\">Faithfulness Metric</span>! <span style=\"color: #374151; text-decoration-color: #374151\">(using google_genai:gemini-3.8-flash, strict=False, async…</span>\n</pre>\n","text/plain":"✨ You're running DeepEval's latest \u001b[38;2;106;0;255mFaithfulness Metric\u001b[0m! \u001b[38;2;55;65;81m(using google_genai:gemini-3.8-flash, strict=False, async…\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
