@@ -1,0 +1,224 @@
+{
+  "questions": 50,
+  "groups": {
+    "explicit": {
+      "count": 28,
+      "ids": [
+        "faq-097",
+        "faq-037",
+        "faq-154",
+        "faq-103",
+        "faq-228",
+        "faq-198",
+        "faq-008",
+        "faq-070",
+        "faq-109",
+        "faq-217",
+        "faq-092",
+        "faq-213",
+        "faq-160",
+        "faq-087",
+        "faq-219",
+        "faq-170",
+        "faq-210",
+        "faq-140",
+        "faq-018",
+        "faq-157",
+        "faq-172",
+        "faq-121",
+        "faq-232",
+        "faq-005",
+        "faq-090",
+        "faq-158",
+        "faq-079",
+        "faq-125"
+      ]
+    },
+    "deductive": {
+      "count": 13,
+      "ids": [
+        "faq-014",
+        "faq-006",
+        "faq-100",
+        "faq-138",
+        "faq-144",
+        "faq-041",
+        "faq-082",
+        "faq-020",
+        "faq-017",
+        "faq-184",
+        "faq-148",
+        "faq-146",
+        "faq-025"
+      ]
+    },
+    "external": {
+      "count": 9,
+      "ids": [
+        "faq-189",
+        "faq-107",
+        "faq-052",
+        "faq-182",
+        "faq-067",
+        "faq-224",
+        "faq-113",
+        "faq-180",
+        "faq-051"
+      ]
+    }
+  },
+  "context_coverage": {
+    "5": {
+      "contextual_recall": 0.09955555555555556,
+      "context_coverage_geval": 0.45799999999999996,
+      "zero_contextual_recall": 41,
+      "zero_context_coverage": 10,
+      "by_gold": {
+        "absent": {
+          "contextual_recall": 0.03125,
+          "context_coverage_geval": 0.13125,
+          "count": 16
+        },
+        "present": {
+          "contextual_recall": 0.13169934640522876,
+          "context_coverage_geval": 0.611764705882353,
+          "count": 34
+        }
+      }
+    },
+    "10": {
+      "contextual_recall": 0.16011111111111112,
+      "context_coverage_geval": 0.5660000000000001,
+      "zero_contextual_recall": 36,
+      "zero_context_coverage": 7,
+      "by_gold": {
+        "absent": {
+          "contextual_recall": 0.0,
+          "context_coverage_geval": 0.08181818181818182,
+          "count": 11
+        },
+        "present": {
+          "contextual_recall": 0.2052706552706553,
+          "context_coverage_geval": 0.7025641025641025,
+          "count": 39
+        }
+      }
+    },
+    "20": {
+      "contextual_recall": 0.18366666666666667,
+      "context_coverage_geval": 0.644,
+      "zero_contextual_recall": 36,
+      "zero_context_coverage": 5,
+      "by_gold": {
+        "absent": {
+          "contextual_recall": 0.0,
+          "context_coverage_geval": 0.07500000000000001,
+          "count": 4
+        },
+        "present": {
+          "contextual_recall": 0.1996376811594203,
+          "context_coverage_geval": 0.6934782608695652,
+          "count": 46
+        }
+      }
+    }
+  },
+  "runs": {
+    "flash_chunk_deductive": {
+      "correctness": 0.564,
+      "grounded_correctness": 0.93,
+      "abstained": 6,
+      "gold_found": 46,
+      "by_group_correctness": {
+        "explicit": 0.7714285714285715,
+        "deductive": 0.2846153846153846,
+        "external": 0.3222222222222222
+      },
+      "by_group_grounded": {
+        "explicit": 0.9392857142857143,
+        "deductive": 0.8999999999999999,
+        "external": 0.9444444444444444
+      }
+    },
+    "flash_pagine_deductive": {
+      "correctness": 0.59,
+      "grounded_correctness": 0.9359999999999999,
+      "abstained": 3,
+      "gold_found": 46,
+      "by_group_correctness": {
+        "explicit": 0.7678571428571429,
+        "deductive": 0.4153846153846154,
+        "external": 0.2888888888888889
+      },
+      "by_group_grounded": {
+        "explicit": 0.9107142857142857,
+        "deductive": 0.9692307692307692,
+        "external": 0.9666666666666666
+      }
+    },
+    "argon_chunk_deductive": {
+      "correctness": 0.63,
+      "grounded_correctness": 0.968,
+      "abstained": 0,
+      "gold_found": 46,
+      "by_group_correctness": {
+        "explicit": 0.8035714285714286,
+        "deductive": 0.4076923076923077,
+        "external": 0.41111111111111115
+      },
+      "by_group_grounded": {
+        "explicit": 0.9785714285714285,
+        "deductive": 0.9615384615384616,
+        "external": 0.9444444444444444
+      }
+    },
+    "argon_pagine_deductive": {
+      "correctness": 0.628,
+      "grounded_correctness": 0.946,
+      "abstained": 0,
+      "gold_found": 46,
+      "by_group_correctness": {
+        "explicit": 0.8107142857142857,
+        "deductive": 0.4153846153846154,
+        "external": 0.36666666666666664
+      },
+      "by_group_grounded": {
+        "explicit": 0.9464285714285714,
+        "deductive": 0.9461538461538462,
+        "external": 0.9444444444444444
+      }
+    },
+    "flash_pagine_baseline": {
+      "correctness": 0.5379999999999999,
+      "grounded_correctness": 0.934,
+      "abstained": 7,
+      "gold_found": 46,
+      "by_group_correctness": {
+        "explicit": 0.7392857142857142,
+        "deductive": 0.29230769230769227,
+        "external": 0.26666666666666666
+      },
+      "by_group_grounded": {
+        "explicit": 0.9214285714285715,
+        "deductive": 0.9230769230769231,
+        "external": 0.9888888888888889
+      }
+    },
+    "argon_pagine_baseline": {
+      "correctness": 0.5920000000000001,
+      "grounded_correctness": 0.9540000000000001,
+      "abstained": 0,
+      "gold_found": 46,
+      "by_group_correctness": {
+        "explicit": 0.7678571428571429,
+        "deductive": 0.3692307692307692,
+        "external": 0.3666666666666667
+      },
+      "by_group_grounded": {
+        "explicit": 0.9392857142857143,
+        "deductive": 0.9615384615384616,
+        "external": 0.9888888888888889
+      }
+    }
+  }
+}

@@ -21,6 +21,10 @@ htmlcov/
 # --- Quarto: outputs and caches are rebuilt by rendering ---
 .quarto/
 slides/_freeze/
+slides/_preview-corso.ipynb
+slides/_preview-corso.tmp
+slides/preview-corso.ipynb
+slides/preview-corso.tmp
 dist/
 # jupyter-cache of the slides: local, rebuilt by rendering
 .jupyter_cache/
@@ -55,6 +59,7 @@ service-account*.json
 
 # --- Local assistant instructions (never committed) ---
 CLAUDE.md
+AGENTS.md
 
 # --- DeepEval local runs and cache ---
 .deepeval/

@@ -14,23 +14,38 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from ragcourse.chat import call_label, cited, link_citations
 from ragcourse.corpus import load_pages
+from ragcourse.costs import PRICING_CHECKED, PRICING_URL, api_cost
 from ragcourse.evaluation import gold_found, page_id
 from ragcourse.filters import metadata_filter
 from ragcourse.generation import ABSTAIN, PROMPT, PRUDENT_PROMPT, format_context
 from ragcourse.index import extended_store, search_mode, vector_store
 from ragcourse.io import read_jsonl
-from ragcourse.models import CHAT_MODEL, chat_model, embedding_model, sparse_model
+from ragcourse.judge import judge_answer
+from ragcourse.models import (
+    CHAT_MODEL,
+    JUDGE_MODEL,
+    LABELING_MODEL,
+    chat_model,
+    embedding_model,
+    sparse_model,
+)
 from ragcourse.ocr import page_picture
 from ragcourse.paths import DATA
 from ragcourse.rerank import cross_encoder, llm_listwise
 
 CANDIDATES = 30  # first stage: what the reranker reads
+ANSWER_MODELS = {
+    CHAT_MODEL: "Gemini Flash",
+    LABELING_MODEL: "Gemini Argon",
+    "google_genai:gemma-4-31b-it": "Gemma 4 31B",
+}
 MODES = {
     "ibrida": RetrievalMode.HYBRID,
     "per significato": RetrievalMode.DENSE,
     "per parole": RetrievalMode.SPARSE,
 }
 EVIDENCE = {"text": "testo", "table": "tabella", "image": "immagine", "none": "assente"}
+EVIDENCE_ICONS = {"text": "📄", "table": "📊", "image": "🖼️", "none": "🚫"}
 
 st.set_page_config(page_title="Chiedi ai bandi FESR", page_icon="💬", layout="wide")
 
@@ -70,11 +85,17 @@ def reranker(name: str):
 
 
 @st.cache_resource
-def llm(thinking: str):
+def llm(model: str, thinking: str):
     """The answering model; 'predefinito' is the setting measured in the slides."""
-    return (
-        chat_model() if thinking == "predefinito" else chat_model(thinking_level="low")
-    )
+    if thinking == "basso" and not model.startswith("google_genai:gemma-"):
+        return chat_model(model, thinking_level="low")
+    return chat_model(model)
+
+
+@st.cache_resource
+def answer_judge():
+    """A separate judge client, independent of the answering model."""
+    return chat_model(JUDGE_MODEL, thinking_level="low", timeout=60)
 
 
 @st.cache_data
@@ -107,7 +128,13 @@ def thousands(n: int) -> str:
 
 def ask(question: str, settings: dict, status) -> dict:
     """Retrieve, rerank, answer: each step is written in the status box as it ends."""
-    turn = {"question": question, "settings": settings, "steps": [], "chunks": []}
+    turn = {
+        "question": question,
+        "settings": settings,
+        "steps": [],
+        "chunks": [],
+        "api_costs": [],
+    }
     turn["faq"] = next((q for q in examples() if q["question"] == question), None)
 
     def step(text: str) -> None:
@@ -135,7 +162,16 @@ def ask(question: str, settings: dict, status) -> dict:
         if settings["reranker"] != "nessuno":
             score = reranker(settings["reranker"])  # loaded once, not timed
             start = time.perf_counter()
-            scores = score(question, candidates)
+            with get_usage_metadata_callback() as rerank_usage:
+                scores = score(question, candidates)
+            if settings["reranker"] == "Gemini (API)":
+                turn["api_costs"].append(
+                    {
+                        "stage": "Reranking",
+                        "model": CHAT_MODEL,
+                        "usd": api_cost(CHAT_MODEL, rerank_usage.usage_metadata),
+                    }
+                )
             order.sort(key=lambda i: scores[i], reverse=True)
             step(
                 f"↕️ **Reranking** con {settings['reranker']}: riletti tutti i "
@@ -147,26 +183,71 @@ def ask(question: str, settings: dict, status) -> dict:
         prompt = PRUDENT_PROMPT if settings["prompt"] == "prudente" else PROMPT
         inputs = {"context": format_context(turn["chunks"]), "question": question}
         turn["prompt"] = prompt.invoke(inputs).to_messages()
-        chain = prompt | llm(settings["thinking"]) | StrOutputParser()
+        chain = (
+            prompt | llm(settings["model"], settings["thinking"]) | StrOutputParser()
+        )
     else:
         step("🚫 **Nessun documento**: il modello risponde con quello che ricorda")
         turn["prompt"] = [HumanMessage(question)]
-        chain = llm(settings["thinking"]) | StrOutputParser()
+        chain = llm(settings["model"], settings["thinking"]) | StrOutputParser()
         inputs = question
 
     status.update(label="Scrivo la risposta…")
     start = time.perf_counter()
     with get_usage_metadata_callback() as usage:
         turn["answer"] = st.empty().write_stream(chain.stream(inputs))
+    turn["api_costs"].append(
+        {
+            "stage": "Risposta",
+            "model": settings["model"],
+            "usd": api_cost(settings["model"], usage.usage_metadata),
+        }
+    )
     tokens = next(iter(usage.usage_metadata.values()), {})
     thinking = tokens.get("output_token_details", {}).get("reasoning", 0)
     step(
-        f"✍️ **Risposta** di {CHAT_MODEL.split(':')[-1]}: "
+        f"✍️ **Risposta** di {ANSWER_MODELS[settings['model']]}: "
         f"{thousands(tokens.get('input_tokens', 0))} token letti, "
         f"{thousands(tokens.get('output_tokens', 0))} scritti"
         + (f" (di cui {thousands(thinking)} per ragionare)" if thinking else "")
         + f" · {seconds(time.perf_counter() - start)}"
     )
+    if settings["judge"]:
+        status.update(label="Valuto la correttezza…")
+        expected = turn["faq"]["answer"] if turn["faq"] else None
+        turn["judge_basis"] = (
+            "Confronto con la risposta ufficiale della FAQ"
+            if expected
+            else (
+                "Verifica rispetto ai documenti recuperati"
+                if turn["chunks"]
+                else "Nessun riferimento disponibile"
+            )
+        )
+        start = time.perf_counter()
+        with get_usage_metadata_callback() as judge_usage:
+            try:
+                reference_available = bool(expected or turn["chunks"])
+                chat = answer_judge() if reference_available else None
+                judgment = judge_answer(
+                    chat, question, turn["answer"], turn["chunks"], expected
+                )
+                turn["judgment"] = judgment.model_dump()
+                step(
+                    f"⚖️ **Giudice {ANSWER_MODELS[JUDGE_MODEL]}**: {judgment.verdict}"
+                    f" · {seconds(time.perf_counter() - start)}"
+                )
+            except Exception:
+                turn["judge_error"] = True
+                step("⚖️ **Giudizio non disponibile**: la risposta è stata conservata.")
+        if reference_available:
+            turn["api_costs"].append(
+                {
+                    "stage": "Giudice",
+                    "model": JUDGE_MODEL,
+                    "usd": api_cost(JUDGE_MODEL, judge_usage.usage_metadata),
+                }
+            )
     return turn
 
 
@@ -186,7 +267,10 @@ def summary(settings: dict) -> str:
         ]
     if settings["thinking"] != "predefinito":
         levers.append(f"ragionamento {settings['thinking']}")
-    return "Dietro le quinte · " + ", ".join(levers)
+    if settings.get("judge"):
+        levers.append("con giudice")
+    model = settings.get("model", CHAT_MODEL)
+    return "Dietro le quinte · " + ", ".join([ANSWER_MODELS[model], *levers])
 
 
 def show_sources(turn: dict) -> None:
@@ -271,7 +355,47 @@ def show(turn: dict) -> None:
             for text in turn["steps"]:
                 st.markdown(text)
         st.markdown(link_citations(turn["answer"], turn["chunks"]))
+        show_judgment(turn)
+        show_cost(turn)
         details(turn)
+
+
+def show_judgment(turn: dict) -> None:
+    """Keep a model's assessment distinct from an independently verified fact."""
+    if turn.get("judge_error"):
+        st.warning("Il giudice non è riuscito a valutare questa risposta.")
+    elif judgment := turn.get("judgment"):
+        st.markdown(f"**⚖️ Giudizio AI: {judgment['verdict']}**")
+        st.caption(f"{ANSWER_MODELS[JUDGE_MODEL]} · {turn['judge_basis']}")
+        st.markdown(link_citations(judgment["reason"], turn["chunks"]))
+
+
+def show_cost(turn: dict) -> None:
+    """Show each API stage, without treating missing usage as zero."""
+    costs = turn.get("api_costs", [])
+    if not costs:
+        return
+
+    def dollars(value: float | None) -> str:
+        if value is None:
+            return "non disponibile"
+        if value == 0:
+            return "0,00 USD"
+        if value < 0.000001:
+            return "< 0,000001 USD"
+        return f"{value:.6f} USD".replace(".", ",")
+
+    complete = all(c["usd"] is not None for c in costs)
+    total = sum(c["usd"] or 0 for c in costs) if complete else None
+    st.caption(f"💰 Costo API stimato: **{dollars(total)}**")
+    if len(costs) > 1:
+        st.caption(" · ".join(f"{c['stage']}: {dollars(c['usd'])}" for c in costs))
+    if not complete:
+        st.caption("Consumi dei token non disponibili per una o più chiamate.")
+    st.caption(
+        f"[Listino Google standard]({PRICING_URL}), verificato il {PRICING_CHECKED}. "
+        "L'eventuale piano gratuito può azzerare il costo."
+    )
 
 
 def details(turn: dict) -> None:
@@ -301,6 +425,9 @@ st.caption(
 )
 
 with st.sidebar:
+    if st.button("Pulisci chat", width="stretch"):
+        st.session_state["turns"] = []
+
     calls = sorted({p["call"] for p in pages().values() if p["call"]})
     call = st.selectbox(
         "Bando",
@@ -311,12 +438,27 @@ with st.sidebar:
     example = st.selectbox(
         f"Domande di esempio ({len(choices)})",
         choices,
-        format_func=lambda q: f"[{EVIDENCE[q['evidence']]}] {q['question']}",
+        format_func=lambda q: f"{EVIDENCE_ICONS[q['evidence']]} {q['question']}",
+        help="📄 Testo · 📊 Tabella · 🖼️ Immagine · 🚫 Risposta assente dai documenti",
     )
     asked = st.button("Chiedi questa", width="stretch")
 
-    st.header("Le leve")
+    st.header("Le variabili")
+    model = st.selectbox(
+        "Modello di risposta",
+        list(ANSWER_MODELS),
+        format_func=ANSWER_MODELS.get,
+        help="Tutti via API Google. Gemma ha pesi aperti, ma qui gira via API.",
+    )
+    supports_thinking = not model.startswith("google_genai:gemma-")
     settings = {
+        "model": model,
+        "judge": st.toggle(
+            "Valuta la correttezza",
+            value=True,
+            help="Giudice Flash: confronta con la FAQ ufficiale, se disponibile, "
+            "altrimenti verifica la risposta sui documenti recuperati. Usa l'API.",
+        ),
         "call": call,
         "rag": st.toggle("Usa i documenti", value=True),
         "ocr": st.toggle("Pagine-immagine lette con OCR", value=True),
@@ -333,9 +475,10 @@ with st.sidebar:
         ),
         "thinking": st.radio(
             "Ragionamento del modello",
-            ["predefinito", "basso"],
+            ["predefinito", "basso"] if supports_thinking else ["predefinito"],
             horizontal=True,
             help="Basso: risposte più rapide ed economiche, non misurate nel corso",
+            disabled=not supports_thinking,
         ),
     }
 

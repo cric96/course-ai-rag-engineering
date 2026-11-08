@@ -1,4 +1,4 @@
-# Visual RAG
+# Visual RAG {.approfondimento}
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -10,10 +10,10 @@
 [Domanda<br>+ bando]{.step} [Retrieval<br>testo + immagini]{.step .store .active} [Generazione<br>guarda la pagina]{.step .active} [Risposta]{.step}
 :::
 
-Niente OCR: le pagine si cercano e si leggono come immagini.
+In alternativa all'OCR, possiamo indicizzare direttamente le immagini delle pagine e passarle a un modello multimodale in fase di generazione
 
 ::: {.notes}
-≈ 13 minuti · da 3:27 a 3:40
+Approfondimento facoltativo: saltare nel percorso di tre ore. Se lo si mostra, ridurre altri blocchi.
 :::
 
 ```{python}
@@ -93,12 +93,11 @@ tesseract_retriever = extended_store(
     sparse=bm25).as_retriever(search_kwargs={"k": 20})
 ```
 
-## L'idea
+## Come funziona il Visual RAG {.approfondimento}
 
-- Un modello di embedding **multimodale** mette immagini e testi nello stesso spazio:
-  la domanda (testo) è vicina alla pagina (immagine) che le risponde
-- Nessuna trascrizione: restano **tabelle, grafici, impaginazione**
-- Per rispondere, un LLM che vede le immagini legge direttamente la pagina
+- Un modello di embedding **multimodale** rappresenta testi e immagini nello stesso spazio vettoriale, permettendo di confrontare una domanda testuale con le immagini delle pagine
+- Non serve trascrivere il testo: vengono preservati **tabelle, grafici e layout** della pagina
+- In fase di generazione, il modello multimodale riceve direttamente le immagini delle pagine recuperate
 
 | | OCR (capitolo precedente) | Visual RAG |
 |---|---|---|
@@ -107,7 +106,7 @@ tesseract_retriever = extended_store(
 | Si perde | impaginazione, grafici | niente, ma costa più token |
 : {tbl-colwidths="[16,42,42]"}
 
-## Funziona? Una prova
+## Esempio: somiglianza tra testo e immagini {.approfondimento}
 
 ```{python}
 from ragcourse.visual import PictureEmbeddings
@@ -128,7 +127,7 @@ print(examples[0]["question"])
 bar_chart(similarity, title="Somiglianza della domanda con tre pagine-immagine", fmt="{:.2f}")
 ```
 
-## L'indice delle immagini
+## Costruire l'indice delle immagini {.approfondimento}
 
 ```{python}
 #| output: false
@@ -143,7 +142,7 @@ picture_run = retrieval_run(picture_retriever, with_pages, name="solo immagini",
 - Solo le 476 pagine senza testo: le altre le trova già bene la ricerca sul testo
 - Stessa interfaccia LangChain: stesso filtro per bando, stessa valutazione con ranx
 
-## Fondere testo e immagini
+## Combinare ricerca testuale e visiva {.approfondimento}
 
 ```{python}
 from ranx import fuse
@@ -166,7 +165,7 @@ bar_chart(hit5, gray=["solo testo"], fmt="{:.0%}",
                 f"testo + immagini {hit5['testo + immagini']:.0%}")
 ```
 
-## E tutte le altre domande?
+## Risultati sull'intero set di valutazione {.approfondimento}
 
 ```{python}
 results.round(3)  # all 227 questions, computed above
@@ -182,7 +181,7 @@ print(f"- **Fondere alla cieca peggiora le altre domande**: {h['testo + immagini
 print(f"- L'OCR invece aggiunge senza togliere: {h['testo + OCR']:.0%}")
 ```
 
-## Rispondere guardando la pagina
+## Generare la risposta dalle immagini {.approfondimento}
 
 ```{python}
 #| output: false
@@ -224,7 +223,7 @@ for name, answer in sources.items():
     tokens[name] = sum(u["input_tokens"] for u in usage.usage_metadata.values()) / len(on_images)
 ```
 
-## Quale risponde meglio?
+## Risultati: qualità delle risposte {.approfondimento}
 
 ```{python}
 #| echo: false
@@ -250,27 +249,14 @@ compare_chart(scores.mean().to_frame("correttezza").T, fmt="{:.2f}",
 ```
 
 ::: {.muted}
-Risposte attese scritte da Gemini guardando la pagina (capitolo sui dati): un vantaggio per chi guarda.
+Risposte attese scritte da Gemini guardando la pagina (capitolo sui dati): un vantaggio per chi guarda
 :::
 
-## Che cosa ci dice
+## Analisi: OCR contro Visual RAG {.approfondimento}
 
-```{python}
-#| echo: false
-#| output: asis
-means = scores.mean()
-print(f"- **Trovare**: l'indice delle immagini trova la pagina giusta nel "
-      f"{hit5['solo immagini']:.0%} delle domande sulle immagini, senza leggere una parola")
-print(f"- **Rispondere**: guardare la pagina ({means['guarda le pagine']:.2f}) vale quanto un buon "
-      f"OCR ({means['OCR Gemini']:.2f}); un OCR con errori costa di più "
-      f"({means['OCR Tesseract']:.2f})")
-print(f"- **Costi**: token in ingresso per risposta, {tokens['OCR Gemini']:,.0f} con 10 chunk "
-      f"di testo e {tokens['guarda le pagine']:,.0f} con 3 immagini; l'indice delle immagini "
-      "vuole una GPU")
-print("- **In pratica**: OCR per tutto, perché è semplice e compatibile; le immagini quando "
-      "contano impaginazione, tabelle e grafici")
-```
+- **Trovare**: l'indice delle immagini trova la pagina giusta nel **100%** delle domande sulle immagini, senza leggere una parola
+- **Rispondere**: guardare la pagina (**0,95**) vale quanto un buon OCR (**0,97**), mentre un OCR con errori ottiene un punteggio più basso (**0,88**)
+- **Costi**: **2.396** token in ingresso per risposta con 10 chunk di testo contro **3.452** con 3 immagini (e l'indice delle immagini richiede una GPU)
+- **In pratica**: conviene usare l'OCR come base perché è semplice e compatibile con la ricerca testuale, riservando le immagini ai casi in cui contano impaginazione, tabelle e grafici
 
-::: {.takeaway}
-Leggere o guardare: due strade per le stesse pagine. Si sceglie misurando, come sempre.
-:::
+- L'estrazione del testo con OCR e l'uso diretto delle immagini sono due approcci alternativi: la scelta dipende da quanto contano elementi visivi come tabelle e grafici e dai costi sostenibili

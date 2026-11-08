@@ -6,10 +6,10 @@
 [Domanda<br>+ bando]{.step} [Retrieval<br>significato + parole]{.step .store .active} [Reranking]{.step} [Generazione]{.step} [Risposta]{.step}
 :::
 
-Nuova baseline: `bge-m3`, chunk da 1000 caratteri, filtro per bando. Ora aggiungiamo le parole.
+Partendo dalla nuova configurazione di riferimento (`bge-m3`, chunk da 1000 caratteri e filtro per bando), affianchiamo alla ricerca semantica quella per parole chiave
 
 ::: {.notes}
-≈ 6 minuti · da 2:47 a 2:53
+≈ 7 minuti · da 2:05 a 2:12
 :::
 
 ```{python}
@@ -48,7 +48,7 @@ qrels = gold_qrels(with_pages)
 metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 ```
 
-## Due modi di cercare
+## Ricerca semantica e ricerca per parole
 
 | | Per **significato** (denso) | Per **parole** (sparso, BM25) |
 |---|---|---|
@@ -57,11 +57,9 @@ metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 | Sbaglia | parole rare che il modello non conosce | la stessa idea detta con altre parole |
 : {tbl-colwidths="[16,42,42]"}
 
-::: {.takeaway}
-Sbagliano su domande diverse: per questo conviene usarli insieme.
-:::
+- Poiché la ricerca semantica e quella lessicale hanno punti di forza complementari, combinarle può aiutare a gestire sia le parafrasi sia i termini tecnici esatti
 
-## Fondere due classifiche, in poche righe
+## Reciprocal Rank Fusion: unire i risultati {.approfondimento}
 
 ```{python}
 def rrf(*rankings, k=60):
@@ -77,10 +75,10 @@ rrf(["p40", "p12", "p7"],  # by meaning
     ["p12", "p3", "p40"])  # by words
 ```
 
-- Conta solo la **posizione**, non il punteggio: i due sistemi hanno scale diverse
-- Qdrant lo fa da solo, dentro la ricerca: `RetrievalMode.HYBRID`
+- La formula usa solo la **posizione in classifica** e non i punteggi grezzi, che nei due metodi hanno scale non confrontabili
+- Qdrant esegue direttamente questa fusione durante la ricerca con `RetrievalMode.HYBRID`
 
-## Un indice, tre modi di cercare
+## Ricerca densa, sparsa e ibrida in Qdrant {.approfondimento}
 
 ```{python}
 #| output: false
@@ -101,7 +99,7 @@ for name, mode in modes.items():
 - Ogni chunk ha **due vettori**: quello di `bge-m3` e quello di BM25
 - Stesso filtro per bando, stesse 227 domande, stesse metriche
 
-## I risultati
+## Risultati: confronto tra le ricerche
 
 ```{python}
 results = pd.DataFrame({name: evaluate(qrels, run, metrics) for name, run in runs.items()})
@@ -120,7 +118,7 @@ bar_chart(hit5, gray=["significato"], fmt="{:.0%}",
 percorso["hit@5"]["+ ricerca ibrida"] = hit5["ibrida"]
 ```
 
-## Dove le parole aiutano
+## Quando la ricerca per parole aiuta {.approfondimento}
 
 ```{python}
 #| echo: false
@@ -149,7 +147,7 @@ print(f"Su tutto il set, l'ibrida porta tra le prime 5 **{won}** domande che il 
       f"mancava, e ne perde **{lost}**.")
 ```
 
-## Che cosa ci dice
+## Analisi dei risultati sulla ricerca ibrida
 
 ```{python}
 #| echo: false
@@ -158,11 +156,9 @@ print(f"- **Le parole da sole** arrivano al {hit5['parole']:.0%}: una baseline e
       "e senza GPU, da provare sempre")
 p = p_value(qrels, runs["ibrida"], runs["significato"], "hit_rate@5")
 print(f"- **L'ibrida** aggiunge {(hit5['ibrida'] - hit5['significato']) * 100:.0f} punti a "
-      f"`bge-m3`, ma con p = {p:.2f} può essere caso: qualche domanda guadagnata, qualcuna persa")
+      f"`bge-m3`: qualche domanda guadagnata, qualcuna persa")
 print("- Costa poco (un secondo vettore per chunk) e porta candidati più vari: "
       "la usiamo come primo passo del reranking")
 ```
 
-::: {.takeaway}
-Qui, con un buon embedding, le parole aggiungono poco. Va misurato su ogni corpus.
-:::
+- Su questo corpus, partendo già da un buon modello di embedding, il contributo della ricerca per parole è limitato: come sempre, conviene verificare l'effetto sui propri dati

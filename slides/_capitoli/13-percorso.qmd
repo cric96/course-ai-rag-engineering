@@ -1,9 +1,9 @@
-# Il percorso
+# Riepilogo del percorso
 
-Dalla prima misura all'ultima: che cosa ha funzionato, e quanto.
+Ripercorriamo i passaggi visti finora per confrontare il contributo delle singole scelte sulle metriche di retrieval e di generazione
 
 ::: {.notes}
-≈ 20 minuti · da 3:40 a 4:00
+≈ 20 minuti · da 2:40 a 3:00, inclusi demo finale e domande
 :::
 
 ```{python}
@@ -22,7 +22,7 @@ correct = pd.Series(percorso["correttezza"])
 ocr = percorso["ocr"]
 ```
 
-## Trovare la pagina giusta
+## Riepilogo sul retrieval
 
 ```{python}
 #| echo: false
@@ -32,10 +32,10 @@ bar_chart(hits, gray=[hits.index[0]], fmt="{:.0%}",
 
 ::: {.muted}
 Ogni barra aggiunge una leva alla precedente, sulle stesse 227 domande. Il chunking da 1000
-caratteri era già nella partenza: 500 e 2000 non hanno fatto meglio.
+caratteri era già nella partenza: 500 e 2000 non hanno fatto meglio
 :::
 
-## Rispondere bene
+## Riepilogo sulla generazione
 
 ```{python}
 #| echo: false
@@ -44,25 +44,25 @@ bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
 ```
 
 ::: {.muted}
-Stesse 50 domande, stesso prompt, stesso giudice. Ogni barra aggiunge una leva alla precedente.
+Stesse 50 domande, stesso prompt, stesso giudice. Ogni barra aggiunge una leva alla precedente
 :::
 
-## Più contesto dopo la ricerca
+## Esperimento: chunk contro pagine intere {.approfondimento}
 
 ![](assets/experiment-page-context.svg){.r-stretch}
 
 - **Stessi 10 chunk selezionati** dal reranker Gemini: li passiamo al generatore,
   oppure recuperiamo le rispettive pagine complete, senza duplicati
-- Correttezza **0,510 → 0,538**; contesto medio **8.533 → 20.614 caratteri**
+- Correttezza **0,510 → 0,538**, con un contesto medio che passa da **8.533 a 20.614 caratteri**
 - 12 risposte migliorano, 12 peggiorano, 26 restano uguali
 
 ::: {.muted}
 Esperimento aggiuntivo sulle stesse 50 FAQ, senza OCR. IC bootstrap appaiato al 95%
-della differenza: −0,022 / +0,080; il guadagno è ancora incerto. Si cercano sempre
-chunk: non è l'embedding della pagina intera provato nel capitolo sul chunking.
+della differenza: −0,022 / +0,080 (il guadagno resta incerto). Si cercano sempre
+chunk: non è l'embedding della pagina intera provato nel capitolo sul chunking
 :::
 
-## Una pipeline tutta locale
+## Esperimento: una pipeline tutta locale {.approfondimento}
 
 ![](assets/experiment-pipeline-comparison.svg){.r-stretch}
 
@@ -71,7 +71,7 @@ chunk: non è l'embedding della pagina intera provato nel capitolo sul chunking.
 
 ::: {.muted}
 50 FAQ, stesso prompt e giudice (Gemini Flash), senza OCR. Riferimento commerciale:
-Gemini Flash. Modello locale su RTX 4070 da 12 GB; risultato su questo campione.
+Gemini Flash. Modello locale su RTX 4070 da 12 GB (risultato su questo campione)
 :::
 
 ::: {.notes}
@@ -87,7 +87,59 @@ Il divario dal riferimento Gemini con pagine è −0,170; IC bootstrap appaiato 
 −0,284 / −0,050. Non è una misura del limite dei modelli open più grandi.
 :::
 
-## Che cosa ha contato di più
+## Confronto complessivo tra le pipeline {.approfondimento}
+
+![](assets/experiment-pipeline-comparison-argon.svg){.r-stretch}
+
+- Usando le pagine complete e un generatore più capace la correttezza media sul campione sale da **0,538** a **0,592**, anche se su 50 domande il margine di incertezza resta ampio
+
+::: {.muted .small}
+Stesse 50 FAQ e giudice Flash. Il vantaggio sulle pagine è ancora incerto: IC 95% −0,006 / +0,122
+:::
+
+::: {.notes}
+Esperimento del 7 novembre 2026. In tutte le pipeline: bge-m3 + BM25 italiano,
+filtro per bando, senza OCR. Le etichette indicano reranker / generatore.
+Il reranker Flash sceglie 10 chunk tra 30; Flash e Argon ricevono gli stessi
+chunk, oppure le stesse pagine complete da cui provengono. Controllati ID,
+domande, risposte attese, pagine selezionate e lunghezze dei contesti per tutti
+i 50 casi, con lo stesso prompt e lo stesso giudice del riferimento.
+10 chunk: Flash 0,510, Argon 0,584; delta +0,074, IC bootstrap appaiato al 95%
++0,002 / +0,152. 19 miglioramenti, 18 parità, 13 peggioramenti.
+Pagine complete: Flash 0,538, Argon 0,592; delta +0,054, IC −0,006 / +0,122.
+17 miglioramenti, 23 parità, 10 peggioramenti. Le astensioni passano da 9 a 0
+con i chunk e da 7 a 0 con le pagine. L'IC sulle pagine include zero:
+il vantaggio osservato non è ancora conclusivo. Sono medie GEval da 0 a 1,
+non percentuali di risposte esatte. La valutazione è fatta da Flash e riguarda
+questo campione; non è una classifica generale dei modelli.
+:::
+
+## Perché la correttezza si ferma intorno a 0,60? {.approfondimento}
+
+![](assets/experiment-improvements.svg){.r-stretch}
+
+- Con titoli dei documenti e prompt deduttivo saliamo a **0,59** (Flash) e **0,63** (Argon), raggiungendo **0,81** sulle **28 FAQ esplicite nei bandi** e **0,95** rispetto ai soli fatti presenti nel contesto (`grounded_correctness_metric`)
+
+::: {.muted .small}
+Le altre 22 FAQ richiedono deduzioni su casi non nominati (13 FAQ, 0,42) o fonti esterne/refusi (9 FAQ, 0,37)
+:::
+
+::: {.notes}
+Esperimento con scripts/evaluate_improvements.py sulle stesse 50 FAQ (random_state=0).
+Passando titolo del documento e pagina al reranker (with_titles=True) e alle pagine
+(with_headers), e consentendo nel prompt di trarre conclusioni da elenchi tassativi
+(DEDUCTIVE_PROMPT), la correttezza standard sale da 0,538 a 0,590 con Flash e da
+0,592 a 0,628 con Argon (0,630 coi chunk). Sulle 13 FAQ deduttive (es. apprendistato
+faq-014, collaboratore occasionale faq-006/020, diagnosi energetiche faq-100) Flash
+sale da 0,292 a 0,415. Sulle 28 FAQ la cui risposta è esplicitamente nei documenti,
+Argon raggiunge 0,811 (Flash 0,768). Le restanti 9 FAQ dipendono da leggi esterne
+non presenti nel corpus (L.R. 14/2003 in faq-180 e faq-189, iperammortamento in faq-182),
+da un refuso del bando corretto nella FAQ (faq-107) o da dettagli operativi del portale.
+Valutando la correttezza senza penalizzare l'assenza di fonti esterne al contesto
+(grounded_correctness_metric), il punteggio medio è 0,946–0,968.
+:::
+
+## Quali leve hanno avuto più impatto?
 
 ```{python}
 #| echo: false
@@ -98,17 +150,17 @@ bar_chart(gains.sort_values(ascending=False), fmt="+{:.0f}",
 ```
 
 ::: {.muted}
-L'OCR è misurato sulla ricerca ibrida senza reranking. La ricerca ibrida aggiunge poco,
-e quel poco può essere caso.
+L'OCR è misurato sulla ricerca ibrida senza reranking. La ricerca ibrida aggiunge poco
+su questo set di valutazione
 :::
 
-## Che cosa portarsi a casa
+## Conclusioni: cosa portarsi a casa
 
-1. **Prima la misura**: un set di valutazione, validato da chi conosce i documenti
-2. **Una leva alla volta**, con un test statistico: tante piccole differenze sono caso
-3. **Prima il retrieval**: se la pagina giusta non arriva al modello, la risposta non si salva
-4. **Anche il giudice è un modello**: si guarda come decide, e si controlla a campione
-5. **Qualità, rischio e costo insieme**: rispondere di più vuol dire anche inventare di più
+1. **Partire da un set di valutazione**, costruito o validato insieme a chi conosce i documenti di dominio
+2. **Modificare una variabile alla volta** e verificare con un test statistico che le differenze non siano dovute al caso
+3. **Curare prima il retrieval**: se i passaggi rilevanti non vengono recuperati, il generatore non ha gli elementi per rispondere correttamente
+4. **Verificare anche il giudice automatico**, ispezionando i giudizi su un campione di risposte
+5. **Valutare insieme qualità, astensione e costi**, scegliendo il compromesso più adatto al caso d'uso
 
 ## Demo: tutte le leve {.standout .center background-color="#23373b"}
 

@@ -84,6 +84,16 @@ def test_listwise_prompt_numbers_the_candidates_from_one():
     assert "[1] scadenze" in prompt and "[2] spese ammissibili" in prompt
 
 
+def test_listwise_prompt_can_include_document_titles_and_pages():
+    docs = [
+        Document("scadenze", metadata={"title": "Bando.pdf", "page": 2}),
+        Document("spese", metadata={"title": "Manuale.pdf", "page": 8}),
+    ]
+    prompt = listwise_prompt("CUP?", docs, with_titles=True)
+    assert "[1] Bando.pdf, p. 2\nscadenze" in prompt
+    assert "[2] Manuale.pdf, p. 8\nspese" in prompt
+
+
 @pytest.fixture
 def scores_on(monkeypatch, tmp_path):
     """The reranker scores go to a fresh file; the cache is off again after the test."""

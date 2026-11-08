@@ -20,3 +20,16 @@ def load_pages(path: Path = PAGES) -> list[Document]:
         for page in read_jsonl(path)
         if page["text"]  # pages without a text layer are invisible to text search
     ]
+
+
+def with_headers(docs: list[Document]) -> list[Document]:
+    """Prepend document title and page to each document's text."""
+    return [
+        Document(
+            page_content=f"[{doc.metadata['title']}, p. {doc.metadata['page']}]\n"
+            f"{doc.page_content}",
+            metadata=doc.metadata,
+            id=doc.id,
+        )
+        for doc in docs
+    ]

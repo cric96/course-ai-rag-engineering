@@ -1,4 +1,4 @@
-# Saper dire «non lo so»
+# L'astensione: saper dire «non lo so»
 
 ::: {.pipeline}
 [Interrogazione · per ogni domanda]{.lane}
@@ -6,10 +6,10 @@
 [Domanda<br>+ bando]{.step} [Retrieval<br>con filtro]{.step .store} [Reranking]{.step} [Generazione<br>LLM]{.step .active} [Risposta<br>o «non lo so»]{.step .active}
 :::
 
-Per un ufficio pubblico, una risposta inventata con sicurezza è peggio di nessuna risposta.
+Quando i documenti non contengono la risposta, è preferibile che il sistema si astenga piuttosto che fornire informazioni non supportate
 
 ::: {.notes}
-≈ 15 minuti · da 2:05 a 2:20
+≈ 10 minuti · da 1:30 a 1:40
 :::
 
 ```{python}
@@ -64,17 +64,17 @@ answerable = answerable.to_dict("records")  # the 50 questions of the previous d
 by_id = {q["id"]: q for q in faq}
 ```
 
-## Due modi di sbagliare
+## Rispondere o astenersi: i due errori
 
 - **Rispondere senza informazioni sufficienti**: il modello può inventare dettagli
-    o fornire una risposta non supportata dai documenti.
+    o fornire una risposta non supportata dai documenti
 - **Rinunciare quando le informazioni sono disponibili**: il modello si astiene
-    anche se avrebbe potuto aiutare chi ha posto la domanda.
+    anche se avrebbe potuto aiutare chi ha posto la domanda
 
 Quando non trova informazioni utili, il prompt chiede al modello di rispondere:
-«Non lo trovo nei documenti.»
+«Non lo trovo nei documenti»
 
-## Le domande senza risposta
+## Le domande senza risposta nei documenti
 
 ```{python}
 #| echo: false
@@ -88,10 +88,10 @@ for qid in ["faq-043", "faq-234"]:
 ```
 
 ::: {.muted}
-Etichettate da un LLM, come il resto del set: qualcuna potrebbe avere una risposta parziale.
+Etichettate da un LLM, come il resto del set: qualcuna potrebbe avere una risposta parziale
 :::
 
-## Il test, in poche righe
+## Valutare l'astensione sul set di test {.approfondimento}
 
 ```{python}
 questions = answerable + unanswerable  # 50 with the answer in the documents, 48 without
@@ -119,9 +119,9 @@ prudent = (PRUDENT_PROMPT | llm | StrOutputParser()).batch(inputs, config={"max_
 ```
 
 - Le istruzioni, i documenti e le domande restano gli stessi
-    - cambia solo il criterio con cui il modello decide se astenersi.
+    - cambia solo il criterio con cui il modello decide se astenersi
 
-## Il compromesso
+## Risultati: risposta contro astensione
 
 ```{python}
 #| echo: false
@@ -141,9 +141,9 @@ compare_chart(both, fmt="{:.0%}",
 
 ⚠️ **Attenzione:** il prompt prudente si astiene più spesso quando la risposta manca, ma anche
 quando è presente nei documenti: riduce il rischio di risposte senza supporto,
-al costo di rinunciare a più risposte utili.
+al costo di rinunciare a più risposte utili
 
-## Quando risponde senza appoggio, inventa?
+## Cosa succede quando non si astiene? {.approfondimento}
 
 ```{python}
 #| output: false
@@ -174,7 +174,7 @@ print("- Il rischio vero è il «sì» sicuro di sé, quando la regola ha un'ecc
       "che i documenti non riportano")
 ```
 
-## Un «sì» di troppo
+## Esempio: una risposta parziale rischiosa
 
 ```{python}
 #| echo: false
@@ -190,20 +190,12 @@ print(f"\n:::\n::::\n\n::: {{.small}}\nFedeltà **{scores[qid]:.1f}**: "
       "la regola generale è nei documenti, l'eccezione ammessa dall'ufficio no.\n:::")
 ```
 
-::: {.takeaway}
-Documenti e prassi dell'ufficio non sempre coincidono. In produzione anche le FAQ andrebbero
-indicizzate (qui no: sono la nostra verifica).
-:::
+- Il testo dei bandi e le prassi operative non sempre coincidono: in un sistema in produzione converrebbe indicizzare anche le FAQ, che qui teniamo separate solo per usarle come test
 
-## Chi decide la soglia?
+## Come scegliere il livello di prudenza?
 
-- **L'ufficio, non il modello**: dipende da chi legge la risposta
-  - cittadini e imprese → meglio prudente, con un rinvio all'ufficio
-  - personale interno → meglio una risposta parziale, con le fonti
-- Con un prompt abbiamo **due punti** soli. Un *decision model* (Jev, LiquidAI d1) darebbe
-  una probabilità di "rispondibile": la soglia diventerebbe una manopola (qui non lo misuriamo)
-- Ogni miglioramento del retrieval va ricontrollato **anche** qui
-
-::: {.takeaway}
-Si misurano sempre insieme: quante volte inventa, e quante volte rinuncia.
-:::
+- **La scelta dipende dai destinatari** del servizio:
+  - per cittadini e imprese è preferibile un comportamento più prudente, con un rimando agli uffici
+  - per il personale interno può essere utile anche una risposta parziale, purché accompagnata dalle fonti
+- Modificando il prompt possiamo solo scegliere tra poche formulazioni discrete, mentre modelli dedicati (*decision model*, come Jev o LiquidAI d1) stimano una probabilità su cui fissare una soglia continua
+- Ogni modifica al retrieval cambia i passaggi forniti al modello e va quindi rivalutata anche sull'astensione, misurando insieme la capacità di astenersi e la percentuale di risposte utili

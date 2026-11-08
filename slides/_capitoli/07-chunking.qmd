@@ -6,10 +6,10 @@
 [Documenti]{.step} [Parsing]{.step} [Chunking]{.step .active} [Embedding]{.step} [Indice<br>Qdrant]{.step .store}
 :::
 
-La pagina viene tagliata in chunk prima dell'embedding. Quanto grandi?
+Prima di calcolare gli embedding, dividiamo ogni pagina in chunk: vediamo come cambia il retrieval al variare della loro dimensione
 
 ::: {.notes}
-≈ 7 minuti · da 2:30 a 2:37
+≈ 7 minuti · da 1:50 a 1:57
 :::
 
 ```{python}
@@ -47,12 +47,11 @@ embeddings = embedding_model("e5-small")
 metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 ```
 
-## Chunk piccoli o grandi?
+## Dimensione dei chunk: piccoli o grandi?
 
-- **Piccoli**: ogni vettore parla di una cosa sola, la ricerca è precisa.
-  Ma il chunk può perdere il contesto ("il contributo" di quale misura?)
-- **Grandi**: più contesto, ma il vettore è una media di tanti argomenti
-- **Un limite nascosto**: il modello di embedding legge al massimo un certo numero di token
+- **Chunk piccoli**: ciascun vettore rappresenta un singolo concetto e la ricerca è più mirata, ma si rischia di spezzare informazioni collegate
+- **Chunk grandi**: conservano più contesto, ma un singolo vettore deve riassumere argomenti diversi
+- **Limite di lunghezza**: ogni modello di embedding ha un numero massimo di token oltre il quale il testo viene troncato
 
 ```{python}
 limit = embeddings._client.max_seq_length  # e5-small: tokens it reads, the rest is ignored
@@ -61,7 +60,11 @@ tokens = pd.Series([len(tokenizer(d.page_content)["input_ids"]) for d in docs])
 print(f"e5-small legge {limit} token: {(tokens > limit).mean():.0%} delle pagine è più lunga")
 ```
 
-## Quattro modi di tagliare
+Gli embedding **dei chunk si calcolano una volta e si riusano** nelle ricerche.
+Se cambiano i chunk (testo, dimensione o sovrapposizione) oppure il modello di
+embedding, si ricalcolano i vettori interessati e si aggiorna l'indice.
+
+## Confronto tra diverse dimensioni di chunk {.approfondimento}
 
 ```{python}
 from ragcourse.index import vector_store
@@ -75,9 +78,10 @@ chunkings = {
 pd.Series({name: len(chunks) for name, chunks in chunkings.items()}, name="chunk").to_frame().T
 ```
 
-- Sovrapposizione al 20% in ogni caso; indici salvati su disco con `vector_store(...)`
+- Sovrapposizione al 20% in ogni caso
+- Indici salvati su disco con `vector_store(...)`
 
-## Il confronto, con ranx
+## Valutazione del retrieval con ranx {.approfondimento}
 
 ```{python}
 runs = {}
@@ -90,10 +94,10 @@ results.round(3)
 ```
 
 ::: {.muted}
-Caratteri per chunk (500, 1000, 2000) o pagina intera. Sempre 20 chunk, filtro per bando.
+Caratteri per chunk (500, 1000, 2000) o pagina intera. Sempre 20 chunk, filtro per bando
 :::
 
-## Il risultato
+## Risultati: impatto del chunking
 
 ```{python}
 #| echo: false
@@ -104,20 +108,18 @@ bar_chart(hit5.rename(lambda name: name if name == "pagina" else f"{name} caratt
                 f"la baseline {hit5['1000']:.0%}")
 ```
 
-## Che cosa ci dice
+## Analisi dei risultati sul chunking
 
 ```{python}
 #| echo: false
 #| output: asis
 p = p_value(qrels, runs["500"], runs["1000"], "hit_rate@5")  # ranx's paired test
-print(f"- **500 e 1000 caratteri sono pari** (hit@5 {hit5['500']:.1%} e {hit5['1000']:.1%}): "
-      f"con p = {p:.2f} la differenza può essere caso. Teniamo 1000: metà dei vettori")
+print(f"- **500 e 1000 caratteri hanno risultati simili** (hit@5 {hit5['500']:.1%} e {hit5['1000']:.1%}): "
+      f"Teniamo 1000: metà dei vettori")
 print(f"- **Chunk più grandi peggiorano**, la pagina intera di più ({hit5['pagina']:.1%}): "
       f"il vettore mescola argomenti, e il {(tokens > limit).mean():.0%} delle pagine "
       "supera i token che il modello legge")
 print("- Qui il chunking non è il collo di bottiglia: il prossimo indiziato è l'embedding")
 ```
 
-::: {.takeaway}
-Anche un risultato "nessun miglioramento" è un risultato: evita di cambiare senza motivo.
-:::
+- Verificare che una modifica non porta miglioramenti significativi è comunque utile, perché ci permette di mantenere la configurazione più semplice ed economica

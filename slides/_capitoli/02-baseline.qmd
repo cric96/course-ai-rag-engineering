@@ -10,10 +10,10 @@
 [Domanda]{.step .deferred} [Retrieval]{.step .store .active} [Reranking]{.step .deferred} [Generazione]{.step .deferred} [Risposta]{.step .deferred}
 :::
 
-Per iniziare, cerchiamo le pagine rilevanti e misuriamo quanto spesso le troviamo.
+Per iniziare, cerchiamo le pagine rilevanti e misuriamo quanto spesso le troviamo
 
 ::: {.notes}
-≈ 25 minuti · da 0:40 a 1:05
+≈ 20 minuti · da 0:30 a 0:50
 :::
 
 ```{python}
@@ -40,30 +40,25 @@ names = {"text": "testo", "table": "tabella", "image": "immagine"}
 
 ## Che cos'è LangChain?
 
-**LangChain** è una libreria per costruire applicazioni che usano modelli linguistici.
+**LangChain** è una libreria per costruire applicazioni che usano modelli linguistici
 
 - Offre componenti per **documenti**, suddivisione del testo, embedding e ricerca
 - Integra modelli, basi di dati vettoriali e altri strumenti attraverso interfacce comuni
 - Permette di collegare i componenti e sostituire le implementazioni, per esempio
     cambiando il modello di embedding o l'indice
+- Nel nostro caso lo usiamo per assemblare rapidamente la pipeline e confrontare le diverse scelte mantenendo invariato il resto del codice
 
-::: {.takeaway}
-Nel nostro caso lo usiamo per costruire e confrontare le parti della pipeline RAG.
-:::
-
-## LangChain nella nostra pipeline
+## LangChain nella nostra pipeline {.approfondimento}
 
 ::: {.pipeline}
 [<span>Pagine<br><code>Document</code></span>]{.step} [<span>Suddivisione<br><code>TextSplitter</code></span>]{.step} [<span>Vettori<br><code>Embeddings</code></span>]{.step} [<span>Indice<br><code>VectorStore</code></span>]{.step .store} [<span>Ricerca<br><code>Retriever</code></span>]{.step}
 :::
 
-- Le pagine sono documenti con **testo e metadati**; lo splitter le divide in pezzi.
-- Il modello di embedding trasforma i pezzi in vettori, conservati nell'indice.
-- Il retriever usa l'indice per cercare i pezzi rilevanti per una domanda.
+- Le pagine sono documenti con **testo e metadati**, che lo splitter divide in pezzi
+- Il modello di embedding trasforma i pezzi in vettori, conservati nell'indice
+- Il retriever usa l'indice per cercare i pezzi rilevanti per una domanda
 
-::: {.takeaway}
-Vediamo ora come costruire e usare ciascun componente nella nostra pipeline.
-:::
+- Vediamo ora uno per uno questi cinque componenti per costruire la nostra prima versione funzionante della pipeline
 
 ## Document: testo e provenienza
 
@@ -77,9 +72,9 @@ doc = Document(page_content="Testo della pagina", metadata={"page": 1})
 - `metadata`: informazioni associate, come documento, pagina e bando
 - `id`: identificativo opzionale del documento
 
-Nel nostro corpus, ogni pagina con testo è un `Document`.
+Nel nostro corpus, ogni pagina con testo è un `Document`
 
-## Le pagine in LangChain
+## Le pagine in LangChain {.approfondimento}
 
 ```{python}
 from ragcourse.corpus import load_pages
@@ -93,7 +88,7 @@ print(doc.metadata["title"], "· pagina", doc.metadata["page"], "\n")
 print(doc.page_content[:230], "…")
 ```
 
-## Text splitter: dividere i documenti
+## Text splitter: dividere i documenti {.approfondimento}
 
 ```python
 splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -156,17 +151,17 @@ print(len(vector), "numeri:", [round(x, 3) for x in vector[:5]], "…")
 ![Proiezione degli embedding della domanda e di tre testi](assets/embedding-example.svg){height=375}
 
 Ogni punto è un testo. La mappa riduce **384 dimensioni a 2** con PCA:
-le distanze sono approssimate.
+le distanze sono approssimate
 
-## Il testo indicizzato sulla mappa
+## Il testo indicizzato sulla mappa {.approfondimento}
 
-**19.782 pezzi di testo** indicizzati; la stella rappresenta la domanda.
+**19.782 pezzi di testo** indicizzati. La stella rappresenta la domanda
 
 ![](assets/corpus-embeddings.svg){height=350 fig-alt="Proiezione degli embedding del corpus e della domanda"}
 
-PCA riduce 384 dimensioni a 2: **le distanze sono approssimate**.
+PCA riduce 384 dimensioni a 2: **le distanze sono approssimate**
 
-## Somiglianza tra domanda e documenti
+## Somiglianza tra domanda e documenti {.approfondimento}
 
 ```{python}
 import numpy as np
@@ -180,23 +175,20 @@ bar_chart(pd.Series(similarity, index=passages).sort_values(ascending=False),
           title="Somiglianza con la domanda sul computer", fmt="{:.2f}")
 ```
 
-- **NB**: Un testo simile non contiene necessariamente la risposta.
+- **NB**: Un testo simile non contiene necessariamente la risposta
 
 ## Che cos'è Qdrant?
 
 **Qdrant** è un database vettoriale: conserva embedding e metadati, e cerca i
 documenti più simili a una domanda. È tra i database vettoriali specializzati
-[più popolari](https://db-engines.com/en/ranking/vector+dbms).
+[più popolari](https://db-engines.com/en/ranking/vector+dbms)
 
 - Supporta filtri sui metadati e ricerca ibrida, oltre alla ricerca vettoriale
 - Può funzionare in locale, su un server o come servizio cloud
 - **Alternative**: Chroma, Weaviate, Milvus oppure PostgreSQL con `pgvector`
+- Nella nostra pipeline accediamo a Qdrant tramite l'interfaccia `VectorStore` di LangChain, così il codice di ricerca resta indipendente dal database scelto
 
-::: {.takeaway}
-LangChain fornisce l'interfaccia `VectorStore`; Qdrant è il database che usiamo.
-:::
-
-## Database vettoriali: quale scegliere?
+## Database vettoriali: quale scegliere? {.approfondimento}
 
 ::: {.small}
 | Tecnologia | Punti di forza | Limiti e compromessi |
@@ -209,22 +201,9 @@ LangChain fornisce l'interfaccia `VectorStore`; Qdrant è il database che usiamo
 : {tbl-colwidths="[24,38,38]"}
 :::
 
-La scelta dipende dai **dati**, dai carichi e dall'infrastruttura già disponibile.
+La scelta dipende dai **dati**, dai carichi e dall'infrastruttura già disponibile
 
-## VectorStore: costruire e interrogare l'indice
-
-```python
-store = QdrantVectorStore.from_documents(
-    chunks, embeddings, location=":memory:", collection_name="fesr"
-)
-documents = store.similarity_search(question, k=5)
-```
-
-- `from_documents(...)`: crea l'indice a partire dai documenti e dal modello di embedding
-- `similarity_search(question, k=5)`: restituisce fino a 5 documenti simili
-- `similarity_search_with_score(...)`: restituisce anche un punteggio per ogni risultato
-
-## L'indice: Qdrant
+## VectorStore: indice e ricerca con Qdrant {#lindice-qdrant}
 
 ```{python}
 from langchain_qdrant import QdrantVectorStore
@@ -234,11 +213,16 @@ store = QdrantVectorStore.from_documents(
 )
 print(store.client.count("fesr").count, "vettori nell'indice")
 ```
-- Tipicamente l'indice è su disco o su un server: `location="qdrant.db"`
-- Qui gira in memoria, senza server: `location=":memory:"`
+```python
+documents = store.similarity_search(question, k=5)
+```
+
+- `from_documents(...)` costruisce l'indice
+- `similarity_search(...)` cerca fino a 5 documenti simili
+- Qui l'indice è in memoria. Per conservarlo su disco: `path="qdrant.db"`
 
 
-## Una ricerca
+## Un esempio di ricerca
 
 ```{python}
 #| echo: false
@@ -263,24 +247,46 @@ for doc, score in store.similarity_search_with_score(question, k=3):
 ✓ = pagina gold, cioè dove sta davvero la risposta
 :::
 
-## Come si misura: tre formule
+## Come si misura il retrieval: il concetto di @k {#come-si-misura-tre-formule}
 
-```{python}
+Per ogni domanda il retriever ordina le pagine dalla più simile alla meno simile,
+ma al modello linguistico passiamo solo le **prime *k*** (ad esempio *k* = 5)
+
+- **@k ("nei primi *k* risultati")**: tagliamo la classifica alla posizione *k* e valutiamo solo ciò che cade entro quel limite. Tutto ciò che finisce dopo il *k*-esimo posto viene ignorato, perché non entra nel prompt del modello
+- **Cosa ci dice confrontare diversi valori di *k*** (*@1*, *@3*, *@5*, *@10*): mostra **dove cadono le pagine giuste** nella classifica e guida le scelte successive:
+    - se già **@1** è alto, la pagina giusta compare subito al primo posto
+    - se **@1** è basso ma **@5** o **@10** sono alti, l'indice trova la pagina giusta ma la mette in basso: possiamo passare più risultati al modello o riordinarli (*reranking*)
+    - se anche **@10** o **@20** restano bassi, l'indice non trova proprio la pagina: serve intervenire su filtri, chunking, embedding o lettura delle immagini
+
+## Le tre metriche: Hit@k, Recall@k, MRR
+
+Fissata la soglia *k*, tre metriche misurano aspetti complementari della ricerca:
+
+- **Hit@k** (*almeno una?*): per una domanda vale **1** se nei primi *k* risultati c'è **almeno una** pagina *gold*, altrimenti **0**. Mediato su tutte le domande (*hit rate@k*), indica la **percentuale di domande** per cui almeno una fonte utile arriva al modello
+- **Recall@k** (*quante sul totale?*): vale **pagine giuste nei primi *k* / totale pagine giuste** della domanda. Quando la risposta richiede informazioni distribuite su **più pagine**, **Hit@k** vale già 1 appena ne trova una sola, mentre **Recall@k** misura se le stiamo recuperando **tutte**
+- **MRR — Mean Reciprocal Rank** (*quanto in alto?*): **Hit@5** non distingue se la pagina giusta è al 1° o al 5° posto. Il *Reciprocal Rank* invece vale **1 / posizione** della prima pagina giusta (**1** se è 1ª, **1/2** se è 2ª, **1/3** se è 3ª, **0** se non compare entro *k*), e l'**MRR** è la media su tutte le domande
+
+## Come si misura: un esempio in Python {#come-si-misura-un-esempio-in-python .approfondimento}
+
+Guardiamo i **primi 3 risultati**. Le pagine utili sono **B e D**
+
+```python
 from ragcourse.metrics import hit_at_k, recall_at_k, reciprocal_rank
 
-found = ["p40", "p12", "p7", "p13", "p2"]  # pages, best first
-gold_pages = {"p12", "p13"}
-hit_at_k(found, gold_pages, 1), recall_at_k(found, gold_pages, 3), reciprocal_rank(found, gold_pages)
+found = ["A", "B", "C"]  # best first
+gold_pages = {"B", "D"}
+k = 3
+
+hit_at_k(found, gold_pages, k)        # 1
+recall_at_k(found, gold_pages, k)     # 0.5
+reciprocal_rank(found, gold_pages)    # 0.5
 ```
 
-`k` indica quante pagine esaminate, a partire dalla prima.
+- **Hit:** troviamo almeno una pagina utile, B
+- **Recall:** recuperiamo metà delle pagine utili: B c'è, D manca
+- **Reciprocal rank:** la prima pagina utile è al secondo posto
 
-- **Hit@k**: c'è almeno una pagina giusta? Qui **hit@1 = 0**: la prima è sbagliata.
-- **Recall@k**: quale frazione delle pagine giuste abbiamo trovato? Qui **recall@3 = 1/2**.
-- **Reciprocal rank**: quanto in alto compare la prima pagina giusta? Qui è seconda: **1/2**.
-    L'**MRR** è la media di questo valore su più domande.
-
-## Retriever: cercare documenti
+## Retriever: cercare documenti {.approfondimento}
 
 ```python
 retriever = store.as_retriever(search_kwargs={"k": 20})
@@ -293,7 +299,7 @@ documents = retriever.invoke(question)
 
 ## Che cos'è ranx?
 
-**ranx** è una libreria Python per valutare e confrontare sistemi di ricerca.
+**ranx** è una libreria Python per valutare e confrontare sistemi di ricerca
 
 - **Qrels**: per ogni domanda, le pagine di riferimento considerate rilevanti
 - **Run**: per ogni domanda, le pagine trovate dal sistema, con i loro punteggi
@@ -301,7 +307,7 @@ documents = retriever.invoke(question)
     metriche come hit@k, recall@k e MRR, mediandole sulle domande
 
 
-## Risultati della baseline
+## Risultati della baseline {.approfondimento}
 ```{python}
 from ranx import evaluate
 from ragcourse.evaluation import gold_qrels, retrieval_run
@@ -330,10 +336,10 @@ bar_chart(hits.rename(lambda m: m.replace("hit_rate", "hit")), fmt="{:.0%}",
 percorso = {"hit@5": {"partenza: e5-small": results["hit_rate@5"]}, "correttezza": {}}
 ```
 
-- Già comunque abbiamo una pipeline "funzionante": per il **50% delle domande**, la prima pagina trovata contiene la risposta.
-- Però, come vedremo, la **qualità della risposta** dipende anche da quale pagina viene trovata.
+- Già con questa configurazione iniziale troviamo una pagina rilevante tra le prime 5 per il **31% delle domande** (e al primo posto per il **13%**)
+- Però, come vedremo, la **qualità della risposta** dipende anche da quale pagina viene trovata
 
-## Dove sta la risposta conta
+## Risultati per tipo di evidenza {.approfondimento}
 
 ```{python}
 scores = pd.DataFrame(run.scores)  # ranx keeps one score per question
@@ -343,13 +349,12 @@ bar_chart(by_evidence, title="hit@5 per tipo di evidenza", fmt="{:.0%}")
 ```
 
 - La ricerca testuale non vede il testo contenuto nelle immagini: servirà l'OCR
-o una ricerca sulle immagini.
+o una ricerca sulle immagini
 
 ## Analisi: Cosa sta sbagliando?
 
-- La fasi di analisi è centrale per questo tipo di sistemi
-    - Un esperto di dominio può capire al volo perché il sistema sbaglia, e suggerire correzioni
-    - Loop: analisi → correzione → nuova baseline → nuova analisi
+Un esperto di dominio può riconoscere la causa di un errore. La usiamo per
+correggere la pipeline e misurare di nuovo la baseline
 
 ```{python}
 #| echo: false
@@ -371,6 +376,5 @@ for doc, score in store.similarity_search_with_score(example["question"], k=3):
     print(f"- {doc.metadata['title'][:40]}, p. {doc.metadata['page']}: **{same}**")
 ```
 
-::: {.takeaway}
-La domanda non dice di quale bando parla: per il sistema, tanti bandi si somigliano.
-:::
+Senza il bando nella domanda, la ricerca può confondere documenti di bandi
+che trattano temi simili

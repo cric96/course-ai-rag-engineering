@@ -49,6 +49,34 @@ $gutter: 56px; // left and right margin of the slide content
   font-weight: 400;
 }
 
+// Optional material: a distinct title color and an explicit text label.
+.reveal .slides section.slide.approfondimento > h2 {
+  position: relative;
+  background: #594475;
+
+  &::before {
+    content: "Approfondimento";
+    position: absolute;
+    top: 4px;
+    right: $gutter;
+    font-size: 0.38em;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: #eee8f5;
+  }
+}
+
+.reveal .slides section.slide.level1.approfondimento > h1 {
+  color: #594475;
+
+  &::before {
+    content: "Approfondimento";
+    display: block;
+    font-size: 0.4em;
+    margin-bottom: 0.5em;
+  }
+}
+
 // Title slide: left aligned, an orange rule between title and author.
 .reveal .quarto-title-block {
   padding: 0 $gutter * 1.5;
@@ -205,8 +233,46 @@ $gutter: 56px; // left and right margin of the slide content
   font-size: 0.68em;
 }
 
+// These examples have their own slides, with room for larger code.
+.reveal #dove-sta-la-risposta-lo-chiediamo-a-gemini pre.sourceCode,
+.reveal #faq-output-strutturato pre.sourceCode {
+  font-size: 0.75em;
+}
+
 .reveal #partiamo-dalle-faq-ufficiali table.dataframe {
-  font-size: 0.7em;
+  width: 100%;
+  table-layout: fixed;
+  font-size: 0.8em;
+
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: break-word;
+    padding: 0.3em 0.4em;
+  }
+
+  thead th:first-child {
+    width: 12%;
+  }
+
+  thead th:nth-child(2) {
+    width: 38%;
+  }
+
+  thead th:nth-child(3) {
+    width: 50%;
+  }
+
+  // Pandas adds an extra header row for the index name.
+  thead tr:nth-child(2) {
+    display: none;
+  }
+
+  tbody th {
+    font-weight: 400;
+    border-bottom: 1px solid $m-rule;
+  }
 }
 
 // Pipeline map: lanes of boxes; add `.active` to highlight the current stage.

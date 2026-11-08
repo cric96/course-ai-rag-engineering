@@ -35,19 +35,28 @@ class RerankRetriever(BaseRetriever):
         return [candidates[i] for i in best[: self.top_n]]
 
 
-def cross_encoder(name: str) -> Scorer:
+def passage_text(doc: Document, with_titles: bool = False) -> str:
+    """Chunk text, optionally headed by its document title and page."""
+    if with_titles and "title" in doc.metadata and "page" in doc.metadata:
+        return f"{doc.metadata['title']}, p. {doc.metadata['page']}\n{doc.page_content}"
+    return doc.page_content
+
+
+def cross_encoder(name: str, with_titles: bool = False) -> Scorer:
     """A Hugging Face reranker from RERANKERS, run locally."""
-    return cached_scorer(name, lambda: load_cross_encoder(name))
+    key = f"{name}:titles" if with_titles else name
+    return cached_scorer(key, lambda: load_cross_encoder(name, with_titles=with_titles))
 
 
-def load_cross_encoder(name: str) -> Scorer:
+def load_cross_encoder(name: str, with_titles: bool = False) -> Scorer:
     """The cross-encoder itself, loaded into memory (GPU if any)."""
     from sentence_transformers import CrossEncoder  # heavy: models group only
 
     model = CrossEncoder(RERANKERS[name])
 
     def score(query: str, docs: list[Document]) -> list[float]:
-        return model.predict([(query, doc.page_content) for doc in docs]).tolist()
+        pairs = [(query, passage_text(doc, with_titles=with_titles)) for doc in docs]
+        return model.predict(pairs).tolist()
 
     return score
 
@@ -115,21 +124,24 @@ class Ranking(BaseModel):
     order: list[int]
 
 
-def listwise_prompt(query: str, docs: list[Document]) -> str:
+def listwise_prompt(query: str, docs: list[Document], with_titles: bool = False) -> str:
     """The question and the numbered candidates, for an LLM to put in order."""
-    numbered = "\n\n".join(f"[{n}] {doc.page_content}" for n, doc in enumerate(docs, 1))
+    numbered = "\n\n".join(
+        f"[{n}] {passage_text(doc, with_titles=with_titles)}"
+        for n, doc in enumerate(docs, 1)
+    )
     return (
         f"Domanda: {query}\n\nPassaggi:\n\n{numbered}\n\n"
         "Ordina i numeri dei passaggi dal più utile al meno utile per rispondere."
     )
 
 
-def llm_listwise(chat: BaseChatModel) -> Scorer:
+def llm_listwise(chat: BaseChatModel, with_titles: bool = False) -> Scorer:
     """An LLM reads all candidates and orders them; the order becomes a score."""
 
     def score(query: str, docs: list[Document]) -> list[float]:
         order = chat.with_structured_output(Ranking).invoke(
-            listwise_prompt(query, docs)
+            listwise_prompt(query, docs, with_titles=with_titles)
         )
         rank = {n: i for i, n in enumerate(order.order)}
         # Forgotten candidates share the last place.

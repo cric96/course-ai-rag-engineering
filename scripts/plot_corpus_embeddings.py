@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib.figure import Figure
 from qdrant_client import QdrantClient
 
+from ragcourse.cache import cache_embeddings
 from ragcourse.models import embedding_model
 from ragcourse.paths import ROOT
 from ragcourse.viz import ORANGE, STYLE, TEAL
@@ -36,15 +37,26 @@ centered = matrix - center
 _, axes = np.linalg.eigh(centered.T @ centered)
 projection = axes[:, -2:][:, ::-1]
 points = centered @ projection
+cache_embeddings()
 query = np.asarray(embedding_model("e5-small").embed_query(question))
 query_point = (query - center) @ projection
 
 with plt.rc_context(STYLE):
-    fig = Figure(figsize=(10, 4.5), layout="constrained")
+    fig = Figure(figsize=(10, 4.5))
+    fig.subplots_adjust(left=0.06, right=0.98, bottom=0.16, top=0.78)
     ax = fig.subplots()
     ax.scatter(points[:, 0], points[:, 1], s=6, c=TEAL, alpha=0.16, rasterized=True)
-    ax.scatter(*query_point, s=300, c=ORANGE, marker="*", label="Domanda", zorder=3)
-    ax.legend(loc="upper right", frameon=False)
+    ax.scatter(*query_point, s=300, c=ORANGE, marker="*", zorder=3)
+    ax.annotate(
+        "Domanda",
+        xy=query_point,
+        xytext=(0.80, 1.20),
+        textcoords="axes fraction",
+        ha="center",
+        color=TEAL,
+        arrowprops={"arrowstyle": "-", "color": ORANGE, "shrinkB": 12},
+        annotation_clip=False,
+    )
     ax.set_xlabel("Prima componente")
     ax.set_ylabel("Seconda componente")
     ax.set_xticks([])

@@ -60,6 +60,17 @@ def cache_llm_calls(path: Path = ROOT / ".cache/llm-calls.sqlite") -> None:
     set_llm_cache(SQLiteCache(path))
 
 
+def portable_search_key(key: str) -> str:
+    """Identify course indexes independently of the project's location."""
+    parts = json.loads(key)
+    index = parts[0].replace("\\", "/")
+    marker = "/.cache/qdrant/"
+    if marker not in index:
+        return key  # memory indexes and custom index folders keep their own identity
+    parts[0] = "qdrant:" + index.split(marker, 1)[1]
+    return json.dumps(parts)
+
+
 class SearchCache:
     """Index search results in a SQLite file: the same search is read back."""
 
@@ -71,8 +82,20 @@ class SearchCache:
                 "CREATE TABLE IF NOT EXISTS searches"
                 " (key TEXT PRIMARY KEY, results TEXT)"
             )
+            # Preserve existing results when the project is moved to another computer.
+            keys = self.db.execute("SELECT key FROM searches").fetchall()
+            for (old,) in keys:
+                new = portable_search_key(old)
+                if new != old:
+                    self.db.execute(
+                        "UPDATE OR IGNORE searches SET key = ? WHERE key = ?",
+                        (new, old),
+                    )
+                    # If both keys exist, keep the portable entry.
+                    self.db.execute("DELETE FROM searches WHERE key = ?", (old,))
 
     def get(self, key: str) -> list[tuple[Document, float]] | None:
+        key = portable_search_key(key)
         with self.lock:
             row = self.db.execute(
                 "SELECT results FROM searches WHERE key = ?", (key,)
@@ -85,6 +108,7 @@ class SearchCache:
         ]
 
     def put(self, key: str, results: list[tuple[Document, float]]) -> None:
+        key = portable_search_key(key)
         rows = [
             [doc.page_content, doc.metadata, doc.id, score] for doc, score in results
         ]

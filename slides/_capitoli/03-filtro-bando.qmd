@@ -10,10 +10,10 @@
 [Domanda<br>+ bando]{.step .active} [Retrieval<br>con filtro]{.step .store .active} [Reranking]{.step .deferred} [Generazione]{.step .deferred} [Risposta]{.step .deferred}
 :::
 
-Prima correzione: filtriamo la ricerca per bando, senza cambiare modello.
+Prima correzione: filtriamo la ricerca per bando, senza cambiare modello
 
 ::: {.notes}
-≈ 15 minuti · da 1:05 a 1:20, poi la pausa
+≈ 15 minuti · da 0:50 a 1:05
 :::
 
 ```{python}
@@ -64,7 +64,7 @@ def show(found, question):
         print(f"{mark} {doc.metadata['title'][:40]}, p. {doc.metadata['page']}{call}")
 ```
 
-## Il problema, dalla baseline
+## Il problema emerso dalla baseline
 
 - L'indice contiene i documenti di tanti bandi, e i bandi si somigliano: spese, rendicontazione, scadenze
 
@@ -75,7 +75,7 @@ example = by_id["faq-002"]
 print(f"> {example['question']}")
 ```
 
-- *Tale* misura: quale? L'utente vuole sapere se la sua domanda è **risposta da un bando specifico**.
+- *Tale* misura: quale? L'utente vuole sapere se la sua domanda è **risposta da un bando specifico**
 
 ## Metadati: restringere la ricerca
 
@@ -89,12 +89,10 @@ print(len(same_call), "chunk su", len(chunks), "per il bando della domanda:")
 print(example["call"])
 ```
 
-::: {.takeaway}
-Per selezionare un bando non serve la semantica: basta confrontare il metadato.
-Poi cerchiamo per significato tra i chunk del bando scelto.
-:::
+- Quando conosciamo già il bando di interesse, conviene restringere la ricerca tramite i metadati
+- La somiglianza semantica viene poi calcolata solo sui documenti di quel bando
 
-## Con Qdrant: il filtro dentro la ricerca
+## Con Qdrant: il filtro dentro la ricerca {.approfondimento}
 
 ```{python}
 from ragcourse.filters import metadata_filter
@@ -109,10 +107,10 @@ show(retriever.invoke(example["question"], filter=call_filter), example)
 
 ::: {.muted}
 ✓ = pagina di riferimento. Il filtro usa la sintassi di Qdrant, che può essere
-diversa negli altri database.
+diversa negli altri database
 :::
 
-## Sul set vero
+## Risultati: il filtro migliora la ricerca {.approfondimento}
 
 ```{python}
 run_call = retrieval_run(retriever, answerable, name="filtro per bando", by_call=True)
@@ -130,7 +128,7 @@ percorso["hit@5"]["+ filtro per bando"] = results.loc["hit_rate@5", "filtro per 
 - `by_call=True`: per ogni domanda, il filtro con il **suo** bando
 - Una pagina corretta tra le prime 5: da circa **1 domanda su 3** a **2 su 3**
 
-## Prima e dopo
+## Risultati: confronto con e senza filtro
 
 ```{python}
 hits = results.loc[["hit_rate@1", "hit_rate@5", "hit_rate@10"]]
@@ -139,35 +137,37 @@ compare_chart(hits.rename(lambda m: m.replace("hit_rate", "hit")), fmt="{:.0%}",
               title=f"Una pagina giusta tra le prime 5: dal {was:.0%} al {now:.0%}")
 ```
 
-## Come funziona il test statistico?
+## Il miglioramento potrebbe essere casuale? {.approfondimento}
 
-Confrontiamo le due configurazioni sulle **stesse 227 domande**.
+Confrontiamo le due configurazioni sulle **stesse 227 domande**: è un test *appaiato*
 
 ::: {.columns}
 ::: {.column width="33%"}
-**1. Confronto**
+**1. Misuriamo il cambiamento**
 
-Per ogni domanda calcoliamo la differenza tra i punteggi con e senza filtro.
+Per ogni domanda, su *hit@5*:
+
+**+1**: riesce solo con filtro  
+**0**: stesso esito  
+**−1**: riesce solo senza filtro
 :::
 
 ::: {.column width="33%"}
-**2. Ipotesi**
+**2. Ipotizziamo nessun effetto**
 
-Supponiamo che, in media, il filtro non cambi la qualità della ricerca.
+Se il filtro non aiutasse né penalizzasse, vantaggi e svantaggi tenderebbero a compensarsi
+
+Differenza media attesa: **zero**
 :::
 
 ::: {.column width="33%"}
-**3. Test**
+**3. Valutiamo il risultato**
 
-Il test t appaiato valuta quanto la differenza media osservata sia compatibile
-con questa ipotesi.
+Il **test t appaiato** confronta il guadagno medio con la variabilità delle differenze tra domande
 :::
 :::
 
-::: {.takeaway}
-Il **p-value** misura quanto sarebbe insolito osservare una differenza almeno
-così estrema, se l'ipotesi di nessuna differenza fosse vera.
-:::
+- Un **p-value piccolo** indica che sarebbe molto improbabile osservare una differenza così ampia per puro caso se il filtro non avesse alcun effetto
 
 ## Il filtro migliora davvero?
 
@@ -179,13 +179,9 @@ compare(qrels, runs=[baseline, run_call], metrics=["hit_rate@5", "mrr@10"], max_
 
 - `max_p=0.01`: scegliamo una soglia di significatività dell'**1%**
 - **ᵃ**: il filtro è migliore della baseline (*a*) e il test dà **p ≤ 0,01**
+- Il miglioramento medio sul nostro set è statisticamente significativo, anche se naturalmente questo non garantisce che il filtro migliori il risultato su ogni singola domanda
 
-::: {.takeaway}
-Il risultato è statisticamente significativo per entrambe le metriche. Non è
-una garanzia che il miglioramento si ripeta su ogni nuova domanda.
-:::
-
-## Filtrare prima o dopo la ricerca?
+## Filtrare prima o dopo la ricerca? {.approfondimento}
 
 ```{python}
 #| echo: false
@@ -207,7 +203,7 @@ hit5 = pd.Series({
     "filtro dopo la ricerca": evaluate(qrels, after, "hit_rate@5", make_comparable=True),
     "filtro dentro Qdrant": results.loc["hit_rate@5", "filtro per bando"],
 })
-bar_chart(hit5, title="hit@5: il filtro funziona se sta dentro la ricerca",
+bar_chart(hit5, title="hit@5: il filtro funziona se fatto durante la ricerca",
           gray=["nessun filtro", "filtro dopo la ricerca"], fmt="{:.0%}")
 ```
 
@@ -220,7 +216,7 @@ print("- **Durante la ricerca**: Qdrant cerca fino a 20 chunk **solo** nei docum
     "del bando scelto.")
 ```
 
-## Che cosa resta da fare
+## Analisi: che cosa resta da migliorare? {.approfondimento}
 
 ```{python}
 #| echo: false
@@ -254,5 +250,5 @@ print(f"- **In basso** → riordinare i risultati: *reranking*\n"
 ::: {.callout-note}
 ## Un'ipotesi favorevole
 Nel nostro set ogni FAQ appartiene a un bando, quindi il bando giusto è sempre noto.
-In produzione va verificato: un filtro sbagliato esclude proprio le pagine giuste.
+In produzione va verificato: un filtro sbagliato esclude proprio le pagine giuste
 :::

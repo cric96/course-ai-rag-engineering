@@ -17,10 +17,6 @@ execute:
 
 {{< include _capitoli/03-filtro-bando.qmd >}}
 
-## Pausa {.standout .center background-color="#23373b"}
-
-15 minuti
-
 {{< include _capitoli/04-generazione.qmd >}}
 
 {{< include _capitoli/05-astensione.qmd >}}
@@ -34,10 +30,6 @@ execute:
 {{< include _capitoli/09-ibrida.qmd >}}
 
 {{< include _capitoli/10-reranking.qmd >}}
-
-## Pausa {.standout .center background-color="#23373b"}
-
-10 minuti
 
 {{< include _capitoli/11-ocr.qmd >}}
 

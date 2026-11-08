@@ -1,4 +1,4 @@
-# L'embedding
+# I modelli di embedding
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -10,10 +10,10 @@
 [Domanda<br>+ bando]{.step .active} [Retrieval<br>con filtro]{.step .store} [Reranking]{.step} [Generazione]{.step} [Risposta]{.step}
 :::
 
-Lo stesso modello trasforma in numeri sia i chunk sia le domande: cambiarlo cambia tutto l'indice.
+Il modello di embedding trasforma in vettori sia i documenti sia le domande: confrontiamo diverse alternative locali e via API
 
 ::: {.notes}
-≈ 10 minuti · da 2:37 a 2:47
+≈ 8 minuti · da 1:57 a 2:05
 :::
 
 ```{python}
@@ -60,7 +60,7 @@ qrels = gold_qrels(with_pages)
 metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 ```
 
-## I candidati
+## I modelli di embedding a confronto
 
 | Modello | Dove gira | Parametri | Note |
 |---|---|---|---|
@@ -72,10 +72,10 @@ metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 : {tbl-colwidths="[26,16,14,44]"}
 
 ::: {.muted}
-Tutti si scelgono con `embedding_model("nome")`: per il resto della pipeline sono identici.
+Tutti i modelli espongono la stessa interfaccia LangChain tramite `embedding_model("nome")`
 :::
 
-## Il cambio è un nome
+## Valutare i modelli sul retrieval {.approfondimento}
 
 ```{python}
 #| output: false
@@ -96,7 +96,7 @@ for name in names:
 
 - Ogni indice si calcola **una volta sola** e resta su disco: `vector_store(...)`
 
-## Il migliore
+## Risultati: confronto tra gli embedding
 
 ```{python}
 #| echo: false
@@ -108,7 +108,7 @@ bar_chart(hit5, gray=["e5-small"], fmt="{:.0%}",
           title=f"hit@5: {best} {hit5[best]:.0%}, la baseline e5-small {hit5['e5-small']:.0%}")
 ```
 
-## Quanto costa una domanda
+## Tempi di risposta: modelli locali e API
 
 ```{python}
 #| echo: false
@@ -117,11 +117,11 @@ bar_chart(ms, gray=[name for name in ms.index if name != "gemini-embedding-2"], 
           title="Tempo per trasformare una domanda in numeri")
 ```
 
-- **Locale**: serve una GPU (o pazienza), ma i documenti non escono dall'ufficio
-- **API**: niente hardware, ma si paga a token, si dipende dalla rete e i testi vanno a terzi
-- Cambiare embedding vuol dire **ricalcolare tutto l'indice**
+- **Modelli locali**: richiedono una GPU per avere tempi rapidi, ma i documenti restano sull'infrastruttura interna
+- **Modelli via API**: non richiedono hardware dedicato, ma comportano costi a consumo, dipendenza dalla rete e invio dei testi a un servizio esterno
+- A differenza del filtro o di `k`, cambiare il modello di embedding richiede di **ricalcolare l'intero indice**
 
-## E le risposte?
+## Impatto dell'embedding sulla generazione {.approfondimento}
 
 ```{python}
 #| echo: false
@@ -171,10 +171,10 @@ compare_chart(end_to_end, fmt="{:.2f}",
 
 ::: {.muted}
 Stesse 50 domande del capitolo sulla generazione, 5 chunk, stesso prompt e stesso giudice:
-cambia solo l'indice.
+cambia solo l'indice
 :::
 
-## Che cosa ci dice
+## Analisi dei risultati sugli embedding
 
 ```{python}
 #| echo: false
@@ -182,13 +182,11 @@ cambia solo l'indice.
 gain = hit5[best] - hit5["e5-small"]
 p = p_value(qrels, runs[best], runs["e5-small"], "hit_rate@5")
 print(f"- **{best}** è il migliore: hit@5 {hit5[best]:.0%}, **+{gain * 100:.0f} punti** "
-      f"sulla baseline (p = {p:.3f}: non è caso)")
+      f"sulla baseline")
 print(f"- Un modello locale vale l'API: gemini-embedding-2 arriva a {hit5['gemini-embedding-2']:.0%}, "
       f"ma impiega {ms['gemini-embedding-2']:.0f} ms a domanda contro {ms[best]:.0f}")
 print(f"- Correttezza delle risposte: {end_to_end.loc['correttezza', 'e5-small']:.2f} → "
       f"{end_to_end.loc['correttezza', contender]:.2f} cambiando solo l'embedding")
 ```
 
-::: {.takeaway}
-Finora la leva più forte: un embedding migliore, in locale, senza cambiare altro.
-:::
+- In questo caso il passaggio a un modello di embedding più adatto al multilingua e ai testi lunghi migliora sensibilmente sia il retrieval sia le risposte generate, pur restando in locale

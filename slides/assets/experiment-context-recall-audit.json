@@ -1,0 +1,93 @@
+{
+  "cases": 25,
+  "judge": "google_genai:gemini-3.8-flash",
+  "llm_cache": false,
+  "all_context_hashes_verified": true,
+  "same_five_chunks": {
+    "zero": 24,
+    "positive": [
+      {
+        "id": "faq-144",
+        "score": 0.5
+      }
+    ]
+  },
+  "single_gold_chunks": {
+    "evaluations": 46,
+    "positive_evaluations": 3,
+    "cases_with_positive_chunk": [
+      "faq-198",
+      "faq-210"
+    ]
+  },
+  "examples": [
+    {
+      "id": "faq-198",
+      "question": "L’unità locale deve avere codici catastali A10 dell’ufficio?",
+      "expected": "L’unità locale deve avere le caratteristiche previste dalla normativa e deve essere inserita in visura.",
+      "five_chunks_score": 0.0,
+      "five_chunks_reason": "The score is 0.00 because sentence 1 in the expected output is not fully supported; although the 1st, 4th, and 5th nodes in retrieval context mention that the local unit must follow regulations and be registered with CCIAA, the specific requirement that it must be included in the visura is missing from the context.",
+      "single_chunk_score": 1.0,
+      "single_chunk_reason": "The score is 1.00 because sentence 1 is completely and accurately supported by the 1st node in retrieval context, perfectly capturing all necessary details!",
+      "chunk": {
+        "text": "1 Vd. anche Decreto Ministeriale di recepimento del 18 aprile 2005 “Adeguamento alla disciplina comunitaria dei criteri di individuazione di piccole e medie\nimprese”.\n2 Per unità locale si intende una sede, situata nel territorio dell’Emilia-Romagna, registrata presso la CCIAA di competenza, in cui l’impresa realizza\ncostantemente attività di produzione di beni o in cui sia stabilmente collocato il personale e le attrezzature utilizzate per la realizzazione del progetto, nella\ndisponibilità permanente ed esclusiva del soggetto beneficiario. L’utilizzo dell’unità locale dovrà essere dimostrato attraverso un contratto di acquisto o un\nregolare contratto di locazione ad uso commerciale, industriale o artigianale e, per i fini del presente bando, regolarmente registrato presso l'Agenzia delle\nEntrate (come previsto dalla L. 392/1978, all’art. 27).",
+        "metadata": {
+          "url": "https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2025/sostegno-allo-sviluppo-delle-startup-innovative/presentazione-domanda/bando-e-modulistica/bando_startup_2025.pdf",
+          "page": 7,
+          "title": "BANDO_STARTUP_2025.pdf",
+          "call": "sostegno-allo-sviluppo-delle-startup-innovative",
+          "_id": "08e684e7-836e-4b38-9c38-567e9d405663",
+          "_collection_name": "e5-small-1000"
+        },
+        "id": null,
+        "similarity": 0.8262069891664223
+      }
+    },
+    {
+      "id": "faq-210",
+      "question": "La partita Iva di professionisti per le spese di consulenze è richiesta solo per le prestazioni occasionali? Sono ammesse anche consulenze prestate da società?",
+      "expected": "Si, l’importante è che abbiano la P.Iva e siano qualificate per la consulenza.",
+      "five_chunks_score": 0.0,
+      "five_chunks_reason": "The score is 0.00 because sentence 1 in the expected output is not fully supported; although the 1st, 2nd, and 3rd nodes in retrieval context mention that services must be provided by professionals with a VAT number, none of the nodes state that they must be qualified for the consultancy.",
+      "single_chunk_score": 1.0,
+      "single_chunk_reason": "The score is 1.00 because sentence 1 in the expected output is completely supported by node 1 in retrieval context, showing a perfect match!",
+      "chunk": {
+        "text": "30\n▪\nContratto o lettera d'incarico18, nei quali siano specificati la durata, il compenso, le\nattività dettagliate ed il riferimento esplicito al progetto finanziato;\n▪\nRelazione dell’attività svolta nel periodo rendicontato che evidenzi i risultati\nraggiunti in relazione alle fatture presentate, su carta intestata, firmata dal consulente\ne controfirmata dal legale rappresentante dell’impresa beneficiaria (su fac-simile\nfornito dalla Regione);\n\nLe spese relative a consulenze specialistiche rese nell'ambito di un contratto di\nprestazione occasionale, sono ammissibili solo nel caso in cui le prestazioni siano\nrese da professionisti con partita IVA.\n\nNon sono ammissibili consulenze ordinarie per la gestione corrente dell’impresa, non\nimputabili al progetto agevolato. Non sono ammissibili le consulenze per la\npresentazione e gestione della domanda e della rendicontazione delle spese.",
+        "metadata": {
+          "url": "https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2025/sostegno-allo-sviluppo-delle-startup-innovative/rendicontazione/manuale-e-modulistica/manuale-bando-dgr-1861_-dd1156-2026.pdf",
+          "page": 30,
+          "title": "Manuale bando DGR 1861_ DD1156-2026.pdf",
+          "call": "sostegno-allo-sviluppo-delle-startup-innovative",
+          "_id": "ac3303aa-36cf-4e9a-a900-c6f4df261aa9",
+          "_collection_name": "e5-small-1000"
+        },
+        "id": null,
+        "similarity": 0.8947796711878284
+      }
+    }
+  ],
+  "limitations": [
+    "Selected originally-zero cases only; this is not a new estimate over all 50 questions.",
+    "Different verdicts do not establish which verdict is correct.",
+    "Contextual Recall verdict prompt contains expected output and context, but not the question."
+  ],
+  "truncation_example": {
+    "id": "faq-090",
+    "question": "L’articolazione delle voci di spesa ammissibile lascia intendere che il focus di entrambe le misure sia la fase successiva a quella dello studio di nuovi prodotti/processi: non vi sono spese di personale dipendente né consulenze non vincolate da un tetto massimo percentuale. Il bando in sostanza incentiva la realizzazione di progetti industriali, a valle di progetti di studio già completati e validati. È corretta questa lettura?",
+    "expected": "È corretto. Le spese di consulenza sono ammesse limitatamente alla voce D) del par. 4 del bando \"acquisizioni di servizi di consulenza specializzata per la realizzazione dell’intervento e per l’ottenimento di certificazioni connesse ai temi ambientali (ISO 14001, EMAS, ECOLABEL, EPD, LCA, ecc) nella misura massima del 25% della somma delle voci A, B e C",
+    "chunk": {
+      "text": "interamente compiuti entro la data di conclusione dello stesso;7\n-\nrientrare nelle voci di costo ritenute ammissibili ai sensi del par. 4.2 del Bando, ovvero:\nA. acquisto di impianti, macchinari, attrezzature, hardware, beni strumentali tangibili,\nanche usati o ricondizionati anche nella forma dell‘acquisizione in leasing e/o mediante\nnoleggio;\nB. acquisto di licenze software o di abbonamenti per l’utilizzo di licenze software, brevetti\ne servizi erogati nella soluzione cloud computing e software as a service (SAAS);\nC. realizzazione di opere murarie ed edilizie strettamente connesse alla installazione e\nposa in opera di macchinari, attrezzature, impianti e hardware. Tale spesa è\nriconosciuta nella misura massima del 30% della somma delle voci A e B;\nD. acquisizioni di servizi di consulenza specializzata per la realizzazione dell’intervento e\nper l’ottenimento di certificazioni connesse ai temi ambientali (ISO 14001, EMAS,",
+      "metadata": {
+        "url": "https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2025/promozione-delleconomia-circolare-e-riduzione-dei-rifiuti-nel-sistema-produttivo-regionale/rendicontazione/manuale-bando-dgr-521_2025_economia-circolare-2-def.pdf",
+        "page": 33,
+        "title": "Manuale bando DGR 521_2025_ECONOMIA CIRCOLARE 2 DEF.pdf",
+        "call": "promozione-delleconomia-circolare-e-riduzione-dei-rifiuti-nel-sistema-produttivo-regionale",
+        "_id": "4d4d7e8e-1a23-4715-be22-3e8daa67a15d",
+        "_collection_name": "e5-small-1000"
+      },
+      "id": null,
+      "similarity": 0.8863301659140974
+    },
+    "full_page_excerpt": "a per la realizzazione dell’intervento e\nper l’ottenimento di certificazioni connesse ai temi ambientali (ISO 14001, EMAS,\nECOLABEL, EPD, LCA, ecc). Tale spesa è riconosciuta nella misura massima del 25%\ndella somma delle voci A, B e C;\n\n7 Si rammenta che, in base a quanto previsto nel comma 6 dell’art"
+  }
+}

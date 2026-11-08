@@ -25,10 +25,18 @@ PARTIAL_OK = (
 COMPLETE_ONLY = (
     f"Se i documenti non contengono la risposta completa, rispondi solo: {ABSTAIN}"
 )
+DEDUCTIVE_OK = (
+    "Se i documenti definiscono un elenco tassativo o una regola generale che "
+    "include o esclude il caso chiesto, trai esplicitamente la conclusione "
+    "(sì o no) citando la regola.\n" + PARTIAL_OK
+)
 
 PROMPT = ChatPromptTemplate.from_messages([("system", RULES + PARTIAL_OK), QUESTION])
 PRUDENT_PROMPT = ChatPromptTemplate.from_messages(
     [("system", RULES + COMPLETE_ONLY), QUESTION]
+)
+DEDUCTIVE_PROMPT = ChatPromptTemplate.from_messages(
+    [("system", RULES + DEDUCTIVE_OK), QUESTION]
 )
 
 

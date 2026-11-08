@@ -3,6 +3,7 @@ from langchain_core.documents import Document
 
 from ragcourse.generation import (
     ABSTAIN,
+    DEDUCTIVE_PROMPT,
     PROMPT,
     PRUDENT_PROMPT,
     expand_pages,
@@ -66,6 +67,14 @@ def test_prudent_prompt_differs_only_in_when_to_abstain():
     assert "solo in parte" not in prudent
     assert ABSTAIN in prudent
     assert default.splitlines()[:4] == prudent.splitlines()[:4]  # same other rules
+
+
+def test_deductive_prompt_asks_to_draw_conclusions_from_exhaustive_rules():
+    default, deductive = system_text(PROMPT), system_text(DEDUCTIVE_PROMPT)
+
+    assert "elenco tassativo" in deductive
+    assert ABSTAIN in deductive
+    assert default.splitlines()[:4] == deductive.splitlines()[:4]
 
 
 def test_picture_messages_show_numbered_page_images_then_the_question(tmp_path):

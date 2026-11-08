@@ -1,4 +1,4 @@
-# Leggere le pagine-immagine
+# Estrarre il testo dalle immagini (OCR)
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -6,10 +6,10 @@
 [Documenti<br>PDF, immagini]{.step} [Parsing<br>+ OCR]{.step .active} [Chunking]{.step} [Embedding]{.step} [Indice<br>Qdrant]{.step .store}
 :::
 
-Finora abbiamo letto solo il testo dei PDF. Le pagine fatte di immagini sono rimaste fuori.
+Finora abbiamo utilizzato solo il testo direttamente estraibile dai PDF, lasciando fuori le pagine composte da immagini o scansioni
 
 ::: {.notes}
-≈ 12 minuti · da 3:15 a 3:27
+≈ 10 minuti · da 2:30 a 2:40
 :::
 
 ```{python}
@@ -57,7 +57,7 @@ engines = {"tesseract": "Tesseract", "qwen3-vl": "Qwen3-VL-2B", "gemini": "Gemin
 ocr = {engine: read_jsonl(DATA / f"processed/ocr/{engine}.jsonl") for engine in engines}
 ```
 
-## Il problema
+## Il problema: pagine senza testo estraibile
 
 ```{python}
 print(len(visual_pages(pages)), "pagine con meno di 50 caratteri di testo, su", len(pages))
@@ -70,11 +70,9 @@ print(f"Oggi una pagina giusta tra le prime 5: {evaluate(qrels_images, before, '
 store.client.close()
 ```
 
-::: {.takeaway}
-Per l'indice queste pagine non esistono: nessun modello di embedding può ritrovarle.
-:::
+- Se il testo di una pagina non viene estratto in fase di parsing, quella pagina non entra nell'indice e non potrà essere recuperata da alcun modello di ricerca testuale
 
-## Tre lettori
+## Tre strumenti di OCR a confronto
 
 | | Come legge | Dove | Sa che cosa legge? |
 |---|---|---|---|
@@ -88,7 +86,7 @@ read = tesseract                       # or: local_vlm_reader(), vlm_reader(chat
 text = read(page)                      # one page in, its text out
 ```
 
-## Una pagina, tre letture
+## Esempio: tre trascrizioni a confronto {.approfondimento}
 
 ```{python}
 #| echo: false
@@ -120,10 +118,10 @@ for engine, label in engines.items():
 ::::
 
 ::: {.muted}
-Tesseract scrive "gererali", "Irmoltre": errori che la ricerca per parole non perdona.
+Tesseract scrive "gererali", "Irmoltre": errori che la ricerca per parole non perdona
 :::
 
-## Quanto costa leggere
+## Tempi di estrazione e testo prodotto {.approfondimento}
 
 ```{python}
 #| echo: false
@@ -137,10 +135,10 @@ seconds["caratteri per pagina"] = [round(sum(len(r["text"]) for r in ocr[e]) / l
 seconds.round(1)
 ```
 
-- Si legge **una volta sola**, quando si costruisce l'indice: non a ogni domanda
-- Gemini legge 8 pagine alla volta; i modelli locali una alla volta su questa GPU
+- L'estrazione tramite OCR viene eseguita **una sola volta** in fase di indicizzazione e non incide sul tempo di risposta alle domande
+- Via API possiamo elaborare più pagine in parallelo, mentre in locale i tempi dipendono dalla GPU disponibile
 
-## Il testo letto entra nell'indice
+## Integrare il testo estratto nell'indice {.approfondimento}
 
 ```{python}
 #| output: false
@@ -162,9 +160,9 @@ for engine, label in engines.items():
     store.client.close()
 ```
 
-- L'indice di partenza si **copia** e si aggiungono solo le pagine lette: pochi minuti
+- Non serve ricalcolare tutto l'indice: partiamo dall'indice esistente e aggiungiamo solo i chunk ottenuti tramite OCR
 
-## Le domande sulle immagini
+## Risultati sulle domande con immagini
 
 ```{python}
 #| echo: false
@@ -182,7 +180,7 @@ print(f"::: {{.muted}}\nSolo {len(on_images)} domande: differenze di una o due d
       "sono rumore.\n:::")
 ```
 
-## Che cosa ci dice
+## Analisi dei risultati sull'OCR
 
 ```{python}
 #| echo: false
@@ -203,6 +201,4 @@ print("- Attenzione: queste domande le ha scritte Gemini leggendo il testo delle
       "Domande su grafici e schemi non ci sono: lì l'OCR non è stato messo alla prova")
 ```
 
-::: {.takeaway}
-Prima di ottimizzare il retrieval, assicurarsi che ogni pagina sia leggibile.
-:::
+- Prima ancora di intervenire sui modelli di ricerca, è quindi importante verificare che tutte le pagine rilevanti del corpus vengano effettivamente lette e indicizzate

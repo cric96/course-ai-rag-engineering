@@ -1,0 +1,134 @@
+{
+  "sample_seed": 0,
+  "judge": "google_genai:gemini-3.8-flash",
+  "retrieval": "e5-small; 1000 characters, overlap 200; call filter; top 5; no reranking",
+  "comparison": {
+    "correctness_delta": 0.10400000000000001,
+    "paired_bootstrap_95": [
+      0.044000000000000004,
+      0.17
+    ],
+    "improved": 26,
+    "unchanged": 16,
+    "worse": 8
+  },
+  "common_answered": {
+    "count": 29,
+    "ids": [
+      "faq-005",
+      "faq-006",
+      "faq-008",
+      "faq-014",
+      "faq-017",
+      "faq-020",
+      "faq-025",
+      "faq-037",
+      "faq-041",
+      "faq-051",
+      "faq-067",
+      "faq-070",
+      "faq-079",
+      "faq-087",
+      "faq-092",
+      "faq-103",
+      "faq-121",
+      "faq-146",
+      "faq-148",
+      "faq-157",
+      "faq-158",
+      "faq-160",
+      "faq-170",
+      "faq-184",
+      "faq-210",
+      "faq-213",
+      "faq-219",
+      "faq-224",
+      "faq-228"
+    ],
+    "means": {
+      "baseline": {
+        "fedeltà": 0.7441745036572623,
+        "pertinenza": 0.9795977011494253
+      },
+      "candidate": {
+        "fedeltà": 0.7592501368363438,
+        "pertinenza": 0.8765426497277676
+      }
+    }
+  },
+  "questions": 50,
+  "question_ids": [
+    "faq-014",
+    "faq-097",
+    "faq-037",
+    "faq-006",
+    "faq-189",
+    "faq-100",
+    "faq-138",
+    "faq-144",
+    "faq-107",
+    "faq-154",
+    "faq-052",
+    "faq-182",
+    "faq-067",
+    "faq-224",
+    "faq-113",
+    "faq-103",
+    "faq-228",
+    "faq-041",
+    "faq-082",
+    "faq-020",
+    "faq-198",
+    "faq-017",
+    "faq-008",
+    "faq-070",
+    "faq-109",
+    "faq-184",
+    "faq-148",
+    "faq-146",
+    "faq-180",
+    "faq-217",
+    "faq-092",
+    "faq-213",
+    "faq-160",
+    "faq-087",
+    "faq-219",
+    "faq-170",
+    "faq-210",
+    "faq-140",
+    "faq-018",
+    "faq-157",
+    "faq-172",
+    "faq-025",
+    "faq-121",
+    "faq-232",
+    "faq-005",
+    "faq-090",
+    "faq-158",
+    "faq-051",
+    "faq-079",
+    "faq-125"
+  ],
+  "runs": {
+    "baseline": {
+      "model": "google_genai:gemini-3.8-flash",
+      "means": {
+        "correttezza": 0.252,
+        "fedeltà": 0.7441745036572623,
+        "pertinenza": 0.9795977011494252,
+        "richiamo del contesto": 0.10622222222222222
+      },
+      "answers_given": 29
+    },
+    "candidate": {
+      "model": "google_genai:gemini-4-argon",
+      "means": {
+        "correttezza": 0.35600000000000004,
+        "fedeltà": 0.7427865961199294,
+        "pertinenza": 0.8807878378931011,
+        "richiamo del contesto": 0.10622222222222222
+      },
+      "answers_given": 45
+    }
+  }
+}

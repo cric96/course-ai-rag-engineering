@@ -6,10 +6,10 @@
 [Documenti<br>PDF, immagini]{.step .active} [Parsing<br>testo per pagina]{.step .active} [Chunking]{.step} [Embedding]{.step} [Indice]{.step .store}
 :::
 
-Il primo punto di partenza: analisi dei documenti e costruzione del set di valutazione.
+Il primo punto di partenza: analisi dei documenti e costruzione del set di valutazione
 
 ::: {.notes}
-≈ 25 minuti · da 0:15 a 0:40
+≈ 15 minuti · da 0:15 a 0:30
 :::
 
 ```{python}
@@ -49,8 +49,8 @@ def show_qa(question: pd.Series) -> Markdown:
   - Ho scaricato i documenti **veri**: bandi, delibere, manuali, slide dei webinar, infografiche
   - Inoltre, sono dati aperti (CC BY 4.0) dal sito
   [fesr.regione.emilia-romagna.it](https://fesr.regione.emilia-romagna.it)
-- Le **FAQ ufficiali**: domande vere dei beneficiari, con la risposta della Regione
-  - Queste possono essere usate come **set di valutazione**: per ogni domanda, sappiamo qual è la risposta attesa e quali pagine del bando la contengono.
+- Le **[FAQ ufficiali](https://fesr.regione.emilia-romagna.it/servizi/domande-frequenti-faq)**: domande vere dei beneficiari, con la risposta della Regione
+  - Queste possono essere usate come **set di valutazione**: per ogni domanda, sappiamo qual è la risposta attesa e quali pagine del bando la contengono
 - In una pipeline reale, questi dati potrebbero già essere disponibili in un **database** o in un **repository di documenti**. 
   - Nota: immagini, file, audio, potrebbero essere tutti parte del corpus!
 
@@ -70,20 +70,24 @@ print(f"{len(documents)} documenti: {pdfs} PDF e {images} immagini")
 print(f"{len(pages)} pagine")
 ```
 
-Circa **2,9 milioni di token** nel testo estratto (tokenizzatore multilingual-e5-small).
-Le immagini e il testo non estratto sono esclusi.
+Circa **2,9 milioni di token** nel testo estratto (tokenizzatore [multilingual-e5-small](https://huggingface.co/intfloat/multilingual-e5-small)).
+Le immagini e il testo non estratto sono esclusi
 
-## Quali documenti contiene il corpus?
+Esistono anche versioni più compatte per l'italiano, come
+[multilingual-e5-small-ita-32768](https://huggingface.co/alphaedge-ai/multilingual-e5-small-ita-32768).
+Per oggi utilizzeremo la **versione multilingue generale**
+
+## Quali documenti contiene il corpus? {.approfondimento}
 
 - **[Bandi](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2022/interventi-di-riqualificazione-energetica-e-miglioramento-adeguamento-sismico-degli-edifici-pubblici-e-dell2019edilizia-residenziale-pubblica-2022/presentazione-domanda/allegato-1-parte-integrante_bando-edifici-pubblici.pdf) e [delibere](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2026/progetti-di-trasferimento-tecnologico/presentazione-domanda/bando-e-modulistica/dgr-1221_2026_approv-bando-trasf-tecnologico.pdf)**: testi amministrativi con requisiti, scadenze e importi
 - **[Manuali e guide](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2023/sostegno-all2019innovazione-e-agli-investimenti-delle-imprese-culturali-e-creative/rendicontazione/manuale-di-rendicontazione.pdf)**: istruzioni operative, spesso con tabelle e schermate
 - **[Slide dei webinar](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2023/bando-digitalizzazione-del-patrimonio-culturale-digital-humanities/presentazione-domanda/leombroni_webinar_fesr_2023_dh.pdf) e [infografiche](https://fesr.regione.emilia-romagna.it/programmi-e-strategie/por-fesr/documenti/infografiche-assi/asse-2-31-12-2024.png)**: informazioni presentate anche come immagini
 
 Un PDF non contiene necessariamente testo estraibile: alcune pagine richiedono
-di leggere immagini e tabelle.
+di leggere immagini e tabelle
 
 
-## Quanto testo c'è in ogni pagina?
+## Quanto testo c'è in ogni pagina? {.approfondimento}
 
 ```{python}
 chars = pages.text.str.len()  # characters on each page
@@ -114,12 +118,12 @@ text = extract_pages(slide_pdf)
 text[10]  # page 11
 ```
 
-- Per l'estrazione del testo la pagina è **vuota**.
+- Per l'estrazione del testo la pagina è **vuota**
 
-- Per una persona contiene date, orari e importi.
+- Per una persona contiene date, orari e importi
 
 - Per leggerle: **Visual RAG**, image captioning + RAG o modelli multimodali.
-  Ne parleremo più avanti.
+  Ne parleremo più avanti
 :::
 
 ::: {.column width="52%"}
@@ -132,7 +136,7 @@ show_page(slide.path, slide.page, width=600)
 
 ## Che cos'è un set di valutazione
 
-> Un set di valutazione è un insieme di domande contenti la risposta, i documenti e le pagine che la contengono. Serve a misurare la qualità di un sistema RAG.
+> Un set di valutazione è un insieme di domande contenti la risposta, i documenti e le pagine che la contengono. Serve a misurare la qualità di un sistema RAG
 
 Per ogni domanda quindi, ci aspettiamo di avere:
 
@@ -156,30 +160,59 @@ with pd.option_context("display.max_colwidth", 120):
   display(examples)
 ```
 
-## Dove sta la risposta? Lo chiediamo a Gemini
+## Dove sta la risposta? Lo chiediamo a Gemini {.approfondimento}
 
 ::: {.pipeline}
-[FAQ di un bando<br>domanda + risposta]{.step} [Gemini legge tutte<br>le pagine del bando]{.step .active} [Pagine gold<br>e tipo di evidenza]{.step} [Set di<br>valutazione]{.step .store}
+[Input di un bando<br>pagine + FAQ]{.step} [Una richiesta<br>a Gemini]{.step .active} [Per ogni FAQ<br>pagine gold + evidenza]{.step .store}
 :::
 
-```python
-class FaqLabel(BaseModel):  # what the model returns for one FAQ
-    faq: int  # FAQ number in the prompt
-    pages: list[str]  # supporting page labels, e.g. ["P12", "P13"]
-    evidence: Literal["text", "table", "image", "none"]
+In **una richiesta per bando**, Gemini riceve tutte le pagine (`[P1]`, `[P2]`…)
+come testo o immagini, insieme a tutte le FAQ con le risposte ufficiali
 
-model = chat_model("google_genai:gemini-4-argon")  # any model that reads images
-labels = model.with_structured_output(FaqLabels).invoke([message])  # FaqLabels: a list
+```python
+model = chat_model("google_genai:gemini-4-argon")
+
+pages_by_id = label_pages(call_pages)
+message = labeling_message(call_faqs, pages_by_id)
 ```
 
-- **Output strutturato**: il formato è validato, non necessariamente il contenuto
-- Le pagine proposte sono una **prima stima**, da verificare con esperti dei bandi
-  - In un sistema reale, per ogni FAQ, si deve creare attentamente i documenti rilevanti. Per oggi supponiamo che Gemini abbia fatto un buon lavoro.
+Ogni pagina è un blocco distinto del messaggio: testo estratto oppure immagine
+se contiene poco testo. Il modello riceve tutti i blocchi nella stessa chiamata
 
-## Domande sulle immagini
+::: {.notes}
+scripts/label_faq.py esegue una richiesta per bando, tramite ask_labels.
+labeling_message costruisce un solo HumanMessage con tutti i blocchi delle pagine,
+seguiti da tutte le FAQ del bando (domanda e risposta ufficiale).
+page_parts usa testo per le pagine con almeno 50 caratteri estratti; altrimenti
+invia l'immagine della singola pagina. I PDF sono quindi già separati in pagine.
+LABELING_MODEL = Gemini Argon. Per ogni FAQ chiede al massimo 5 pagine di supporto.
+:::
+
+## L'output strutturato: pagine ed evidenza {#faq-output-strutturato .approfondimento}
+
+Per ogni FAQ chiediamo il suo numero, le pagine che supportano la risposta
+e il tipo di evidenza
+
+```python
+class FaqLabel(BaseModel):
+    faq: int  # FAQ number in the prompt
+    pages: list[str]  # supporting pages, e.g. ["P12", "P13"]
+    evidence: Literal["text", "table", "image", "none"]
+
+class FaqLabels(BaseModel):
+    labels: list[FaqLabel]
+
+structured_model = model.with_structured_output(FaqLabels)
+labels = structured_model.invoke([message])
+```
+
+Lo schema valida **il formato**, non la correttezza delle pagine proposte:
+queste richiedono una **verifica degli esperti dei bandi**
+
+## Domande sulle immagini {.approfondimento}
 
 Abbiamo creato **20 domande sulle immagini** con Gemini, per verificare se il sistema
-trova informazioni che l'estrazione del testo può perdere, come date e importi.
+trova informazioni che l'estrazione del testo può perdere, come date e importi
 
 :::: {.columns}
 ::: {.column .small width="40%"}
@@ -201,7 +234,7 @@ show_page(page.path, page.page, width=640)
 :::
 ::::
 
-## Riassunto: struttura del validation set
+## Riassunto: struttura del validation set {.approfondimento}
 
 ```{python}
 images = pd.read_json(DATA / "eval/image_questions.jsonl", lines=True)
@@ -220,11 +253,11 @@ show_qa(faq.set_index("id").loc["faq-062"])
 ```
 
 - **48 FAQ**: indicazioni operative, casi specifici, moduli e norme fuori dal corpus
-- Escluse dalle metriche di retrieval e generazione; servono a testare l'**astensione**
+- Sono escluse dalle metriche di retrieval e generazione e servono a testare l'**astensione**
 - Il sistema sa dire "non lo trovo nei documenti" o fornisce una risposta non supportata?
 - Saper riconoscere i limiti delle fonti è importante per l'**affidabilità**
 
-## Una scorciatoia da dichiarare
+## Limiti del set di valutazione
 
 In un progetto reale la verità di riferimento la costruiscono, o almeno la validano,
 **le persone che conoscono i bandi**. Etichette e domande scritte da un modello:
@@ -233,18 +266,15 @@ In un progetto reale la verità di riferimento la costruiscono, o almeno la vali
 - favoriscono le domande facili per un modello
 - rendono la valutazione circolare se anche il giudice è un modello simile
 
-::: {.takeaway}
-Qui lo usiamo così com'è, per scopo didattico. In un progetto vero: validare a mano almeno
-un campione e dichiararne il tasso di errore.
-:::
+- Qui lo usiamo così com'è, per scopo didattico:
+  - In un progetto vero questo golden set va **validato a mano** almeno su un campione
+  - E idealmente verificato da esperti dei bandi
 
 ## Come useremo il set
 
-- **Ricerca delle fonti**: su 227 domande, misuriamo se il sistema trova le pagine di riferimento.
-- **Qualità delle risposte**: su 50 FAQ, usiamo DeepEval e un modello giudice per valutarne correttezza e fedeltà.
+- **Ricerca delle fonti**: su 227 domande, misuriamo se il sistema trova le pagine di riferimento
+- **Qualità delle risposte**: su 50 FAQ, usiamo DeepEval e un modello giudice per valutarne correttezza e fedeltà
 - **Astensione**: confrontiamo 48 FAQ senza risposta nei documenti con 50 che ce l'hanno. Il sistema sa quando dire "non lo trovo"?
 
-::: {.takeaway}
-Ora iniziamo a mettere in pratica quanto visto nelle lezioni precedenti: indicizzazione, retrieval e generazione di risposte. 
-:::
+- Con questo set di valutazione possiamo ora costruire la pipeline passo dopo passo e misurare l'effetto di ogni scelta su ricerca, generazione e astensione
 

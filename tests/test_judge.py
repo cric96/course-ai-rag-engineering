@@ -10,8 +10,10 @@ from pydantic import BaseModel
 
 from ragcourse.judge import (
     LangChainJudge,
+    context_coverage_metric,
     correctness_metric,
     deepeval_table,
+    grounded_correctness_metric,
     judge_model,
 )
 
@@ -83,3 +85,22 @@ def test_correctness_compares_the_answer_with_the_official_one():
     metric = correctness_metric(fake_judge())
     assert metric.name == "Correttezza"
     assert "EXPECTED_OUTPUT" in str(metric.evaluation_params)
+
+
+def test_grounded_correctness_also_checks_what_the_context_actually_contains():
+    metric = grounded_correctness_metric(fake_judge())
+    params = str(metric.evaluation_params)
+    assert metric.name == "Correttezza nel contesto"
+    assert "EXPECTED_OUTPUT" in params and "RETRIEVAL_CONTEXT" in params
+
+
+def test_context_coverage_reads_the_question_together_with_the_expected_answer():
+    metric = context_coverage_metric(fake_judge())
+    params = str(metric.evaluation_params)
+    assert metric.name == "Copertura del contesto"
+    assert (
+        "INPUT" in params
+        and "EXPECTED_OUTPUT" in params
+        and "RETRIEVAL_CONTEXT" in params
+    )
+    assert "ACTUAL_OUTPUT" not in params

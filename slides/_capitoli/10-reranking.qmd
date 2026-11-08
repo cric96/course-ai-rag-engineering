@@ -6,10 +6,10 @@
 [Domanda<br>+ bando]{.step} [Retrieval<br>ibrido, 30 chunk]{.step .store} [Reranking<br>i 10 migliori]{.step .active} [Generazione]{.step} [Risposta]{.step}
 :::
 
-L'ultima leva del retrieval: rileggere i candidati con un modello più attento.
+Come ultimo passaggio del retrieval, proviamo a riordinare i chunk recuperati usando un modello più accurato
 
 ::: {.notes}
-≈ 12 minuti · da 2:53 a 3:05, poi la pausa
+≈ 8 minuti · da 2:12 a 2:20, poi 10 minuti di pausa
 :::
 
 ```{python}
@@ -89,7 +89,7 @@ def timed(name, scorer):
     return score
 ```
 
-## Perché due fasi
+## Perché cercare in due fasi?
 
 | | Embedding (fase 1) | Reranker (fase 2) |
 |---|---|---|
@@ -98,11 +98,9 @@ def timed(name, scorer):
 | Velocità | millisecondi | da decine di ms a secondi |
 : {tbl-colwidths="[20,40,40]"}
 
-::: {.takeaway}
-Il reranker è più preciso perché vede domanda e testo insieme: troppo lento per tutto l'indice.
-:::
+- Analizzare insieme domanda e documento permette una valutazione più accurata della rilevanza, ma richiede troppo tempo per essere applicato all'intero indice
 
-## Il concetto, in poche righe
+## Come funziona il reranking
 
 ```{python}
 def rerank(question, candidates, score, top_n=10):
@@ -115,7 +113,7 @@ def rerank(question, candidates, score, top_n=10):
 - `score` è il pezzo che cambia: quattro modelli diversi, stessa interfaccia
 - In LangChain: `RerankRetriever(base=..., scorer=..., top_n=10)` è un retriever come gli altri
 
-## Quattro modi di dare il voto
+## I modelli di reranking a confronto {.approfondimento}
 
 | Reranker | Tipo | Come decide | Dove |
 |---|---|---|---|
@@ -127,10 +125,10 @@ def rerank(question, candidates, score, top_n=10):
 
 ::: {.muted}
 I *decision model* rispondono a domande sì/no con una probabilità, in un solo passaggio.
-Jev (TypeSafe AI) è un decision model via API; DeepEval lo integra come `TypeSafeModel`.
+Jev (TypeSafe AI) è un decision model via API, integrato in DeepEval come `TypeSafeModel`
 :::
 
-## Il confronto
+## Valutare i reranker sul retrieval {.approfondimento}
 
 ```{python}
 #| output: false
@@ -191,7 +189,7 @@ rerank_seconds["gemini (lista)"] = gemini.seconds
 ```
 
 
-## Il migliore
+## Risultati: confronto tra i reranker
 
 ```{python}
 #| echo: false
@@ -203,7 +201,7 @@ bar_chart(hit5, gray=["nessuno"], fmt="{:.0%}",
           title=f"hit@5: {best} {hit5[best]:.0%}, senza reranking {hit5['nessuno']:.0%}")
 ```
 
-## Quanto costa
+## Tempi di risposta del reranking
 
 ```{python}
 #| echo: false
@@ -213,10 +211,10 @@ bar_chart(ms, gray=[name for name in ms.index if name != "gemini (lista)"], fmt=
           title="Tempo per riordinare 30 candidati, per domanda")
 ```
 
-- I reranker locali leggono 30 coppie domanda-chunk in una frazione di secondo, su GPU
-- L'LLM *listwise* legge tutto insieme: più lento e a pagamento, anche con poco ragionamento
+- Su GPU, i reranker locali valutano le 30 coppie domanda-chunk in poche centinaia di millisecondi
+- Il riordinamento tramite LLM *listwise* valuta tutti i candidati insieme, ma richiede diversi secondi e una chiamata API a pagamento
 
-## E le risposte?
+## Impatto del reranking sulla generazione
 
 ```{python}
 #| echo: false
@@ -257,7 +255,7 @@ compare_chart(end_to_end, fmt="{:.2f}",
 
 ::: {.muted}
 Stesse 50 domande, 10 chunk al modello, stesso prompt e stesso giudice: cambia solo quali
-10 chunk arrivano al modello.
+10 chunk arrivano al modello
 :::
 
 ```{python}
@@ -266,7 +264,7 @@ percorso["correttezza"]["+ bge-m3 e ricerca ibrida"] = end_to_end.iloc[0, 0]
 percorso["correttezza"][f"+ reranking {best}"] = end_to_end.iloc[0, 1]
 ```
 
-## Che cosa ci dice
+## Analisi dei risultati sul reranking
 
 ```{python}
 #| echo: false
@@ -274,7 +272,7 @@ percorso["correttezza"][f"+ reranking {best}"] = end_to_end.iloc[0, 1]
 hit1 = results.loc["hit_rate@1"]
 p = p_value(qrels, runs[best], runs["nessuno"], "hit_rate@5")
 print(f"- **{best}** è il migliore: hit@5 {hit5[best]:.0%} contro {hit5['nessuno']:.0%} "
-      f"(p = {p:.4f}: non è caso), e la prima pagina giusta al primo posto nel "
+      f"e la prima pagina giusta al primo posto nel "
       f"{hit1[best]:.0%} dei casi (era {hit1['nessuno']:.0%}). Ma costa "
       f"{ms[best] / 1000:.1f} s a domanda, via API")
 print(f"- **I reranker locali** migliorano soprattutto il primo posto (bge: hit@1 "
@@ -284,6 +282,4 @@ print(f"- **d1-2B**, con la nostra domanda sì/no, non migliora la classifica "
 print(f"- Le risposte: correttezza {end_to_end.iloc[0, 0]:.2f} → {end_to_end.iloc[0, 1]:.2f}")
 ```
 
-::: {.takeaway}
-Il reranking rilegge pochi candidati con più attenzione: si paga in tempo, si misura in risposte.
-:::
+- Il reranking può migliorare l'ordine dei passaggi recuperati e la qualità delle risposte, ma introduce una latenza aggiuntiva che va valutata in base ai tempi di risposta richiesti
