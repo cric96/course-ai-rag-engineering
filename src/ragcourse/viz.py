@@ -21,13 +21,16 @@ STYLE = {
     "text.color": INK,
     "ytick.color": INK,
     "axes.edgecolor": GRAY,
-    "axes.titlesize": 20,
-    "axes.titleweight": "medium",
+    "figure.titlesize": 20,
+    "figure.titleweight": "medium",
     "figure.facecolor": "none",  # transparent: the slide's background shows through
     "axes.facecolor": "none",
-    "axes.titlelocation": "left",
-    "axes.titlepad": 16,
 }
+
+
+def set_title(fig: Figure, title: str) -> None:
+    """Title at the figure's left edge: long bar labels never push it off the figure."""
+    fig.suptitle(title, x=0.01, ha="left")
 
 
 def bar_chart(
@@ -44,7 +47,7 @@ def bar_chart(
 
         ax.invert_yaxis()  # first item on top
         ax.bar_label(bars, fmt=fmt, padding=6)  # values at the tips: no x axis
-        ax.set_title(title)
+        set_title(fig, title)
         ax.xaxis.set_visible(False)
         ax.spines[["top", "right", "bottom"]].set_visible(False)
         ax.tick_params(axis="y", length=0)
@@ -70,9 +73,9 @@ def compare_chart(table: pd.DataFrame, title: str, fmt: str = "{:g}") -> Figure:
 
         ax.set_yticks(rows, [str(label) for label in table.index])
         ax.invert_yaxis()  # first row on top, reference above the new run
-        # Legend just above the bars, title above the legend.
-        ax.legend(loc="lower left", bbox_to_anchor=(0, 1), ncols=n, frameon=False)
-        ax.set_title(title, pad=52)
+        # Legend below the bars, from the left edge: long labels never push it out.
+        fig.legend(loc="outside lower left", ncols=n, frameon=False)
+        set_title(fig, title)
         ax.xaxis.set_visible(False)
         ax.spines[["top", "right", "bottom"]].set_visible(False)
         ax.tick_params(axis="y", length=0)

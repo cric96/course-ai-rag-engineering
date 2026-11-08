@@ -1,6 +1,7 @@
 import pandas as pd
 import pytest
 from matplotlib.colors import to_hex
+from matplotlib.legend import Legend
 
 from ragcourse.viz import FONTS, GRAY, ORANGE, TEAL, bar_chart, compare_chart
 
@@ -30,7 +31,25 @@ def test_bar_chart_grays_out_context_items():
 
 def test_bar_chart_names_its_font_so_it_survives_outside_the_style_context():
     fig = bar_chart(pd.Series({"a": 1}), title="t")
-    assert fig.axes[0].title.get_fontfamily()[0] == FONTS[0]
+    assert fig.get_suptitle() == "t"
+    assert fig._suptitle.get_fontfamily()[0] == FONTS[0]
+
+
+@pytest.mark.parametrize("chart", [bar_chart, compare_chart])
+def test_a_long_title_stays_inside_the_figure_despite_long_labels(chart):
+    labels = ["non lo trova, la pagina giusta mancava", "risponde"]
+    data = (
+        pd.Series([9, 28], index=labels)
+        if chart is bar_chart
+        else pd.DataFrame({"a": [9, 28], "b": [8, 20]}, index=labels)
+    )
+    fig = chart(data, title="22 risposte su 50: «Non lo trovo nei documenti.»")
+
+    fig.draw_without_rendering()
+    title = fig._suptitle.get_window_extent()
+    assert title.x1 <= fig.bbox.x1
+    for legend in fig.findobj(Legend):
+        assert legend.get_window_extent().x1 <= fig.bbox.x1
 
 
 def test_bar_chart_formats_values_for_example_as_percentages():
@@ -54,7 +73,7 @@ def test_compare_chart_draws_the_reference_gray_and_the_new_run_orange():
 
 def test_compare_chart_names_both_runs_in_a_legend():
     fig = compare_chart(TABLE, title="t")
-    assert [text.get_text() for text in fig.axes[0].get_legend().get_texts()] == [
+    assert [text.get_text() for text in fig.legends[0].get_texts()] == [
         "baseline",
         "filtro",
     ]
