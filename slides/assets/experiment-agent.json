@@ -1,0 +1,1074 @@
+{
+ "pipeline": {
+  "correctness": 0.442,
+  "abstained": 12,
+  "searches_per_question": 1.0,
+  "records": [
+   {
+    "id": "faq-014",
+    "answer": "I documenti forniti non menzionano espressamente il contratto di apprendistato. \n\nTuttavia, stabiliscono che l’assunzione del nuovo ricercatore deve avvenire obbligatoriamente con contratto di lavoro dipendente, subordinato e a tempo pieno, esclusivamente nelle seguenti forme [1], [3]:\n* a tempo indeterminato; oppure\n* a tempo determinato con una durata pari o superiore a due anni.\n\nÈ inoltre escluso il personale già in organico presso il beneficiario (non sono valide modifiche contrattuali, stabilizzazioni o altre forme di trasformazione di contratti già in essere) [1], [3].",
+    "searches": [
+     "È ammissibile l’assunzione dei nuovi ricercatori tramite contratto di apprendistato?"
+    ],
+    "correctness": 0.4
+   },
+   {
+    "id": "faq-097",
+    "answer": "No, per quanto riguarda il soggetto economico non è richiesto che operi specificamente negli ambiti dell'Allegato 1: i soggetti proponenti possono infatti esercitare la propria attività in **qualsiasi settore economico**, purché non esercitino *esclusivamente* l’attività nei settori della produzione primaria di prodotti agricoli, della pesca e dell’acquacoltura [7].\n\nTuttavia, il vincolo riguarda il **progetto**, il quale deve [5]:\n- individuare come prevalente uno o più tra gli ambiti tematici prioritari della S3 2021-2027 (ALLEGATO 1 al bando) insieme con almeno un descrittore tra quelli inclusi nel perimetro dell'ambito;\n- giustificare tale scelta all'interno della proposta progettuale [5].",
+    "searches": [
+     "Al fine di fine di presentare la domanda di finanziamento il soggetto economico deve effettuare un’attività riconducibile agli ambiti tematici prioritari individuati nell’Allegato 1 del bando?"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-037",
+    "answer": "**Sì.** Per la richiesta di anticipo, l'operatore economico per la realizzazione degli interventi deve essere individuato (con provvedimento di aggiudicazione divenuto efficace) entro 12 mesi dalla data di concessione del contributo [1]. \n\nPoiché per l'«ulteriore concessione contributi» la data indicata è la Determinazione n. 17323 del **28/08/2024**, il termine dei 12 mesi decorre da tale data [1].\n\n**Condizioni ed eccezioni collegate:**\n* In caso di proroga del termine di 12 mesi, decade la possibilità di richiedere l’anticipazione del contributo [1].\n* Non è consentito richiedere l’anticipazione a fronte dell’affidamento delle sole spese tecniche, dell’affidamento di un solo stralcio di lavori, oppure a fronte di un'aggiudicazione provvisoria dei lavori [1].",
+    "searches": [
+     "Per chi ha ottenuto la concessione dei contributi con la determinazione del 28/08/2024, il termine dei 12 mesi entro il quale dovrà essere individuato l’operatore economico partono dal 28/08/2024?"
+    ],
+    "correctness": 0.9
+   },
+   {
+    "id": "faq-006",
+    "answer": "I documenti forniti non menzionano specificamente la casistica del lavoro o rapporto di collaborazione occasionale pregresso. \n\nTuttavia, in merito alla definizione di \"nuovo addetto\" e alle esclusioni, i documenti stabiliscono le seguenti regole:\n\n* **Definizione e decorrenza:** per “nuovo addetto in attività di Ricerca e Sviluppo” si intende un addetto che svolga attività di ricerca riconducibili al progetto presentato e assunto dall'azienda beneficiaria non prima della data di pubblicazione dell'Avviso per lo stesso progetto [2].\n* **Contratto richiesto:** deve essere assunto con contratto di lavoro dipendente, subordinato e a tempo pieno (a tempo indeterminato o a tempo determinato per almeno 2 anni) [1, 9].\n* **Esclusioni:** non è ammesso personale già in organico presso il beneficiario; di conseguenza non sono valide modifiche contrattuali, stabilizzazioni o altre forme di trasformazione di contratti già in essere [1, 6, 9]. Inoltre, gli incrementi occupazionali devono essere calcolati al netto di trasferimenti da imprese dello stesso gruppo, acquisizioni o fusioni [6].\n\nNon essendo specificato nei testi se una precedente collaborazione occasionale sia assimilabile a \"personale già in organico\" o a un \"contratto già in essere\", i documenti non consentono di confermare espressamente l'ammissibilità di questa specifica fattispecie.",
+    "searches": [
+     "E' ammissibile l’assunzione con contratto subordinato di una persona che abbia avuto in precedenza con l’impresa un rapporto di collaborazione occasionale , non continuativo e non configurabile come rapporto di lavoro subordinato?Si chiede se tale casistica possa rientrare nella definizione di “nuovo addetto” ai sensi del bando"
+    ],
+    "correctness": 0.3
+   },
+   {
+    "id": "faq-189",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Uno stabilimento balneare che svolge anche attività di ristorazione con somministrazione può accedere al bando per interventi di ristrutturazione relativi ai locali destinati all’attività di ristorazione e somministrazione alimenti e bevande?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-100",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Le diagnosi energetiche possono essere finanziate nelle consulenze finalizzate all'ottenimento di certificazioni che contribuiscono al miglioramento delle prestazioni energetiche?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-138",
+    "answer": "I documenti forniti non specificano espressamente se un soggetto beneficiario possa fungere da fornitore o consulente per un altro beneficiario indipendente. \n\nI testi definiscono esclusivamente i seguenti divieti ed esclusioni relativi ai fornitori e ai consulenti:\n- Non sono ammissibili consulenze, servizi o qualsiasi spesa fatturata da dipendenti, soci e amministratori del beneficiario, né da imprese collegate o associate e dai loro dipendenti, soci o amministratori [1], [4];\n- Per i contratti TEM/DEM non è consentito avvalersi di manager o dipendenti dell'impresa beneficiaria o di sue controllate o associate [2];\n- Sono escluse e non ammesse forme di autofatturazione, cessione di beni o compensazioni di qualunque genere tra il beneficiario e il fornitore [3];\n- Non sono ammessi contratti con agenti di commercio, distributori o rappresentanti (o formule di consulenza con pagamenti vincolati/in percentuale sulle vendite) [1], [2].",
+    "searches": [
+     "Un soggetto beneficiario può fungere da fornitore/consulente per un altro soggetto beneficiario, qualora entrambi fossero ammessi, premesso che tra i due soggetti NON ci sia alcun legame di controllo, collegamento o associazione, o legami di parentela (quindi c’è autonomia, terzietà e assenza di conflitti di interesse)?"
+    ],
+    "correctness": 0.9
+   },
+   {
+    "id": "faq-144",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "I servizi di consulenza ICE  (consulenze riferite alla ricerca di mercato, servizi per B2B)  rientrano tra le spese ammissibili della Voce B), purché ricompresi nelle tipologie previste dal bando?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-107",
+    "answer": "I documenti indicano la presenza di una graduatoria (legata alla valutazione di merito e all'attribuzione del punteggio) [1], [2], [4] e precisano che:\n\n* **Nel caso di parimerito in graduatoria**, il provvedimento di concessione verrà predisposto sulla base dell’**ordine di arrivo delle domande (data e ora)**, così come registrato dall’applicativo SFINGE 2020 [4].\n\nInoltre, viene specificato a monte che l'iter di selezione delle domande si attua con procedura secondo l’ordine cronologico di ricezione [1].",
+    "searches": [
+     "Nell’atto di concessione del finanziamento, i progetti saranno elencati secondo l’ordine di inserimento nello sportello, o in base al punteggio conseguito?"
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-154",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Un’azienda può presentare domanda anche solo per la partecipazione alle fiere?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-052",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Le dichiarazioni mancanza CUP, regime IVA, F24, F24 IVA, doppio finanziamento e DNSH devono essere compilate anche per il SAL oppure bisognerà allegarle quando si chiederà il SALDO?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-182",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Le agevolazioni previste con l'iperammortamento sono cumulabili con i contributi previsti dal bando?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-067",
+    "answer": "Nei documenti forniti non si fa alcuna menzione della SUA (Stazione Unica Appaltante), dei costi per l'espletamento della gara o delle spese per la commissione giudicatrice. \n\nI documenti specificano unicamente che:\n- La voce di costo **d)** comprende: spese per progettazione, direzione lavori, rilievi e indagini, coordinamento sicurezza in fase di progettazione ed esecuzione, collaudo e certificazione degli impianti, redazione di diagnosi energetiche, redazione attestati di prestazione energetica, verifica tecnica/valutazione della sicurezza sismica [5], [7].\n- Tra le voci di spesa di cui alla lettera d) sono ammissibili i costi per il **personale del soggetto richiedente**, purché riconosciuti come incentivo ai sensi e nel rispetto del Codice dei contratti vigente ed applicabile [1], [2], [3].",
+    "searches": [
+     "Nella voce di costo d) può essere inserito anche l'importo pagato alla SUA per l'espletamento della gara compreso gli incentivi al personale SUA oltre le spese della commissione giudicatrice?"
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-224",
+    "answer": "In base ai documenti forniti, l'impresa di recente istituzione che non ha ancora un conto annuale approvato e non può indicare né il fatturato medio dell'ultimo triennio né l'ultimo fatturato registrato:\n\n1. **Dichiara di essere di recente istituzione** nella domanda [1];\n2. Indica un fatturato basato su una **stima in buona fede** (per le imprese di nuova costituzione con conti non ancora chiusi, i dati vanno stimati in buona fede ad esercizio in corso) [1], [6];\n3. Si rende disponibile e **si impegna, a richiesta della Regione, a dare dimostrazione di quanto dichiarato** [1].\n\nTale valore stimato viene quindi inserito come fatturato (F) da porre in rapporto con il costo del progetto (CP) per la determinazione del punteggio relativo al parametro F [1], [2], [5].",
+    "searches": [
+     "Una impresa neo-costituita, che non presenta un dato relativo all’ultimo fatturato registrato, come può valorizzare il parametro f)  attinente alla sostenibilità ed economicità della proposta e che prevede una valutazione basata sul rapporto tra costo del progetto e il fatturato medio dell’ultimo triennio o l’ultimo fatturato registrato?"
+    ],
+    "correctness": 0.7
+   },
+   {
+    "id": "faq-113",
+    "answer": "I documenti non specificano espressamente come procedere nel caso in cui il bilancio 2023 di un'impresa non sia ancora stato depositato alla data di presentazione della domanda. \n\nTuttavia, i documenti indicano le seguenti regole generali per il calcolo dei parametri dimensionali:\n* I dati impiegati per calcolare gli effettivi e gli importi finanziari sono quelli riguardanti **l'ultimo esercizio contabile chiuso** e vengono calcolati su base annua, presi in considerazione a partire dalla data di chiusura dei conti [2, 4, 9].\n* Solo nel caso di un'**impresa di nuova costituzione**, i cui conti non siano ancora stati chiusi, i dati sono oggetto di una stima in buona fede ad esercizio in corso [9].",
+    "searches": [
+     "Nelle dichiarazioni vengono chiesti i parametri dimensionali calcolati sui due anni contabili 2022-2023. In merito a questi ultimi, alla data di presentazione della domanda (10/04/2024), nel caso in cui il bilancio 2023 non fosse ancora depositato, chiedo come sia più opportuno procedere."
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-103",
+    "answer": "Sì, è possibile. I documenti specificano che l'esclusione riguarda unicamente le spese per il **rinnovo e il mantenimento di certificazioni già in possesso** dell'impresa (nonché per le annualità successive alla prima) [1], [3]. \n\nPertanto, un'impresa che possiede già una certificazione può presentare domanda per una nuova certificazione, a condizione che:\n- Il progetto presentato **non** riguardi spese di rinnovo e mantenimento delle certificazioni già possedute (condizione che il richiedente deve formalmente dichiarare nella domanda) [1], [3], [5];\n- L'intervento sia finalizzato ad acquisire una nuova certificazione (singola, sistema integrato o più certificazioni) [5], [7];\n- L'intervento preveda obbligatoriamente l'acquisizione della certificazione e del relativo certificato da parte di un Ente certificatore (Intervento B), a cui può essere eventualmente associata l'attività di consulenza (Intervento A) [3], [7].",
+    "searches": [
+     "L’impresa possiede già una certificazione, è possibile presentare domanda per ottenere una nuova certificazione diversa da quella posseduta?"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-228",
+    "answer": "**No, non è ammesso.** \n\nI documenti specificano che le spese rendicontabili sono **solamente** quelle i cui giustificativi di riferimento (tutti) risultano emessi nel periodo compreso tra la data di presentazione della domanda e la data di conclusione del progetto [9]. \n\nViene chiarito espressamente che anche i giustificativi relativi ad **acconti o anticipi** devono risultare emessi **dopo** la data di presentazione della domanda [9]. L'emissione di fatture o giustificativi prima della presentazione della domanda comporta l'esclusione dell'intera spesa dal finanziamento, in quanto dimostrerebbe che il progetto è stato avviato prima della presentazione della domanda di contributo [9].\n\nLe spese per la realizzazione degli assessment relativi al livello di maturità digitale rientrano tra le consulenze specialistiche strategiche (voce *e*) [1, 2, 4] e non è prevista alcuna eccezione a tale regola nei documenti forniti.",
+    "searches": [
+     "Per quanto riguardano le spese per la realizzazione degli assesment relativi al livello di maturità digitale pre-intervento e post-intervento, è ammesso un anticipo prima della presentazione della domanda di contributo per il servizio che verrà fatturato dopo la presentazione della domanda?"
+    ],
+    "correctness": 0.9
+   },
+   {
+    "id": "faq-041",
+    "answer": "In base ai documenti forniti:\n\n* **Massimo del contributo per l'università (organismo di ricerca):**\n  Sì, per i beneficiari della Regione Emilia-Romagna (RER) – inclusi gli organismi di ricerca – ciascun soggetto può richiedere un **contributo massimo di 200.000,00 euro**, fino a una percentuale massima di cofinanziamento del **70%** [1, 2]. A livello generale della call transnazionale il limite massimo è indicato fino a 600.000 € per partner (e fino al 100% per i soggetti non profit), ma per la Regione Emilia-Romagna vige il vincolo specifico di 200.000 € e cofinanziamento al 70% [2].\n\n* **Fondi addizionali dai fondi EU:**\n  I documenti **non menzionano la presenza di fondi addizionali** per il singolo beneficiario. Viene unicamente specificato che la call stessa rientra nel progetto PRECISEU finanziato dal programma *Horizon Europe* dell'Unione Europea, con un budget complessivo per la call a cascata (FSTP) di 11,57 milioni di euro, di cui 1.800.000,00 euro rappresentano le risorse assegnate alla Regione Emilia-Romagna [1, 2, 5].",
+    "searches": [
+     "Come università il massimo del contributo concedibile sono 200.000 euro in totale? Ci sono fondi addizionali dai fondi EU?"
+    ],
+    "correctness": 0.2
+   },
+   {
+    "id": "faq-082",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Il nuovo ricercatore assunto a tempo indeterminato dopo la presentazione del progetto può essere un tecnico che ha già avuto rapporti di lavoro con la beneficiaria a tempo determinato?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-020",
+    "answer": "I documenti forniti non specificano se chi ha avuto in precedenza un rapporto di collaborazione occasionale (prestazione occasionale) con l'impresa possa essere considerato \"nuovo addetto\" o se sia considerato \"personale già in organico\".\n\nI documenti indicano unicamente le seguenti regole generali in merito:\n- Non è ammissibile personale «già in organico presso il beneficiario; pertanto non saranno valide modifiche contrattuali, stabilizzazioni o altre forme di trasformazione di contratti già in essere» [1], [2], [3].\n- Gli incrementi occupazionali devono essere calcolati al netto di trasferimenti di personale da altre imprese dello stesso gruppo o in caso di acquisizioni o fusioni [2].\n- Per «nuovo addetto in attività di Ricerca e Sviluppo» si intende un addetto che svolga attività di ricerca riconducibili al progetto presentato e assunto dall'azienda beneficiaria non prima della data di pubblicazione dell'Avviso per lo stesso progetto di ricerca (con contratto subordinato a tempo pieno, a tempo indeterminato o determinato di durata pari o superiore a due anni) e in possesso dei requisiti specifici previsti dal bando [1], [3], [5].",
+    "searches": [
+     "Con riferimento al requisito relativo all’assunzione di “nuovo personale” (non già in organico e non derivante da trasformazioni contrattuali), si chiede se sia considerata ammissibile l’assunzione con contratto subordinato di una persona che abbia avuto in precedenza con l’impresa un rapporto di collaborazione occasionale (prestazione occasionale), non continuativo e non configurabile come rapporto di lavoro subordinato.Si chiede se tale casistica possa rientrare nella definizione di “nuovo addetto” ai sensi del bando."
+    ],
+    "correctness": 0.2
+   },
+   {
+    "id": "faq-198",
+    "answer": "Nei documenti forniti non si fa alcuna menzione dei codici catastali (come A10). \n\nI documenti specificano unicamente che l'utilizzo dell'unità locale deve essere dimostrato attraverso un contratto di acquisto o un regolare contratto di locazione ad uso commerciale, industriale o artigianale, regolarmente registrato presso l'Agenzia delle Entrate, e che la sede deve essere situata in Emilia-Romagna, registrata e attiva presso la CCIAA di competenza, nonché nella disponibilità permanente ed esclusiva del soggetto beneficiario [1, 3, 7].",
+    "searches": [
+     "L’unità locale deve avere codici catastali A10 dell’ufficio?"
+    ],
+    "correctness": 0.7
+   },
+   {
+    "id": "faq-017",
+    "answer": "In base ai documenti forniti:\n\n1. **Assolvimento ex ante del DNSH per l'acquisto di software/licenze:**\n   I proponenti sono **completamente esentati** dalla compilazione della relazione DNSH (e il requisito DNSH si ritiene assolto ex ante per la fase di presentazione della domanda) solo se presentano **esclusivamente** le spese indicate al punto A.2, ovvero:\n   * spese di personale;\n   * per consulenze e spese generali (ad esclusione di prodotti IT);\n   * **spese per acquisto di software**;\n   * altre spese di carattere immateriale per la diffusione dei risultati;\n   * **spese per l’acquisizione licenze e protezione dell’IPR derivante dal progetto** [3], [5].\n   \n   Qualora il progetto non presenti *esclusivamente* tali spese o non rientri nelle altre condizioni di esenzione previste, i proponenti devono compilare e allegare la \"Relazione DNSH iniziale\" [5], [6].\n\n2. **Modalità di dichiarazione ed eventuale integrazione dell'Allegato C:**\n   * Per la casistica di esenzione relativa a tali spese (punto a.2), i documenti stabiliscono che deve essere allegata in fase di presentazione della domanda su SFINGE 2020 l'**autodichiarazione di spese immateriali** [3].\n   * Nei documenti forniti **non è indicato** se sia possibile o meno integrare l’Allegato C aggiungendo una specifica voce.",
+    "searches": [
+     "In realzione al DNSH, la spesa per l’acquisto di software (licenze o canoni), qualora rientrante nella voce b) è considerata tra quelle per cui il DNSH risulta assolto ex ante oppure è soggetta a diversa valutazione? Inoltre, qualora tale tipologia di spesa rientrasse tra quelle per cui il DNSH si considera assolto ex ante, si chiede come procedere correttamente con la dichiarazione: è possibile integrare l’allegato C aggiungendo una specifica voce, oppure è prevista una diversa modalità di dichiarazione?"
+    ],
+    "correctness": 0.4
+   },
+   {
+    "id": "faq-008",
+    "answer": "In base ai documenti forniti, per la copertura finanziaria tramite la formula $CP \\le P + Fb$, la voce **P** è definita come:\n\n* «incremento del capitale sociale esclusivamente nella forma di un versamento in denaro da parte dei soci già deliberato alla presentazione della domanda» [1]. \n\nL'aumento può essere effettuato da soci o da nuovi soci (incluse società finanziarie specializzate nella fornitura di capitale di rischio, mentre sono escluse le società fiduciarie) [1]. Deve risultare già deliberato all’atto della domanda e l’effettivo versamento degli importi a titolo di aumento di capitale sociale deve essere comunicato entro 90 giorni dalla concessione del contributo, con relativa delibera e bonifici [1, 9].\n\nNei documenti non è prevista né menzionata l'ammissibilità di apporti imputati a sovrapprezzo quote o a riserva; la disposizione fa riferimento unicamente all'«incremento del capitale sociale» [1].",
+    "searches": [
+     "In relazione alla modalità di copertura finanziaria di cui alla formula: CP ≤ P + Fb si chiede se siano ammessi anche apporti in denaro imputati a sovrapprezzo quote / riserva, oppure se il bando riconosca esclusivamente la quota imputata a capitale sociale in senso stretto."
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-070",
+    "answer": "In base ai documenti forniti:\n\n* Nel fac-simile di domanda è previsto che il richiedente dichiari che «realizzerà il progetto di sviluppo sperimentale **e/o** trasferimento tecnologico descritto in domanda» [2].\n* Il bando richiede che i progetti debbano «prevedere una presenza significativa di attività di trasferimento tecnologico [...] per **almeno il 50%** dei costi previsti dalle attività progettuali» [3]. \n\nI documenti indicano dunque una soglia minima (almeno il 50% dei costi) per le attività di trasferimento tecnologico e contemplano l'opzione \"e/o\", senza imporre una quota obbligatoria di sviluppo sperimentale [2, 3].",
+    "searches": [
+     "E' possibile presentare una proposta che includa soltanto attività di Trasferimento Tecnologico?"
+    ],
+    "correctness": 0.5
+   },
+   {
+    "id": "faq-109",
+    "answer": "In base ai documenti forniti, l'apertura per la presentazione delle domande è stabilita dalle ore 10.00 del 10 aprile 2024 (fino alle ore 13.00 del 7 maggio 2024) [1, 4]. \n\nNei documenti non è presente alcuna informazione o previsione in merito a uno slittamento della data di apertura (le proroghe previste riguardano unicamente i termini di conclusione del progetto e di rendicontazione [3, 8]).",
+    "searches": [
+     "E' confermata la data di apertura del bando al 10 aprile 2024 o prevedete uno slittamento?"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-184",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Può partecipare al bando un’impresa che svolga attività di commercio al dettaglio in sede fissa avente i requisiti di esercizio di vicinato come attività secondaria, pur esercitando prevalentemente un’attività non rientrante tra quelle agevolabili?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-148",
+    "answer": "I documenti forniti **non menzionano espressamente l'ICE** né la possibilità di iscriversi tramite soggetti terzi/collettive che redistribuiscono spazi.\n\nTuttavia, in merito alle condizioni generali di ammissibilità e rendicontazione delle fiere, i documenti stabiliscono quanto segue:\n\n* **Partecipazione diretta come espositore:** per «effettiva partecipazione» si intende la partecipazione diretta del beneficiario come espositore; non sono infatti ammesse partecipazioni indirette tramite la rappresentanza di distributori, importatori, agenti o imprese del gruppo [9]. L'ammissibilità richiede la partecipazione diretta a ogni fiera sia in forma singola che in forma aggregata (Reti/ATI/ATS) [1, 7].\n* **Documentazione richiesta:** per comprovare la partecipazione, il beneficiario deve allegare:\n  1. L'estratto del catalogo fieristico da cui risulti che ha partecipato in qualità di **espositore diretto** [7, 10];\n  2. La **richiesta di partecipazione** alla fiera/evento unitamente alla relativa **accettazione** (anche con eventuale accordo sottoscritto con la parte organizzatrice) [8, 10];\n  3. La documentazione fotografica o video relativa allo stand/spazio espositivo [8, 10].\n\nPoiché non è disciplinato il caso specifico dell'intermediazione da parte di ICE, non è possibile desumere dai documenti se tale modalità di adesione contrattuale sia considerata valida o meno.",
+    "searches": [
+     "E’ ammissibile la partecipazione ad una fiera se l'iscrizione non avviene direttamente tramite l'ente fiera ma ad un collettivo che funge da intermediario, nello specifico ICE, che acquista dei grossi spazi della fiera e li ridistribuisce ad aziende italiane interessate? Si conferma che comunque l'azienda risulta fra il catalogo proponenti come partecipante alla fiera."
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-146",
+    "answer": "In base ai documenti forniti, la situazione deve tenere conto delle seguenti regole e condizioni:\n\n### 1. Inquadramento nella Voce B) delle spese ammissibili\nLa voce **b) CONSULENZE** ammette esclusivamente tre specifiche tipologie di intervento [2, 5]:\n1. **Temporary Export Manager (TEM) e/o Digital Export Manager (DEM):** sviluppo delle competenze interne tramite l'utilizzo da parte del beneficiario di un TEM o DEM [5];\n2. **Consulenze per ideazione di un piano marketing e/o di un piano di comunicazione sui paesi target:** intese esclusivamente come spese di consulenza pura (esclusi servizi correlati operativi come produzione materiali, gestione social, ecc.) [5];\n3. **Consulenze per la realizzazione di B2B:** spese per selezione di partner/buyer e supporto a incontri di affari (esclusi costi organizzativi come affitto sale, catering, ecc.) [5].\n\nAttività generiche di «analisi di mercato, raccolta informazioni e supporto» non costituiscono una voce autonoma: per essere ammissibili devono **rientrare espressamente in una delle tre tipologie previste** (ad esempio qualificate formalmente come incarico di TEM/DEM o inquadrate nell'ambito dell'ideazione del piano marketing sui paesi target) [5].\n\n### 2. Necessità di aggiungere ulteriori consulenze\nI progetti devono obbligatoriamente comprendere interventi di tipo consulenziale elencati alla Voce b) [2]. I documenti **non impongono la presenza congiunta di più tipologie** di consulenza: è sufficiente prevedere interventi che soddisfino tale requisito [2].\n\n### 3. Condizioni e vincoli rilevanti\n* **Decorrenza e periodo di ammissibilità:** Le attività di progetto devono svolgersi obbligatoriamente a partire dal **24 febbraio 2026** e concludersi entro il **31 dicembre 2027** [2]. Se il contratto è già in essere al momento, le attività svolte prima di tale data non risulteranno ammissibili [2].\n* **Paesi obiettivo:** Il percorso di internazionalizzazione deve avere come obiettivo **fino a due paesi esteri** [8] (un'intera area geografica come il \"Sud America\" deve essere circoscritta a massimo due singoli paesi) [8].\n* **Compenso e natura del contratto:** Il fatto che il compenso sia fisso è conforme ai requisiti, dato che non sono ammessi contratti con agenti o consulenze con formule di pagamento vincolate o in percentuale sulle vendite realizzate [3, 9].\n* **Soggetto incaricato:** Il consulente/professionista non può essere un dipendente, socio o amministratore dell'impresa beneficiaria, né provenire da imprese collegate o associate [3, 9].",
+    "searches": [
+     "L’impresa al momento ha in essere un contratto di consulenza che prevede un compenso fisso e con durata annuale (non un contratto di agenzia) con un professionista esterno che si occupa di analisi di mercato internazionale, raccolta informazioni rilevanti per l’ingresso nel mercato del cartone in Sud America, supporto nel percorso di internazionalizzazione. Le attività sopra descritte possono rientrare alla Voce B) “Consulenze finalizzate a…” previste dal bando e ritenersi pienamente ammissibili, senza necessità di aggiungere ulteriori tipologie di consulenza?"
+    ],
+    "correctness": 0.8
+   },
+   {
+    "id": "faq-180",
+    "answer": "I documenti forniti non menzionano espressamente le strutture ricettive alberghiere con annesso ristorante. \n\nI documenti specificano unicamente che l'attività di somministrazione al pubblico di alimenti e bevande è ammessa solo se rientra tra quelle di cui agli artt. 2 comma 2, 7 comma 1 e 8 comma 1 della L.R. 14/2003, mentre non sono ammesse le attività di cui all’art. 2 commi 3 e 4 e all’art. 4 comma 3 lett. a), b), c), d), f), g), h), i) della medesima legge [1], [4], [7].",
+    "searches": [
+     "Una struttura ricettiva alberghiera con annesso ristorante può presentare domanda per l'attività di ristorazione?"
+    ],
+    "correctness": 0.4
+   },
+   {
+    "id": "faq-217",
+    "answer": "In base ai documenti forniti:\n\n* **Modalità di calcolo (costi standard o reali):** \n  La voce relativa al personale dipendente viene rendicontata a **costo standard** [3], [6]. Il costo orario viene determinato dividendo i più recenti costi del lavoro lordi documentati per 1.720 ore (nel caso di lavoro a tempo pieno) o per la quota proporzionale (nel caso di tempo parziale), ai sensi dell’art. 55, comma 2, lett. a) del Reg. (UE) 2021/1060 [3], [6]. Tale costo standard costituisce un riferimento non modificabile per tutta la durata del progetto [3], [6]. (La voce comprende anche i costi per \"compenso amministratore\" [1], [5], [8]).\n\n* **Limiti di spesa:** \n  I documenti non indicano un massimale o un tetto prefissato per la Voce 8 (a differenza di altre voci come le fiere o le spese generali) [1], [8]. L'unico vincolo esplicitato è che, in sede di rendicontazione intermedia a SAL, le spese rendicontate ammesse non possono superare il budget per Voce di spesa stabilito nel **piano dei costi approvato** [9].",
+    "searches": [
+     "Nella voce spese per il personale c'è un limite? Sarà rendicontata in costi standard o in costi reali?"
+    ],
+    "correctness": 0.5
+   },
+   {
+    "id": "faq-092",
+    "answer": "In base ai documenti forniti, non sono presenti tutti i dettagli completi relativi ai soggetti beneficiari ammissibili e alla totalità delle spese, ma è possibile ricavare quanto segue:\n\n1. **Partecipazione di imprese di consulenza rispetto a imprese di produzione:**\n   * I documenti non riportano l'elenco completo dei requisiti di ammissibilità dei beneficiari (es. codici ATECO).\n   * Viene comunque specificato che l'Azione 1.3.1 sostiene «progetti di innovazione delle imprese, delle filiere e delle attività professionali» [5, 6, 9]. \n   * Tuttavia, gli obiettivi generali del bando e la descrizione degli interventi fanno costante riferimento ad azioni realizzate «nell’ambito di attività produttive appartenenti alle diverse filiere regionali» [1, 4, 10] e alla riqualificazione/riconversione dell'attività produttiva [8]. I documenti forniti non specificano se le società di pura consulenza possano accedere direttamente ai contributi.\n\n2. **Utilizzo dei fondi (processi/impianti interni vs diffusione esterna):**\n   * Gli interventi ammissibili indicati sono finalizzati a «incrementare la prevenzione nella produzione di rifiuti, la preparazione per il riutilizzo, il riciclaggio dei rifiuti, in un’ottica di transizione verso modelli di produzione e consumo circolari, nell’ambito di attività produttive» [8].\n   * Nello specifico dell'Azione 1.3.1, gli interventi ammessi devono essere volti a «riqualificare e/o riconvertire l’attività produttiva attraverso: la progettazione (eco-design) e la produzione di prodotti, componenti, materiali e imballaggi ecocompatibili [...] e interventi volti ad estendere il ciclo di vita di prodotti, componenti, materiali e imballaggi, e/o a ridurre [...]» [8].\n   * Nei documenti forniti **non è prevista né menzionata** la possibilità di impiegare le risorse per progetti aventi come scopo la diffusione o divulgazione di tali concetti e pratiche all'esterno dell'azienda.",
+    "searches": [
+     "Il bando è diretto solo a imprese di produzione o possono partecipare anche imprese attive nella consulenza sui temi di economia circolare e riduzione rifiuti? I fondi possono essere utilizzati esclusivamente per l'efficientamento di impianti/processi produttivi propri dell'impresa o anche per sostenere progetti volti alla diffusione di questi concetti e queste pratiche all'esterno dell'azienda stessa?"
+    ],
+    "correctness": 0.3
+   },
+   {
+    "id": "faq-213",
+    "answer": "In base ai documenti, non è necessario aver già individuato la sede operativa in Emilia-Romagna al momento della domanda [2]. \n\nÈ infatti possibile selezionare l'opzione **«Sede non individuata al momento della presentazione della domanda»** [2]. In questo caso:\n\n* Provvisoriamente possono essere indicati i dati (Comune, Provincia, Indirizzo, C.A.P., ecc.) di una **sede alternativa, anche situata fuori Regione** [2].\n* Il beneficiario deve obbligatoriamente attivare la sede in Emilia-Romagna, inserirla in visura camerale e comunicarla all'amministrazione regionale (tramite una \"Variazione Sede intervento/UL\" sulla piattaforma Sfinge 2020) **entro la data di richiesta di anticipo/rendicontazione facoltativa intermedia (Sal intermedio) oppure entro la data di rendicontazione a saldo (Saldo unica soluzione)**, pena la revoca del contributo [1, 2, 6, 10].",
+    "searches": [
+     "Se non si ha la sede operativa in regione al momento della presentazione, bisogna comunque averla individuata e indicare l'indirizzo o ci si impegna ad aprirla entro i termini previsti senza indicare un indirizzo?"
+    ],
+    "correctness": 0.8
+   },
+   {
+    "id": "faq-160",
+    "answer": "Anche se per la partecipazione alle fiere non è richiesta la documentazione contabile di spesa (in quanto riconosciuta a forfait a fronte dell'effettiva partecipazione diretta) [1, 5], **è comunque necessario giustificare e comprovare il rispetto del principio DNSH per il trasporto delle merci in esposizione/campionario** [2, 4].\n\nNello specifico, la documentazione da fornire prevede:\n- L'allegazione alla dichiarazione (DSAN) delle **certificazioni ambientali dei trasportatori e/o degli organizzatori delle fiere** a cui si è partecipato [4].\n- I requisiti DNSH si intendono assolti ex-ante qualora per il trasporto merci in esposizione si utilizzino mezzi per almeno l’80% a basso impatto ambientale (ai sensi del DM 6/04/2022) [2].\n- Nel caso in cui il trasporto sia avvenuto con mezzi privi di tali caratteristiche o in assenza di una o più certificazioni ambientali, è necessario compilare un'apposita **relazione DNSH** (su modello predisposto dalla Regione) con adeguata descrizione per dichiarare se e in che misura il trasporto non interferisce con gli obiettivi ambientali e non arreca un danno significativo [2, 4].",
+    "searches": [
+     "Obblighi DNSH: all’art 12.4 si pone il caso, per le spese di partecipazione fieristica, di verifica ex ante e rendicontazione delle spese per il trasporto dei prodotti in fiera. Dal momento che l’art. 4 prevede che il costo delle fiere sia calcolato in modo forfettario e che “In fase di rendicontazione delle spese relative alla partecipazione in presenza alle fiere, il beneficiario del contributo e’ esonerato, per questa voce di spesa, dal presentare la relativa documentazione contabile, ma dovrà fornire evidenze documentali dell’avvenuta partecipazione diretta alle manifestazioni fieristiche”, bisognerà comunque giustificare la voce delle spese di trasporto (se effettuato)?"
+    ],
+    "correctness": 0.9
+   },
+   {
+    "id": "faq-087",
+    "answer": "In base ai documenti forniti, questi interventi:\n\n* Rientrano tra le azioni per riqualificare e/o riconvertire l’attività produttiva (Azione 1.3.1) [2, 8];\n* Vengono qualificati come modelli del tipo **product-as-a-service** (prodotto come servizio) [2, 4, 7];\n* Sono finalizzati ad estendere il ciclo di vita di prodotti, componenti, materiali e imballaggi e/o a ridurre il consumo di materie prime e la produzione di rifiuti [2, 4, 7, 8];\n* Vengono affiancati ad altri esempi dello stesso tipo di approccio, quali remanufacturing e rigenerazione, riparazione, ricambio e riutilizzo [2, 4, 7].\n\nI testi forniti non contengono ulteriori chiarimenti o definizioni operative specifiche su come debbano essere strutturate le attività di leasing e noleggio oltre all'inquadramento sopra descritto.",
+    "searches": [
+     "Per l'azione 1.3.1 si parla di interventi volti a ridurre il consumo di materie prime e la produzione di rifiuti, ad esempio tramite leasing e noleggio. È possibile chiarire cosa si intende?"
+    ],
+    "correctness": 0.2
+   },
+   {
+    "id": "faq-219",
+    "answer": "**Sì, è obbligatorio** [1]. \n\nL'obbligo di apposizione del CUP sin dall’origine (ai sensi dell'art. 5, comma 6, D.L. 13/2023, convertito con L. 41/2023) sussiste anche per le fatture relative alle spese calcolate in misura forfettaria per la partecipazione a fiere, sebbene il Bando stabilisca che i documenti contabili per tali spese non debbano essere presentati in sede di rendicontazione [1] [2].\n\nQualora le fatture elettroniche risultino prive di CUP, il beneficiario deve procedere alla loro regolarizzazione prima di presentare la rendicontazione delle spese [1].",
+    "searches": [
+     "È obbligatorio apporre il CUP sulle fatture relative alle spese per la partecipazione a fiere internazionali, considerato che queste spese sono riconosciute in modalità forfettaria e che la documentazione contabile non deve essere rendicontata?"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-170",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Il personale non Emiliano-Romagnolo, nel mio caso ha operato sul territorio solo in determinati giorni. Come faccio a riportarlo quando vi invierò la busta paga?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-210",
+    "answer": "In base ai documenti forniti:\n\n* **Partita IVA per prestazioni occasionali:** I documenti specificano che le spese relative a consulenze specialistiche rese nell'ambito di un contratto di prestazione occasionale (o \"prestazioni professionali occasionali\") sono ammissibili **solo se prestate da professionisti con partita IVA** [1, 2, 3, 4]. I documenti non affermano che il requisito della partita IVA sia previsto *esclusivamente* per le prestazioni occasionali, ma pongono tale condizione esplicita affinché le prestazioni occasionali possano essere ritenute ammissibili [1, 3, 4].\n* **Consulenze prestate da società:** **Sì, sono ammesse.** I documenti menzionano espressamente le «spese di consulenze o di servizi contrattualizzati con società private» (oltre che con enti pubblici o singoli professionisti) [5, 6]. In questo caso, le fatture devono contenere il riferimento al contratto o all’incarico e riportare una descrizione dettagliata ed esaustiva dei servizi acquisiti, chiaramente attribuibile alle attività di progetto (oppure specificata all’interno della relazione tecnica) [5, 6].",
+    "searches": [
+     "La partita Iva di professionisti per le spese di consulenze è richiesta solo per le prestazioni occasionali? Sono ammesse anche consulenze prestate da società?"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-140",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Nei 25.000 euro di dimensione minima per progetto, sono incluse anche le spese per Fiere? I 25.000 euro di spesa minima sono quindi intesi come somma delle voci di spesa A+B (spese + consulenze)?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-018",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "Al punto 3.2 dell’Avviso si prevede, tra le condizioni che il nuovo ricercatore deve dimostrare, quella di: “essere stato titolare di un contratto di lavoro come ricercatore a tempo determinato presso uno degli Atenei con sede nel territorio dell’Emilia-Romagna ed aver completato il ciclo triennale di ricerca da non più di 7 anni dalla data di pubblicazione del presente Avviso”.Si chiede conferma di come debba essere interpretata tale previsione nel caso di un contratto da Ricercatore a Tempo Determinato di tipo A che, a seguito del rinnovo previsto da normativa, abbia svolto un ciclo complessivo di ricerca di 5 anni presso l’Ateneo, anziché soli 3 anni.In particolare, si chiede se, in tale fattispecie, anche in considerazione della stretta analogia con le altre casistiche previste dall’Avviso, il termine dei 7 anni possa essere calcolato a partire dalla data di cessazione del contratto quinquennale complessivo con l’Ateneo."
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-157",
+    "answer": "In base ai documenti forniti:\n\n1. **Riconoscimento delle spese per le fiere (importo forfettario):** \n   I costi per la partecipazione a fiere internazionali (svolte esclusivamente in presenza tra il 24/02/2026 e il 31/12/2027) non vengono rendicontati a costi reali su fattura, ma sono riconosciuti mediante un **importo forfettario** pari a **€ 12.700,00** per le fiere all’estero e a **€ 3.000,00** per le fiere in Italia [1, 4, 8]. La rendicontazione a costi reali basata su fatture quietanzate riguarda le consulenze di cui alla voce b) [5, 9].\n\n2. **Periodo di emissione e quietanza delle fatture:**\n   In generale, le attività progettuali devono iniziare a partire dal 24 febbraio 2026 e concludersi entro il 31 dicembre 2027; le fatture devono essere emesse tra il 24 febbraio 2026 e il 31 dicembre 2027 ed essere integralmente quietanzate a partire dal 24 febbraio 2026 fino alla data di rendicontazione [6].\n\n3. **Caso specifico dell'acconto già versato per la fiera:**\n   Nei documenti forniti **non è presente una risposta specifica** in merito alla possibilità di partecipare al bando qualora sia già stato versato un acconto per la prenotazione della fiera, né si fa menzione di una regola sull'inserimento della sola fattura di saldo o di acconto ai fini del progetto (anche in ragione del fatto che la partecipazione alle fiere viene riconosciuta ad importo forfettario e non su base fattura) [1, 4, 8].",
+    "searches": [
+     "In merito al periodo di eleggibilità delle spese per il bando internazionalizzazione della PMI, nel caso in cui un’impresa abbia già versato un acconto al fine di prenotare il proprio posto in occasione di una fiera in svolgimento a fine 2026, è possibile partecipare al bando? È eventualmente possibile inserire sia fattura di acconto che di saldo oppure solamente la fattura di saldo all’interno del progetto?"
+    ],
+    "correctness": 0.7
+   },
+   {
+    "id": "faq-172",
+    "answer": "I documenti prevedono e disciplinano specificamente l'eventualità di modifiche ai costi rispetto a quanto preventivato:\n\n- **Autorizzazione preventiva:** tutte le variazioni del piano dei costi che comportano la realizzazione di spese non previste o sostitutive rispetto a quelle originariamente indicate nella domanda (nuovi interventi e/o nuove spese) devono essere autorizzate prima della rendicontazione delle spese [1].\n- **Tempistiche di riscontro:** la Regione provvede a dare riscontro alla richiesta tramite la piattaforma SFINGE2020 entro 40 giorni [7].\n- **Obbligo a seguito dell'accoglimento:** se la richiesta di modifica del piano dei costi viene accolta, il beneficiario è tenuto a realizzare e rendicontare le nuove spese approvate [7].\n- **Obbligo generale di comunicazione:** in ogni caso, i beneficiari sono tenuti a comunicare qualsiasi variazione intervenuta al progetto ammesso a contributo [1, 5].",
+    "searches": [
+     "Rispetto al progetto originario come capiterà a tutti quanti, i costi cambieranno rispetto a quello che è stato preventivato. Questo lo sapete già?"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-025",
+    "answer": "I documenti forniti non indicano uno specifico formalismo contrattuale (come ad esempio una \"lettera di intenti\") per formalizzare la collaborazione. Tuttavia, specificano le seguenti condizioni e adempimenti documentali relativi alla collaborazione con gli organismi di ricerca:\n\n* **Partecipazione attiva e durata:** La collaborazione (nuova o esistente) deve coprire partecipazioni attive a progetti congiunti/collaborativi e durare per tutta la durata del progetto sostenuto [1, 2]. Sono espressamente esclusi gli accordi contrattuali senza cooperazione attiva nel progetto finanziato (ad esempio, casi in cui i partner di un contratto quadro non partecipano tutti a una specifica cooperazione collaborativa) [1, 2].\n* **In sede di domanda:** Il proponente deve indicare il numero di organizzazioni di ricerca che intende coinvolgere attivamente [3] e, qualora si tratti di un organismo di ricerca privato, deve allegare lo Statuto dell'organismo stesso [6].\n* **A saldo/fine progetto:** Nella relazione finale a supporto della richiesta di rimborso a saldo, il beneficiario deve fornire i riferimenti alla documentazione necessaria a identificare l’organismo di ricerca coinvolto e le modalità di partecipazione di quest’ultimo al progetto [5].",
+    "searches": [
+     "Quale formalismo deve avere la collaborazione con  Centri di Ricerca? Per esempio lettera di intenti o altro?"
+    ],
+    "correctness": 0.3
+   },
+   {
+    "id": "faq-121",
+    "answer": "In base ai documenti forniti, la sola pianificazione non è sufficiente:\n\n* **Obbligo di rendicontazione ed evidenza della formazione completata:** a conclusione del progetto, per la rendicontazione a saldo, l’impresa deve documentare il numero effettivo di persone formate, fornendo prove comprovanti la partecipazione e i dati anagrafici dei dipendenti che hanno effettivamente *completato il corso di formazione* [5], [7].\n* **Mantenimento degli obiettivi originari:** il beneficiario non deve apportare modifiche sostanziali al progetto che ne alterino la natura, gli obiettivi o le condizioni di attuazione con il risultato di comprometterne gli obiettivi originari [6], [10].\n* **Monitoraggio dei risultati:** il progetto deve includere sin dall'inizio un sistema di monitoraggio e di misurazione dell'impatto dei risultati, con riferimento anche alle unità da sottoporre al potenziamento delle competenze [1].\n* **Condizioni per premialità:** qualora il contributo (o una sua maggiorazione) sia stato riconosciuto per specifiche condizioni (es. inserimento di personale), la mancata reintegrazione di figure analoghe entro 6 mesi in caso di dimissioni comporta la revoca parziale della premialità [6], [10].",
+    "searches": [
+     "Il contributo è legato al raggiungimento degli obiettivi formativi oppure è sufficiente la loro pianificazione?"
+    ],
+    "correctness": 0.4
+   },
+   {
+    "id": "faq-232",
+    "answer": "Sì, è possibile presentare sia uno solo dei due interventi sia entrambi. \n\nNel fac-simile di domanda di partecipazione, alla sezione relativa alla qualità tecnica e all'innovatività degli aspetti tecnici, è infatti indicato che vi è l'**obbligo di scelta di almeno una delle due** opzioni tra [5]:\n* *Digitalizzazione di base*;\n* *Digitalizzazione avanzata*.",
+    "searches": [
+     "Il bando al paragrafo 4.1 stabilisce che gli interventi potranno riguardare: - la digitalizzazione di base – livelli 1 e 2 della scala Acatech; - la digitalizzazione avanzata – livelli da 3 a 6 della scala Acatech. Si chiede se è possibile presentare uno solo tra i due interventi sopra indicati o entrambi gli interventi"
+    ],
+    "correctness": 0.7
+   },
+   {
+    "id": "faq-005",
+    "answer": "Dai documenti forniti non emerge in modo esplicito se la domanda debba essere formalmente candidata da una singola impresa o se possa essere presentata direttamente da un partenariato. \n\nI testi indicano tuttavia che:\n* È contemplata sia la partecipazione di una sola impresa beneficiaria, sia la collaborazione di più imprese: viene infatti specificato che, *«qualora al progetto collaborino più imprese»*, il proponente deve stimare il numero di imprese partecipanti includendo se stesso, mentre se l’impresa beneficiaria è l’unica a prendere parte al progetto, l'indicatore è valorizzato a 1 [1].\n* I progetti possono prevedere una cooperazione attiva con organismi di ricerca attraverso *«progetti di ricerca congiunti»* [2] o *«progetti di ricerca collaborativi»* che coinvolgono almeno un organismo di ricerca e un altro partner (come un'impresa) [10].\n* Nelle procedure si fa comunque riferimento a un «proponente» o «beneficiario» [1, 4] e a «progetti presentati dalle imprese» / «dai soggetti proponenti» [4, 5].",
+    "searches": [
+     "I progetti devono obbligatoriamente essere presentati da un'unica azienda o possono essere presentati anche da un partenariato di imprese e/o enti di ricerca?"
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-090",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "L’articolazione delle voci di spesa ammissibile lascia intendere che il focus di entrambe le misure sia la fase successiva a quella dello studio di nuovi prodotti/processi: non vi sono spese di personale dipendente né consulenze non vincolate da un tetto massimo percentuale. Il bando in sostanza incentiva la realizzazione di progetti industriali, a valle di progetti di studio già completati e validati. È corretta questa lettura?"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-158",
+    "answer": "In base ai documenti forniti, le consulenze **non devono essere necessariamente collegate o funzionali alla partecipazione alle fiere**. \n\nNello specifico:\n* I progetti **devono obbligatoriamente** comprendere interventi di tipo consulenziale coerenti con le finalità del percorso di internazionalizzazione presentato nel progetto e con i paesi obiettivo, mentre la partecipazione alle fiere (fino a un massimo di 4) è considerata come «eventuale partecipazione a fiere» [1], [2], [10].\n* Le consulenze ammissibili ai sensi dell'art. 4, lettera b), sono specificamente individuate nelle seguenti tipologie [9]:\n  * **Temporary Export Manager (TEM) e/o Digital Export Manager (DEM)**: sviluppo delle competenze interne attraverso l'utilizzo da parte del beneficiario di un TEM o DEM;\n  * **Consulenze per ideazione di un piano marketing e/o di un piano di comunicazione sui paesi target** (esclusivamente spese di consulenza, senza servizi correlati);\n  * **Consulenze per la realizzazione di B2B**: spese per la selezione di potenziali partner/buyer e il supporto a incontri di affari.\n\nIl requisito richiesto per le consulenze è dunque la loro rispondenza a queste categorie e la coerenza con gli scopi, gli output previsti, il percorso di internazionalizzazione e i paesi target del progetto [1], [5], [9].",
+    "searches": [
+     "Le consulenze previste alla lettera b) dell’art. 4 devono essere necessariamente funzionali e collegate alla partecipazione alle fiere indicate nel progetto, oppure possono essere considerate ammissibili anche consulenze di carattere più generale, purché coerenti con un percorso di internazionalizzazione e con i Paesi target individuati?"
+    ],
+    "correctness": 0.9
+   },
+   {
+    "id": "faq-051",
+    "answer": "In base ai documenti forniti, **no**:\n\n* La documentazione relativa all'affidamento e all'esecuzione degli appalti (come determine, atti e documenti di gara) deve essere inserita nella **«sezione contratti»** di Sfinge (caricata in maniera organizzata per CIG), mentre fatture e quietanze vanno nella «sezione giustificativi» [1, 3].\n* Tale documentazione (atti, contratti, lettere di incarico, affidamento ed esecuzione contrattuale, insieme alla check list di autovalutazione [1]) rientra infatti nella **documentazione amministrativa** e non nella «documentazione di progetto», che riguarda invece le attività realizzate a comprova della conformità del progetto a saldo (es. relazione finale, documentazione fotografica) [7].",
+    "searches": [
+     "Le check list compilate per ciascun affidamento e i documenti relativi agli affidamenti come determine e atti (lavori, progettazione, etc) , vanno caricate nella Sezione \"documenti progetto\" ?"
+    ],
+    "correctness": 0.4
+   },
+   {
+    "id": "faq-079",
+    "answer": "I costi legati all’assunzione di nuovi ricercatori vanno previsti nella **voce B: \"Spese per nuovi ricercatori\"** [1], [3], [8]. \n\nIn particolare, si riferiscono ai ricercatori assunti a tempo indeterminato (indicati nella domanda al punto B.8 nel numero approvato) per favorire all'interno dell'impresa le attività di sviluppo sperimentale e trasferimento tecnologico [1], [2], [4].",
+    "searches": [
+     "In quale voce di spesa vanno previsti i costi legati all’assunzione di nuovi ricercatori?"
+    ],
+    "correctness": 0.5
+   },
+   {
+    "id": "faq-125",
+    "answer": "In base a quanto indicato al paragrafo 4.1 del bando e nel modulo di domanda, per la FASE A (rilevazione dei fabbisogni di specifiche competenze all’interno della realtà aziendale), i due ambiti di intervento indicati:\n\n* la transizione digitale ed ecologica guidata dalla Strategia di specializzazione intelligente (S3) 2021-2027 regionale;\n* l’innovazione dei metodi di produzione e di organizzazione, i materiali e i processi produttivi in maniera intelligente, sostenibile e continuativa;\n\npossono essere affrontati **«alternativamente o congiuntamente»** [1, 7]. \n\nDi conseguenza, **non devono** essere obbligatoriamente affrontati in maniera sequenziale o combinata, ma possono essere affrontati anche **separatamente** (scegliendo solo l'uno o solo l'altro) [1, 7].",
+    "searches": [
+     "Gli interventi ammissibili al punto 4.1 (1 e 2) sono complementari o alternativi, ossia devono essere obbligatoriamente affrontati in maniera sequenziale o possono essere affrontati separatamente (solo punto 1 o solo punto 2)?"
+    ],
+    "correctness": 0.7
+   }
+  ]
+ },
+ "agent": {
+  "correctness": 0.654,
+  "abstained": 1,
+  "searches_per_question": 6.04,
+  "records": [
+   {
+    "id": "faq-014",
+    "answer": "I documenti del bando **non menzionano espressamente** il contratto di apprendistato. \n\nTuttavia, stabiliscono con precisione le condizioni contrattuali ammissibili per l'assunzione del nuovo ricercatore (*Avviso.pdf*, p. 10; *slide presentazione bando.pdf*, p. 13):\n* deve trattarsi di un **contratto di lavoro dipendente, subordinato e a tempo pieno**;\n* deve essere stipulato **a tempo indeterminato** oppure **a tempo determinato con una durata pari o superiore a due anni**.\n\nInoltre, non è ammesso personale già in organico presso il beneficiario; non sono pertanto consentite modifiche contrattuali, stabilizzazioni o trasformazioni di contratti già in essere (*Avviso.pdf*, p. 10; *slide presentazione bando.pdf*, p. 13).",
+    "searches": [
+     "assunzione nuovi ricercatori apprendistato",
+     "apprendistato",
+     "\"contratto di lavoro dipendente, subordinato\"",
+     "\"Non si accetterà personale già in organico\""
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-097",
+    "answer": "**No**, il soggetto economico non è tenuto a svolgere la propria attività in uno specifico ambito tematico: i soggetti ammessi a presentare domanda **possono esercitare l’attività in qualsiasi settore economico** (con l’unica esclusione dei soggetti che esercitano *esclusivamente* l'attività nei settori della produzione primaria di prodotti agricoli, della pesca e dell’acquacoltura) (Bando, p. 7).\n\nÈ invece il **progetto candidato** a dover:\n* individuare come prevalente **uno o più tra gli ambiti tematici prioritari della S3 2021-2027** indicati nell'Allegato 1;\n* comprendere **almeno un descrittore** tra quelli elencati nel relativo perimetro dell'ambito;\n* giustificare tale scelta all'interno della proposta progettuale (Bando, p. 11; ALLEGATO 1, p. 1).",
+    "searches": [
+     "ambiti tematici prioritari Allegato 1 soggetto economico attività riconducibile",
+     "\"qualsiasi settore economico\""
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-037",
+    "answer": "**Sì**. Il termine di 12 mesi entro il quale deve essere individuato l'operatore economico per la realizzazione degli interventi decorre dalla data di concessione del contributo. \n\nPer i soggetti ammessi con l'ulteriore concessione contributi disposta con la **Determinazione n. 17323 del 28/08/2024**, la data di concessione di riferimento è appunto il **28/08/2024** (webinar 25-02-2025Presentazione.pdf, p. 3).",
+    "searches": [
+     "termine 12 mesi operatore economico concessione determinazione 28/08/2024"
+    ],
+    "correctness": 0.9
+   },
+   {
+    "id": "faq-006",
+    "answer": "Nei documenti del bando non è presente una risposta o una casistica esplicita in merito al rapporto di **collaborazione occasionale** pregressa.\n\nI documenti stabiliscono tuttavia le seguenti regole generali in merito alla definizione di **nuovo addetto** e alle esclusioni:\n\n1. **Definizione e condizioni contrattuali**:\n   * Per «nuovo addetto in attività di Ricerca e Sviluppo» si intende un addetto che svolga attività di ricerca riconducibili al progetto presentato e assunto dall'azienda beneficiaria **non prima della data di pubblicazione dell'Avviso** (*Avviso.pdf*, p. 10).\n   * L’assunzione deve avvenire con contratto di **lavoro dipendente, subordinato e a tempo pieno**, a tempo indeterminato oppure a tempo determinato con una durata pari o superiore a due anni (*Avviso.pdf*, p. 10; *slide presentazione bando.pdf*, p. 13).\n   * Il candidato deve possedere uno dei requisiti alternativi di ricerca previsti dall'Avviso (dottore di ricerca, dottorando ammesso alla discussione, ex assegnista/contrattista o ricercatore a tempo determinato presso atenei dell'Emilia-Romagna, nei termini temporali indicati) (*Avviso.pdf*, p. 10).\n\n2. **Esclusioni previste dal bando**:\n   * *«Non si accetterà personale già in organico presso il beneficiario; pertanto non saranno valide modifiche contrattuali, stabilizzazioni o altre forme di trasformazione di contratti già in essere»* (*Avviso.pdf*, p. 10; *slide presentazione bando.pdf*, p. 13).\n   * Gli incrementi occupazionali devono inoltre essere calcolati al netto di trasferimenti da altre imprese dello stesso gruppo, acquisizioni o fusioni (*Avviso.pdf*, p. 10).\n\nPoiché l'Avviso non specifica espressamente se una prestazione d'opera o collaborazione occasionale conclusa ricada o meno nel divieto di stabilizzazione/trasformazione di \"contratti già in essere\" o nel concetto di \"personale già in organico\", per una conferma ufficiale su questo specifico caso è opportuno richiedere un chiarimento formale all'Amministrazione Regionale.",
+    "searches": [
+     "collaborazione occasionale nuovo addetto assunzione contratto subordinato",
+     "\"collaborazione occasionale\"",
+     "nuovo addetto in organico"
+    ],
+    "correctness": 0.3
+   },
+   {
+    "id": "faq-189",
+    "answer": "Nei documenti disponibili **non è presente una menzione esplicita degli stabilimenti balneari**, pertanto la risposta non è ricavabile direttamente dal testo.\n\nI documenti specificano tuttavia i requisiti e le esclusioni relativi alle attività di somministrazione:\n* Possono accedere le imprese che esercitano l’attività di somministrazione al pubblico di alimenti e bevande di cui agli **artt. 2 comma 2, 7 comma 1 e 8 comma 1 della L.R. n. 14/2003** (*rettifica Bando commercio 2026.pdf*, p. 6; *ALLEGATO M - SCHEDA DI SINTESI DEL BANDO.pdf*, p. 2).\n* Sono invece espressamente **escluse** le attività di cui all’art. 2 commi 3 e 4 e all’**art. 4 comma 3 lettere a), b), c), d), f), g), h), i)** della medesima legge (*rettifica Bando commercio 2026.pdf*, p. 6; *ALLEGATO M - SCHEDA DI SINTESI DEL BANDO.pdf*, p. 2). \n\nNei documenti non è riportato il testo dell'art. 4 comma 3 della L.R. 14/2003, per cui per la conferma definitiva sull'inquadramento della somministrazione svolta all'interno di uno stabilimento balneare è necessario fare riferimento al testo della suddetta legge regionale o contattare lo Sportello Imprese della Regione (*BANDO.pdf*, p. 48).",
+    "searches": [
+     "stabilimento balneare ristorazione somministrazione",
+     "balneare balneari",
+     "stabilimento stabilimenti",
+     "\"LR 14/2003\" somministrazione",
+     "\"art. 4\" \"LR 14/2003\"",
+     "FAQ",
+     "somministrazione \"PRESENTAZIONE WEBINAR\"",
+     "\"PRESENTAZIONE WEBINAR\" beneficiari",
+     "ristorazione"
+    ],
+    "correctness": 0.4
+   },
+   {
+    "id": "faq-100",
+    "answer": "Non lo trovo nei documenti.",
+    "searches": [
+     "diagnosi energetiche consulenze certificazioni prestazioni energetiche",
+     "\"diagnosi energetic\"",
+     "\"4.2\" spese ammissibili consulenza bando",
+     "\"4.2 Spese ammissibili\" \"consulenze specialistiche\"",
+     "diagnosi"
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-138",
+    "answer": "Nei documenti disponibili del bando non è presente un divieto esplicito che impedisca a un beneficiario di svolgere il ruolo di fornitore o consulente per un altro soggetto beneficiario, purché siano pienamente rispettate le regole di terzietà e ammissibilità della spesa previste:\n\n* **Assenza di collegamenti o partecipazioni:** non sono ammesse le spese per consulenze e servizi prestati da dipendenti, soci e amministratori del beneficiario o da imprese collegate o associate e dai loro dipendenti, soci o amministratori, né qualsiasi spesa fatturata da tali soggetti (*Bando.pdf, p. 11*; *Manuale Bando 2106.pdf, p. 25*).\n* **Figure TEM/DEM:** per i contratti di Temporary Export Manager o Digital Export Manager non è consentito avvalersi di manager o dipendenti dell'impresa beneficiaria o di sue controllate o associate (*Bando.pdf, p. 10*; *Manuale Bando 2106.pdf, p. 18*).\n* **Divieto di compensazioni e autofatturazione:** sono vietate qualsiasi forma di autofatturazione, di cessione di beni o compensazioni di qualunque genere tra il beneficiario e il fornitore (*Bando.pdf, p. 30*; *Manuale Bando 2106.pdf, p. 14*).\n* **Aggregazioni (se applicabile):** se i soggetti partecipano nell'ambito di una stessa aggregazione (ATI, ATS o Rete), i partecipanti non devono comunque essere associati o collegati, né avere soci in comune (*Bando.pdf, p. 7*).\n\nIn sintesi, garantite la totale indipendenza, l'assenza di rapporti societari, di controllo o di amministrazione, nonché il pagamento tracciato e non compensato, i documenti non prevedono un'incompatibilità derivante esclusivamente dal fatto che entrambi i soggetti siano beneficiari del bando.",
+    "searches": [
+     "beneficiario fornitore consulente altro beneficiario",
+     "fornitore beneficiario altro beneficiario",
+     "fornitore consulenze requisiti terzietà conflitto di interesse",
+     "inammissibili collegate associate dipendenti soci"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-144",
+    "answer": "Nei documenti del bando **non viene citata espressamente l’ICE** (né i servizi specifici da essa erogati). \n\nIn linea generale, qualsiasi spesa di consulenza può rientrare tra quelle ammissibili della **Voce b) Consulenze** soltanto se corrisponde esattamente alle categorie ammesse e rispetta le relative condizioni e limitazioni previste dal bando (*Bando.pdf*, p. 10; *Manuale Bando 2106.pdf*, p. 18):\n\n1. **Consulenze per la realizzazione di B2B:**\n   - Sono ammesse le spese per la **selezione di potenziali partner/buyer e il supporto a incontri di affari** (*Bando.pdf*, p. 10).\n   - **Esclusioni:** non comprende le spese per servizi di organizzazione degli incontri (quali ad esempio affitto sale, catering, interpreti, ecc.) (*Bando.pdf*, p. 10).\n\n2. **Consulenze per ideazione di un piano marketing e/o piano di comunicazione sui paesi target:**\n   - Si intendono esclusivamente le spese di consulenza (*Bando.pdf*, p. 10).\n   - **Esclusioni:** non sono ammessi i costi per servizi correlati (es. produzione di materiali promozionali, servizi informatici, produzione e gestione di contenuti social, ecc.) (*Bando.pdf*, p. 10).\n\n3. **Temporary Export Manager (TEM) e/o Digital Export Manager (DEM):**\n   - Finalizzate allo sviluppo delle competenze interne dell'impresa (*Bando.pdf*, p. 10).\n\n### Ulteriori vincoli da rispettare per la Voce b)\n- Non sono ammessi contratti con agenti di commercio, distributori, rappresentanti o formule con provvigioni/percentuali sulle vendite (*Bando.pdf*, p. 10).\n- Non sono ammesse consulenze di natura amministrativa, contabile o giuridica ordinaria, né attività di formazione del personale (*Bando.pdf*, p. 10).\n- Non sono ammissibili consulenze o servizi prestati da soggetti collegati/associati, soci, amministratori o dipendenti del beneficiario (*Bando.pdf*, p. 11).\n- Le fatture devono essere intestate al beneficiario, contenere una descrizione completa dei servizi acquisiti con riferimento al contratto/lettera di incarico/preventivo, recare il codice CUP ed essere pagate con metodi tracciabili entro i termini previsti (*Bando.pdf*, p. 28; *Manuale Bando 2106.pdf*, pp. 11, 14).",
+    "searches": [
+     "servizi di consulenza ICE Voce B ricerca di mercato B2B",
+     "ICE",
+     "Agenzia ICE",
+     "\"ricerca di mercato\"",
+     "consulente fornitore requisiti consulenza Voce B",
+     "\"sviluppo delle competenze interne attraverso\"",
+     "\"non sono ammessi i costi di servizi correlati\""
+    ],
+    "correctness": 0.5
+   },
+   {
+    "id": "faq-107",
+    "answer": "In base al bando, i progetti ammissibili sono collocati in **graduatoria secondo il punteggio conseguito**; soltanto nel caso di **parimerito in graduatoria**, il provvedimento di concessione viene predisposto sulla base dell'**ordine di arrivo delle domande (data e ora)** registrato dall'applicativo SFINGE 2020 (Bando, p. 19).",
+    "searches": [
+     "atto di concessione finanziamento elenco progetti ordine inserimento punteggio",
+     "6.3 Provvedimenti amministrativi elenco dei progetti ammissibili ed esclusioni",
+     "approva l'elenco delle domande ammissibili graduatoria ordine",
+     "\"l’elenco delle domande ammissibili\"",
+     "\"6.3 Provvedimenti amministrativi\" \"Proroghe e variazioni\"",
+     "\"7. Proroghe\" bando",
+     "\"6.3 Provvedimenti amministrativi\" Bando",
+     "\"elenco delle domande ammissibili e non ammissibili\"",
+     "\"i provvedimenti amministrativi di rigetto\"",
+     "\"approva l’elenco delle domande ammissibili e non ammissibili\"",
+     "\"http://fesr.regione.emilia-romagna.it\" ammissibili",
+     "\"a conclusione del processo di selezione e tenendo conto delle proposte del Nucleo\"",
+     "\"contestuale pubblicazione sui siti internet della Regione\""
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-154",
+    "answer": "**No**, un’azienda non può presentare domanda prevedendo esclusivamente la partecipazione a fiere.\n\nIn base al bando:\n- I progetti finanziabili **devono obbligatoriamente comprendere interventi di tipo consulenziale** (Voce B di spesa), finalizzati al percorso di internazionalizzazione (*Bando.pdf*, p. 8; *Progetti non ammissibili.pdf*, p. 1, 2).\n- L'assenza di interventi consulenziali ammissibili comporta la **non ammissibilità** del progetto (*Progetti non ammissibili.pdf*, p. 1, 2).\n- Inoltre, qualora in sede di rendicontazione il beneficiario non presenti spese relative alla voce b) (consulenze), o tali spese risultino interamente non ammissibili, si procede alla **revoca totale del contributo** (*Bando.pdf*, p. 33; *Manuale Bando 2106.pdf*, p. 29).",
+    "searches": [
+     "partecipazione fiere solo fiere ammissibilità spese",
+     "\"voce b\" \"voce a\" par. 11.2 non rendicontasse spese relative alla voce b",
+     "\"voce b\" obbligatoria Bando.pdf",
+     "\"Oggetto del bando\" \"Progetti ammissibili\" Bando.pdf",
+     "\"3. Caratteristiche dei progetti finanziabili\" Bando.pdf"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-052",
+    "answer": "Nei documenti disponibili non è presente un elenco che preveda specifici moduli di dichiarazione denominati *\"mancanza CUP\", \"regime IVA\", \"F24\", \"F24 IVA\" o \"doppio finanziamento\"* da trasmettere alternativamente a SAL o a saldo. Tuttavia, i documenti definiscono quanto segue in merito a tali aspetti e alle differenze tra SAL e saldo:\n\n1. **Rendicontazione a SAL vs Rendicontazione a SALDO:**\n   * **A SAL:** non è richiesta la presentazione di particolare documentazione tecnica; si presentano unicamente la documentazione contabile (fatture/quietanze) e le procedure di affidamento ed esecuzione contrattuale relative alle sole spese sostenute e rendicontate a SAL (*slide rendicontazione.pdf*, p. 5, 6). Inoltre, su Sfinge 2020 alcune rilevazioni (come le fasi procedurali e gli indicatori PR FESR) sono facoltative a SAL e diventano obbligatorie a SALDO (*slide sfinge 2020.pdf*, p. 32, 34).\n   * **A SALDO (rendicontazione finale):** è obbligatoria la documentazione tecnica e di progetto a chiusura dell'intervento (*slide rendicontazione.pdf*, p. 6; *bando.pdf*, p. 32).\n\n2. **DNSH:**\n   * La dichiarazione di rispetto del principio DNSH viene inserita nella domanda iniziale di contributo (*bando.pdf*, p. 20; *Manuale di istruzioni Bando energia EDIDFICI PUBBLICI.pdf*, p. 49).\n   * Invece, le informazioni e dichiarazioni di dettaglio circa gli effetti ambientali dell'operazione per le spese materiali (consumi/risparmi energetici, consumo di suolo, economia circolare) devono essere fornite obbligatoriamente **in fase di rendicontazione finale / a saldo** (*bando.pdf*, p. 41; *Presentazione Bando Edifici pubblici_15_02_2022.pdf*, p. 64).\n\n3. **CUP e tracciabilità:**\n   * Le fatture e le quietanze devono riportare il CUP di progetto. Le spese con CUP difforme da quello associato alla concessione non sono ammissibili e la sanatoria sul CUP è concessa **esclusivamente per meri errori materiali** di digitazione (*slide rendicontazione.pdf*, p. 5, 12). Non è disciplinata nei documenti una \"dichiarazione per mancanza CUP\".\n\n4. **Regime IVA e F24 IVA:**\n   * La dichiarazione sul regime IVA è prescritta tra i contenuti della domanda iniziale di contributo (*bando.pdf*, p. 20).\n   * In sede di rendicontazione della spesa (sia per il SAL che per il saldo), nel caso di pagamenti separati per IVA versata tramite F24 (ad es. split payment), per poter rendicontare l'IVA la spesa deve risultare integralmente pagata; in caso contrario, risulterà ammissibile solo l'imponibile previa verifica del pagamento dell'F24, anche se fuori termine (*slide rendicontazione.pdf*, p. 4).\n\n5. **Doppio finanziamento e cumulo:**\n   * La dichiarazione su ulteriori contributi richiesti/concessi fa parte della domanda iniziale (*bando.pdf*, p. 20).\n   * In sede di rendicontazione, la verifica del rispetto del divieto di doppio finanziamento avviene sui singoli giustificativi/fatture caricati (*slide rendicontazione.pdf*, p. 13).",
+    "searches": [
+     "dichiarazioni mancanza CUP regime IVA SAL SALDO DNSH doppio finanziamento",
+     "\"mancanza CUP\" rendicontazione",
+     "\"slide sfinge 2020.pdf\"",
+     "\"slide sfinge 2020.pdf\" SAL CUP F24 IVA",
+     "\"slide sfinge 2020.pdf\" rendicontazione allegati",
+     "\"slide sfinge 2020.pdf\" dichiarazioni F24 doppio finanziamento CUP",
+     "\"slide rendicontazione.pdf\" dichiarazione OR dichiarazioni",
+     "\"slide sfinge 2020.pdf\" \"dichiarazioni\" OR \"allegati\" OR \"quadro\"",
+     "\"slide rendicontazione.pdf\"",
+     "\"slide rendicontazione.pdf\" \"sezione\" OR \"allegare\" OR \"cl\"",
+     "\"slide sfinge 2020.pdf\" SAL SALDO",
+     "\"slide sfinge 2020.pdf\" \"mancanza\" OR \"regime\" OR \"doppio\" OR \"F24\"",
+     "\"mancanza CUP\" OR \"F24 IVA\" OR \"mancanza del CUP\"",
+     "\"slide rendicontazione.pdf\" F24",
+     "\"slide rendicontazione.pdf\" \"dichiarazione\" OR \"dichiarazioni\" OR \"modello\" OR \"modelli\"",
+     "\"slide rendicontazione.pdf\" \"ammissibile\" OR \"fattura\"",
+     "\"slide sfinge 2020.pdf\" \"dichiarazione\" OR \"sezione\" OR \"allegato\"",
+     "\"slide sfinge 2020.pdf\" rendicontazione",
+     "\"slide sfinge 2020.pdf\" \"OBBLIGATORIA\" OR \"FACOLTATIVA\" OR \"Sezione\"",
+     "\"slide sfinge 2020.pdf\" \"dichiarazioni\" OR \"DNSH\" OR \"CUP\""
+    ],
+    "correctness": 0.3
+   },
+   {
+    "id": "faq-182",
+    "answer": "Nei documenti del bando **non si fa espressa menzione dell'iperammortamento**. \n\nI documenti disciplinano in via generale le condizioni di cumulabilità dei contributi (*BANDO.pdf*, p. 9; *Manuale per la rendicontazione.pdf*, p. 40):\n\n* **Divieto di cumulo:** il contributo **non è cumulabile**, per le stesse spese, con altre agevolazioni che costituiscono aiuti di Stato (sia in forma di regimi che di aiuti ad hoc) o che siano concesse in Regime *de minimis*.\n* **Cumulabilità ammessa:** il contributo può invece essere cumulato con:\n  * altre agevolazioni concesse per l’abbattimento dei costi su finanziamenti anche a medio-lungo termine ai sensi della L.R. n. 40/2002;\n  * agevolazioni finalizzate a favorire l’accesso al credito e all’abbattimento degli interessi di cui all’art. 10, comma 1 della L.R. n. 12/2023 (nonché garanzie del Fondo Centrale di cui alla L. 662/1996, come precisato in *Manuale per la rendicontazione.pdf*, p. 28);\n  * **agevolazioni pubbliche in qualsiasi forma non costituenti aiuti di Stato**, a condizione che la somma complessiva dei contributi previsti dal bando e di dette agevolazioni non superi il valore totale di ciascuna spesa agevolata.",
+    "searches": [
+     "iperammortamento cumulo cumulabilità",
+     "iperammortamento ammortamento credito imposta fiscale"
+    ],
+    "correctness": 0.3
+   },
+   {
+    "id": "faq-067",
+    "answer": "In base ai documenti disponibili:\n\n1. **Incentivi al personale:** nella voce di costo **d)** sono ammissibili unicamente i **costi per il personale del soggetto richiedente**, purché riconosciuti come incentivo ai sensi e nel rispetto del Codice dei contratti vigente (*bando.pdf, p. 15*; *slide rendicontazione.pdf, p. 10*).\n2. **Costi pagati alla SUA e spese della commissione giudicatrice:** la voce d) include espressamente e tassativamente le spese per *progettazione, direzione lavori, rilievi e indagini, coordinamento sicurezza in fase di progettazione ed esecuzione, collaudo e certificazione degli impianti, redazione di diagnosi energetiche, redazione attestati di prestazione energetica, verifica tecnica/valutazione della sicurezza sismica* (*bando.pdf, p. 15*). L'importo pagato alla SUA per l'espletamento della gara, gli incentivi al personale della SUA e le spese per la commissione giudicatrice **non sono menzionati né previsti** tra le spese ammissibili nella voce d) nei documenti.",
+    "searches": [
+     "voce di costo d SUA gara commissione giudicatrice incentivi",
+     "SUA committenza gara commissione giudicatrice centrale unica committenza",
+     "\"voce d\" OR \"voce di spesa d\" OR \"incentivo\" OR \"incentivi\"",
+     "SUA OR \"Stazione Unica Appaltante\" OR \"commissione giudicatrice\""
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-224",
+    "answer": "In base a quanto previsto nella modulistica di domanda, un'impresa neo-costituita o di recente istituzione che non dispone ancora di un conto annuale approvato può valorizzare il parametro F) attraverso la seguente modalità:\n\n1. **Dichiarazione di recente istituzione**: il proponente seleziona l'apposita dichiarazione nella domanda di contributo, attestando di essere di recente istituzione e di non avere ancora un conto annuale approvato;\n2. **Stima in buona fede del fatturato**: non potendo indicare né il fatturato medio del triennio né l'ultimo registrato, il valore del fatturato indicato ai fini del calcolo del rapporto con il costo del progetto deve basarsi su una **stima in buona fede**;\n3. **Impegno a dimostrare i dati**: l'impresa deve rendersi disponibile e impegnarsi, su eventuale richiesta della Regione, a dare dimostrazione di quanto dichiarato (*Fac simile domanda.pdf, p. 5*).",
+    "searches": [
+     "parametro f sostenibilità ed economicità della proposta fatturato neo-costituita",
+     "recente istituzione fatturato stima buona fede"
+    ],
+    "correctness": 0.7
+   },
+   {
+    "id": "faq-113",
+    "answer": "In base alla documentazione del bando:\n\n1. **Riferimento temporale dei dati contabili**:\n   - I dati impiegati per il calcolo degli effettivi e degli importi finanziari (dipendenti, fatturato, totale di bilancio/stato patrimoniale) sono quelli riguardanti **l'ultimo esercizio contabile chiuso**, calcolati su base annua, e sono presi in considerazione **a partire dalla data di chiusura dei conti** (*BANDO COMPETENZE S3.pdf*, p. 41; *Allegato A*, art. 4, p. 2).\n   - Nel format di domanda a sistema vengono richiesti come anni contabili di riferimento il **2022** e il **2023** (*Domanda Sfinge Bando COMPETENZE S3_pubblicazione.pdf*, p. 3).\n\n2. **Mancato deposito del bilancio**:\n   - Nei documenti di bando e nei relativi allegati **non è prevista una specifica istruzione o deroga** per l'ipotesi in cui, alla data di presentazione della domanda, il bilancio dell'esercizio 2023 risulti chiuso ma non ancora formalmente approvato o depositato presso il Registro delle Imprese.\n   - Per ogni specifica inerente all'attribuzione della classe dimensionale viene fatto rinvio generale alla Raccomandazione della Commissione 2003/361/CE del 6 maggio 2003 (*BANDO COMPETENZE S3.pdf*, p. 41).",
+    "searches": [
+     "parametri dimensionali bilancio non depositato 2023",
+     "\"esercizio contabile chiuso\" bilancio",
+     "bilancio depositato approvato parametri dimensionali"
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-103",
+    "answer": "**Sì, è possibile.** Il bando consente di presentare domanda per ottenere una nuova certificazione (singola, sistema integrato o più certificazioni), purché il progetto sia finalizzato all'acquisizione di una certificazione diversa da quella già posseduta (*Bando*, p. 10; *ALLEGATO 11 - Scheda di sintesi del bando.pdf*, p. 3).\n\nLa normativa stabilisce infatti come limite che **la misura non finanzia le spese di rinnovo e mantenimento di certificazioni già in possesso dell’impresa** (né le annualità successive alla prima) (*Bando*, pp. 10, 12; *Manuale Bando 428-2026.pdf*, p. 29). In sede di presentazione della domanda, il richiedente deve espressamente dichiarare che il progetto presentato non riguarda spese di rinnovo o mantenimento di certificazioni già possedute (*Modulo domandae.pdf*, p. 5).",
+    "searches": [
+     "possiede già una certificazione nuova certificazione diversa",
+     "FAQ certificazione già in possesso diversa nuova"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-228",
+    "answer": "**No, non è ammesso.**\n\nIn base alle regole del bando e al relativo Manuale di rendicontazione:\n\n1. **Emissione e pagamento dei giustificativi:** Le spese rendicontabili sono unicamente quelle per le quali **tutti** i documenti contabili e giustificativi di riferimento sono emessi e pagati/quietanzati a partire dalla data di presentazione della domanda di contributo (Bando transizione.pdf, p. 13; Manuale di rendicontazione, p. 18, 20).\n2. **Anticipi e acconti:** Viene specificato espressamente che *«anche i giustificativi relativi ad acconti o anticipi o macro-canoni iniziali ecc. dovranno risultare emessi DOPO la data di presentazione della domanda pena l’esclusione dell’intera spesa dal finanziamento»*, in quanto un'emissione o un pagamento anteriore attesta l'avvio del progetto prima della presentazione della domanda (Manuale di rendicontazione, p. 18).\n3. **Spese non ammissibili:** Non sono ammissibili le spese relative a fatture o altri documenti contabili equivalenti emessi e/o pagati prima della presentazione della domanda di contributo (Manuale di rendicontazione, p. 20).\n\n*Nota:* L'unico documento che può riportare una data anteriore a quella di presentazione della domanda è il preventivo, contratto o ordine di acquisto/offerta accettata, purché non vi sia alcun pagamento o fatturazione (nemmeno a titolo di acconto/anticipo) prima della data di presentazione della domanda stessa (Manuale di rendicontazione, p. 14, 18).",
+    "searches": [
+     "assessment livello di maturità digitale anticipo fatturato presentazione domanda",
+     "decorrenza spese anticipo presentazione domanda fattura",
+     "assesment maturità digitale spesa fattura anticipo data"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-041",
+    "answer": "In base ai documenti dell'Avviso integrativo regionale relativo al bando **PRECISEU** (PR FESR Emilia-Romagna 2021-2027 / Horizon Europe):\n\n1. **Massimale per le università/organismi di ricerca in Emilia-Romagna:**\n   * **Sì**, per i soggetti dell'Emilia-Romagna (RER) – che comprendono gli organismi di ricerca accreditati / università, le PMI, le aziende sanitarie e gli IRCCS – **ciascun beneficiario potrà richiedere un contributo massimo di 200.000,00 euro** (*Preciseu_Elisabetta Maini.pdf, p. 8*; *Preciseu_Paolo Rosso.pdf, p. 7*).\n   * Per gli organismi di ricerca e gli enti pubblici il contributo erogato è pari al massimo al **70%** delle spese ammissibili (*Preciseu_Elisabetta Maini.pdf, p. 8*; *Modulo di domanda_Preciseu.pdf, p. 4*).\n\n2. **Fondi addizionali dai fondi EU:**\n   * A livello complessivo della call internazionale *PRECISEU* (finanziata dal programma europeo *Horizon Europe – Regional Innovation Valleys*), il budget totale per il meccanismo FSTP è di 11,57 milioni di euro e le regole generali prevederebbero fino a 600.000 euro per partner e una copertura fino al 100% per i no-profit (*Preciseu_Paolo Rosso.pdf, p. 7*; *Preciseu_Cecilia Maini.pdf, p. 4*).\n   * Tuttavia, a causa delle specificità regionali e della necessità di allineamento con le agenzie di finanziamento, per la Regione Emilia-Romagna il budget stanziato sull'Avviso è pari a 1,8 milioni di euro e il tetto per i soggetti regionali resta fissato a **200.000 euro** al 70% (*Preciseu_Elisabetta Maini.pdf, p. 8*; *Preciseu_Paolo Rosso.pdf, p. 7*).\n   * **I documenti non prevedono fondi addizionali dai fondi UE** da sommare a questo massimale per i partecipanti della Regione Emilia-Romagna.",
+    "searches": [
+     "università contributo massimo 200.000 euro",
+     "\"Preciseu\" \"200.000\"",
+     "\"organismi di ricerca\" 200.000",
+     "fondi addizionali"
+    ],
+    "correctness": 0.4
+   },
+   {
+    "id": "faq-082",
+    "answer": "Nei documenti disponibili **non è presente una disposizione specifica che vieti o disciplini espressamente** il caso di un ricercatore assunto a tempo indeterminato che abbia già avuto precedenti rapporti di lavoro a tempo determinato (ad esempio come tecnico) con la beneficiaria.\n\nI documenti stabiliscono tuttavia i requisiti e le condizioni tassative affinché l'assunzione e la figura siano ammissibili (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, pp. 18, 21, 78):\n\n1. **Requisiti soggettivi del ricercatore**:\n   - Possesso del titolo di **laurea magistrale** (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 18);\n   - Età non superiore a 35 anni, intesa come **non aver compiuto 36 anni il giorno dell’assunzione** (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 18, nota 5);\n   - Mansioni: deve essere adibito stabilmente in azienda a funzioni di sviluppo sperimentale e trasferimento tecnologico e svolgere attività riconducibili al progetto approvato (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 18).\n\n2. **Tipologia e tempi di assunzione**:\n   - Il contratto deve essere a **tempo pieno e a tempo indeterminato** (è ammesso anche l'alto apprendistato, con conferma finale) (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 18);\n   - L'assunzione deve avvenire **dopo la presentazione della domanda** ed essere dimostrata (presentando i contratti stipulati) entro la prima scadenza di presentazione della rendicontazione a SAL (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, pp. 18, 21);\n   - È possibile rendicontare unicamente il personale nel numero di risorse indicato in fase di candidatura (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 21).\n\n3. **Incremento occupazionale**:\n   - Gli incrementi occupazionali devono essere calcolati al netto dei trasferimenti di personale da altre imprese dello stesso gruppo o derivanti da acquisizioni o fusioni (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 18);\n   - Ai fini dell'indicatore di risultato sui nuovi posti di ricerca creati (RCR102), non sono conteggiati i posti di mero personale di supporto alla R&S (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 78).",
+    "searches": [
+     "nuovo ricercatore tempo indeterminato tempo determinato tecnico",
+     "nota 5 nota 6 nota 8 ricercatore Bando Trasf Tecnologico",
+     "\"adibito stabilmente in azienda\" DGR 1221",
+     "\"dimissioni/licenziamento\" \"ricercatori\"",
+     "\"rapporti di lavoro con la beneficiaria\"",
+     "\"tempo determinato\" ricercatore",
+     "\"rapporti di lavoro\"",
+     "\"nota 6\" OR \"nota6\"",
+     "\"comunicate come da nota\"",
+     "\"UNILAV\" OR \"comunicazione obbligatoria\" OR \"35 anni\"",
+     "\"tempo determinato\" AND \"indeterminato\""
+    ],
+    "correctness": 0.9
+   },
+   {
+    "id": "faq-020",
+    "answer": "Nei documenti del bando non è presente una risposta o una disciplina specifica riferita alla casistica della pregressa **collaborazione occasionale (o prestazione occasionale)**.\n\nI documenti stabiliscono le seguenti regole e condizioni generali in merito al “nuovo addetto/nuovo personale”:\n\n1. **Condizioni contrattuali ed esclusioni generali:**\n   - L'assunzione deve avvenire con **contratto di lavoro dipendente, subordinato e a tempo pieno**, a tempo indeterminato o a tempo determinato con durata pari o superiore a due anni (*Avviso.pdf, p. 10*; *slide presentazione bando.pdf, p. 13*).\n   - È stabilito che **«non si accetterà personale già in organico presso il beneficiario; pertanto non saranno valide modifiche contrattuali, stabilizzazioni o altre forme di trasformazione di contratti già in essere»** (*Avviso.pdf, p. 10*).\n   - Gli incrementi occupazionali devono inoltre essere calcolati al netto di trasferimenti da altre imprese dello stesso gruppo, acquisizioni o fusioni (*Avviso.pdf, p. 10*).\n\n2. **Requisiti soggettivi del ricercatore:**\n   Il nuovo addetto deve essere assunto non prima della pubblicazione dell'Avviso e deve possedere uno dei requisiti professionali alternativi previsti dal bando (dottore di ricerca da non più di 7 anni presso atenei dell'Emilia-Romagna; dottorando ammesso all'esame finale; ex assegnista di ricerca o ricercatore a tempo determinato presso atenei dell'Emilia-Romagna da non più di 7 anni) (*Avviso.pdf, p. 10*).\n\nPoiché i documenti non chiariscono espressamente se un pregresso rapporto di lavoro autonomo occasionale precluda o meno la qualifica di \"nuovo addetto\", per un'interpretazione vincolante sul caso specifico l'Avviso indica di rivolgersi allo Sportello Imprese della Regione Emilia-Romagna (*Avviso.pdf, p. 26*; *slide presentazione bando.pdf, p. 28*).",
+    "searches": [
+     "nuovo personale assunzione trasformazioni contrattuali nuovo addetto",
+     "collaborazione occasionale prestazione occasionale FAQ"
+    ],
+    "correctness": 0.3
+   },
+   {
+    "id": "faq-198",
+    "answer": "Nei documenti del bando **non viene richiesto né menzionato il codice catastale A/10** (ufficio). \n\nI documenti specificano invece i seguenti requisiti per l’**unità locale**:\n* deve essere una sede situata nel territorio dell’Emilia-Romagna;\n* deve essere registrata e attiva presso la competente CCIAA (e risultare dalla visura camerale);\n* deve essere il luogo in cui l’impresa realizza costantemente attività di produzione di beni o in cui siano stabilmente collocati il personale e le attrezzature impiegati per il progetto;\n* deve essere nella disponibilità permanente ed esclusiva del soggetto beneficiario;\n* l’utilizzo deve essere dimostrato tramite un contratto di acquisto oppure un **regolare contratto di locazione ad uso commerciale, industriale o artigianale**, regolarmente registrato presso l’Agenzia delle Entrate ai sensi dell’art. 27 della L. 392/1978 (*BANDO_STARTUP_2025.pdf*, p. 7; *Manuale bando DGR 1861_ DD1156-2026.pdf*, pp. 24, 43).",
+    "searches": [
+     "A10 catasto catastale unità locale ufficio",
+     "catasto catastale A10 \"A/10\"",
+     "catasto OR catastale OR catastali"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-017",
+    "answer": "In base a quanto previsto dai documenti del bando (in particolare al paragrafo 9.4 dell'Avviso):\n\n### 1. Valutazione della spesa per software e licenze ai fini DNSH\nLe **spese per acquisto di software** e le **spese per l’acquisizione licenze e protezione dell’IPR** rientrano tra le fattispecie per le quali il DNSH può considerarsi assolto *ex ante*, **a condizione che** l'intero progetto presenti esclusivamente spese di tale natura. \n\nNello specifico, sono completamente esentati dalla compilazione della relazione DNSH iniziale (e il requisito DNSH si ritiene assolto ex ante per la fase di domanda) i soggetti che:\n* presentino **SOLO**:\n  * spese di personale;\n  * spese per consulenze e spese generali (ad esclusione di prodotti IT);\n  * **spese per acquisto di software**;\n  * altre spese di carattere immateriale per la diffusione dei risultati;\n  * **spese per l’acquisizione licenze** e protezione dell’IPR derivante dal progetto (punto A.2);\n* *oppure* siano in possesso di una certificazione di processo tra quelle ammesse: ISO 14001, EMAS, OEF (punto A.1) *(Avviso.pdf, p. 24)*.\n\nSe il progetto comprende anche spese diverse da quelle immateriali sopra elencate e il proponente non possiede le certificazioni richieste, non opera l'esenzione totale e il proponente è tenuto a redigere e allegare la **«Relazione DNSH iniziale»** *(Avviso.pdf, p. 24)*.\n\n---\n\n### 2. Modalità di dichiarazione e integrazione dell'Allegato C\n* **Modalità prevista:** per la casistica di cui al punto A.2 (spese di personale, software, licenze e altre spese immateriali), l'Avviso stabilisce che debba essere allegata su SFINGE 2020 la specifica **«autodichiarazione di spese immateriali»** (indicata nel fac-simile di domanda come *Certificazione esenzione DNSH* di cui all'Appendice 12, Allegati B e C) *(Avviso.pdf, p. 24; Allegato A_fac simile domanda.pdf, p. 7)*.\n* **Integrazione/modifica dell'Allegato C:** nei documenti di gara **non è menzionata né disciplinata la possibilità di modificare o integrare autonomamente l'Allegato C** con nuove voci. I documenti prevedono unicamente l'utilizzo e la compilazione dei moduli e modelli resi disponibili dalla Regione *(Avviso.pdf, pp. 23-24)*.",
+    "searches": [
+     "DNSH software licenze canoni voce b assolto ex ante Allegato C",
+     "\"Allegato C\" DNSH \"Appendice 12\"",
+     "\"Allegato C\"",
+     "software licenze canoni DNSH",
+     "\"altri costi diversi dal personale\" \"voce\"",
+     "Appendice 12 DNSH"
+    ],
+    "correctness": 0.3
+   },
+   {
+    "id": "faq-008",
+    "answer": "In base a quanto disposto dall'Avviso (par. 2.1, lett. B), per la formula di copertura finanziaria **CP ≤ P + Fb**, la componente **P** è definita come segue:\n\n* **P = incremento dei mezzi propri**, specificato espressamente e restrittivamente come:  \n  *«incremento del capitale sociale esclusivamente nella forma di un versamento in denaro da parte dei soci già deliberato alla presentazione della domanda»* (*Avviso.pdf*, p. 7).\n\nInoltre, il testo prevede che entro 90 giorni dalla concessione del contributo debba essere inviata la documentazione comprovante l'«*effettivo versamento degli importi a titolo di aumento di capitale sociale*», comprensiva della «*delibera di aumento del capitale sociale e dei relativi bonifici effettuati all’azienda*» (*Avviso.pdf*, p. 7).\n\nNei documenti dell'Avviso **non sono menzionati** né previsti apporti a titolo di sovrapprezzo quote/azioni o imputati a riserve: il bando fa riferimento **esclusivamente all'incremento/aumento del capitale sociale** (*Avviso.pdf*, p. 7).",
+    "searches": [
+     "CP P Fb copertura finanziaria sovrapprezzo quote riserva capitale sociale",
+     "sovrapprezzo riserva"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-070",
+    "answer": "**No**, non è possibile presentare una proposta che includa soltanto attività di Trasferimento Tecnologico.\n\nIn base al bando, a pena di inammissibilità, i progetti devono:\n- Prevedere **sia attività di sviluppo sperimentale (SS) sia attività di trasferimento tecnologico (TT)**, finalizzate a validare in ambiente industriale un risultato o un prodotto del patrimonio intellettuale già realizzato e testato in laboratorio (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, pp. 19-20; *Presentazione bando e adempimenti Dnsh_Maini-Paone-Tutino.pdf*, p. 9);\n- Prevedere una presenza significativa di attività di trasferimento tecnologico per **almeno il 50% dei costi** previsti dalle attività progettuali (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 19);\n- Prevedere come attività minima al termine del progetto la realizzazione di un prototipo funzionante o di un dimostratore (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 20).",
+    "searches": [
+     "soltanto attività di Trasferimento Tecnologico",
+     "\"sviluppo sperimentale\" \"trasferimento tecnologico\" progetti ammissibili devono prevedere",
+     "\"soltanto\" \"sviluppo sperimentale\" \"trasferimento tecnologico\""
+    ],
+    "correctness": 0.0
+   },
+   {
+    "id": "faq-109",
+    "answer": "In base ai documenti disponibili, la data di apertura per la presentazione delle domande è fissata alle **ore 10.00 del 10 aprile 2024** (con chiusura alle ore 13.00 del 7 maggio 2024) (*BANDO COMPETENZE S3.pdf*, p. 14; *SLIDE .pdf*, p. 16).\n\nNei documenti non è previsto né menzionato alcuno slittamento o proroga della data di apertura delle domande.",
+    "searches": [
+     "10 aprile 2024 apertura data bando slittamento proroga",
+     "FAQ 10 aprile 2024 slittamento apertura"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-184",
+    "answer": "In base a quanto stabilito dal bando, **sì, può partecipare**, a condizione che rispetti tutti i requisiti previsti e che l'attività prevalente non sia tra quelle espressamente vietate. \n\nIn particolare, dai documenti emergono i seguenti elementi:\n\n1. **Requisiti sull'attività svolta**: il bando richiede che i soggetti richiedenti siano iscritti al REA e che svolgano, al momento della presentazione della domanda, un'attività di *«commercio al dettaglio in sede fissa avente i requisiti di esercizio di vicinato ai sensi della vigente normativa (art. 4, comma 1, lettera d del D. Lgs. n. 114/1998)»* (*rettifica Bando commercio 2026.pdf*, par. 2.1, p. 6). Il testo non richiede che tale attività debba coincidere obbligatoriamente con l'attività primaria o prevalente dell'impresa (nel modello di domanda per la sede dell'intervento è infatti prevista l'indicazione sia dell'Ateco primario che di quello secondario: *fac simile DOMANDA Bando Commercio 2026.pdf*, pp. 4-5).\n2. **Esclusioni di settore**: l'attività prevalente esercitata non deve rientrare nei settori espressamente esclusi dal bando, il quale vieta la partecipazione ai soggetti che operano nella *«produzione primaria di prodotti della pesca e dell’acquacoltura e i soggetti operanti nel settore della produzione primaria dei prodotti agricoli»* (*rettifica Bando commercio 2026.pdf*, par. 2.1, p. 7).\n3. **Altri requisiti obbligatori**:\n   - L'impresa deve essere una **micro, piccola o media impresa** (*rettifica Bando commercio 2026.pdf*, par. 2.2, p. 7);\n   - L'unità locale in cui si realizza l'intervento deve trovarsi in Emilia-Romagna ed essere in possesso dei regolari titoli e autorizzazioni per l'attività agevolata (*rettifica Bando commercio 2026.pdf*, par. 2.2, pp. 7-8);\n   - L'esercizio deve rispettare i parametri di **esercizio di vicinato**, ossia superficie di vendita non superiore a 150 mq nei comuni con popolazione fino a 10.000 abitanti, o a 250 mq nei comuni con popolazione superiore (*rettifica Bando commercio 2026.pdf*, par. 2.1 nota 3, p. 7).",
+    "searches": [
+     "commercio al dettaglio esercizio di vicinato attività secondaria prevalente",
+     "attività secondaria prevalente commercio vicinato",
+     "prevalente",
+     "\"Soggetti beneficiari\" bando commercio",
+     "\"2.1\" \"Soggetti beneficiari\" bando",
+     "\"2.1 Soggetti che possono presentare la domanda\"",
+     "\"Repertorio delle notizie Economiche e Amministrative\" \"sia con le forme giuridiche\"",
+     "\"attività di commercio al dettaglio in sede fissa avente i requisiti di esercizio di vicinato\"",
+     "\"Requisiti soggettivi di ammissibilità dei soggetti che presentano la domanda\" \"possedere\"",
+     "\"requisiti soggettivi di ammissibilità\" \"sede legale\" \"sede operativa\"",
+     "\"I soggetti proponenti devono possedere, al momento della presentazione della domanda\"",
+     "secondaria",
+     "\"codice Ateco\" bando commercio",
+     "webinar secondaria prevalente commercio vicinato",
+     "\"soggetti beneficiari\" webinar commercio",
+     "\"PRESENTAZIONE WEBINAR del 09.06.2026.pdf\" beneficiari",
+     "\"PRESENTAZIONE WEBINAR\" \"esercizi di vicinato\"",
+     "\"PRESENTAZIONE WEBINAR\" \"soggetti\"",
+     "\"chi può presentare domanda\" OR \"destinatari\" webinar"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-148",
+    "answer": "Sì, la partecipazione tramite collettiva (come quelle organizzate da ICE) è ammissibile, purché siano rispettate le condizioni previste dal bando e dalle linee guida di rendicontazione:\n\n1. **Manifestazioni collettive**: il bando prevede espressamente la possibilità di aderire a manifestazioni collettive, precisando che, in questo caso, *«per fornitori si intendono gli organizzatori delle collettive»* (*Bando.pdf*, p. 29, nota 15).\n2. **Partecipazione come espositore diretto**: è richiesta la partecipazione diretta del beneficiario quale espositore (non sono ammesse partecipazioni indirette tramite la rappresentanza di distributori, importatori, agenti o imprese del gruppo) (*Manuale Bando 2106.pdf*, p. 26, nota 13).\n3. **Requisiti documentali da rendicontare**:\n   - Estratto del catalogo fieristico ufficiale da cui risulti che l'impresa ha partecipato alla fiera in qualità di **espositore diretto** (*Bando.pdf*, p. 27; *Manuale Bando 2106.pdf*, p. 18);\n   - Richiesta di partecipazione alla fiera/evento unitamente alla relativa accettazione (anche con eventuale accordo sottoscritto con la parte organizzatrice) (*Bando.pdf*, p. 28; *Manuale Bando 2106.pdf*, p. 18);\n   - Documentazione fotografica o video dello stand/spazio espositivo (*Bando.pdf*, p. 28; *Manuale Bando 2106.pdf*, p. 18).",
+    "searches": [
+     "ICE fiera collettiva ente fiera intermediario catalogo",
+     "espositore diretto collettiva intermediario ICE",
+     "\"manifestazioni collettive\" OR \"organizzatori delle collettive\" OR \"collettive\"",
+     "\"collettiva\" OR \"organizzatore\" OR \"espositore\""
+    ],
+    "correctness": 0.5
+   },
+   {
+    "id": "faq-146",
+    "answer": "In base alle disposizioni del bando, le attività descritte possono essere considerate ammissibili alla **Voce B) Consulenze**, e **non è obbligatorio aggiungere ulteriori tipologie di consulenza**, purché siano rispettate le seguenti condizioni ed elementi specifici:\n\n---\n\n### 1. Inquadramento in una delle tipologie ammesse\nLa Voce B) ammette esclusivamente consulenze finalizzate a (Bando.pdf, p. 10; Manuale Bando 2106.pdf, p. 25):\n* **Temporary Export Manager (TEM) e/o Digital Export Manager (DEM)** (per lo sviluppo di competenze interne);\n* **Ideazione di un piano marketing e/o di un piano di comunicazione sui paesi target**;\n* **Realizzazione di B2B** (selezione di potenziali partner/buyer e supporto a incontri di affari).\n\nL’attività descritta (analisi di mercato internazionale, raccolta di informazioni per l'ingresso nel mercato estero, supporto all'internazionalizzazione) può rientrare pienamente nella Voce B) se viene formalmente ricondotta a una di queste categorie (ad esempio, figura del TEM o incarico finalizzato alla redazione del piano marketing/ingresso sul mercato target), dettagliando nella domanda scopi, output attesi e profilo/competenze del consulente (Bando.pdf, p. 8).\n\n---\n\n### 2. Nessun obbligo di combinare più consulenze\nI progetti devono obbligatoriamente comprendere interventi consulenziali coerenti con le finalità del percorso di internazionalizzazione tra quelli elencati alla Voce B), ma **non è richiesto** attivare contemporaneamente più tipologie di consulenza: è sufficiente anche un solo intervento consulenziale ammissibile (Bando.pdf, p. 8).\n\n---\n\n### 3. Condizioni e vincoli da verificare per il contratto in essere\nPerché la spesa sia effettivamente e pienamente ammissibile, occorre verificare quanto segue:\n* **Compenso e natura dell'incarico**: Il compenso fisso rispetta i vincoli del bando, il quale esclude espressamente contratti con agenti di commercio, distributori o rappresentanti, nonché contratti con formule di pagamento vincolate o calcolate in percentuale sulle vendite (Bando.pdf, p. 10).\n* **Indipendenza del consulente**: Non sono ammesse consulenze prestate da dipendenti, soci o amministratori del beneficiario, né da imprese collegate/associate o dai loro dipendenti/soci/amministratori (Bando.pdf, p. 10, nota 8; Manuale Bando 2106.pdf, p. 25).\n* **Periodo di ammissibilità delle spese**: Le attività finanziabili devono svolgersi tra il **24 febbraio 2026** e il **31 dicembre 2027**. Le fatture devono essere emesse all'interno di questo intervallo temporale e riportare obbligatoriamente il Codice Unico di Progetto (CUP) (Bando.pdf, p. 8, 28). Eventuali prestazioni o acconti riferiti a periodi antecedenti al 24 febbraio 2026 non saranno ammissibili.\n* **Addizionalità**: L’intervento deve presentare carattere di novità e addizionalità rispetto alla normale attività ordinaria dell'impresa sui mercati esteri (ad esempio rivolgendosi a un nuovo mercato target) (Bando.pdf, p. 20).\n* **Rendicontazione**: In fase di rendicontazione andranno prodotti il contratto sottoscritto (con dettaglio di attività, durata e compenso), la relazione finale del consulente sui risultati raggiunti controfirmata dall'impresa, e gli eventuali studi/documenti prodotti (Bando.pdf, p. 28; Manuale Bando 2106.pdf, p. 19).",
+    "searches": [
+     "Voce B Consulenze finalizzate a internazionalizzazione contratto compenso fisso durata annuale",
+     "\"formule di pagamento delle prestazioni\"",
+     "\"decorrenza\" OR \"periodo di ammissibilità\" OR \"inizio progetto\" Bando.pdf",
+     "\"contratto in essere\" OR \"contratti in essere\" OR \"preesistente\""
+    ],
+    "correctness": 0.5
+   },
+   {
+    "id": "faq-180",
+    "answer": "Nei documenti del bando **non viene trattato esplicitamente** il caso specifico di una struttura ricettiva alberghiera con annesso ristorante.\n\nI documenti indicano tuttavia i requisiti generali di ammissibilità per le attività di ristorazione/somministrazione:\n* È ammessa **l’attività di somministrazione al pubblico di alimenti e bevande** di cui agli articoli 2 comma 2, 7 comma 1 e 8 comma 1 della **L.R. n. 14/2003** (*rettifica Bando commercio 2026 .pdf*, p. 6; *ALLEGATO M - SCHEDA DI SINTESI DEL BANDO.pdf*, p. 2).\n* Sono invece espressamente **escluse** le attività di somministrazione disciplinate dall’**art. 2 commi 3 e 4** e dall’**art. 4 comma 3 lettere a), b), c), d), f), g), h), i)** della medesima L.R. n. 14/2003 (*rettifica Bando commercio 2026 .pdf*, p. 6). \n\nPoiché il testo completo degli articoli e delle esclusioni della L.R. 14/2003 non è riportato all'interno dei documenti disponibili, per verificare l'ammissibilità occorre controllare sotto quale titolo autorizzativo / tipologia di attività ai sensi della L.R. 14/2003 sia esercitata la somministrazione del ristorante.",
+    "searches": [
+     "struttura ricettiva alberghiera ristorante attività di ristorazione",
+     "ricettiva albergo alberghiera LR 14/2003 somministrazione",
+     "ristorante",
+     "alberghi ricettive somministrazione LR 14/2003 art. 4 comma 3",
+     "albergo OR alberghi OR alberghiera OR alloggiati",
+     "\"somministrazione al pubblico di alimenti e bevande\" \"LR 14/2003\"",
+     "\"struttura ricettiva\" OR \"strutture ricettive\" OR \"alberghiera\" OR \"alberghiere\""
+    ],
+    "correctness": 0.5
+   },
+   {
+    "id": "faq-217",
+    "answer": "In merito alla **Voce 8** di spesa (*Costi diretti per personale dipendente a tempo determinato e indeterminato; costi per “compenso amministratore”*):\n\n### 1. Limite di spesa\nNei documenti di bando **non è previsto un limite massimo o una percentuale limite specifica** per le spese di personale (a differenza di altre voci che prevedono tetti specifici, come le fiere o le spese generali al 7%) (*BANDO_STARTUP_2025.pdf*, p. 14; *Modulo domanda.pdf*, p. 11). Gli unici vincoli sono il rispetto del budget complessivo del progetto e i massimali di contributo previsti dal bando.\n\n---\n\n### 2. Modalità di rendicontazione (costi standard o reali)\n\nLa modalità varia a seconda della tipologia di figura rendicontata:\n\n* **Personale dipendente (tempo determinato e indeterminato):**\n  Viene rendontato tramite **costi standard**. In conformità all’art. 55, par. 2, lett. a) del Regolamento (UE) 2021/1060, la tariffa oraria è calcolata dividendo i più recenti costi del lavoro lordi documentati (annui) per 1.720 ore per il tempo pieno (o proporzionale in caso di part-time). I documenti stabiliscono espressamente che:\n  > *«Viene pertanto definito un costo standard che costituisce un riferimento non modificabile per tutta la durata del progetto»* (*Manuale AGGIORNATO Bando DGR 1861_2025.pdf*, p. 33; *Manuale bando DGR 1861_ DD1156-2026.pdf*, p. 32).\n\n* **Compenso amministratore:**\n  È rendicontato a **costi reali ed effettivi** sostenuti nel periodo di progetto (*Manuale AGGIORNATO Bando DGR 1861_2025.pdf*, pp. 34-35):\n  * *Con busta paga (reddito assimilato a lavoro dipendente / co.co.co.):* si basa sul costo orario certificato dal consulente del lavoro applicato alle ore effettivamente dedicate al progetto, tracciate tramite time sheet;\n  * *Con fattura (collaborazione professionale):* si basa sull'importo fatturato ed effettivamente pagato, riparametrato in base alla percentuale di impegno dedicata al progetto.",
+    "searches": [
+     "spese per il personale limite costi standard reali",
+     "\"compenso amministratore\" limite percentuale massimale personale",
+     "\"Costi diretti per personale dipendente a tempo determinato e indeterminato\"",
+     "\"compenso amministratore\" BANDO_STARTUP_2025.pdf",
+     "\"BANDO_STARTUP_2025.pdf\" \"compenso amministratore\"",
+     "\"BANDO_STARTUP_2025.pdf\" \"compenso amministratore\" 16",
+     "\"16\" \"compenso\" \"BANDO_STARTUP_2025.pdf\""
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-092",
+    "answer": "In merito alle due domande relative al bando per la promozione dell’economia circolare e la riduzione dei rifiuti:\n\n### 1. Soggetti ammessi (imprese di produzione vs. consulenza)\n**Non possono partecipare solo le imprese di produzione:** il bando stabilisce espressamente che i soggetti proponenti *«possono esercitare l’attività in qualsiasi settore economico»*, purché regolarmente iscritti al Registro delle Imprese / REA della CCIAA, con sede o unità locale in Emilia-Romagna e qualificabili come PMI (sono escluse unicamente le persone fisiche e chi esercita esclusivamente attività di produzione primaria di prodotti agricoli, pesca e acquacoltura) (Bando.pdf, p. 7). \n\nPertanto, un'impresa attiva nella consulenza non è esclusa a livello settoriale, a condizione che il progetto proposto rispetti i vincoli oggettivi del bando descritti di seguito.\n\n---\n\n### 2. Destinazione dei fondi (processi propri vs. diffusione/divulgazione esterna)\n**I fondi non possono essere utilizzati per sostenere progetti volti alla sola diffusione, sensibilizzazione o promozione esterna di tali concetti.** \n\nIl bando finanzia interventi concreti di riconversione e riqualificazione dell'attività aziendale e impone regole stringenti:\n- **Finalità degli interventi ammissibili:** devono riguardare l'eco-design e la produzione di prodotti/imballaggi ecocompatibili, l'estensione del ciclo di vita dei prodotti (es. *remanufacturing*, riparazione, modelli *product-as-a-service*) nell'Azione 1.3.1 (Bando.pdf, p. 10), oppure la valorizzazione di scarti come sottoprodotti e la realizzazione/potenziamento di impianti per il riutilizzo, riciclaggio o produzione di *end of waste* nell'Azione 2.6.1 (Bando.pdf, p. 11).\n- **Spesa materiale obbligatoria (Voce A):** i progetti devono comprendere obbligatoriamente spese per l'acquisto (anche in leasing/noleggio) di *«impianti, macchinari, attrezzature, hardware, beni strumentali tangibili»* (Bando.pdf, p. 12). La mancata realizzazione di spese della voce A comporta la revoca totale del contributo (Bando.pdf, p. 12).\n- **Consulenze limitate:** le consulenze specializzate (Voce D) sono ammesse unicamente come voce accessoria (nel limite massimo del 25% della somma delle voci A, B e C) e devono essere strettamente finalizzate alla realizzazione dell'intervento dell'impresa o all'ottenimento di certificazioni ambientali proprie (ISO 14001, EMAS, LCA, ecc.) (Bando.pdf, p. 12).\n- **Localizzazione e stabilità:** gli investimenti e i beni acquistati devono essere destinati e operativi presso la sede o unità locale del proponente in Emilia-Romagna (Bando.pdf, p. 7, 11) ed essere mantenuti per almeno 3 anni dalla liquidazione (Bando.pdf, p. 30).",
+    "searches": [
+     "economia circolare riduzione rifiuti soggetti beneficiari codice ATECO",
+     "Bando.pdf \"Soggetti beneficiari\"",
+     "Bando.pdf \"2. Soggetti che possono presentare la domanda\"",
+     "Bando.pdf \"tipologia di progetti\" OR \"interventi ammissibili\" OR \"progetti finanziabili\"",
+     "Bando.pdf \"Sono interventi ammessi a finanziamento a valere sull’Azione\"",
+     "Bando.pdf \"4.2 Spese ammissibili\"",
+     "Bando.pdf \"beni strumentali tangibili\"",
+     "Bando.pdf \"acquisto di impianti, macchinari\"",
+     "Bando.pdf \"costi generali\" OR \"spese generali\" OR \"voce E\""
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-213",
+    "answer": "In base a quanto indicato nella modulistica ufficiale di domanda (sezione *«4. Dati relativi alla sede dell’intervento»*):\n\n* **Non è necessario aver già individuato l'indirizzo della sede definitiva in Emilia-Romagna** al momento della candidatura.\n* Nel modulo è infatti prevista l'opzione specifica: **«Sede non individuata al momento della presentazione della domanda»**.\n* In questo caso, al momento dell'invio della domanda **potranno essere indicati provvisoriamente i dati di una sede alternativa (anche situata fuori Regione)**, comprensivi dei relativi riferimenti (Comune, Provincia, Indirizzo, CAP, Codice ISTAT, Regione e Ateco primario).\n* Il richiedente si impegna obbligatoriamente a far sì che **entro la data di richiesta dell'Anticipo/SAL intermedio oppure entro la data di Saldo in unica soluzione**, una sede d'intervento sul territorio regionale dell'Emilia-Romagna sia **inserita in visura camerale e risulti attiva**. Tali dati dovranno poi essere comunicati alla Regione tramite la funzione *«Variazione Sede intervento/UL»* sulla piattaforma Sfinge 2020 (*Modulo domanda.pdf*, p. 4).",
+    "searches": [
+     "sede operativa presentazione domanda impegno aprire indicare indirizzo",
+     "\"sede non individuata\" OR \"sede operativa\" bando presentazione domanda",
+     "\"sede dell'intervento\" OR \"sede operativa\" BANDO_STARTUP_2025.pdf",
+     "\"sede\" \"fuori regione\" OR \"non individuata\" BANDO_STARTUP_2025.pdf",
+     "\"Soggetti beneficiari\" \"sede operativa\" BANDO_STARTUP_2025.pdf",
+     "\"sede legale\" OR \"sede operativa\" BANDO_STARTUP_2025.pdf"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-160",
+    "answer": "Dal punto di vista della giustificazione economica e di quella ambientale, i documenti del bando distinguono due piani differenti:\n\n1. **Sotto il profilo contabile/amministrativo della spesa: NO**  \n   Trattandosi di costi coperti dall’importo forfettario riconosciuto per la partecipazione alle fiere (art. 4), il beneficiario **è esonerato dal presentare la documentazione contabile di spesa** (fatture, quietanze, ecc.) per il trasporto o per le altre voci relative alla fiera. Ai fini del riconoscimento del forfait è richiesta unicamente la documentazione comprovante l'effettiva partecipazione diretta in presenza (Bando.pdf, p. 9, 27; Manuale Bando 2106.pdf, p. 26).\n\n2. **Sotto il profilo del rispetto del principio DNSH: SÌ**  \n   Anche se la spesa non va giustificata contabilmente, **è obbligatorio comprovare il rispetto dei requisiti ambientali DNSH** per il trasporto delle merci in esposizione o del campionario (se effettuato), come prescritto dall'art. 12.4 del Bando e dal Manuale di rendicontazione:\n   - Se in fase di domanda è stato dichiarato il rispetto ex-ante o l’assenza di interferenza, in rendicontazione occorre allegare le **certificazioni ambientali** dei trasportatori e/o degli organizzatori delle fiere indicate nella DSAN (Bando.pdf, p. 40-41; Manuale Bando 2106.pdf, p. 19);\n   - In assenza di una o più certificazioni, va compilata e allegata l'apposita **relazione DNSH** (su modello regionale) volta a comprovare che le spese di trasporto non arrecano danno significativo agli obiettivi ambientali (Manuale Bando 2106.pdf, p. 19);\n   - Qualora invece in domanda fosse stata dichiarata interferenza con gli obiettivi ambientali, occorrerà fornire i dati sull'effetto ambientale: stima dei chilometri percorsi, tipologia di vettore/alimentazione corredata da apposita dichiarazione del trasportatore, e dati sui rifiuti/imballaggi avviati a riciclo (Bando.pdf, p. 41).",
+    "searches": [
+     "DNSH trasporto prodotti fiera art 12.4",
+     "\"Manuale Bando 2106\" rendicontazione fiera \"trasporto\"",
+     "\"Manuale Bando 2106\" \"DSAN\" \"certificazioni ambientali\""
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-087",
+    "answer": "In base al bando (*Bando*, par. 4.1, p. 10; *ALLEGATO O – Scheda di sintesi*, p. 3), per l'**Azione 1.3.1** il riferimento al leasing e al noleggio rientra tra gli **interventi volti a estendere il ciclo di vita di prodotti, componenti, materiali e imballaggi e a ridurre il consumo di materie prime e la produzione di rifiuti** attraverso l'adozione del modello cosiddetto **\"product-as-a-service\" (prodotto come servizio)**.\n\nIn particolare:\n\n1. **Modello di business (Product-as-a-Service):** \n   L’impresa riqualifica o riconverte la propria attività orientandosi non sulla mera vendita del bene (che finirebbe a fine vita per diventare un rifiuto), bensì sulla fornitura del servizio o dell'uso del prodotto. Il bando cita infatti come esempi di questo modello:\n   - leasing e noleggio;\n   - remanufacturing e rigenerazione;\n   - riparazione e ricambio;\n   - riutilizzo (*Bando*, p. 10).\n   In tale contesto, soluzioni come il noleggio o il leasing consentono di mantenere il controllo del bene lungo il suo ciclo vitale, favorendone la manutenzione, l'aggiornamento, il riutilizzo o la successiva rigenerazione, riducendo a monte l'estrazione e il consumo di materie prime e prevenendo la generazione di rifiuti.\n\n2. **Modalità di spesa ammissibile per la realizzazione del progetto:**\n   Parallelamente, dal punto di vista degli investimenti agevolabili per attuare il progetto (*Bando*, par. 4.2, p. 12; *Manuale di rendicontazione*, pp. 22-23), gli impianti, i macchinari, le attrezzature e i beni strumentali tangibili possono essere acquisiti anche **nella forma del leasing o tramite noleggio**. In questi casi:\n   - La spesa agevolabile è rappresentata esclusivamente dai **canoni – limitatamente alla sola quota capitale** – riferiti al periodo di realizzazione/eleggibilità del progetto;\n   - Per il leasing, il contratto deve prevedere una clausola di riacquisto o una durata contrattuale minima corrispondente alla vita utile del bene (*Manuale*, p. 22).",
+    "searches": [
+     "1.3.1 leasing noleggio materie prime rifiuti",
+     "product-as-a-service leasing noleggio",
+     "\"product-as-a-service\" \"riutilizzo\" Bando.pdf",
+     "\"riutilizzo9\" Bando.pdf",
+     "\"riutilizzo\" \"fine vita\" Bando.pdf",
+     "\"product-as-a-service\"",
+     "\"9\" \"riutilizzo\" Bando.pdf",
+     "\"qualsiasi operazione attraverso la quale prodotti o componenti\" Bando.pdf",
+     "\"riutilizzo9\" OR \"Azione 1.3.1 quelli finalizzati a riqualificare\"",
+     "\"9 \" \"D.lgs. 152/2006\" OR \"art. 183\" Bando.pdf",
+     "\"1.3.1\" \"estendere il ciclo di vita\" Modulo domanda.pdf OR Bando.pdf"
+    ],
+    "correctness": 0.1
+   },
+   {
+    "id": "faq-219",
+    "answer": "**Sì, è obbligatorio.**\n\nL'obbligo di apposizione del CUP sin dall’origine (in conformità all’art. 5, comma 6, D.L. 13/2023, convertito con L. 41/2023) **sussiste anche per le fatture riferite alle spese per la partecipazione a fiere** (Voce 6 del par. 4.2 del Bando, calcolate in misura forfettaria), sebbene il bando preveda che i documenti contabili riferiti a tali spese non debbano essere presentati in sede di rendicontazione (*Manuale AGGIORNATO Bando DGR 1861_2025.pdf, p. 15*).\n\nQualora le fatture elettroniche risultino prive di CUP, il beneficiario deve procedere alla loro regolarizzazione prima della presentazione della rendicontazione delle spese secondo le modalità previste (*Manuale AGGIORNATO Bando DGR 1861_2025.pdf, pp. 15-16*).",
+    "searches": [
+     "CUP fatture fiere forfettaria rendicontata"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-170",
+    "answer": "In base ai documenti del bando e al Manuale di rendicontazione, per il personale dipendente valgono le seguenti disposizioni in merito a territorialità, periodi di lavoro e busta paga:\n\n1. **Rilevazione della territorialità:** \n   Per attestare che il personale sia operante in regione, occorre che sulla busta paga sia **chiaramente individuabile l’indirizzo di residenza o di domicilio** del lavoratore impiegato sul progetto (*Manuale di rendicontazione, p. 25*).\n2. **Riconducibilità dei periodi di lavoro:** \n   La documentazione giustificativa deve consentire l'univoca riconducibilità della spesa al progetto, da intendersi come **nominativi dei lavoratori impiegati e periodi di lavoro** (*Manuale di rendicontazione, p. 25*; *slide bando, p. 18*).\n3. **Incarico formale (\"operante\"):** \n   Per definire il dipendente «operante», è previsto che vi sia l'assegnazione sul progetto per un dato periodo tramite un **ordine di servizio formale**, nel quale devono essere indicati: data di assunzione, livello di inquadramento contrattuale, qualifica, residenza, **sede di lavoro** e PAT INAIL aziendale (*slide bando, p. 19*).\n4. **Elementi ammissibili in busta paga:** \n   Fa fede l’importo lordo riportato sulla busta paga, comprensivo di eventuali **diarie/indennità di trasferta** e costi di utilizzo attrezzature (*Manuale di rendicontazione, p. 25*). Si ricorda che i compensi e le diarie relativi al personale non operante in Emilia-Romagna non sono ammissibili (*Slides rendicontazione, p. 13*).\n\nI documenti non contengono ulteriori istruzioni operative specifiche su annotazioni particolari da apporre a mano o formati di calcolo dei singoli giorni direttamente all'interno del cedolino paga.",
+    "searches": [
+     "personale territorio giorni busta paga cedolino",
+     "\"territorialità del personale\" OR \"operante in Emilia-Romagna\"",
+     "\"ordine di servizio\"",
+     "\"trasferta\" OR \"diaria\" OR \"non operante\"",
+     "\"busta paga\" \"personale\"",
+     "\"modulo Excel\" rendicontazione personale"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-210",
+    "answer": "In base a quanto previsto dal **Bando** e dal relativo **Manuale di istruzioni per i beneficiari** (Bando Startup innovative - Edizione 2025):\n\n1. **Partita IVA e prestazioni occasionali:**\n   * La precisazione riguarda espressamente il fatto che le *prestazioni di lavoro occasionale* prive di partita IVA (ad esempio con sola ritenuta d'acconto e codice fiscale) **non sono ammissibili**: viene infatti chiarito che, vista la natura specialistica dei servizi richiesti, *«le spese relative a consulenze specialistiche rese nell'ambito di un contratto di prestazione occasionale, sono ammissibili solo nel caso in cui le prestazioni siano rese da professionisti con partita IVA»* (*Bando Startup 2025*, p. 13, nota 13; *Manuale AGGIORNATO Bando DGR 1861_2025*, p. 30).\n   * Più in generale, tutti i giustificativi di spesa ammissibili per le consulenze devono consistere in fatture regolari emesse dal cedente/prestatore, che devono obbligatoriamente recare il numero di partita IVA (*Manuale AGGIORNATO Bando DGR 1861_2025*, p. 14).\n\n2. **Consulenze prestate da società:**\n   * **Sì, sono ammesse**. I documenti non pongono alcuna limitazione alla forma giuridica del prestatore del servizio (che può essere una persona fisica/professionista o una persona giuridica/società). \n   * Tra i requisiti della documentazione contabile minima per le fatture è infatti espressamente contemplata la presenza di *«ditta, denominazione o ragione sociale, nome e cognome […] numero di partita IVA del soggetto cedente o prestatore»* (*Manuale AGGIORNATO Bando DGR 1861_2025*, p. 14).\n   * Per ciascuna spesa di consulenza (Voce 5), sia essa resa da una società o da un professionista, andranno comunque presentati (*Manuale AGGIORNATO Bando DGR 1861_2025*, p. 30):\n     * Contratto o lettera d'incarico con indicazione di durata, compenso, attività dettagliate e riferimento esplicito al progetto finanziato;\n     * Relazione dell’attività svolta nel periodo rendicontato (su carta intestata, firmata dal consulente e controfirmata dal legale rappresentante dell’impresa beneficiaria);\n     * Fattura emessa e quietanzata nel periodo di ammissibilità.",
+    "searches": [
+     "consulenze partita IVA prestazioni occasionali società",
+     "BANDO_STARTUP_2025 consulenze esterne specialistiche società",
+     "BANDO_STARTUP_2025.pdf \"prestazioni occasionali\" \"consulenze\"",
+     "BANDO_STARTUP_2025.pdf \"Consulenze per progettazione\"",
+     "\"consulenze\" \"fornitori\" società persone giuridiche ammissibili",
+     "\"Per ogni spesa di Voce 5\" \"allegare\""
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-140",
+    "answer": "In base al bando (*Bando per il sostegno a progetti di internazionalizzazione delle PMI*):\n\n1. **Sì, le spese per Fiere sono incluse**: \n   La voce **A) Partecipazione a fiere internazionali** è una delle tipologie di spesa ammissibili che concorrono alla dimensione dell'intervento (riconosciuta con importi forfettari pari a € 12.700,00 per ciascuna fiera all'estero e a € 3.000,00 per ciascuna fiera internazionale in Italia) (*Bando.pdf, pp. 9-10*).\n\n2. **Composizione della spesa minima (€ 25.000 per soggetti singoli)**:\n   La soglia di ammissibilità della dimensione minima (non inferiore a **€ 25.000,00** per i soggetti singoli e a **€ 75.000,00** per le aggregazioni) si riferisce all'**importo totale del progetto**, che comprende non solo le voci A e B, ma anche la voce C (*Bando.pdf, pp. 9-10*; *Allegato 9_Fac simile Progetto.pdf, p. 2*):\n   - **Voce A**: Partecipazione a fiere internazionali;\n   - **Voce B**: Consulenze (TEM/DEM, piani marketing/comunicazione, B2B);\n   - **Voce C**: Costi generali (costi indiretti), riconosciuti a tasso forfettario nella misura del **7% della somma delle voci A + B**.\n\nIl totale del progetto è quindi pari a **A + B + C (7% di A+B)** (*Allegato 9_Fac simile Progetto.pdf, p. 2*; *Manuale Bando 2106.pdf, p. 25*).",
+    "searches": [
+     "25.000 dimensione minima progetto fiere spese consulenze",
+     "\"dimensione minima non inferiore\" OR \"dimensione minima\"",
+     "\"voce b\" OR \"solo fiere\" OR \"esclusivamente\" consulenze"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-018",
+    "answer": "Nei documenti disponibili non è presente un chiarimento o un’interpretazione specifica per il caso di un ricercatore a tempo determinato di tipo A (RTD-A) che abbia svolto un ciclo complessivo di 5 anni a seguito di rinnovo.\n\nIl testo dell’Avviso (paragrafo 3.2) prevede unicamente le seguenti condizioni alternative relative all'esperienza di ricerca pregressa:\n* «*essere stato titolare di un assegno (o contratto) di ricerca presso Atenei con sede nel territorio dell’Emilia-Romagna, il cui contratto sia terminato da non più di 7 anni dalla data di pubblicazione del presente Avviso*» (*Avviso.pdf*, p. 10);\n* «*essere stato titolare di un contratto di lavoro come ricercatore a tempo determinato presso uno degli atenei con sede nel territorio dell’Emilia-Romagna ed aver completato il ciclo triennale di ricerca da non più di 7 anni dalla data di pubblicazione del presente Avviso*» (*Avviso.pdf*, p. 10).\n\nNon essendo specificato nei documenti se il termine dei 7 anni possa decorrere dalla cessazione del contratto quinquennale complessivo, per una conferma ufficiale si consiglia di rivolgersi allo **Sportello Imprese** della Regione Emilia-Romagna (*slide presentazione bando.pdf*, p. 28):\n* **E-mail:** sportelloimprese@regione.emiliaromagna.it\n* **Telefono:** 848800258 (dal lunedì al venerdì, dalle 9:30 alle 13:00)",
+    "searches": [
+     "essere stato titolare di un contratto di lavoro come ricercatore a tempo determinato ciclo triennale 7 anni",
+     "FAQ quinquennale RTD tipo A rinnovo cessazione",
+     "\"RTD\" OR \"tipo A\" OR \"quinquennale\""
+    ],
+    "correctness": 0.2
+   },
+   {
+    "id": "faq-157",
+    "answer": "In merito al quesito posto per il **Bando per il sostegno a progetti di internazionalizzazione delle PMI e aggregazioni di PMI 2026-2027**:\n\n### 1. Possibilità di partecipare al bando\n**Sì, è possibile partecipare**. \nIl bando prevede che siano ammissibili le fiere svolte in presenza nel periodo compreso tra il **24/02/2026 e il 31/12/2027** (*Bando.pdf*, p. 9; *Manuale Bando 2106.pdf*, p. 24). Poiché la fiera si terrà a fine 2026, rientra pienamente nel periodo di svolgimento consentito.\n\n---\n\n### 2. Inserimento di fattura di acconto e/o di saldo\n**Non deve essere inserita alcuna fattura (né di acconto né di saldo)**.\nPer la voce di spesa *a) Partecipazione a fiere internazionali*, le spese non vengono rimborsate a costi reali, bensì riconosciute con **importi forfettari fissi** (*Bando.pdf*, p. 9–10; *Manuale Bando 2106.pdf*, p. 26):\n* **€ 12.700,00** per ciascuna fiera internazionale all’estero;\n* **€ 3.000,00** per ciascuna fiera internazionale in Italia.\n\nTali importi forfettari sono riconosciuti a prescindere dai costi effettivamente sostenuti e il beneficiario è espressamente **esonerato dal presentare la documentazione contabile** (fatture e quietanze) (*Bando.pdf*, p. 10; *Manuale Bando 2106.pdf*, p. 26). \n\nIn fase di rendicontazione, al posto delle fatture, dovranno essere fornite esclusivamente le **evidenze documentali dell’avvenuta partecipazione diretta** (*Bando.pdf*, p. 27–28; *Manuale Bando 2106.pdf*, p. 18):\n* estratto del catalogo fieristico attestante la partecipazione come espositore diretto;\n* richiesta di partecipazione alla fiera con relativa accettazione/accordo da parte dell'organizzatore;\n* documentazione fotografica o video dello stand/spazio espositivo.",
+    "searches": [
+     "internazionalizzazione PMI eleggibilità spese acconto fiera",
+     "\"periodo di eleggibilità\" Bando internazionalizzazione",
+     "acconto fiera internazionalizzazione",
+     "acconto prenotazione fiera"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-172",
+    "answer": "Sì, i documenti del bando prevedono espressamente la possibilità che i costi e il progetto subiscano variazioni rispetto a quanto preventivato, definendo regole precise per la loro gestione:\n\n1. **Autorizzazione preventiva per nuove spese o spese sostitutive**:\n   * Tutte le variazioni del piano dei costi che prevedono la realizzazione di spese non previste o sostitutive rispetto a quelle indicate originariamente nella domanda di contributo devono essere richieste tramite l'applicativo **SFINGE2020** ed essere **preventivamente autorizzate dalla Regione prima della rendicontazione delle spese** (*Testo bando cinema FESR.pdf, p. 20*).\n   * La Regione fornisce riscontro tramite SFINGE2020 entro 40 giorni (*Testo bando cinema FESR.pdf, p. 20*).\n   * L’accoglimento della variazione impegna il beneficiario a realizzare e rendicontare le nuove spese approvate (*Testo bando cinema FESR.pdf, p. 20*). Realizzare variazioni in corso d'opera non comunicate e non approvate comporta il rischio di revoca del contributo (*Slides rendicontazione.pdf, p. 23*).\n\n2. **Variazioni in diminuzione dei costi a consuntivo**:\n   * Se a consuntivo le spese ammissibili sostenute risultano inferiori rispetto al piano preventivato, in sede di saldo finale si provvederà alla **rideterminazione proporzionale del contributo liquidabile**, applicando la percentuale di contributo assegnata alla spesa effettivamente ammessa (*Testo bando cinema FESR.pdf, p. 22*; *Manuale di rendicontazione.pdf, p. 14*).\n\n3. **Vincoli e limiti da rispettare anche a consuntivo**:\n   * **Costo minimo di progetto**: la spesa complessiva ammessa a consuntivo non può scendere al di sotto della soglia minima ammissibile di **20.000,00 euro**, pena la revoca/decadenza dal contributo (*Testo bando cinema FESR.pdf, p. 9*; *Manuale di rendicontazione.pdf, p. 14*; *Slides rendicontazione.pdf, p. 23*).\n   * **Obblighi territoriali**: la spesa sostenuta sul territorio regionale deve comunque rispettare le percentuali minime stabilite (di norma almeno il 30% dei costi totali di produzione, ridotto al 20% per coproduzioni internazionali o al 15% per l'animazione) (*Testo bando cinema FESR.pdf, p. 9*; *Manuale di rendicontazione.pdf, p. 14*).",
+    "searches": [
+     "variazioni progetto scostamento spese budget",
+     "\"12.2.1 Variazioni\" \"piano dei costi\"",
+     "\"Tutte le variazioni del piano dei costi\"",
+     "\"A fronte di variazioni in diminuzione dei costi ammissibili\""
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-025",
+    "answer": "Nei documenti del bando **non viene prescritto uno specifico formalismo contrattuale predefinito** (come ad esempio un modello vincolante di lettera di intenti), ma sono definiti requisiti precisi e adempimenti documentali per comprovare la collaborazione:\n\n1. **In fase di presentazione della domanda:**\n   * Nel modulo di domanda l'impresa deve dichiarare l'attività svolta/in corso indicando gli estremi identificativi dei laboratori o centri di ricerca coinvolti: Ragione sociale, Partita IVA, Codice Fiscale, Codice REA e Codice ATECO (*Allegato A_fac simile domanda.pdf*, p. 4).\n   * Qualora l'organismo di ricerca con cui si collabora sia un **soggetto privato**, tra gli allegati alla domanda deve essere caricato il relativo **Statuto** (*Allegato A_fac simile domanda.pdf*, p. 8).\n   * Gli obiettivi e i contenuti relativi all'eventuale collaborazione con laboratori di ricerca devono essere descritti all'interno della proposta progettuale / formulario di domanda (*slide presentazione bando.pdf*, p. 10), costituendo uno degli aspetti verificati in sede di valutazione di ammissibilità sostanziale (*Avviso.pdf*, p. 14).\n\n2. **Caratteristiche richieste per la collaborazione:**\n   * La cooperazione può essere nuova o preesistente, ma deve prevedere una **partecipazione/cooperazione attiva** ad attività di ricerca e sviluppo congiunte e durare per tutta la durata del progetto finanziato (*Appendice 6_indicatori di risultato e di output.pdf*, pp. 3-4).\n   * Sono espressamente esclusi i meri accordi contrattuali o contratti quadro privi di una cooperazione attiva ed effettiva nel progetto sostenuto (*Appendice 6_indicatori di risultato e di output.pdf*, pp. 3-4).\n\n3. **A conclusione del progetto:**\n   * La partecipazione della collaborazione deve essere supportata da **apposita documentazione**, indicata nella relazione finale a saldo, atta a certificare le modalità e la durata della partecipazione di ciascun soggetto e a permetterne l'identificazione (*Appendice 6_indicatori di risultato e di output.pdf*, p. 4).",
+    "searches": [
+     "collaborazione Centri di Ricerca lettera di intenti contratto accordo",
+     "\"laboratorio\" \"collaborazione\" Avviso.pdf",
+     "\"laboratorio/centro di ricerca\" Avviso.pdf",
+     "\"Allegato F\"",
+     "\"organismo di ricerca\" Avviso.pdf",
+     "\"Collaborazione con un laboratorio\"",
+     "\"Collaborazione con un laboratorio/centro di ricerca\" Avviso.pdf",
+     "\"inammissibilità dei progetti\" Avviso.pdf",
+     "\"6.2 Valutazione di ammissibilità sostanziale\" Avviso.pdf",
+     "\"tabella di cui al seguente\" Avviso.pdf",
+     "\"Tabella 1\" Avviso.pdf",
+     "\"criteri di valutazione\" Avviso.pdf",
+     "\"A.1 Chiara definizione degli obiettivi\" Avviso.pdf",
+     "\"lettera di intenti\"",
+     "\"Statuto dell'Organismo di ricerca\""
+    ],
+    "correctness": 0.7
+   },
+   {
+    "id": "faq-121",
+    "answer": "In base a quanto stabilito dai documenti del bando (*Bando per il rafforzamento delle competenze per la transizione industriale, digitale e green lungo la direttrice della S3* e relativo *Manuale di istruzioni per la rendicontazione*), **non è sufficiente la sola pianificazione**, ma è richiesta l'**effettiva realizzazione delle attività e la comprova dei risultati**:\n\n1. **Obbligo di effettiva realizzazione e divieto di alterazione degli obiettivi**:\n   * Tutte le attività inerenti al progetto devono essere corredate dalla documentazione che ne comprovi l’effettivo svolgimento nei tempi e nei modi previsti (*Manuale*, p. 14).\n   * Il beneficiario non può apportare modifiche sostanziali che alterino la natura, gli obiettivi o le condizioni di attuazione del progetto compromettendone gli obiettivi originari, pena la decadenza e revoca del contributo (*BANDO COMPETENZE S3*, pp. 23, 27; *Manuale*, pp. 13, 27).\n\n2. **Rendicontazione dei risultati e relazione tecnica**:\n   * In sede di rendicontazione a saldo, è obbligatorio presentare la **Relazione tecnica finale**, che deve descrivere analiticamente:\n     - gli obiettivi dell'intervento e il loro raggiungimento (con motivazione di eventuali scostamenti);\n     - i **risultati conseguiti**;\n     - il riepilogo dei dipendenti coinvolti (*Manuale*, p. 14).\n   * Per le consulenze, la relazione del fornitore/consulente deve evidenziare le attività svolte, i risultati raggiunti e l'elenco del personale interessato (*Manuale*, p. 16).\n\n3. **Verifica dell'indicatore di risultato formativo (RCR98)**:\n   * A chiusura del progetto, l'impresa beneficiaria deve valorizzare l'indicatore di risultato **RCR98** (*\"Personale delle PMI che completa la formazione per l'acquisizione delle competenze per la specializzazione intelligente, per la transizione industriale e l'imprenditorialità\"*), fornendo su Sfinge2020 e nella relazione finale il numero di persone effettivamente formate/coinvolte e allegando tutta la documentazione utile a comprovare i partecipanti che hanno **completato** il percorso (*BANDO COMPETENZE S3*, p. 42; *Manuale*, pp. 15, 38).",
+    "searches": [
+     "obiettivi formativi raggiungimento pianificazione contributo",
+     "\"obiettivi formativi\"",
+     "formazione bando competenze spese ammissibili",
+     "\"FASE B\" bando competenze s3",
+     "\"corsi di formazione\" SLIDE .pdf",
+     "corsi di formazione BANDO COMPETENZE S3",
+     "\"4.2 Spese ammissibili\" \"BANDO COMPETENZE S3\"",
+     "\"4.2 Spese ammissibili\" \"B. \" OR \"C. \" \"BANDO COMPETENZE S3\"",
+     "\"B. \" \"C. spese generali\" \"BANDO COMPETENZE S3.pdf\"",
+     "FAQ bando competenze",
+     "\"obiettivi formativi\" OR \"raggiungimento\" OR \"pianificazione\" BANDO COMPETENZE S3",
+     "revoca mancato raggiungimento obiettivi contributo",
+     "\"relazione finale\" Manuale.pdf",
+     "\"Relazione tecnica finale del progetto\" Manuale.pdf"
+    ],
+    "correctness": 0.5
+   },
+   {
+    "id": "faq-232",
+    "answer": "Sulla base di quanto previsto dal bando e dalla modulistica di domanda, **è possibile presentare sia uno solo dei due interventi sia entrambi**. \n\nInfatti:\n* Il paragrafo 4.1 del bando elenca le due tipologie di interventi ammissibili (digitalizzazione di base e digitalizzazione avanzata) indicando che gli interventi «potranno riguardare» l'una o l'altra fattispecie (*Bando transizione.pdf*, p. 10);\n* Nel modello di domanda, alla sezione *3. Qualità tecnica del progetto - B) Innovatività degli aspetti tecnici*, viene espressamente indicato:  \n  **«Gli interventi proposti riguardano (obbligo di scelta di almeno una delle due):**  \n  - *DIGITALIZZAZIONE DI BASE: [...]*  \n  - *DIGITALIZZAZIONE AVANZATA: [...]»* (*Fac simile domanda.pdf*, p. 4).\n\nÈ quindi sufficiente selezionarne almeno una, ma è ammesso selezionarle entrambe all'interno del medesimo progetto.",
+    "searches": [
+     "4.1 digitalizzazione di base digitalizzazione avanzata Acatech entrambi",
+     "presentare uno solo entrambi digitalizzazione di base avanzata"
+    ],
+    "correctness": 0.7
+   },
+   {
+    "id": "faq-005",
+    "answer": "In base all'Avviso, le domande di contributo devono essere presentate **obbligatoriamente da singole imprese** e **non** da un partenariato:\n\n* **Soggetto proponente/beneficiario:** Possono presentare domanda di contributo esclusivamente **singole imprese** (piccole e medie imprese o grandi imprese) costituite nella forma giuridica di società di capitali (*Avviso.pdf*, p. 5; *slide presentazione bando.pdf*, p. 6). Una stessa impresa può presentare una sola domanda (*slide presentazione bando.pdf*, p. 6).\n* **Collaborazioni:** Pur non potendo presentare la domanda in partenariato, l'impresa proponente può prevedere all'interno del progetto l'eventuale **collaborazione con laboratori o centri/organizzazioni di ricerca** e con altre imprese (*slide presentazione bando.pdf*, p. 10; *Allegato A_fac simile domanda.pdf*, pp. 4-5; *Appendice 6_indicatori di risultato e di output.pdf*, pp. 3-4), ferma restando la titolarità della domanda in capo alla singola impresa beneficiaria.",
+    "searches": [
+     "progetti presentati singola impresa partenariato consorzio forma congiunta",
+     "\"partenariato\" OR \"congiunta\" OR \"consorzio\" OR \"raggruppamento\"",
+     "\"collaborazioni\" contratti di ricerca laboratori università Avviso.pdf"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-090",
+    "answer": "In base a quanto disposto dai documenti del bando, la lettura è **sostanzialmente corretta e coerente con la struttura dell'agevolazione**, anche se nei testi non è presente una formula letterale che parli esplicitamente di «progetti a valle di progetti di studio già completati»:\n\n1. **Assenza di spese per personale dipendente**:\n   * L’elenco delle spese ammissibili (*par. 4.2, comma 1*) include esclusivamente investimenti tangibili (Voce A), immateriali/software (Voce B), opere murarie connesse (Voce C), consulenze specializzate (Voce D) e spese generali forfettarie (Voce E). Non è prevista alcuna voce per il costo del personale dipendente (*Bando*, p. 12; *Manuale*, pp. 33-34).\n   * Sono inoltre espressamente escluse le spese generali di funzionamento e di gestione corrente (*Bando*, p. 13; *Manuale*, p. 35).\n\n2. **Consulenze vincolate da tetto massimo**:\n   * Le spese per consulenze specializzate (Voce D) sono ammesse solo se finalizzate alla realizzazione dell’intervento o all’ottenimento di certificazioni ambientali, e sono soggette a un tetto massimo percentuale inderogabile pari al **25%** della somma delle voci A, B e C (*Bando*, p. 12; *Manuale*, pp. 33, 39; *slide presentazione*, p. 8).\n\n3. **Obbligatorietà dell'investimento tangibile (Voce A)**:\n   * Per essere ammissibili, i progetti devono comprendere obbligatoriamente almeno la spesa di cui alla **Voce A** (*acquisto di impianti, macchinari, attrezzature, hardware, beni strumentali tangibili*), requisito che deve essere mantenuto anche in fase di rendicontazione, pena la revoca totale del contributo (*Bando*, p. 12; *Manuale*, p. 34).\n\n4. **Focus su investimenti produttivi/industriali**:\n   * Gli interventi ammissibili su entrambe le azioni (Azione 1.3.1 e Azione 2.6.1) sono finalizzati a «*riqualificare e/o riconvertire l'attività produttiva*» (*Bando*, p. 10; *slide presentazione*, p. 4) mediante investimenti fisici e tecnologici (realizzazione/potenziamento impianti, eco-design di prodotto, valorizzazione sottoprodotti, recupero ed end of waste).\n\nDi conseguenza, il bando non si configura come una misura di pura ricerca o studio preliminare/di fattibilità, ma incentiva l'effettiva attuazione di investimenti e impianti produttivi.",
+    "searches": [
+     "L’articolazione delle voci di spesa ammissibile lascia intendere che il focus di entrambe le misure",
+     "studio di nuovi prodotti a valle",
+     "FAQ",
+     "personale dipendente",
+     "\"Spese ammissibili\" Bando.pdf p. 11",
+     "\"1. Sono ammissibili a finanziamento le seguenti spese\" Bando.pdf",
+     "\"4.2 Spese ammissibili\" \"A.\" \"B.\" \"C.\" Bando.pdf",
+     "\"a valle\"",
+     "\"studio\"",
+     "fase successiva",
+     "\"Non sono ammissibili le seguenti spese\" Bando.pdf",
+     "\"Non sono inoltre ammissibili le spese\" Bando.pdf",
+     "\"4.1 Interventi ammissibili\" Bando.pdf",
+     "\"Criteri di valutazione\" Bando.pdf"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-158",
+    "answer": "In base a quanto stabilito dal bando, **le consulenze non devono essere necessariamente funzionali o collegate alla partecipazione alle fiere**. \n\nEcco i requisiti e i chiarimenti specifici:\n\n1. **Obbligatorietà delle consulenze e autonomia rispetto alle fiere**:\n   * I progetti finanziabili devono **obbligatoriamente comprendere interventi di tipo consulenziale**, coerenti con le finalità del percorso di internazionalizzazione presentato nel progetto (*Bando.pdf, p. 8*).\n   * La partecipazione alle fiere rappresenta invece una componente prevista fino a un massimo di 4 manifestazioni ed è considerata eventuale (*Bando.pdf, p. 8*; *Manuale Bando 2106.pdf, p. 5*).\n   * Di conseguenza, le consulenze non sono vincolate alla partecipazione fieristica, ma devono apportare un contributo funzionale al raggiungimento degli obiettivi complessivi del progetto sui Paesi target (*Bando.pdf, p. 17*).\n\n2. **Tipologie ammissibili di consulenza (art. 4, lett. b)**:\n   Le consulenze non possono essere generiche o indeterminate, ma devono rientrare tassativamente in una delle seguenti tipologie previste dall'art. 4, lett. b) (*Bando.pdf, p. 10*):\n   * **Temporary Export Manager (TEM) e/o Digital Export Manager (DEM)**: finalizzati allo sviluppo delle competenze interne del beneficiario;\n   * **Ideazione di un piano marketing e/o di un piano di comunicazione sui Paesi target**: limitatamente alle sole spese di consulenza (con esclusione di servizi correlati quali produzione di materiali, gestione canali social, ecc.);\n   * **Realizzazione di B2B**: spese per la selezione di potenziali partner/buyer e supporto a incontri d'affari (esclusi i servizi logistici od organizzativi come affitto sale, catering o interpreti).\n\n3. **Requisiti di coerenza e descrizione**:\n   * Nella descrizione del progetto il proponente deve specificare per ciascuna consulenza: scopi, output previsti, tipologia di competenze del consulente e coerenza con gli obiettivi di internazionalizzazione e con i mercati target individuati (*Bando.pdf, p. 8, 17 e 20*).",
+    "searches": [
+     "art. 4 lettera b consulenze fiere internazionalizzazione",
+     "\"b) CONSULENZE\" Bando.pdf",
+     "\"4. Spese ammissibili\" Bando.pdf",
+     "\"TEMPORARY EXPORT MANAGER\" Bando.pdf",
+     "\"3. Caratteristiche dei progetti finanziabili\" Bando.pdf"
+    ],
+    "correctness": 1.0
+   },
+   {
+    "id": "faq-051",
+    "answer": "In base alle indicazioni operative sulla rendicontazione:\n\n* **No**, la documentazione relativa ad affidamento ed esecuzione degli appalti (determine, atti, contratti, lettere di incarico, atti di gara/aggiudicazione, ecc.) e le **check list di autovalutazione delle procedure di affidamento** (da predisporre per ogni affidamento e organizzate per CIG) rientrano nella **documentazione amministrativa** e vanno caricate nella **«sezione contratti»** di Sfinge 2020 (slide rendicontazione.pdf, p. 5, 6, 11).\n* La sezione **«documenti di progetto»** è invece destinata alla documentazione tecnica (richiesta a saldo) atta a comprovare l’effettivo svolgimento delle attività in coerenza con il progetto finanziato, come ad esempio la relazione finale, la documentazione fotografica, elaborati as built, APE post-intervento, ecc. (slide rendicontazione.pdf, p. 6; Presentazione Bando Edifici pubblici_15_02_2022.pdf, p. 56).\n\n*Nota particolare:* nel solo caso di rendicontazione degli incentivi per funzioni tecniche, la relativa check list di autovalutazione e gli atti di incarico/regolamento possono essere allegati nella sezione «documenti di progetto» oppure tra i documenti collegati ai giustificativi (slide rendicontazione.pdf, p. 10).",
+    "searches": [
+     "check list affidamento determine atti documenti progetto",
+     "\"sezione contratti\" OR \"documenti progetto\" OR \"sezione giustificativi\" Sfinge",
+     "\"Sezione Contratti\" OR \"Sezione Documenti Progetto\" sfinge",
+     "\"Documenti Contratti\" sfinge",
+     "\"slide sfinge 2020.pdf\" contratti",
+     "\"slide sfinge 2020.pdf\" \"Documenti Progetto\"",
+     "\"slide sfinge 2020.pdf\" \"p. 30\" OR \"p. 31\" OR \"p. 16\" OR \"p. 17\""
+    ],
+    "correctness": 0.4
+   },
+   {
+    "id": "faq-079",
+    "answer": "I costi legati all’assunzione di nuovi ricercatori vanno previsti nella **voce B) \"Spese per nuovi ricercatori\"** (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 20-21; *fac simile DOMANDA.pdf*, p. 11).\n\nIn merito a tale voce, i documenti precisano che:\n* Rientrano i ricercatori assunti dopo la presentazione della domanda (a tempo indeterminato o con contratto di alto apprendistato), di età non superiore a 35 anni e in possesso di laurea magistrale, adibiti stabilmente ad attività di sviluppo sperimentale e trasferimento tecnologico riconducibili al progetto (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 18, 21).\n* È possibile rendicontare unicamente il personale ricercatore nel numero di risorse indicato e descritto in sede di candidatura (punto B.8 della domanda) (*fac simile DOMANDA.pdf*, p. 9; *Presentazione bando e adempimenti Dnsh_Maini-Paone-Tutino.pdf*, p. 11).\n* L'assunzione deve essere dimostrata entro la prima scadenza di presentazione della rendicontazione a SAL tramite presentazione dei relativi contratti stipulati, a pena di revoca della premialità (*DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf*, p. 21).",
+    "searches": [
+     "assunzione ricercatori voce spesa costi",
+     "\"Spese per nuovi ricercatori\" DGR 1221_2026_Approv Bando Trasf Tecnologico.pdf"
+    ],
+    "correctness": 0.6
+   },
+   {
+    "id": "faq-125",
+    "answer": "In base a quanto stabilito al paragrafo **4.1 (\"Interventi ammissibili\")** del *Bando per il rafforzamento delle competenze per la transizione industriale, digitale e green lungo la direttrice della S3*, gli interventi **non possono essere affrontati separatamente**, ma devono essere presenti entrambi:\n\n1. **Obbligatorietà di entrambe le fasi (FASE A e FASE B)**:  \n   Il bando stabilisce espressamente che i progetti candidati devono illustrare un piano triennale di strategia aziendale e *«dovranno essere articolati in:  \n   - **FASE A** – Rilevazione dei fabbisogni di specifiche competenze all’interno della realtà aziendale [...];  \n   - **FASE B** – Introduzione di azioni volte alla riduzione del mismatch tra domanda e offerta di competenze [...]»* (*BANDO COMPETENZE S3.pdf*, p. 9; *SLIDE .pdf*, p. 6).  \n   Di conseguenza, le due fasi non sono alternative: il progetto deve necessariamente comprendere la rilevazione dei fabbisogni (Fase A) e il conseguente piano di azioni/interventi (Fase B).\n\n2. **Cosa è invece alternativo**:  \n   La facoltà di scelta riguarda unicamente l'oggetto della **FASE A**, la quale deve rilevare i fabbisogni necessari per affrontare, **«alternativamente o congiuntamente»**:\n   - la transizione digitale ed ecologica guidata dalla Strategia di specializzazione intelligente (S3) 2021-2027 regionale;\n   - l'innovazione dei metodi di produzione e di organizzazione, i materiali e i processi produttivi in maniera intelligente, sostenibile e continuativa (*BANDO COMPETENZE S3.pdf*, p. 9; *SLIDE .pdf*, p. 8).",
+    "searches": [
+     "punto 4.1 interventi ammissibili complementari alternativi sequenziale",
+     "\"FASE A\" \"FASE B\" \"4.1\" \"BANDO COMPETENZE S3\"",
+     "FAQ \"punto 4.1\" complementari alternativi",
+     "\"4.1 Interventi ammissibili\" \"BANDO COMPETENZE S3.pdf\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"FASE B\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"mismatch\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"dovranno essere articolati in\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"FASE B\" \"piano delle azioni\"",
+     "\"a valere sul PR FSE+\" \"BANDO COMPETENZE S3.pdf\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"FASE B – Introduzione\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"2.\" \"4.1\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"4.1\" \"3.\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"Academy\"",
+     "\"Academy interne e/o di filiera\" \"BANDO COMPETENZE S3.pdf\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"Gli interventi di cui al comma 1\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"10\" \"4.1\"",
+     "\"SLIDE .pdf\" \"FASE A\"",
+     "\"SLIDE .pdf\" \"FASE A – Rilevazione\"",
+     "\"SLIDE .pdf\" \"FASE A\" \"FASE B\"",
+     "\"FASE A\" \"FASE B\" \"6.2\"",
+     "\"BANDO COMPETENZE S3.pdf\" \"ammissibilità sostanziale\" \"FASE\""
+    ],
+    "correctness": 0.3
+   }
+  ]
+ },
+ "delta": {
+  "mean": 0.21199999999999997,
+  "better": 28,
+  "same": 16,
+  "worse": 6
+ }
+}
