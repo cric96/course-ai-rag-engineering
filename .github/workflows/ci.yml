@@ -29,24 +29,3 @@ jobs:
       # Heavy (local models) and online (LLM APIs) tests run only locally.
       - name: Tests
         run: uv run pytest -m "not slow and not llm"
-
-  slides:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-
-      - name: Install dependencies
-        run: uv sync --locked --no-group models --no-group app
-
-      # Uses committed outputs in slides/_freeze/: no models or API keys needed.
-      - name: Render slides
-        run: uv run quarto render slides
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: slides
-          path: slides/_site
