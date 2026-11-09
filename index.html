@@ -101,7 +101,7 @@
     code span.vs { color: #2e7d32; } /* VerbatimString */
     code span.wa { color: #b3261e; font-weight: bold; } /* Warning */
   </style>
-  <link rel="stylesheet" href="corso_files/libs/revealjs/dist/theme/quarto-be8e914cf5fe3ba2ccb9d60924db9a46.css">
+  <link rel="stylesheet" href="corso_files/libs/revealjs/dist/theme/quarto-6ec691b0ca44406e555d3a2bd58d30e3.css">
   <link href="corso_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="corso_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="corso_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -218,6 +218,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="00-obiettivi-della-lezione" class="slide level2 smaller">
 <h2>Obiettivi della lezione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/00-apertura.qmd#L1-L13" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <ul>
 <li>Nelle scorse lezioni, avete visto la teoria e i componenti di una pipeline RAG (<em>Retrieval-Augmented Generation</em>)</li>
 <li>In questa lezione cercheremo di <strong>mettere in pratica</strong> quanto appreso</li>
@@ -237,6 +240,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="00-la-pipeline---recap" class="slide level2">
 <h2>La pipeline - Recap</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/00-apertura.qmd#L14-L27" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Indicizzazione (<em>fatta una volta</em>)</span></p>
 <p><span class="step">Documenti<br>PDF, immagini</span> <span class="step">Parsing<br>OCR</span> <span class="step">Chunking</span> <span class="step">Embedding</span> <span class="step store">Indice</span></p>
@@ -249,6 +255,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="00-le-scelte-progettuali-che-confronteremo" class="slide level2">
 <h2>Le scelte progettuali che confronteremo</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/00-apertura.qmd#L28-L38" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <table class="caption-top">
 <colgroup>
 <col style="width: 30%">
@@ -286,6 +295,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="00-gli-strumenti" class="slide level2 smaller">
 <h2>Gli strumenti</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/00-apertura.qmd#L39-L52" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <table class="caption-top">
 <colgroup>
 <col style="width: 28%">
@@ -336,6 +348,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="00-measure-dont-guess" class="slide level2 smaller">
 <h2>“Measure, don’t guess”</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/00-apertura.qmd#L53-L68" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <p>Quando si costruisce o si ottimizza un sistema software (incluso un RAG), è fondamentale <strong>misurare</strong> le prestazioni, a maggior ragione se vi è un elemento di intelligenza artificiale, che introduce variabilità e incertezza</p>
 <p>Quindi, proveremo a:</p>
 <ol type="1">
@@ -349,6 +364,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="00-demo-rag-su-documenti-regionali" class="slide level2 standout center" data-background-color="#23373b">
 <h2>Demo: RAG su documenti regionali</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/00-apertura.qmd#L69-L81" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/app/chat.py" rel="noopener noreferrer" target="_blank">app/chat.py</a></p>
+</div>
 <aside class="notes">
 <p>Percorso di tre ore: apertura e demo entro 0:15. Le slide viola sono approfondimenti facoltativi: saltarle per mantenere il tempo per la demo finale e le domande.</p>
 <p><code>uv run streamlit run app/chat.py</code>, aperta prima della lezione (carica i modelli in ~20 s). Bando «Sostegno allo sviluppo delle startup innovative», ragionamento basso. Domanda: «Le startup innovative possono chiedere il contributo per l’affitto dei locali?». Mostrare: Dietro le quinte, le citazioni cliccabili, le fonti, il prompt. Poi spegnere «Usa i documenti» e rifare la domanda: risponde «sì», in modo generico. ≈ 5 minuti.</p>
@@ -367,6 +385,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 <section>
 <section id="01-i-dati-e-il-set-di-valutazione" class="title-slide slide level1 center">
 <h1>I dati e il set di valutazione</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L1-L44" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/parsing.py" rel="noopener noreferrer" target="_blank">src/ragcourse/parsing.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Indicizzazione</span></p>
 <p><span class="step active">Documenti<br>PDF, immagini</span> <span class="step active">Parsing<br>testo per pagina</span> <span class="step">Chunking</span> <span class="step">Embedding</span> <span class="step store">Indice</span></p>
@@ -388,6 +409,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-documenti-e-faq-ufficiali" class="slide level2">
 <h2>Documenti e FAQ ufficiali</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L45-L56" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/download_documents.py" rel="noopener noreferrer" target="_blank">scripts/download_documents.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/download_faq.py" rel="noopener noreferrer" target="_blank">scripts/download_faq.py</a></p>
+</div>
 <ul>
 <li><strong>PR FESR 2021-2027</strong>: i bandi della Regione per imprese, enti locali e cultura
 <ul>
@@ -406,6 +430,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-il-corpus-in-numeri" class="slide level2">
 <h2>Il corpus in numeri</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L57-L79" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/extract_pages.py" rel="noopener noreferrer" target="_blank">scripts/extract_pages.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="a46b6c72" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.paths <span class="im">import</span> DATA</span>
@@ -429,6 +456,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-quali-documenti-contiene-il-corpus" class="slide level2 approfondimento">
 <h2>Quali documenti contiene il corpus?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L80-L89" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/download_documents.py" rel="noopener noreferrer" target="_blank">scripts/download_documents.py</a></p>
+</div>
 <ul>
 <li><strong><a href="https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2022/interventi-di-riqualificazione-energetica-e-miglioramento-adeguamento-sismico-degli-edifici-pubblici-e-dell2019edilizia-residenziale-pubblica-2022/presentazione-domanda/allegato-1-parte-integrante_bando-edifici-pubblici.pdf">Bandi</a> e <a href="https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2026/progetti-di-trasferimento-tecnologico/presentazione-domanda/bando-e-modulistica/dgr-1221_2026_approv-bando-trasf-tecnologico.pdf">delibere</a></strong>: testi amministrativi con requisiti, scadenze e importi</li>
 <li><strong><a href="https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2023/sostegno-all2019innovazione-e-agli-investimenti-delle-imprese-culturali-e-creative/rendicontazione/manuale-di-rendicontazione.pdf">Manuali e guide</a></strong>: istruzioni operative, spesso con tabelle e schermate</li>
@@ -438,6 +468,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-quanto-testo-cè-in-ogni-pagina" class="slide level2 approfondimento">
 <h2>Quanto testo c’è in ogni pagina?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L90-L101" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/extract_pages.py" rel="noopener noreferrer" target="_blank">scripts/extract_pages.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="10e1482b" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>chars <span class="op">=</span> pages.text.<span class="bu">str</span>.<span class="bu">len</span>()  <span class="co"># characters on each page</span></span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"nessuno"</span>, <span class="st">"da 1 a 49"</span>, <span class="st">"da 50 a 499"</span>, <span class="st">"500 e oltre"</span>]</span>
@@ -449,6 +482,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 <img data-src="corso_files/figure-revealjs/cell-4-output-1.svg" class="r-stretch"></section>
 <section id="01-una-pagina-vuota" class="slide level2">
 <h2>Una pagina “vuota”</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L102-L136" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/parsing.py" rel="noopener noreferrer" target="_blank">src/ragcourse/parsing.py</a></p>
+</div>
 <div class="columns">
 <div class="column" style="width:48%;">
 <div id="e2fc83e7" class="cell" data-execution_count="6">
@@ -479,6 +515,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-che-cosè-un-set-di-valutazione" class="slide level2 smaller">
 <h2>Che cos’è un set di valutazione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L137-L151" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <blockquote>
 <p>Un set di valutazione è un insieme di domande contenenti la risposta, i documenti e le pagine che la contengono. Serve a misurare la qualità di un sistema RAG</p>
 </blockquote>
@@ -512,6 +551,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-partiamo-dalle-faq-ufficiali" class="slide level2 tabella-faq">
 <h2>Partiamo dalle FAQ ufficiali</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L152-L162" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/download_faq.py" rel="noopener noreferrer" target="_blank">scripts/download_faq.py</a></p>
+</div>
 <div id="a553e411" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>faq <span class="op">=</span> pd.read_json(DATA <span class="op">/</span> <span class="st">"eval/faq_questions.jsonl"</span>, lines<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -576,6 +618,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-dove-sta-la-risposta-lo-chiediamo-a-gemini" class="slide level2 approfondimento codice-grande">
 <h2>Dove sta la risposta? Lo chiediamo a Gemini</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L163-L191" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/label_faq.py" rel="noopener noreferrer" target="_blank">scripts/label_faq.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evalset.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evalset.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="step">Input di un bando<br>pagine + FAQ</span> <span class="step active">Gemini associa le FAQ<br>alle pagine di supporto</span> <span class="step store">Per ogni FAQ<br>pagine gold + tipo di fonte</span></p>
 </div>
@@ -601,6 +646,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-faq-output-strutturato" class="slide level2 approfondimento codice-grande">
 <h2>L’output strutturato: pagine e tipo di fonte</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L192-L210" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evalset.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evalset.py</a></p>
+</div>
 <p>Per ogni FAQ chiediamo il suo numero, le pagine che sostengono la risposta e dove sta la risposta (testo, tabella o immagine)</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FaqLabel(BaseModel):</span>
 <span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>    faq: <span class="bu">int</span>  <span class="co"># FAQ number in the prompt</span></span>
@@ -615,6 +663,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-domande-sulle-immagini" class="slide level2 approfondimento">
 <h2>Domande sulle immagini</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L211-L237" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/generate_image_questions.py" rel="noopener noreferrer" target="_blank">scripts/generate_image_questions.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evalset.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evalset.py</a></p>
+</div>
 <p>Abbiamo creato <strong>20 domande sulle immagini</strong> con Gemini, per verificare se il sistema sia in grado di trovare le informazioni che nel testo non ci sono, come ad esempio date, importi e scadenze.</p>
 <div class="columns">
 <div class="column small" style="width:40%;">
@@ -641,10 +692,16 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-riassunto-struttura-del-set-di-valutazione" class="slide level2 approfondimento">
 <h2>Riassunto: struttura del set di valutazione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L238-L249" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evalset.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evalset.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-11-output-1.svg" class="r-stretch"></section>
 <section id="01-un-set-rappresentativo-oltre-il-testo" class="slide level2 approfondimento">
 <h2>Un set rappresentativo, oltre il testo</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L250-L267" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <p><strong>Il nostro set è sbilanciato sul testo</strong>: tabelle e immagini sono poche; le 20 domande sulle immagini sono state generate ad hoc.</p>
 <ul>
 <li>Il risultato complessivo descrive soprattutto le <strong>prestazioni sul testo</strong></li>
@@ -657,6 +714,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-le-domande-senza-risposta-nei-documenti" class="slide level2">
 <h2>Le domande senza risposta nei documenti</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L268-L279" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evalset.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evalset.py</a></p>
+</div>
 <div id="fb9a7adb" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="11">
 <p><strong>Domanda.</strong> Ad oggi sul sistema SFINGE compare solo la possibilità di caricare il SAL, non compare la possibilità del saldo in un’unica soluzione. Quando sarà disponibile tale possibilità per rispettare le …</p>
@@ -672,6 +732,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-limiti-del-set-di-valutazione" class="slide level2">
 <h2>Limiti del set di valutazione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L280-L292" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <p>In un progetto reale la verità di riferimento la costruiscono, o almeno la validano, <strong>le persone che conoscono i bandi</strong>. Etichette e domande scritte da un modello:</p>
 <ul>
 <li><p>Possono sbagliare: pagine mancanti, “non nei documenti” errati, valori letti male</p></li>
@@ -686,6 +749,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="01-come-useremo-il-set" class="slide level2">
 <h2>Come useremo il set</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/01-dati.qmd#L293-L300" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <ul>
 <li><p><strong>Ricerca delle fonti</strong>: su 227 domande, misuriamo se il sistema trova le pagine di riferimento</p></li>
 <li><p><strong>Qualità delle risposte</strong>: su 50 FAQ, usiamo DeepEval e un modello giudice per valutarne correttezza e fedeltà</p></li>
@@ -696,6 +762,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 <section>
 <section id="02-la-pipeline-di-base" class="title-slide slide level1 center">
 <h1>La pipeline di base</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L1-L40" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/chapters.py" rel="noopener noreferrer" target="_blank">src/ragcourse/chapters.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane first-phase">Primo passo · Indicizzazione</span></p>
 <p><span class="step">Documenti</span> <span class="step">Parsing</span> <span class="step active">Chunking</span> <span class="step active">Embedding</span> <span class="step store active">Indice<br>Qdrant</span></p>
@@ -719,6 +788,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="02-che-cosè-langchain" class="slide level2">
 <h2>Che cos’è LangChain?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L41-L50" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <p><strong>LangChain</strong> è una libreria per costruire applicazioni che usano modelli linguistici</p>
 <ul>
 <li>Offre componenti per <strong>documenti</strong>, suddivisione del testo, embedding e ricerca</li>
@@ -729,6 +801,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="02-langchain-nella-nostra-pipeline" class="slide level2 approfondimento">
 <h2>LangChain nella nostra pipeline</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L51-L62" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/corpus.py" rel="noopener noreferrer" target="_blank">src/ragcourse/corpus.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="step"><span>Pagine<br><code>Document</code></span></span> <span class="step"><span>Suddivisione<br><code>TextSplitter</code></span></span> <span class="step"><span>Vettori<br><code>Embeddings</code></span></span> <span class="step store"><span>Indice<br><code>VectorStore</code></span></span> <span class="step"><span>Ricerca<br><code>Retriever</code></span></span></p>
 </div>
@@ -741,6 +816,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="02-document-testo-e-provenienza" class="slide level2">
 <h2>Document: testo e provenienza</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L63-L76" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/corpus.py" rel="noopener noreferrer" target="_blank">src/ragcourse/corpus.py</a></p>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.documents <span class="im">import</span> Document</span>
 <span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> Document(page_content<span class="op">=</span><span class="st">"Testo della pagina"</span>, metadata<span class="op">=</span>{<span class="st">"page"</span>: <span class="dv">1</span>})</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
@@ -753,6 +831,9 @@ Gianluca Aguzzi · gianluca.aguzzi@unibo.it
 </section>
 <section id="02-le-pagine-in-langchain" class="slide level2 approfondimento">
 <h2>Le pagine in LangChain</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L77-L90" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/corpus.py" rel="noopener noreferrer" target="_blank">src/ragcourse/corpus.py</a></p>
+</div>
 <div id="430ae72e" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.corpus <span class="im">import</span> load_pages</span>
 <span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -778,6 +859,9 @@ Unico di Proge …</code></pre>
 </section>
 <section id="02-text-splitter-dividere-i-documenti" class="slide level2 approfondimento">
 <h2>Text splitter: dividere i documenti</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L91-L101" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a>splitter <span class="op">=</span> RecursiveCharacterTextSplitter(chunk_size<span class="op">=</span><span class="dv">1000</span>, chunk_overlap<span class="op">=</span><span class="dv">200</span>)</span>
 <span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> splitter.split_documents(docs)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
@@ -788,6 +872,9 @@ Unico di Proge …</code></pre>
 </section>
 <section id="02-chunking-chunk-piccoli-ricerca-precisa" class="slide level2">
 <h2>Chunking: chunk piccoli, ricerca precisa</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L102-L121" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <div id="5a1d04c1" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_text_splitters <span class="im">import</span> RecursiveCharacterTextSplitter</span>
 <span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -815,6 +902,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-embedding-dal-testo-ai-numeri" class="slide level2">
 <h2>Embedding: dal testo ai numeri</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L122-L132" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a></p>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>vector <span class="op">=</span> embeddings.embed_query(question)</span>
 <span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a>vectors <span class="op">=</span> embeddings.embed_documents(texts)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
@@ -825,6 +915,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-embedding-dal-testo-ai-numeri-1" class="slide level2">
 <h2>Embedding: dal testo ai numeri</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L133-L146" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a></p>
+</div>
 <div id="15319b56" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.models <span class="im">import</span> embedding_model</span>
 <span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -842,6 +935,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-gli-embedding-su-una-mappa" class="slide level2">
 <h2>Gli embedding su una mappa</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L147-L155" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/plot_embedding_example.py" rel="noopener noreferrer" target="_blank">scripts/plot_embedding_example.py</a></p>
+</div>
 <p><strong>Domanda:</strong> “Posso comprare un computer con il contributo?”</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -853,12 +949,18 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-il-testo-indicizzato-sulla-mappa" class="slide level2 approfondimento">
 <h2>Il testo indicizzato sulla mappa</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L156-L163" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/plot_corpus_embeddings.py" rel="noopener noreferrer" target="_blank">scripts/plot_corpus_embeddings.py</a></p>
+</div>
 <p><strong>19.782 pezzi di testo</strong> indicizzati. La stella rappresenta la domanda</p>
 <p><img data-src="assets/corpus-embeddings.svg" alt="Proiezione degli embedding del corpus e della domanda" height="350"></p>
 <p>PCA riduce 384 dimensioni a 2: <strong>le distanze sono approssimate</strong></p>
 </section>
 <section id="02-somiglianza-tra-domanda-e-documenti" class="slide level2 approfondimento">
 <h2>Somiglianza tra domanda e documenti</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L164-L179" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="e60fddb2" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.viz <span class="im">import</span> bar_chart</span>
@@ -877,6 +979,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-indici-e-database-vettoriali-che-cosa-fanno" class="slide level2">
 <h2>Indici e database vettoriali: che cosa fanno?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L180-L187" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <p>Cercare i <span class="math inline">\(k\)</span> passaggi più vicini tra migliaia o milioni di chunk richiede più di una semplice lista:</p>
 <ul>
 <li><strong>Ricerca esatta (<em>flat</em>)</strong>: confronta la domanda con <strong>tutti</strong> i vettori; trova sempre i vicini esatti, ma il tempo cresce linearmente col corpus</li>
@@ -886,6 +991,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-librerie-di-indicizzazione-vs-database-vettoriali" class="slide level2 approfondimento">
 <h2>Librerie di indicizzazione vs database vettoriali</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L188-L209" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <p>Non tutti gli strumenti che chiamiamo “vector store” fanno la stessa cosa:</p>
 <div class="columns">
 <div class="column" style="width:49%;">
@@ -906,6 +1014,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-dove-ospitare-lindice-locale-db-esistente-o-cloud" class="slide level2 approfondimento">
 <h2>Dove ospitare l’indice: locale, DB esistente o cloud</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L210-L217" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <p>La scelta dipende da volumi di dati, riservatezza e sistemi già gestiti dall’ente:</p>
 <ol type="1">
 <li><strong>In memoria o su file locale</strong> (<em>FAISS</em>, <em>Qdrant local mode</em>, <em>Chroma</em>): nessun server dedicato, adatto a sviluppo, test e corpus fino a centinaia di migliaia di chunk</li>
@@ -915,6 +1026,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-indici-e-database-vettoriali-a-confronto" class="slide level2 approfondimento">
 <h2>Indici e database vettoriali a confronto</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L218-L231" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <div class="small">
 <table class="caption-top">
 <colgroup>
@@ -974,6 +1088,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-perché-usiamo-qdrant-nella-nostra-pipeline" class="slide level2">
 <h2>Perché usiamo Qdrant nella nostra pipeline</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L232-L239" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a></p>
+</div>
 <p><strong>Qdrant</strong> è tra i database vettoriali specializzati <a href="https://db-engines.com/en/ranking/vector+dbms">più diffusi</a> e copre sia la sperimentazione sia la produzione:</p>
 <ul>
 <li><strong>Stesso codice</strong> in memoria (<code>:memory:</code>), su disco (<code>path=...</code>), in container Docker o in cloud</li>
@@ -983,6 +1100,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-lindice-qdrant" class="slide level2">
 <h2>VectorStore: indice e ricerca con Qdrant</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L240-L258" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a></p>
+</div>
 <div id="411307c6" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_qdrant <span class="im">import</span> QdrantVectorStore</span>
 <span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1003,6 +1123,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-un-esempio-di-ricerca" class="slide level2">
 <h2>Un esempio di ricerca</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L259-L283" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <div id="885cc659" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a>question <span class="op">=</span> example[<span class="st">"question"</span>]</span>
 <span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(question, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
@@ -1023,6 +1146,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-come-si-misura-tre-formule" class="slide level2">
 <h2>Come si misura il retrieval: il concetto di <span class="citation" data-cites="k">@k</span></h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L284-L299" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <p>Il retriever ordina le pagine per somiglianza, ma al modello passiamo solo le <strong>prime <em>k</em></strong> (es. <em>k</em> = 5)</p>
 <ul>
 <li><strong><span class="citation" data-cites="k">@k</span> (“nei primi <em>k</em> risultati”)</strong>: valutiamo solo i primi <em>k</em> posti; ciò che cade dopo viene ignorato perché non entra nel prompt</li>
@@ -1064,6 +1190,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-le-tre-metriche-hitk-recallk-mrr" class="slide level2">
 <h2>Le tre metriche: Hit@k, Recall@k, MRR</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L300-L312" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/metrics.py" rel="noopener noreferrer" target="_blank">src/ragcourse/metrics.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <p>Fissata la soglia <em>k</em>, tre metriche complementari valutano la classifica (mediate sulle domande):</p>
 <div class="small">
 <table class="caption-top">
@@ -1106,6 +1235,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-come-si-misura-un-esempio-in-python" class="slide level2 approfondimento">
 <h2>Come si misura: un esempio in Python</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L313-L332" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/metrics.py" rel="noopener noreferrer" target="_blank">src/ragcourse/metrics.py</a></p>
+</div>
 <p>Guardiamo i <strong>primi 3 risultati</strong>. Le pagine utili sono <strong>B e D</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.metrics <span class="im">import</span> hit_at_k, recall_at_k, reciprocal_rank</span>
 <span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1124,6 +1256,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-retriever-cercare-documenti" class="slide level2 approfondimento">
 <h2>Retriever: cercare documenti</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L333-L343" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a></p>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a>retriever <span class="op">=</span> store.as_retriever(search_kwargs<span class="op">=</span>{<span class="st">"k"</span>: <span class="dv">20</span>})</span>
 <span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a>documents <span class="op">=</span> retriever.invoke(question)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
@@ -1134,6 +1269,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-che-cosè-ranx" class="slide level2">
 <h2>Che cos’è ranx?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L344-L353" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <p><strong>ranx</strong> è una libreria Python per valutare e confrontare sistemi di ricerca</p>
 <ul>
 <li><strong>Qrels</strong>: per ogni domanda, le pagine di riferimento considerate rilevanti</li>
@@ -1143,6 +1281,9 @@ Chunk 3 · pagina 52: 52 Si aprirà infine la seguente finestra di conferma: Fig
 </section>
 <section id="02-risultati-della-baseline" class="slide level2 approfondimento">
 <h2>Risultati della baseline</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L354-L368" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <div id="419df2e2" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ranx <span class="im">import</span> evaluate</span>
 <span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.evaluation <span class="im">import</span> gold_qrels, retrieval_run</span>
@@ -1168,6 +1309,9 @@ dtype: float64</code></pre>
 </section>
 <section id="02-la-baseline-in-un-grafico" class="slide level2">
 <h2>La baseline in un grafico</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L369-L385" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="34b9bd82" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>hits <span class="op">=</span> results[[<span class="st">"hit_rate@1"</span>, <span class="st">"hit_rate@3"</span>, <span class="st">"hit_rate@5"</span>, <span class="st">"hit_rate@10"</span>]]</span>
 <span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>bar_chart(hits.rename(<span class="kw">lambda</span> m: m.replace(<span class="st">"hit_rate"</span>, <span class="st">"hit"</span>)), fmt<span class="op">=</span><span class="st">"</span><span class="sc">{:.0%}</span><span class="st">"</span>,</span>
@@ -1181,6 +1325,9 @@ dtype: float64</code></pre>
 </section>
 <section id="02-risultati-per-tipo-di-fonte" class="slide level2 approfondimento">
 <h2>Risultati per tipo di fonte</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L386-L397" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="56b9efdc" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> pd.DataFrame(run.scores)  <span class="co"># ranx keeps one score per question</span></span>
 <span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a>scores[<span class="st">"evidence"</span>] <span class="op">=</span> [names[by_id[qid][<span class="st">"evidence"</span>]] <span class="cf">for</span> qid <span class="kw">in</span> scores.index]</span>
@@ -1194,6 +1341,9 @@ dtype: float64</code></pre>
 </section>
 <section id="02-analisi-cosa-sta-sbagliando" class="slide level2">
 <h2>Analisi: cosa sta sbagliando?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/02-baseline.qmd#L398-L424" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <p>Un esperto di dominio può riconoscere la causa di un errore. La usiamo per correggere la pipeline e misurare di nuovo la baseline</p>
 <p>Nel <strong>81%</strong> dei casi in cui il primo risultato è sbagliato, viene da <strong>un altro bando</strong> (159 su 197).</p>
 <blockquote>
@@ -1209,6 +1359,9 @@ dtype: float64</code></pre>
 <section>
 <section id="03-filtrare-per-bando" class="title-slide slide level1 center">
 <h1>Filtrare per bando</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L1-L66" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/filters.py" rel="noopener noreferrer" target="_blank">src/ragcourse/filters.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Indicizzazione · una volta sola</span></p>
 <p><span class="step deferred">Documenti</span> <span class="step deferred">Parsing</span> <span class="step deferred">Chunking</span> <span class="step deferred">Embedding</span> <span class="step store deferred">Indice<br>Qdrant</span></p>
@@ -1232,6 +1385,9 @@ dtype: float64</code></pre>
 </section>
 <section id="03-il-problema-emerso-dalla-baseline" class="slide level2">
 <h2>Il problema emerso dalla baseline</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L67-L79" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <ul>
 <li>L’indice contiene i documenti di tanti bandi, e i bandi si somigliano: spese, rendicontazione, scadenze</li>
 </ul>
@@ -1244,6 +1400,9 @@ dtype: float64</code></pre>
 </section>
 <section id="03-metadati-restringere-la-ricerca" class="slide level2">
 <h2>Metadati: restringere la ricerca</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L80-L94" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/filters.py" rel="noopener noreferrer" target="_blank">src/ragcourse/filters.py</a></p>
+</div>
 <div id="a496a42f" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a>calls <span class="op">=</span> pd.Series([chunk.metadata[<span class="st">"call"</span>] <span class="cf">for</span> chunk <span class="kw">in</span> chunks])</span>
 <span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(calls.nunique(), <span class="st">"bandi nell'indice</span><span class="ch">\n</span><span class="st">"</span>)</span>
@@ -1266,6 +1425,9 @@ avviso-per-la-concessione-di-contributi-a-favore-delle-imprese-per-progetti-di-r
 </section>
 <section id="03-con-qdrant-il-filtro-dentro-la-ricerca" class="slide level2 approfondimento">
 <h2>Con Qdrant: il filtro dentro la ricerca</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L95-L112" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/filters.py" rel="noopener noreferrer" target="_blank">src/ragcourse/filters.py</a></p>
+</div>
 <div id="e24f7405" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.filters <span class="im">import</span> metadata_filter</span>
 <span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1293,6 +1455,9 @@ Con filtro:
 </section>
 <section id="03-risultati-il-filtro-migliora-la-ricerca" class="slide level2 approfondimento">
 <h2>Risultati: il filtro migliora la ricerca</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L113-L130" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/filters.py" rel="noopener noreferrer" target="_blank">src/ragcourse/filters.py</a></p>
+</div>
 <div id="a5ee6955" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a>run_call <span class="op">=</span> retrieval_run(retriever, answerable, name<span class="op">=</span><span class="st">"filtro per bando"</span>, by_call<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1362,6 +1527,9 @@ Con filtro:
 </section>
 <section id="03-risultati-confronto-con-e-senza-filtro" class="slide level2">
 <h2>Risultati: confronto con e senza filtro</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L131-L139" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="b4802de1" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>hits <span class="op">=</span> results.loc[[<span class="st">"hit_rate@1"</span>, <span class="st">"hit_rate@5"</span>, <span class="st">"hit_rate@10"</span>]]</span>
 <span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a>was, now <span class="op">=</span> hits.loc[<span class="st">"hit_rate@5"</span>]</span>
@@ -1372,6 +1540,9 @@ Con filtro:
 <img data-src="corso_files/figure-revealjs/cell-34-output-1.svg" class="r-stretch"></section>
 <section id="03-il-miglioramento-potrebbe-essere-casuale" class="slide level2 approfondimento">
 <h2>Il miglioramento potrebbe essere casuale?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L140-L171" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <p>Confrontiamo le due configurazioni sulle <strong>stesse 227 domande</strong>: è un <em>paired test</em></p>
 <div class="columns">
 <div class="column" style="width:33%;">
@@ -1394,6 +1565,9 @@ Con filtro:
 </section>
 <section id="03-il-filtro-migliora-davvero" class="slide level2">
 <h2>Il filtro migliora davvero?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L172-L183" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <div id="fbc7637c" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ranx <span class="im">import</span> compare</span>
 <span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1413,6 +1587,9 @@ b    filtro per bando  0.648ᵃ        0.489ᵃ</code></pre>
 </section>
 <section id="03-filtrare-prima-o-dopo-la-ricerca" class="slide level2 approfondimento">
 <h2>Filtrare prima o dopo la ricerca?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L184-L218" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/filters.py" rel="noopener noreferrer" target="_blank">src/ragcourse/filters.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-36-output-1.svg" class="r-stretch"><ul>
 <li><strong>Dopo la ricerca</strong>: cerchiamo i 20 chunk più vicini nell’intero indice, poi escludiamo le pagine degli altri bandi. Restano in mediana 2 pagine.</li>
@@ -1421,6 +1598,9 @@ b    filtro per bando  0.648ᵃ        0.489ᵃ</code></pre>
 </section>
 <section id="03-analisi-che-cosa-resta-da-migliorare" class="slide level2 approfondimento">
 <h2>Analisi: che cosa resta da migliorare?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L219-L243" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-38-output-1.svg" class="r-stretch"><ul>
 <li><strong>In basso</strong> → riordinare i risultati: <em>reranking</em></li>
@@ -1429,6 +1609,9 @@ b    filtro per bando  0.648ᵃ        0.489ᵃ</code></pre>
 </section>
 <section id="03-da-dove-arriva-il-bando" class="slide level2">
 <h2>Da dove arriva il bando?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/03-filtro-bando.qmd#L244-L254" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/app/chat.py" rel="noopener noreferrer" target="_blank">app/chat.py</a></p>
+</div>
 <ul>
 <li><strong>Dal contesto</strong>: la domanda è fatta dalla pagina del bando, o da un menu</li>
 <li><strong>Dalla domanda</strong>: se la nomina, un LLM può estrarre il filtro (<em>self-query</em>)</li>
@@ -1451,6 +1634,9 @@ b    filtro per bando  0.648ᵃ        0.489ᵃ</code></pre>
 <section>
 <section id="04-la-generazione" class="title-slide slide level1 center">
 <h1>La generazione</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L1-L68" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Indicizzazione · una volta sola</span></p>
 <p><span class="step deferred">Documenti</span> <span class="step deferred">Parsing</span> <span class="step deferred">Chunking</span> <span class="step deferred">Embedding</span> <span class="step store deferred">Indice<br>Qdrant</span></p>
@@ -1474,6 +1660,9 @@ b    filtro per bando  0.648ᵃ        0.489ᵃ</code></pre>
 </section>
 <section id="04-il-prompt" class="slide level2">
 <h2>Il prompt</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L69-L78" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <div id="046bcc14" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(PROMPT.messages[<span class="dv">0</span>].prompt.template)</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1493,6 +1682,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-la-catena-prompt-modello-testo" class="slide level2 approfondimento">
 <h2>La catena: prompt → modello → testo</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L79-L102" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a></p>
+</div>
 <div id="89fc0e47" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.output_parsers <span class="im">import</span> StrOutputParser</span>
 <span id="cb42-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.models <span class="im">import</span> chat_model</span>
@@ -1521,6 +1713,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-llm-as-a-judge-come-viene-fatto-in-pratica" class="slide level2">
 <h2>“LLM as a judge”: come viene fatto in pratica</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L103-L122" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div id="4d661e28" class="cell" data-execution_count="44">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
 <span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1544,6 +1739,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-deepeval-percorso" class="slide level2">
 <h2>DeepEval: dal giudizio al test ripetibile</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L123-L165" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <p>DeepEval organizza la valutazione della nostra pipeline in tre elementi</p>
 <div class="columns">
 <div class="column" style="width:33%;">
@@ -1581,6 +1779,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-deepeval-caso" class="slide level2 approfondimento">
 <h2>Un caso di test: che cosa salviamo?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L166-L203" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <p>Una domanda del corso diventa un <code>LLMTestCase</code></p>
 <div class="columns">
 <div class="column" style="width:57%;">
@@ -1619,6 +1820,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-deepeval-scegliere-metrica" class="slide level2">
 <h2>Scegliere la metrica dalla domanda</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L204-L236" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div class="small">
 <table class="caption-top">
 <colgroup>
@@ -1684,6 +1888,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-deepeval-eseguire" class="slide level2 approfondimento">
 <h2>Eseguire la valutazione e leggere il risultato</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L237-L269" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval <span class="im">import</span> evaluate</span>
 <span id="cb46-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.metrics <span class="im">import</span> FaithfulnessMetric</span>
 <span id="cb46-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.judge <span class="im">import</span> judge_model</span>
@@ -1719,6 +1926,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-come-si-tara-la-soglia-in-pratica" class="slide level2 approfondimento">
 <h2>Come si tara la soglia in pratica?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L270-L296" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <p>Per <strong>Faithfulness</strong>, il test passa se il punteggio è <strong>≥ soglia</strong>. Lo <strong>0,8 è un punto di partenza didattico</strong>: va verificato su esempi reali.</p>
 <ol type="1">
 <li>Preparare un <strong>validation set</strong> di risposte generate e relativi contesti recuperati</li>
@@ -1746,6 +1956,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-quali-errori-vogliamo-evitare" class="slide level2 approfondimento">
 <h2>Quali errori vogliamo evitare?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L297-L321" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <p>Confrontiamo l’esito del test con il <strong>giudizio umano sulle stesse risposte</strong>:</p>
 <table class="caption-top">
 <colgroup>
@@ -1794,6 +2007,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-deepeval-regressioni" class="slide level2 approfondimento">
 <h2>Da una prova a un test di regressione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L322-L357" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <p>Nel file <code>test_rag.py</code>, dopo aver definito <code>case</code> e <code>metric</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval <span class="im">import</span> assert_test</span>
 <span id="cb47-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -1823,6 +2039,9 @@ Se non contengono nulla di utile, rispondi solo: Non lo trovo nei documenti.</co
 </section>
 <section id="04-deepeval-in-pratica-verificare-la-fedeltà" class="slide level2">
 <h2>DeepEval in pratica: verificare la fedeltà</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L358-L386" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div id="395b4f00" class="cell" data-execution_count="45">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.metrics <span class="im">import</span> FaithfulnessMetric</span>
 <span id="cb49-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.test_case <span class="im">import</span> LLMTestCase</span>
@@ -1849,6 +2068,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-fedeltà-quando-mancano-le-prove" class="slide level2">
 <h2>Fedeltà: quando mancano le prove</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L387-L399" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <p>Il giudice confronta ogni affermazione della risposta con i <strong>chunk recuperati</strong>:</p>
 <ul>
 <li><strong>Confermata</strong>: i chunk confermano l’affermazione</li>
@@ -1862,6 +2084,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-valutare-la-qualità-delle-citazioni" class="slide level2 approfondimento">
 <h2>Valutare la qualità delle citazioni</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L400-L419" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/chat.py" rel="noopener noreferrer" target="_blank">src/ragcourse/chat.py</a></p>
+</div>
 <p>La <strong>fedeltà</strong> controlla l’<strong>insieme dei chunk recuperati</strong>, non se i rimandi <code>[1]</code>, <code>[2]</code> puntano al passaggio giusto:</p>
 <ul>
 <li><strong>Validità formale</strong>: gli indici <code>[n]</code> citati rientrano tutti nei <span class="math inline">\(k\)</span> chunk forniti (<code>1 ≤ n ≤ k</code>)?</li>
@@ -1884,6 +2109,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-correttezza-definire-i-criteri-con-geval" class="slide level2 approfondimento">
 <h2>Correttezza: definire i criteri con GEval</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L420-L441" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div id="10f1f509" class="cell" data-execution_count="48">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.metrics <span class="im">import</span> GEval</span>
 <span id="cb53-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.test_case <span class="im">import</span> SingleTurnParams</span>
@@ -1909,6 +2137,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-geval-come-valutiamo-la-correttezza" class="slide level2">
 <h2>GEval: come valutiamo la correttezza?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L442-L453" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <p>Il giudice confronta la <strong>risposta generata</strong> con la <strong>risposta ufficiale</strong>, seguendo tre criteri:</p>
 <ol type="1">
 <li>Verificare che i fatti non contraddicano la risposta ufficiale</li>
@@ -1919,6 +2150,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-valutare-la-generazione-su-50-faq" class="slide level2 approfondimento">
 <h2>Valutare la generazione su 50 FAQ</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L454-L492" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <p>Passiamo dal singolo caso al confronto su un insieme fisso di domande</p>
 <div id="b9482ed5" class="cell" data-execution_count="49">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> pd.DataFrame(faq).sample(<span class="dv">50</span>, random_state<span class="op">=</span><span class="dv">0</span>).to_dict(<span class="st">"records"</span>)</span>
@@ -1936,6 +2170,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-risultati-della-valutazione" class="slide level2">
 <h2>Risultati della valutazione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L493-L522" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-51-output-1.svg" class="r-stretch"><ul>
 <li><strong>Fedeltà e pertinenza</strong>: calcolate sulle 28 risposte effettivamente date</li>
@@ -1944,6 +2181,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-stessi-documenti-un-altro-generatore" class="slide level2 approfondimento">
 <h2>Confronto tra diversi generatori</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L523-L568" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_generators.py" rel="noopener noreferrer" target="_blank">scripts/compare_generators.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/plot_generator_comparison.py" rel="noopener noreferrer" target="_blank">scripts/plot_generator_comparison.py</a></p>
+</div>
 <img data-src="assets/experiment-generator-comparison-open.svg" class="r-stretch">
 <ul>
 <li>Un modello più capace interpreta meglio gli stessi passaggi, ma il richiamo del contesto resta invariato (<strong>0,11</strong>) perché dipende esclusivamente dal retrieval</li>
@@ -1967,6 +2207,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-analisi-perché-la-correttezza-è-bassa" class="slide level2">
 <h2>Analisi: perché la correttezza è bassa?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L569-L583" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-53-output-1.svg" class="r-stretch"><ul>
 <li>Per adesso, la RAG mette troppo poca informazione a disposizione del modello: il chunk giusto non è tra i 5 recuperati</li>
@@ -1974,6 +2217,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-quanto-conta-trovare-la-pagina-giusta" class="slide level2 approfondimento">
 <h2>Quanto conta trovare la pagina giusta?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L584-L606" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-54-output-1.svg" class="r-stretch"><div class="muted">
 <p>Pagina giusta nei 5 chunk: 34 domande su 50.</p>
@@ -1986,6 +2232,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-richiamo-del-contesto" class="slide level2 approfondimento">
 <h2>Perché il richiamo del contesto è così basso?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L607-L629" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/evaluate_improvements.py" rel="noopener noreferrer" target="_blank">scripts/evaluate_improvements.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/audit_context_recall.py" rel="noopener noreferrer" target="_blank">scripts/audit_context_recall.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <img data-src="assets/experiment-context-coverage-ch04.svg" class="r-stretch">
 <ul>
 <li><code>ContextualRecallMetric</code> non legge la <strong>domanda</strong> e richiede che ogni frase della FAQ compaia nei chunk: passando anche la domanda a <code>context_coverage_metric</code>, sulle 34 domande con pagina giusta la copertura sale da <strong>0,13 a 0,61</strong> (e su tutte le 50 da <strong>0,10 a 0,46</strong>)</li>
@@ -2009,6 +2258,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-analisi-di-un-caso-di-errore" class="slide level2">
 <h2>Analisi di un caso di errore</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L630-L654" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <blockquote>
 <p>È ammissibile l’assunzione dei nuovi ricercatori tramite contratto di apprendistato?</p>
 </blockquote>
@@ -2027,6 +2279,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="04-quanto-costa-generare-e-giudicare" class="slide level2 approfondimento">
 <h2>Quanto costa generare e giudicare?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/04-generazione.qmd#L655-L673" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/costs.py" rel="noopener noreferrer" target="_blank">src/ragcourse/costs.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-57-output-1.svg" class="r-stretch"><ul>
 <li>Questa valutazione si svolge <strong>in fase di analisi</strong>: il giudice non serve normalmente per ogni risposta in produzione, ma può essere usato per il monitoraggio</li>
@@ -2038,6 +2293,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 <section>
 <section id="05-lastensione-saper-dire-non-lo-so" class="title-slide slide level1 center">
 <h1>L’astensione: saper dire «non lo so»</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L1-L66" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Interrogazione · per ogni domanda</span></p>
 <p><span class="step">Domanda<br>+ bando</span> <span class="step store">Retrieval<br>con filtro</span> <span class="step">Reranking</span> <span class="step active">Generazione<br>LLM</span> <span class="step active">Risposta<br>o «non lo so»</span></p>
@@ -2059,6 +2317,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="05-rispondere-o-astenersi-i-due-errori" class="slide level2">
 <h2>Rispondere o astenersi: i due errori</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L67-L76" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <ul>
 <li><strong>Rispondere senza informazioni sufficienti</strong>: il modello può inventare dettagli o fornire una risposta non confermata dai documenti</li>
 <li><strong>Rinunciare quando le informazioni sono disponibili</strong>: il modello si astiene anche se avrebbe potuto aiutare chi ha posto la domanda</li>
@@ -2067,6 +2328,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="05-le-domande-senza-risposta-nei-documenti-1" class="slide level2">
 <h2>Le domande senza risposta nei documenti</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L77-L93" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evalset.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evalset.py</a></p>
+</div>
 <p><strong>48 FAQ</strong> hanno una risposta ufficiale che <strong>non</strong> sta nei documenti del bando: prassi operative, casi specifici, moduli e sistemi informatici.</p>
 <blockquote>
 <p>La Declaration of Honour deve essere firmata solo dal coordinatore oppure anche dai partner?</p>
@@ -2082,6 +2346,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="05-valutare-lastensione-sul-set-di-test" class="slide level2 approfondimento">
 <h2>Valutare l’astensione sul set di test</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L94-L109" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <div id="0682267a" class="cell" data-execution_count="60">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a>questions <span class="op">=</span> answerable <span class="op">+</span> unanswerable  <span class="co"># 50 with the answer in the documents, 48 without</span></span>
 <span id="cb55-2"><a href="" aria-hidden="true" tabindex="-1"></a>has_answer <span class="op">=</span> pd.Series([<span class="bu">bool</span>(q[<span class="st">"gold"</span>]) <span class="cf">for</span> q <span class="kw">in</span> questions])</span>
@@ -2138,6 +2405,9 @@ Fedeltà = frasi nei documenti / frasi = 0.50</code></pre>
 </section>
 <section id="05-un-prompt-più-prudente" class="slide level2">
 <h2>Un prompt più prudente</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L110-L123" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <div id="87bdfa22" class="cell" data-execution_count="61">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.generation <span class="im">import</span> COMPLETE_ONLY, PARTIAL_OK, PRUDENT_PROMPT</span>
 <span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -2160,11 +2430,17 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="05-risultati-risposta-contro-astensione" class="slide level2">
 <h2>Risultati: risposta contro astensione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L124-L145" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-62-output-1.svg" class="r-stretch"><p>⚠️ <strong>Attenzione:</strong> il prompt prudente si astiene più spesso quando la risposta manca, ma anche quando è presente nei documenti: riduce il rischio di risposte non confermate, al costo di rinunciare a più risposte utili</p>
 </section>
 <section id="05-cosa-succede-quando-non-si-astiene" class="slide level2 approfondimento">
 <h2>Cosa succede quando non si astiene?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L146-L176" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div id="84fd2409" class="cell" data-execution_count="63">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval <span class="im">import</span> evaluate</span>
 <span id="cb58-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepeval.evaluate.configs <span class="im">import</span> AsyncConfig, DisplayConfig</span>
@@ -2189,6 +2465,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="05-esempio-una-risposta-parziale-rischiosa" class="slide level2">
 <h2>Esempio: una risposta parziale rischiosa</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L177-L194" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <blockquote>
 <p>L’estratto conto bancario è un documento obbligatorio per la rendicontazione delle spese?</p>
 </blockquote>
@@ -2209,6 +2488,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="05-come-scegliere-il-livello-di-prudenza" class="slide level2">
 <h2>Come scegliere il livello di prudenza?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/05-astensione.qmd#L195-L201" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a></p>
+</div>
 <ul>
 <li><strong>La scelta dipende dai destinatari</strong> del servizio:
 <ul>
@@ -2222,6 +2504,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <section>
 <section id="06-quanti-chunk-passare-al-modello" class="title-slide slide level1 center">
 <h1>Quanti chunk passare al modello?</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L1-L99" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Interrogazione · per ogni domanda</span></p>
 <p><span class="step">Domanda<br>+ bando</span> <span class="step store active">Retrieval<br>k chunk</span> <span class="step">Reranking</span> <span class="step active">Generazione<br>LLM</span> <span class="step">Risposta</span></p>
@@ -2243,6 +2528,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-impatto-di-k-sul-retrieval" class="slide level2">
 <h2>Impatto di k sul retrieval</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L100-L112" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="e8cd0b77" class="cell" data-execution_count="67">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a>in_context <span class="op">=</span> pd.Series(dtype<span class="op">=</span><span class="bu">float</span>)</span>
 <span id="cb59-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> (<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>):</span>
@@ -2257,6 +2545,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <img data-src="corso_files/figure-revealjs/cell-67-output-1.svg" class="r-stretch"></section>
 <section id="06-valutare-la-generazione-al-variare-di-k" class="slide level2 approfondimento">
 <h2>Valutare la generazione al variare di k</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L113-L140" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div id="a195e204" class="cell" data-execution_count="68">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> answer_with(k: <span class="bu">int</span>):</span>
 <span id="cb60-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Every answer, with k chunks in the prompt; also counts the tokens."""</span></span>
@@ -2285,6 +2576,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-risultati-qualità-al-variare-di-k" class="slide level2">
 <h2>Risultati: qualità al variare di k</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L141-L175" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_context_recall_k.py" rel="noopener noreferrer" target="_blank">scripts/compare_context_recall_k.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-69-output-1.svg" class="r-stretch"><ul>
 <li>Il <strong>richiamo del contesto</strong> sale con più passaggi: da <strong>0,100</strong> (5 chunk) a <strong>0,160</strong> (10 chunk) e <strong>0,184</strong> (20 chunk)</li>
@@ -2307,6 +2601,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-copertura-del-contesto-al-variare-di-k" class="slide level2 approfondimento">
 <h2>Copertura del contesto al variare di k</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L176-L195" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/evaluate_improvements.py" rel="noopener noreferrer" target="_blank">scripts/evaluate_improvements.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <img data-src="assets/experiment-context-coverage.svg" class="r-stretch">
 <ul>
 <li>Con la metrica di copertura vista nel capitolo sulla generazione (<code>context_coverage_metric</code>), passando da 5 a 10 e 20 chunk la copertura stimata sale da <strong>0,46 → 0,57 → 0,64</strong>, e i casi a zero scendono da 10 a 5</li>
@@ -2330,6 +2627,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-analisi-perché-la-fedeltà-cala-con-k20" class="slide level2 approfondimento">
 <h2>Analisi: perché la fedeltà cala con k=20?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L196-L231" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div id="9476736b" class="cell" data-execution_count="71">
 <div class="cell-output cell-output-display" data-execution_count="70">
 <div>
@@ -2390,6 +2690,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-impatto-di-k-sullastensione" class="slide level2 approfondimento">
 <h2>Impatto di k sull’astensione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L232-L241" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-72-output-1.svg" class="r-stretch"><ul>
 <li>Passando più chunk nel prompt il modello risponde a più domande, ma tende anche ad astenersi meno quando la risposta non è presente nei documenti</li>
@@ -2397,6 +2700,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-costi-consumo-di-token-al-variare-di-k" class="slide level2">
 <h2>Costi: consumo di token al variare di k</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L242-L254" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/costs.py" rel="noopener noreferrer" target="_blank">src/ragcourse/costs.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-73-output-1.svg" class="r-stretch"><ul>
 <li>Il costo delle chiamate al modello cresce con la lunghezza del prompt, a ogni domanda</li>
@@ -2405,6 +2711,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="06-conclusioni-quale-valore-di-k-scegliere" class="slide level2">
 <h2>Conclusioni: quale valore di k scegliere?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/06-quanti-pezzi.qmd#L255-L271" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <ul>
 <li>La correttezza migliore è con <strong>20 chunk</strong> (0.43 contro 0.25 con 5)</li>
 <li>Ma l’astensione corretta passa da 77% a 67%, e i token salgono di × 3.6</li>
@@ -2415,6 +2724,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <section>
 <section id="07-il-chunking" class="title-slide slide level1 center">
 <h1>Il chunking</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/07-chunking.qmd#L1-L49" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Indicizzazione · una volta sola</span></p>
 <p><span class="step">Documenti</span> <span class="step">Parsing</span> <span class="step active">Chunking</span> <span class="step">Embedding</span> <span class="step store">Indice<br>Qdrant</span></p>
@@ -2436,6 +2748,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="07-dimensione-dei-chunk-piccoli-o-grandi" class="slide level2">
 <h2>Dimensione dei chunk: piccoli o grandi?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/07-chunking.qmd#L50-L66" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <ul>
 <li><strong>Chunk piccoli</strong>: ciascun vettore rappresenta un singolo concetto e la ricerca è più mirata, ma si rischia di spezzare informazioni collegate</li>
 <li><strong>Chunk grandi</strong>: conservano più contesto, ma un singolo vettore deve riassumere argomenti diversi</li>
@@ -2454,6 +2769,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="07-confronto-tra-diverse-dimensioni-di-chunk" class="slide level2 approfondimento">
 <h2>Confronto tra diverse dimensioni di chunk</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/07-chunking.qmd#L67-L83" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a></p>
+</div>
 <div id="45b3fd96" class="cell" data-execution_count="77">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.index <span class="im">import</span> vector_store</span>
 <span id="cb63-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -2511,6 +2829,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="07-valutazione-del-retrieval-con-ranx" class="slide level2 approfondimento">
 <h2>Valutazione del retrieval con ranx</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/07-chunking.qmd#L84-L99" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <div id="8ff8b15a" class="cell" data-execution_count="78">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a>runs <span class="op">=</span> {}</span>
 <span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, chunks <span class="kw">in</span> chunkings.items():</span>
@@ -2579,10 +2900,16 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="07-risultati-impatto-del-chunking" class="slide level2">
 <h2>Risultati: impatto del chunking</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/07-chunking.qmd#L100-L110" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-79-output-1.svg" class="r-stretch"></section>
 <section id="07-analisi-dei-risultati-sul-chunking" class="slide level2">
 <h2>Analisi dei risultati sul chunking</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/07-chunking.qmd#L111-L131" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <ul>
 <li><strong>500 e 1000 caratteri danno risultati simili</strong>: hit@5 <strong>65,6%</strong> e <strong>64,8%</strong>. Il paired test non rileva una differenza significativa (<strong>p = 0,73</strong>). Teniamo 1000: meno vettori da memorizzare e cercare</li>
 <li><strong>La pagina intera scende al 59,0%</strong>. Un vettore deve rappresentare più argomenti; inoltre il <strong>43% delle pagine</strong> supera il limite di token del modello</li>
@@ -2606,6 +2933,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <section>
 <section id="08-i-modelli-di-embedding" class="title-slide slide level1 center">
 <h1>I modelli di embedding</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/08-embedding.qmd#L1-L62" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Indicizzazione · una volta sola</span></p>
 <p><span class="step">Documenti</span> <span class="step">Parsing</span> <span class="step">Chunking</span> <span class="step active">Embedding</span> <span class="step store">Indice<br>Qdrant</span></p>
@@ -2629,6 +2959,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="08-i-modelli-di-embedding-a-confronto" class="slide level2">
 <h2>I modelli di embedding a confronto</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/08-embedding.qmd#L63-L77" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a></p>
+</div>
 <table class="caption-top">
 <colgroup>
 <col style="width: 28%">
@@ -2683,6 +3016,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="08-valutare-i-modelli-sul-retrieval" class="slide level2 approfondimento">
 <h2>Valutare i modelli sul retrieval</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/08-embedding.qmd#L78-L98" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <div id="b4260fc1" class="cell" data-execution_count="81">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.models <span class="im">import</span> embedding_model, query_ms</span>
 <span id="cb65-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -2704,10 +3040,16 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="08-risultati-confronto-tra-gli-embedding" class="slide level2">
 <h2>Risultati: confronto tra gli embedding</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/08-embedding.qmd#L99-L110" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-82-output-1.svg" class="r-stretch"></section>
 <section id="08-tempi-di-risposta-modelli-locali-e-api" class="slide level2">
 <h2>Tempi di risposta: modelli locali e API</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/08-embedding.qmd#L111-L123" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-83-output-1.svg" class="r-stretch"><ul>
 <li><strong>Modelli locali</strong>: richiedono una GPU per avere tempi rapidi, ma i documenti restano sull’infrastruttura interna</li>
@@ -2717,6 +3059,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="08-impatto-dellembedding-sulla-generazione" class="slide level2 approfondimento">
 <h2>Impatto dell’embedding sulla generazione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/08-embedding.qmd#L124-L176" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a></p>
+</div>
 <div id="02b741d1" class="cell" data-execution_count="85">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># The generation deck again (50 questions, 5 chunks, DeepEval), changing only the index.</span></span>
 <span id="cb66-2"><a href="" aria-hidden="true" tabindex="-1"></a>end_to_end <span class="op">=</span> pd.DataFrame({name: correctness_with(name) <span class="cf">for</span> name <span class="kw">in</span> [<span class="st">"e5-small"</span>, contender]})</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2728,6 +3073,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="08-analisi-dei-risultati-sugli-embedding" class="slide level2">
 <h2>Analisi dei risultati sugli embedding</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/08-embedding.qmd#L177-L192" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <ul>
 <li><p><strong>bge-m3</strong> è il migliore: hit@5 74%, <strong>+10 punti</strong> sulla baseline</p></li>
 <li><p>Un modello locale vale l’API: gemini-embedding-2 arriva a 73%, ma impiega 467 ms a domanda contro 14</p></li>
@@ -2738,6 +3086,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <section>
 <section id="09-la-ricerca-ibrida" class="title-slide slide level1 center">
 <h1>La ricerca ibrida</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/09-ibrida.qmd#L1-L50" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Interrogazione · per ogni domanda</span></p>
 <p><span class="step">Domanda<br>+ bando</span> <span class="step store active">Retrieval<br>significato + parole</span> <span class="step">Reranking</span> <span class="step">Generazione</span> <span class="step">Risposta</span></p>
@@ -2759,6 +3110,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="09-ricerca-semantica-e-ricerca-per-parole" class="slide level2">
 <h2>Ricerca semantica e ricerca per parole</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/09-ibrida.qmd#L51-L61" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <table class="caption-top">
 <colgroup>
 <col style="width: 16%">
@@ -2796,6 +3150,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="09-reciprocal-rank-fusion-unire-i-risultati" class="slide level2 approfondimento">
 <h2>Reciprocal Rank Fusion: unire i risultati</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/09-ibrida.qmd#L62-L80" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <div id="bffa4842" class="cell" data-execution_count="89">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rrf(<span class="op">*</span>rankings, k<span class="op">=</span><span class="dv">60</span>):</span>
 <span id="cb67-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reciprocal Rank Fusion: an item rises if it is high in any list."""</span></span>
@@ -2819,6 +3176,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="09-ricerca-densa-sparsa-e-ibrida-in-qdrant" class="slide level2 approfondimento">
 <h2>Ricerca densa, sparsa e ibrida in Qdrant</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/09-ibrida.qmd#L81-L101" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/models.py" rel="noopener noreferrer" target="_blank">src/ragcourse/models.py</a></p>
+</div>
 <div id="50e1f99b" class="cell" data-execution_count="90">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_qdrant <span class="im">import</span> RetrievalMode</span>
 <span id="cb69-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.index <span class="im">import</span> search_mode, vector_store</span>
@@ -2840,6 +3200,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="09-risultati-confronto-tra-le-ricerche" class="slide level2">
 <h2>Risultati: confronto tra le ricerche</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/09-ibrida.qmd#L102-L120" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="76f8bf3c" class="cell" data-execution_count="91">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.DataFrame({name: evaluate(qrels, run, metrics) <span class="cf">for</span> name, run <span class="kw">in</span> runs.items()})</span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -2847,6 +3210,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <img data-src="corso_files/figure-revealjs/cell-92-output-1.svg" class="r-stretch"></section>
 <section id="09-quando-la-ricerca-per-parole-aiuta" class="slide level2 approfondimento">
 <h2>Quando la ricerca per parole aiuta</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/09-ibrida.qmd#L121-L149" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <blockquote>
 <p>La collaborazione con laboratori o centri di ricerca all’interno del progetto è obbligatoria?</p>
 </blockquote>
@@ -2855,6 +3221,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="09-analisi-dei-risultati-sulla-ricerca-ibrida" class="slide level2">
 <h2>Analisi dei risultati sulla ricerca ibrida</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/09-ibrida.qmd#L150-L171" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <ul>
 <li><strong>La ricerca per parole da sola</strong> raggiunge un hit@5 del <strong>64%</strong>: una baseline economica, senza GPU, da provare</li>
 <li><strong>L’ibrida aggiunge circa 2 punti percentuali</strong> a <code>bge-m3</code>: alcune domande guadagnate, altre perse. Il paired test non rileva una differenza significativa (<strong>p = 0,42</strong>)</li>
@@ -2878,6 +3247,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <section>
 <section id="10-il-reranking" class="title-slide slide level1 center">
 <h1>Il reranking</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L1-L91" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/rerank.py" rel="noopener noreferrer" target="_blank">src/ragcourse/rerank.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Interrogazione · per ogni domanda</span></p>
 <p><span class="step">Domanda<br>+ bando</span> <span class="step store">Retrieval<br>ibrido, 30 chunk</span> <span class="step active">Reranking<br>i 10 migliori</span> <span class="step">Generazione</span> <span class="step">Risposta</span></p>
@@ -2899,6 +3271,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-perché-cercare-in-due-fasi" class="slide level2">
 <h2>Perché cercare in due fasi?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L92-L102" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/rerank.py" rel="noopener noreferrer" target="_blank">src/ragcourse/rerank.py</a></p>
+</div>
 <table class="caption-top">
 <colgroup>
 <col style="width: 20%">
@@ -2936,6 +3311,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-come-funziona-il-reranking" class="slide level2">
 <h2>Come funziona il reranking</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L103-L115" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/rerank.py" rel="noopener noreferrer" target="_blank">src/ragcourse/rerank.py</a></p>
+</div>
 <div id="6fa1d8aa" class="cell" data-execution_count="96">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rerank(question, candidates, score, top_n<span class="op">=</span><span class="dv">10</span>):</span>
 <span id="cb71-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reorder the candidates by a finer score, keep the best."""</span></span>
@@ -2950,6 +3328,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-i-modelli-di-reranking-a-confronto" class="slide level2 approfondimento">
 <h2>I modelli di reranking a confronto</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L116-L130" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/rerank.py" rel="noopener noreferrer" target="_blank">src/ragcourse/rerank.py</a></p>
+</div>
 <table class="caption-top">
 <colgroup>
 <col style="width: 26%">
@@ -2998,6 +3379,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-valutare-i-reranker-sul-retrieval" class="slide level2 approfondimento">
 <h2>Valutare i reranker sul retrieval</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L131-L191" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/rerank.py" rel="noopener noreferrer" target="_blank">src/ragcourse/rerank.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <div id="2054141d" class="cell" data-execution_count="97">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.rerank <span class="im">import</span> (CachedRetriever, RerankRetriever, cross_encoder,</span>
 <span id="cb72-2"><a href="" aria-hidden="true" tabindex="-1"></a>                              decision_model, llm_listwise)</span>
@@ -3026,10 +3410,16 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-risultati-confronto-tra-i-reranker" class="slide level2">
 <h2>Risultati: confronto tra i reranker</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L192-L203" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-101-output-1.svg" class="r-stretch"></section>
 <section id="10-tempi-di-risposta-del-reranking" class="slide level2">
 <h2>Tempi di risposta del reranking</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L204-L216" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/rerank.py" rel="noopener noreferrer" target="_blank">src/ragcourse/rerank.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-102-output-1.svg" class="r-stretch"><ul>
 <li>Su GPU, i reranker locali valutano le 30 coppie domanda-chunk in poche centinaia di millisecondi</li>
@@ -3038,6 +3428,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-quanti-candidati-passare-al-reranker" class="slide level2 approfondimento">
 <h2>Quanti candidati passare al reranker?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L217-L238" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_rerank_candidates.py" rel="noopener noreferrer" target="_blank">scripts/compare_rerank_candidates.py</a></p>
+</div>
 <img data-src="assets/experiment-rerank-candidates.svg" class="r-stretch">
 <ul>
 <li><strong>Gemini</strong>: hit@5 <strong>86,3% con 30</strong>; salire a 50 non migliora il risultato (<strong>85,9%</strong>)</li>
@@ -3059,6 +3452,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-quanto-costa-ampliare-la-ricerca" class="slide level2 approfondimento">
 <h2>Quanto costa ampliare la ricerca?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L239-L271" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_rerank_candidates.py" rel="noopener noreferrer" target="_blank">scripts/compare_rerank_candidates.py</a></p>
+</div>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -3108,6 +3504,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-impatto-del-reranking-sulla-generazione" class="slide level2">
 <h2>Impatto del reranking sulla generazione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L272-L321" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/rerank.py" rel="noopener noreferrer" target="_blank">src/ragcourse/rerank.py</a></p>
+</div>
 <div id="0813ada9" class="cell" data-execution_count="104">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a>reranked <span class="op">=</span> RerankRetriever(base<span class="op">=</span>candidates, scorer<span class="op">=</span>rerankers[best](), top_n<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a>end_to_end <span class="op">=</span> pd.DataFrame({</span>
@@ -3122,6 +3521,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="10-analisi-dei-risultati-sul-reranking" class="slide level2">
 <h2>Analisi dei risultati sul reranking</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/10-reranking.qmd#L322-L340" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/rerank.py" rel="noopener noreferrer" target="_blank">src/ragcourse/rerank.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <ul>
 <li><p><strong>gemini (lista)</strong> è il migliore: hit@5 86% contro 77% e la prima pagina giusta al primo posto nel 68% dei casi (era 46%). Ma costa 2.6 s a domanda, via API</p></li>
 <li><p><strong>I reranker locali</strong> migliorano soprattutto il primo posto (bge: hit@1 55%) in circa mezzo secondo, sulla nostra GPU</p></li>
@@ -3133,6 +3535,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 <section>
 <section id="11-estrarre-il-testo-dalle-immagini-ocr" class="title-slide slide level1 center">
 <h1>Estrarre il testo dalle immagini (OCR)</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L1-L59" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/ocr_pages.py" rel="noopener noreferrer" target="_blank">scripts/ocr_pages.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/ocr.py" rel="noopener noreferrer" target="_blank">src/ragcourse/ocr.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Indicizzazione · una volta sola</span></p>
 <p><span class="step">Documenti<br>PDF, immagini</span> <span class="step active">Parsing<br>+ OCR</span> <span class="step">Chunking</span> <span class="step">Embedding</span> <span class="step store">Indice<br>Qdrant</span></p>
@@ -3154,6 +3559,9 @@ Prudente: Se i documenti non contengono la risposta completa, rispondi solo: Non
 </section>
 <section id="11-il-problema-pagine-senza-testo-estraibile" class="slide level2">
 <h2>Il problema: pagine senza testo estraibile</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L60-L74" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/parsing.py" rel="noopener noreferrer" target="_blank">src/ragcourse/parsing.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/ocr.py" rel="noopener noreferrer" target="_blank">src/ragcourse/ocr.py</a></p>
+</div>
 <div id="61325259" class="cell" data-execution_count="109">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(visual_pages(pages)), <span class="st">"pagine con meno di 50 caratteri di testo, su"</span>, <span class="bu">len</span>(pages))</span>
 <span id="cb75-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(on_images), <span class="st">"domande la cui risposta sta in una di queste pagine</span><span class="ch">\n</span><span class="st">"</span>)</span>
@@ -3176,6 +3584,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-oltre-il-testo-semplice-il-parsing-strutturato" class="slide level2 approfondimento">
 <h2>Oltre il testo semplice: il parsing strutturato</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L75-L94" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/parsing.py" rel="noopener noreferrer" target="_blank">src/ragcourse/parsing.py</a></p>
+</div>
 <p>Nei documenti reali contano anche <strong>tabelle a più colonne, moduli, intestazioni e note</strong>:</p>
 <div class="small">
 <table class="caption-top">
@@ -3230,6 +3641,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-tre-strumenti-di-ocr-a-confronto" class="slide level2">
 <h2>Tre strumenti di OCR a confronto</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L95-L108" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/ocr_pages.py" rel="noopener noreferrer" target="_blank">scripts/ocr_pages.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/ocr.py" rel="noopener noreferrer" target="_blank">src/ragcourse/ocr.py</a></p>
+</div>
 <table class="caption-top">
 <colgroup>
 <col style="width: 22%">
@@ -3271,6 +3685,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-esempio-tre-trascrizioni-a-confronto" class="slide level2 approfondimento">
 <h2>Esempio: tre trascrizioni a confronto</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L109-L143" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/ocr.py" rel="noopener noreferrer" target="_blank">src/ragcourse/ocr.py</a></p>
+</div>
 <div class="columns">
 <div class="column" style="width:38%;">
 <div id="58bc5a61" class="cell" data-execution_count="111">
@@ -3293,6 +3710,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-tempi-di-estrazione-e-testo-prodotto" class="slide level2 approfondimento">
 <h2>Tempi di estrazione e testo prodotto</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L144-L160" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/ocr_pages.py" rel="noopener noreferrer" target="_blank">scripts/ocr_pages.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="62a8fe9a" class="cell" data-execution_count="113">
 <div class="cell-output cell-output-display" data-execution_count="112">
 <div>
@@ -3351,6 +3771,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-integrare-il-testo-estratto-nellindice" class="slide level2 approfondimento">
 <h2>Integrare il testo estratto nell’indice</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L161-L184" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/index.py" rel="noopener noreferrer" target="_blank">src/ragcourse/index.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/corpus.py" rel="noopener noreferrer" target="_blank">src/ragcourse/corpus.py</a></p>
+</div>
 <div id="3d1242cf" class="cell" data-execution_count="114">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.index <span class="im">import</span> extended_store</span>
 <span id="cb78-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -3375,6 +3798,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-risultati-sulle-domande-con-immagini" class="slide level2">
 <h2>Risultati sulle domande con immagini</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L185-L202" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-115-output-1.svg" class="r-stretch"><div class="muted">
 <p>Solo 20 domande: differenze di una o due domande sono rumore.</p>
@@ -3382,6 +3808,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="11-analisi-dei-risultati-sullocr" class="slide level2">
 <h2>Analisi dei risultati sull’OCR</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/11-ocr.qmd#L203-L224" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <ul>
 <li><p><strong>Le pagine-immagine tornano trovabili</strong>: domande sulle immagini dal 5% al 95%, e <strong>+7 punti</strong> di hit@5 su tutte le 227 domande: le pagine lette si aggiungono, il resto dell’indice non cambia</p></li>
 <li><p><strong>Per trovare la pagina</strong> i tre lettori si equivalgono: anche Tesseract, gratuito e senza GPU</p></li>
@@ -3393,6 +3822,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 <section>
 <section id="12-visual-rag" class="title-slide slide level1 approfondimento center">
 <h1>Visual RAG</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L1-L95" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/visual.py" rel="noopener noreferrer" target="_blank">src/ragcourse/visual.py</a></p>
+</div>
 <div class="pipeline">
 <p><span class="lane">Indicizzazione · una volta sola</span></p>
 <p><span class="step active">Pagine<br>come immagini</span> <span class="step active">Embedding<br>delle immagini</span> <span class="step store">Indice<br>Qdrant</span></p>
@@ -3416,6 +3848,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-come-funziona-il-visual-rag" class="slide level2 approfondimento">
 <h2>Come funziona il Visual RAG</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L96-L108" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/visual.py" rel="noopener noreferrer" target="_blank">src/ragcourse/visual.py</a></p>
+</div>
 <ul>
 <li>Un modello di embedding <strong>multimodale</strong> rappresenta testi e immagini nello stesso spazio vettoriale, permettendo di confrontare una domanda testuale con le immagini delle pagine</li>
 <li>Non serve trascrivere il testo: vengono preservati <strong>tabelle, grafici e impaginazione</strong> della pagina</li>
@@ -3455,6 +3890,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-esempio-somiglianza-tra-testo-e-immagini" class="slide level2 approfondimento">
 <h2>Esempio: somiglianza tra testo e immagini</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L109-L129" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/visual.py" rel="noopener noreferrer" target="_blank">src/ragcourse/visual.py</a></p>
+</div>
 <div id="413bf566" class="cell" data-execution_count="119">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.visual <span class="im">import</span> PictureEmbeddings</span>
 <span id="cb79-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -3476,6 +3914,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 <img data-src="corso_files/figure-revealjs/cell-120-output-2.svg" class="r-stretch"></section>
 <section id="12-costruire-lindice-delle-immagini" class="slide level2 approfondimento">
 <h2>Costruire l’indice delle immagini</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L130-L144" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/visual.py" rel="noopener noreferrer" target="_blank">src/ragcourse/visual.py</a></p>
+</div>
 <div id="57e69a6c" class="cell" data-execution_count="121">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.visual <span class="im">import</span> picture_store</span>
 <span id="cb81-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -3491,6 +3932,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-combinare-ricerca-testuale-e-visiva" class="slide level2 approfondimento">
 <h2>Combinare ricerca testuale e visiva</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L145-L167" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/visual.py" rel="noopener noreferrer" target="_blank">src/ragcourse/visual.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a></p>
+</div>
 <div id="bb45fa3f" class="cell" data-execution_count="122">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ranx <span class="im">import</span> fuse</span>
 <span id="cb82-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -3508,6 +3952,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 <img data-src="corso_files/figure-revealjs/cell-123-output-1.svg" class="r-stretch"></section>
 <section id="12-risultati-sullintero-set-di-valutazione" class="slide level2 approfondimento">
 <h2>Risultati sull’intero set di valutazione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L168-L183" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <div id="17a0bf54" class="cell" data-execution_count="124">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a>results.<span class="bu">round</span>(<span class="dv">3</span>)  <span class="co"># all 227 questions, computed above</span></span></code></pre></div><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="123">
@@ -3565,6 +4012,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-generare-la-risposta-dalle-immagini" class="slide level2 approfondimento">
 <h2>Generare la risposta dalle immagini</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L184-L225" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/generation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/generation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/ocr.py" rel="noopener noreferrer" target="_blank">src/ragcourse/ocr.py</a></p>
+</div>
 <div id="4a92fc5d" class="cell" data-execution_count="126">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ragcourse.generation <span class="im">import</span> picture_messages</span>
 <span id="cb84-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -3582,6 +4032,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-risultati-qualità-delle-risposte" class="slide level2 approfondimento">
 <h2>Risultati: qualità delle risposte</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L226-L254" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/judge.py" rel="noopener noreferrer" target="_blank">src/ragcourse/judge.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-129-output-1.svg" class="r-stretch"><div class="muted">
 <p>Risposte attese scritte da Gemini guardando la pagina (capitolo sui dati): un vantaggio per chi guarda</p>
@@ -3589,6 +4042,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="12-analisi-ocr-contro-visual-rag" class="slide level2 approfondimento">
 <h2>Analisi: OCR contro Visual RAG</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/12-visual-rag.qmd#L255-L262" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/evaluation.py" rel="noopener noreferrer" target="_blank">src/ragcourse/evaluation.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <ul>
 <li><p><strong>Trovare</strong>: l’indice delle immagini trova la pagina giusta nel <strong>100%</strong> delle domande sulle immagini, senza leggere una parola</p></li>
 <li><p><strong>Rispondere</strong>: guardare la pagina (<strong>0,95</strong>) vale quanto un buon OCR (<strong>0,97</strong>), mentre un OCR con errori ottiene un punteggio più basso (<strong>0,88</strong>)</p></li>
@@ -3600,6 +4056,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 <section>
 <section id="13-riepilogo-del-percorso" class="title-slide slide level1 center">
 <h1>Riepilogo del percorso</h1>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L1-L24" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 <p>Ripercorriamo i passaggi visti finora per confrontare il contributo delle singole scelte sulle metriche di retrieval e di generazione</p>
 <aside class="notes">
 <p>≈ 20 minuti · da 2:40 a 3:00, inclusi demo finale e domande</p>
@@ -3617,14 +4076,23 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="13-riepilogo-sul-retrieval" class="slide level2">
 <h2>Riepilogo sul retrieval</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L25-L32" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-131-output-1.svg" class="r-stretch"></section>
 <section id="13-riepilogo-sulla-generazione" class="slide level2">
 <h2>Riepilogo sulla generazione</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L33-L40" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/viz.py" rel="noopener noreferrer" target="_blank">src/ragcourse/viz.py</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-132-output-1.svg" class="r-stretch"></section>
 <section id="13-esperimento-chunk-contro-pagine-intere" class="slide level2 approfondimento">
 <h2>Esperimento: chunk contro pagine intere</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L41-L50" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_page_context.py" rel="noopener noreferrer" target="_blank">scripts/compare_page_context.py</a></p>
+</div>
 <img data-src="assets/experiment-page-context.svg" class="r-stretch">
 <ul>
 <li><strong>Stessi 10 chunk selezionati</strong> dal reranker Gemini: li passiamo al generatore, oppure recuperiamo le rispettive pagine complete, senza duplicati</li>
@@ -3634,6 +4102,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="13-esperimento-una-pipeline-tutta-locale" class="slide level2 approfondimento">
 <h2>Esperimento: una pipeline tutta locale</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L51-L59" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_page_context.py" rel="noopener noreferrer" target="_blank">scripts/compare_page_context.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/plot_pipeline_comparison.py" rel="noopener noreferrer" target="_blank">scripts/plot_pipeline_comparison.py</a></p>
+</div>
 <img data-src="assets/experiment-pipeline-comparison.svg" class="r-stretch">
 <ul>
 <li><strong>Locale:</strong> bge-m3 + BM25 → reranker bge → Qwen3-4B (4 bit)</li>
@@ -3642,6 +4113,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="13-confronto-complessivo-tra-le-pipeline" class="slide level2 approfondimento">
 <h2>Confronto complessivo tra le pipeline</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L60-L66" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_page_context.py" rel="noopener noreferrer" target="_blank">scripts/compare_page_context.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/plot_pipeline_comparison.py" rel="noopener noreferrer" target="_blank">scripts/plot_pipeline_comparison.py</a></p>
+</div>
 <img data-src="assets/experiment-pipeline-comparison-argon.svg" class="r-stretch">
 <ul>
 <li>Usando le pagine complete e un generatore più capace la correttezza media sul campione sale da <strong>0,538</strong> a <strong>0,592</strong>, anche se su 50 domande il margine di incertezza resta ampio</li>
@@ -3649,6 +4123,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="13-perché-la-correttezza-si-ferma-intorno-a-060" class="slide level2 approfondimento">
 <h2>Perché la correttezza si ferma intorno a 0,60?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L67-L88" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/evaluate_improvements.py" rel="noopener noreferrer" target="_blank">scripts/evaluate_improvements.py</a></p>
+</div>
 <img data-src="assets/experiment-improvements.svg" class="r-stretch">
 <ul>
 <li>Con due interventi mirati la correttezza sale a <strong>0,59</strong> (Flash) e <strong>0,63</strong> (Argon). Sulle FAQ la cui risposta è scritta nei bandi arriviamo a <strong>0,81</strong>, e rispetto ai soli documenti recuperati a <strong>0,95</strong>: nelle prossime slide vediamo da dove vengono questi numeri</li>
@@ -3669,6 +4146,9 @@ Oggi una pagina giusta tra le prime 5: 5%</code></pre>
 </section>
 <section id="13-due-interventi-mirati" class="slide level2 approfondimento smaller">
 <h2>Due interventi mirati</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L89-L110" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/evaluate_improvements.py" rel="noopener noreferrer" target="_blank">scripts/evaluate_improvements.py</a></p>
+</div>
 <p>Guardando le risposte sbagliate sono emersi due problemi ricorrenti, che abbiamo corretto senza cambiare l’indice. Con le pagine complete, la correttezza passa da <strong>0,538 a 0,590</strong> con Flash e da <strong>0,592 a 0,628</strong> con Argon.</p>
 <p><strong>1. Ogni passaggio dice da dove viene.</strong> Un chunk isolato spesso non nomina il bando o il documento a cui appartiene. Mettiamo titolo e pagina davanti al testo, sia per il reranker sia per il generatore:</p>
 <pre class="text"><code>[Avviso.pdf, p. 10]
@@ -3681,6 +4161,9 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
 </section>
 <section id="13-dove-sbaglia-ancora-tre-tipi-di-domande" class="slide level2 approfondimento smaller">
 <h2>Dove sbaglia ancora? Tre tipi di domande</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L111-L130" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/evaluate_improvements.py" rel="noopener noreferrer" target="_blank">scripts/evaluate_improvements.py</a></p>
+</div>
 <p>Abbiamo classificato a mano le 50 FAQ in base a dove si trova la loro risposta:</p>
 <table class="caption-top">
 <colgroup>
@@ -3723,6 +4206,9 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
 </section>
 <section id="13-quali-scelte-hanno-avuto-più-impatto" class="slide level2">
 <h2>Quali scelte hanno avuto più impatto?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L131-L145" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 
 <img data-src="corso_files/figure-revealjs/cell-133-output-1.svg" class="r-stretch"><div class="muted">
 <p>L’OCR è misurato sulla ricerca ibrida senza reranking. La ricerca ibrida aggiunge poco su questo set di valutazione</p>
@@ -3730,6 +4216,9 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
 </section>
 <section id="13-verso-un-agente-rag" class="slide level2 approfondimento">
 <h2>Verso un agente RAG</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L146-L164" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_agent.py" rel="noopener noreferrer" target="_blank">scripts/compare_agent.py</a></p>
+</div>
 <p>La nostra pipeline cerca sempre, una volta sola, e poi risponde. In un <strong>agente</strong> è il modello a decidere se cercare, con quale domanda e quante volte. LangChain trasforma lo stesso retriever in uno strumento con poche righe:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> create_agent</span>
 <span id="cb86-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.tools <span class="im">import</span> create_retriever_tool</span>
@@ -3745,6 +4234,9 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
 </section>
 <section id="13-esperimento-agente-contro-pipeline-fissa" class="slide level2 approfondimento">
 <h2>Esperimento: agente contro pipeline fissa</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L165-L172" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/compare_agent.py" rel="noopener noreferrer" target="_blank">scripts/compare_agent.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/scripts/plot_agent_comparison.py" rel="noopener noreferrer" target="_blank">scripts/plot_agent_comparison.py</a></p>
+</div>
 <img data-src="assets/experiment-agent.svg" class="r-stretch">
 <ul>
 <li>Stesso retriever (ibrido, filtro per bando, 10 chunk per ricerca), stesso modello e stesso giudice: l’agente risponde meglio in <strong>28</strong> domande su 50 e peggio in <strong>6</strong></li>
@@ -3753,6 +4245,9 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
 </section>
 <section id="13-conclusioni-cosa-portarsi-a-casa" class="slide level2">
 <h2>Conclusioni: cosa portarsi a casa</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L173-L180" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <ol type="1">
 <li><strong>Partire da un set di valutazione</strong>, costruito o validato insieme a chi conosce i documenti di dominio</li>
 <li><strong>Modificare una variabile alla volta</strong> e verificare con un test statistico che le differenze non siano dovute al caso</li>
@@ -3763,6 +4258,9 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
 </section>
 <section id="13-demo-confrontare-le-scelte" class="slide level2 standout center" data-background-color="#23373b">
 <h2>Demo: confrontare le scelte</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L181-L192" rel="noopener noreferrer" target="_blank">Sorgente slide</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/app/chat.py" rel="noopener noreferrer" target="_blank">app/chat.py</a> · <a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/src/ragcourse/chat.py" rel="noopener noreferrer" target="_blank">src/ragcourse/chat.py</a></p>
+</div>
 <p>Le stesse domande, cambiando una scelta alla volta</p>
 <aside class="notes">
 <p>Nella chat, bando «Supporto ad interventi energetici e prevenzione sismica delle imprese»: domanda di esempio sul 70% dei rifiuti da costruzione (risposta in una slide senza testo). Con OCR la trova («letto con OCR» nei chunk letti); spegnere l’OCR e rifarla. Poi su un’altra domanda: reranking nessuno → bge → Gemini (guardare «posizione nella ricerca»), prompt prudente, 5 o 20 chunk. ≈ 10 minuti.</p>
@@ -3780,6 +4278,9 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
 </section>
 <section id="13-domande" class="slide level2 standout center" data-background-color="#23373b">
 <h2>Domande?</h2>
+<div class="slide-code-links" data-title-source="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/corso.qmd">
+<p><a href="https://github.com/cric96/course-ai-rag-engineering/blob/main/slides/_capitoli/13-percorso.qmd#L193-L195" rel="noopener noreferrer" target="_blank">Sorgente slide</a></p>
+</div>
 <p>Grazie</p>
 
 </section></section>
@@ -4005,6 +4506,35 @@ A. Spese per nuovi addetti impiegati in attività di Ricerca e Sviluppo ...</cod
         slides.forEach((slide, i) => {
           slide.style.setProperty("--progress", `${(100 * i) / (slides.length - 1)}%`);
         });
+
+        // Keep the study links outside the scaled canvas, like Reveal's slide number.
+        // Each slide retains its own links in the HTML for printing and inspection.
+        const title = document.getElementById("title-slide");
+        const firstLinks = document.querySelector(".slide-code-links");
+        if (title && firstLinks) {
+          const links = document.createElement("div");
+          links.className = "slide-code-links";
+          const link = document.createElement("a");
+          link.href = firstLinks.dataset.titleSource;
+          link.textContent = "Sorgente slide";
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          links.append(link);
+          title.append(links);
+        }
+        const footer = document.createElement("nav");
+        footer.className = "slide-code-footer";
+        footer.setAttribute("aria-label", "Codice della slide");
+        document.querySelector(".reveal").append(footer);
+        const updateLinks = () => {
+          const slide = Reveal.getCurrentSlide();
+          const links = slide?.querySelector(":scope > .slide-code-links");
+          footer.replaceChildren(...(links ? [...links.childNodes].map(node => node.cloneNode(true)) : []));
+          footer.classList.toggle("on-dark", slide?.classList.contains("standout") || false);
+        };
+        Reveal.on("ready", updateLinks);
+        Reveal.on("slidechanged", updateLinks);
+        if (Reveal.isReady()) updateLinks();
 
         const walker = document.createTreeWalker(document.querySelector(".reveal .slides"), NodeFilter.SHOW_TEXT, {
           acceptNode(node) {
