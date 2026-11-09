@@ -1,4 +1,4 @@
-# Il chunking
+# Il chunking {data-code="src/ragcourse/index.py"}
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -64,7 +64,7 @@ Gli embedding **dei chunk si calcolano una volta e si riusano** nelle ricerche.
 Se cambiano i chunk (testo, dimensione o sovrapposizione) oppure il modello di
 embedding, si ricalcolano i vettori interessati e si aggiorna l'indice.
 
-## Confronto tra diverse dimensioni di chunk {.approfondimento}
+## Confronto tra diverse dimensioni di chunk {.approfondimento data-code="src/ragcourse/index.py"}
 
 ```{python}
 from ragcourse.index import vector_store
@@ -81,7 +81,7 @@ pd.Series({name: len(chunks) for name, chunks in chunkings.items()}, name="chunk
 - Sovrapposizione al 20% in ogni caso
 - Indici salvati su disco con `vector_store(...)`
 
-## Valutazione del retrieval con ranx {.approfondimento}
+## Valutazione del retrieval con ranx {.approfondimento data-code="src/ragcourse/evaluation.py"}
 
 ```{python}
 runs = {}
@@ -97,7 +97,7 @@ results.round(3)
 Caratteri per chunk (500, 1000, 2000) o pagina intera. Sempre 20 chunk, filtro per bando
 :::
 
-## Risultati: impatto del chunking
+## Risultati: impatto del chunking {data-code="src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -108,7 +108,7 @@ bar_chart(hit5.rename(lambda name: name if name == "pagina" else f"{name} caratt
                 f"la baseline {hit5['1000']:.0%}")
 ```
 
-## Analisi dei risultati sul chunking
+## Analisi dei risultati sul chunking {data-code="src/ragcourse/evaluation.py"}
 
 - **500 e 1000 caratteri danno risultati simili**: hit@5 **65,6%** e **64,8%**.
   Il paired test non rileva una differenza significativa (**p = 0,73**).

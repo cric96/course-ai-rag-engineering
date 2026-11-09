@@ -47,6 +47,20 @@ uv run python scripts/preview_slides.py          # anteprima completa con esecuz
 
 > **Nota**: Qdrant in modalità locale blocca la cartella dell'indice in `.cache/qdrant/` per singolo processo; non eseguire il rendering delle slide mentre la chat è aperta.
 
+## Dalle slide al codice
+
+In fondo a ogni slide, **Sorgente slide** apre su GitHub le righe del capitolo Quarto
+che contengono spiegazione, codice eseguito e celle nascoste. I collegamenti accanto
+aprono i file Python dell'implementazione, della demo o dell'esperimento mostrato.
+Le slide concettuali possono avere solo il collegamento alla sorgente.
+
+Per mantenere i riferimenti, aggiungere all'intestazione della slide l'attributo
+`data-code="src/ragcourse/models.py,scripts/plot_embedding_example.py"`
+(massimo tre percorsi relativi alla radice del repository, separati da virgole).
+Il filtro `slides/source-links.lua` calcola i numeri di riga a ogni rendering,
+anche nell'anteprima rapida. I collegamenti puntano al branch `main`: le modifiche
+locali saranno consultabili online dopo la pubblicazione sul repository.
+
 ## Tecnologie utilizzate
 
 - **Orchestrazione RAG**

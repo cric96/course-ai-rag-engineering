@@ -1,4 +1,4 @@
-# Estrarre il testo dalle immagini (OCR)
+# Estrarre il testo dalle immagini (OCR) {data-code="scripts/ocr_pages.py,src/ragcourse/ocr.py"}
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -57,7 +57,7 @@ engines = {"tesseract": "Tesseract", "qwen3-vl": "Qwen3-VL-2B", "gemini": "Gemin
 ocr = {engine: read_jsonl(DATA / f"processed/ocr/{engine}.jsonl") for engine in engines}
 ```
 
-## Il problema: pagine senza testo estraibile
+## Il problema: pagine senza testo estraibile {data-code="src/ragcourse/parsing.py,src/ragcourse/ocr.py"}
 
 ```{python}
 print(len(visual_pages(pages)), "pagine con meno di 50 caratteri di testo, su", len(pages))
@@ -72,7 +72,7 @@ store.client.close()
 
 - Se il testo di una pagina non viene estratto in fase di parsing, quella pagina non entra nell'indice e non potrà essere recuperata da alcun modello di ricerca testuale
 
-## Oltre il testo semplice: il parsing strutturato {.approfondimento}
+## Oltre il testo semplice: il parsing strutturato {.approfondimento data-code="src/ragcourse/parsing.py"}
 
 Nei documenti reali contano anche **tabelle a più colonne, moduli, intestazioni e note**:
 
@@ -92,7 +92,7 @@ Nei documenti reali contano anche **tabelle a più colonne, moduli, intestazioni
 Qui non usiamo un parser strutturato perché le regole dei bandi FESR sono per lo più in elenchi e paragrafi, e sulle slide-immagine confrontiamo direttamente OCR e modelli visivi
 :::
 
-## Tre strumenti di OCR a confronto
+## Tre strumenti di OCR a confronto {data-code="scripts/ocr_pages.py,src/ragcourse/ocr.py"}
 
 | | Come legge | Dove | Sa che cosa legge? |
 |---|---|---|---|
@@ -106,7 +106,7 @@ read = tesseract                       # or: local_vlm_reader(), vlm_reader(chat
 text = read(page)                      # one page in, its text out
 ```
 
-## Esempio: tre trascrizioni a confronto {.approfondimento}
+## Esempio: tre trascrizioni a confronto {.approfondimento data-code="src/ragcourse/ocr.py"}
 
 ```{python}
 #| echo: false
@@ -141,7 +141,7 @@ for engine, label in engines.items():
 Tesseract scrive "gererali", "Irmoltre": errori che la ricerca per parole non perdona
 :::
 
-## Tempi di estrazione e testo prodotto {.approfondimento}
+## Tempi di estrazione e testo prodotto {.approfondimento data-code="scripts/ocr_pages.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -158,7 +158,7 @@ seconds.round(1)
 - L'estrazione tramite OCR viene eseguita **una sola volta** in fase di indicizzazione e non incide sul tempo di risposta alle domande
 - Via API possiamo elaborare più pagine in parallelo, mentre in locale i tempi dipendono dalla GPU disponibile
 
-## Integrare il testo estratto nell'indice {.approfondimento}
+## Integrare il testo estratto nell'indice {.approfondimento data-code="src/ragcourse/index.py,src/ragcourse/corpus.py"}
 
 ```{python}
 #| output: false
@@ -182,7 +182,7 @@ for engine, label in engines.items():
 
 - Non serve ricalcolare tutto l'indice: partiamo dall'indice esistente e aggiungiamo solo i chunk ottenuti tramite OCR
 
-## Risultati sulle domande con immagini
+## Risultati sulle domande con immagini {data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -200,7 +200,7 @@ print(f"::: {{.muted}}\nSolo {len(on_images)} domande: differenze di una o due d
       "sono rumore.\n:::")
 ```
 
-## Analisi dei risultati sull'OCR
+## Analisi dei risultati sull'OCR {data-code="src/ragcourse/evaluation.py"}
 
 ```{python}
 #| echo: false

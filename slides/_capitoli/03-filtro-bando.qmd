@@ -1,4 +1,4 @@
-# Filtrare per bando
+# Filtrare per bando {data-code="src/ragcourse/index.py,src/ragcourse/filters.py"}
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -77,7 +77,7 @@ print(f"> {example['question']}")
 
 - *Tale* misura: quale? L'utente vuole sapere se **un bando specifico risponde** alla sua domanda
 
-## Metadati: restringere la ricerca
+## Metadati: restringere la ricerca {data-code="src/ragcourse/filters.py"}
 
 ```{python}
 calls = pd.Series([chunk.metadata["call"] for chunk in chunks])
@@ -92,7 +92,7 @@ print(example["call"])
 - Quando conosciamo già il bando di interesse, conviene restringere la ricerca tramite i metadati
 - La somiglianza semantica viene poi calcolata solo sui documenti di quel bando
 
-## Con Qdrant: il filtro dentro la ricerca {.approfondimento}
+## Con Qdrant: il filtro dentro la ricerca {.approfondimento data-code="src/ragcourse/filters.py"}
 
 ```{python}
 from ragcourse.filters import metadata_filter
@@ -110,7 +110,7 @@ show(retriever.invoke(example["question"], filter=call_filter), example)
 diversa negli altri database
 :::
 
-## Risultati: il filtro migliora la ricerca {.approfondimento}
+## Risultati: il filtro migliora la ricerca {.approfondimento data-code="src/ragcourse/evaluation.py,src/ragcourse/filters.py"}
 
 ```{python}
 run_call = retrieval_run(retriever, answerable, name="filtro per bando", by_call=True)
@@ -128,7 +128,7 @@ percorso["hit@5"]["+ filtro per bando"] = results.loc["hit_rate@5", "filtro per 
 - `by_call=True`: per ogni domanda, il filtro con il **suo** bando
 - Una pagina corretta tra le prime 5: da circa **1 domanda su 3** a **2 su 3**
 
-## Risultati: confronto con e senza filtro
+## Risultati: confronto con e senza filtro {data-code="src/ragcourse/viz.py"}
 
 ```{python}
 hits = results.loc[["hit_rate@1", "hit_rate@5", "hit_rate@10"]]
@@ -137,7 +137,7 @@ compare_chart(hits.rename(lambda m: m.replace("hit_rate", "hit")), fmt="{:.0%}",
               title=f"Una pagina giusta tra le prime 5: dal {was:.0%} al {now:.0%}")
 ```
 
-## Il miglioramento potrebbe essere casuale? {.approfondimento}
+## Il miglioramento potrebbe essere casuale? {.approfondimento data-code="src/ragcourse/evaluation.py"}
 
 Confrontiamo le due configurazioni sulle **stesse 227 domande**: è un *paired test*
 
@@ -169,7 +169,7 @@ Il **paired t-test** confronta il guadagno medio con la variabilità delle diffe
 
 - Un **p-value piccolo** indica che sarebbe molto improbabile osservare una differenza così ampia per puro caso se il filtro non avesse alcun effetto
 
-## Il filtro migliora davvero?
+## Il filtro migliora davvero? {data-code="src/ragcourse/evaluation.py"}
 
 ```{python}
 from ranx import compare
@@ -181,7 +181,7 @@ compare(qrels, runs=[baseline, run_call], metrics=["hit_rate@5", "mrr@10"], max_
 - **ᵃ**: il filtro è migliore della baseline (*a*) e il test dà **p ≤ 0,01**
 - Il miglioramento medio sul nostro set è statisticamente significativo, anche se naturalmente questo non garantisce che il filtro migliori il risultato su ogni singola domanda
 
-## Filtrare prima o dopo la ricerca? {.approfondimento}
+## Filtrare prima o dopo la ricerca? {.approfondimento data-code="src/ragcourse/filters.py"}
 
 ```{python}
 #| echo: false
@@ -216,7 +216,7 @@ print("- **Durante la ricerca**: Qdrant cerca fino a 20 chunk **solo** nei docum
     "del bando scelto.")
 ```
 
-## Analisi: che cosa resta da migliorare? {.approfondimento}
+## Analisi: che cosa resta da migliorare? {.approfondimento data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -241,7 +241,7 @@ print(f"- **In basso** → riordinare i risultati: *reranking*\n"
       f"leggere le immagini, cambiare chunking ed embedding")
 ```
 
-## Da dove arriva il bando?
+## Da dove arriva il bando? {data-code="app/chat.py"}
 
 - **Dal contesto**: la domanda è fatta dalla pagina del bando, o da un menu
 - **Dalla domanda**: se la nomina, un LLM può estrarre il filtro (*self-query*)

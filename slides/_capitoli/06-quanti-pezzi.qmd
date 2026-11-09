@@ -1,4 +1,4 @@
-# Quanti chunk passare al modello?
+# Quanti chunk passare al modello? {data-code="src/ragcourse/generation.py,src/ragcourse/index.py"}
 
 ::: {.pipeline}
 [Interrogazione · per ogni domanda]{.lane}
@@ -97,7 +97,7 @@ def score(answers: list[str], found: list) -> pd.Series:
     })
 ```
 
-## Impatto di k sul retrieval
+## Impatto di k sul retrieval {data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 ```{python}
 in_context = pd.Series(dtype=float)
@@ -110,7 +110,7 @@ bar_chart(in_context, gray=["5 chunk"], fmt="{:.0%}",
                 f"al {in_context.iloc[-1]:.0%}")
 ```
 
-## Valutare la generazione al variare di k {.approfondimento}
+## Valutare la generazione al variare di k {.approfondimento data-code="src/ragcourse/generation.py,src/ragcourse/judge.py"}
 
 ```{python}
 #| output: false
@@ -138,7 +138,7 @@ results = pd.DataFrame(results)
 - Stesse 98 domande dei due capitoli precedenti: 50 con risposta, 48 senza
 - `score(...)`: correttezza e fedeltà con DeepEval, astensione con la frase fissa
 
-## Risultati: qualità al variare di k
+## Risultati: qualità al variare di k {data-code="scripts/compare_context_recall_k.py,src/ragcourse/judge.py"}
 
 ```{python}
 #| echo: false
@@ -173,7 +173,7 @@ Risultati per FAQ: slides/assets/experiment-context-recall-k.json; contesti e
 motivazioni complete: .cache/context-recall-k.json.
 :::
 
-## Copertura del contesto al variare di k {.approfondimento}
+## Copertura del contesto al variare di k {.approfondimento data-code="scripts/evaluate_improvements.py,src/ragcourse/judge.py"}
 
 ![](assets/experiment-context-coverage.svg){.r-stretch}
 
@@ -193,7 +193,7 @@ le regole necessarie per rispondere alla domanda: la media sale a 0,46 / 0,57 / 
 per 5, 10 e 20 chunk, e gli zeri passano da 41 / 36 / 36 a 10 / 7 / 5.
 :::
 
-## Analisi: perché la fedeltà cala con k=20? {.approfondimento}
+## Analisi: perché la fedeltà cala con k=20? {.approfondimento data-code="src/ragcourse/judge.py"}
 
 ```{python}
 #| echo: false
@@ -229,7 +229,7 @@ table.map(lambda value: f"{value:g}")
 **Attenzione:** il calo può dipendere anche dal giudice automatico.
 Occorre controllare i singoli giudizi
 
-## Impatto di k sull'astensione {.approfondimento}
+## Impatto di k sull'astensione {.approfondimento data-code="src/ragcourse/generation.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -239,7 +239,7 @@ compare_chart(results.loc[["risponde se c'è", ABSTAIN_RIGHT]], fmt="{:.0%}",
 
 - Passando più chunk nel prompt il modello risponde a più domande, ma tende anche ad astenersi meno quando la risposta non è presente nei documenti
 
-## Costi: consumo di token al variare di k
+## Costi: consumo di token al variare di k {data-code="src/ragcourse/costs.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false

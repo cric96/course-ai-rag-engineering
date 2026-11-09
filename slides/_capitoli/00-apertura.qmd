@@ -66,7 +66,7 @@ Quindi, proveremo a:
 nelle slide derivano dall'esecuzione della pipeline. Potete riusare il codice per fare
 le vostre prove o come base per costruire la vostra pipeline RAG
 
-## Demo: RAG su documenti regionali {.standout .center background-color="#23373b"}
+## Demo: RAG su documenti regionali {.standout .center background-color="#23373b" data-code="app/chat.py"}
 
 
 ::: {.notes}

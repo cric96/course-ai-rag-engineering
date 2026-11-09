@@ -1,4 +1,4 @@
-# Visual RAG {.approfondimento}
+# Visual RAG {.approfondimento data-code="src/ragcourse/visual.py"}
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -93,7 +93,7 @@ tesseract_retriever = extended_store(
     sparse=bm25).as_retriever(search_kwargs={"k": 20})
 ```
 
-## Come funziona il Visual RAG {.approfondimento}
+## Come funziona il Visual RAG {.approfondimento data-code="src/ragcourse/visual.py"}
 
 - Un modello di embedding **multimodale** rappresenta testi e immagini nello stesso spazio vettoriale, permettendo di confrontare una domanda testuale con le immagini delle pagine
 - Non serve trascrivere il testo: vengono preservati **tabelle, grafici e impaginazione** della pagina
@@ -106,7 +106,7 @@ tesseract_retriever = extended_store(
 | Si perde | impaginazione, grafici | niente, ma costa più token |
 : {tbl-colwidths="[16,42,42]"}
 
-## Esempio: somiglianza tra testo e immagini {.approfondimento}
+## Esempio: somiglianza tra testo e immagini {.approfondimento data-code="src/ragcourse/visual.py"}
 
 ```{python}
 from ragcourse.visual import PictureEmbeddings
@@ -127,7 +127,7 @@ print(examples[0]["question"])
 bar_chart(similarity, title="Somiglianza della domanda con tre pagine-immagine", fmt="{:.2f}")
 ```
 
-## Costruire l'indice delle immagini {.approfondimento}
+## Costruire l'indice delle immagini {.approfondimento data-code="src/ragcourse/visual.py"}
 
 ```{python}
 #| output: false
@@ -142,7 +142,7 @@ picture_run = retrieval_run(picture_retriever, with_pages, name="solo immagini",
 - Solo le 476 pagine senza testo: le altre le trova già bene la ricerca sul testo
 - Stessa interfaccia LangChain: stesso filtro per bando, stessa valutazione con ranx
 
-## Combinare ricerca testuale e visiva {.approfondimento}
+## Combinare ricerca testuale e visiva {.approfondimento data-code="src/ragcourse/visual.py,src/ragcourse/evaluation.py"}
 
 ```{python}
 from ranx import fuse
@@ -165,7 +165,7 @@ bar_chart(hit5, gray=["solo testo"], fmt="{:.0%}",
                 f"testo + immagini {hit5['testo + immagini']:.0%}")
 ```
 
-## Risultati sull'intero set di valutazione {.approfondimento}
+## Risultati sull'intero set di valutazione {.approfondimento data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 ```{python}
 results.round(3)  # all 227 questions, computed above
@@ -181,7 +181,7 @@ print(f"- **Fondere alla cieca peggiora le altre domande**: {h['testo + immagini
 print(f"- L'OCR invece aggiunge senza togliere: {h['testo + OCR']:.0%}")
 ```
 
-## Generare la risposta dalle immagini {.approfondimento}
+## Generare la risposta dalle immagini {.approfondimento data-code="src/ragcourse/generation.py,src/ragcourse/ocr.py"}
 
 ```{python}
 #| output: false
@@ -223,7 +223,7 @@ for name, answer in sources.items():
     tokens[name] = sum(u["input_tokens"] for u in usage.usage_metadata.values()) / len(on_images)
 ```
 
-## Risultati: qualità delle risposte {.approfondimento}
+## Risultati: qualità delle risposte {.approfondimento data-code="src/ragcourse/judge.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -252,7 +252,7 @@ compare_chart(scores.mean().to_frame("correttezza").T, fmt="{:.2f}",
 Risposte attese scritte da Gemini guardando la pagina (capitolo sui dati): un vantaggio per chi guarda
 :::
 
-## Analisi: OCR contro Visual RAG {.approfondimento}
+## Analisi: OCR contro Visual RAG {.approfondimento data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 - **Trovare**: l'indice delle immagini trova la pagina giusta nel **100%** delle domande sulle immagini, senza leggere una parola
 - **Rispondere**: guardare la pagina (**0,95**) vale quanto un buon OCR (**0,97**), mentre un OCR con errori ottiene un punteggio più basso (**0,88**)

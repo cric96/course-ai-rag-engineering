@@ -1,4 +1,4 @@
-# Il reranking
+# Il reranking {data-code="src/ragcourse/rerank.py"}
 
 ::: {.pipeline}
 [Interrogazione · per ogni domanda]{.lane}
@@ -89,7 +89,7 @@ def timed(name, scorer):
     return score
 ```
 
-## Perché cercare in due fasi?
+## Perché cercare in due fasi? {data-code="src/ragcourse/rerank.py"}
 
 | | Embedding (fase 1) | Reranker (fase 2) |
 |---|---|---|
@@ -100,7 +100,7 @@ def timed(name, scorer):
 
 - Analizzare insieme domanda e documento permette una valutazione più accurata della rilevanza, ma richiede troppo tempo per essere applicato all'intero indice
 
-## Come funziona il reranking
+## Come funziona il reranking {data-code="src/ragcourse/rerank.py"}
 
 ```{python}
 def rerank(question, candidates, score, top_n=10):
@@ -113,7 +113,7 @@ def rerank(question, candidates, score, top_n=10):
 - `score` è il pezzo che cambia: quattro modelli diversi, stessa interfaccia
 - In LangChain: `RerankRetriever(base=..., scorer=..., top_n=10)` è un retriever come gli altri
 
-## I modelli di reranking a confronto {.approfondimento}
+## I modelli di reranking a confronto {.approfondimento data-code="src/ragcourse/rerank.py"}
 
 | Reranker | Tipo | Come decide | Dove |
 |---|---|---|---|
@@ -128,7 +128,7 @@ I *decision model* rispondono a domande sì/no con una probabilità, in un solo 
 Jev (TypeSafe AI) è un decision model via API, integrato in DeepEval come `TypeSafeModel`
 :::
 
-## Valutare i reranker sul retrieval {.approfondimento}
+## Valutare i reranker sul retrieval {.approfondimento data-code="src/ragcourse/rerank.py,src/ragcourse/evaluation.py"}
 
 ```{python}
 #| output: false
@@ -189,7 +189,7 @@ rerank_seconds["gemini (lista)"] = gemini.seconds
 ```
 
 
-## Risultati: confronto tra i reranker
+## Risultati: confronto tra i reranker {data-code="src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -201,7 +201,7 @@ bar_chart(hit5, gray=["nessuno"], fmt="{:.0%}",
           title=f"hit@5: {best} {hit5[best]:.0%}, senza reranking {hit5['nessuno']:.0%}")
 ```
 
-## Tempi di risposta del reranking
+## Tempi di risposta del reranking {data-code="src/ragcourse/rerank.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -214,7 +214,7 @@ bar_chart(ms, gray=[name for name in ms.index if name != "gemini (lista)"], fmt=
 - Su GPU, i reranker locali valutano le 30 coppie domanda-chunk in poche centinaia di millisecondi
 - Il riordinamento tramite LLM *listwise* valuta tutti i candidati insieme, ma richiede diversi secondi e una chiamata API a pagamento
 
-## Quanti candidati passare al reranker? {.approfondimento}
+## Quanti candidati passare al reranker? {.approfondimento data-code="scripts/compare_rerank_candidates.py"}
 
 ![](assets/experiment-rerank-candidates.svg){.r-stretch}
 
@@ -236,7 +236,7 @@ Riproduzione: uv run python scripts/compare_rerank_candidates.py
 Risultati: assets/experiment-rerank-candidates.json
 :::
 
-## Quanto costa ampliare la ricerca? {.approfondimento}
+## Quanto costa ampliare la ricerca? {.approfondimento data-code="scripts/compare_rerank_candidates.py"}
 
 | Candidati | Qwen3: tempo per domanda | Gemini: costo per 227 domande |
 |---|---:|---:|
@@ -269,7 +269,7 @@ Fonte prezzi: https://ai.google.dev/gemini-api/docs/pricing
 Risultati: assets/experiment-rerank-candidates.json
 :::
 
-## Impatto del reranking sulla generazione
+## Impatto del reranking sulla generazione {data-code="src/ragcourse/generation.py,src/ragcourse/judge.py,src/ragcourse/rerank.py"}
 
 ```{python}
 #| echo: false
@@ -319,7 +319,7 @@ percorso["correttezza"]["+ bge-m3 e ricerca ibrida"] = end_to_end.iloc[0, 0]
 percorso["correttezza"][f"+ reranking {best}"] = end_to_end.iloc[0, 1]
 ```
 
-## Analisi dei risultati sul reranking
+## Analisi dei risultati sul reranking {data-code="src/ragcourse/rerank.py,src/ragcourse/evaluation.py"}
 
 ```{python}
 #| echo: false

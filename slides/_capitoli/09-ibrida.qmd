@@ -1,4 +1,4 @@
-# La ricerca ibrida
+# La ricerca ibrida {data-code="src/ragcourse/index.py,src/ragcourse/models.py"}
 
 ::: {.pipeline}
 [Interrogazione · per ogni domanda]{.lane}
@@ -78,7 +78,7 @@ rrf(["p40", "p12", "p7"],  # by meaning
 - La formula usa solo la **posizione in classifica** e non i punteggi grezzi, che nei due metodi hanno scale non confrontabili
 - Qdrant esegue direttamente questa fusione durante la ricerca con `RetrievalMode.HYBRID`
 
-## Ricerca densa, sparsa e ibrida in Qdrant {.approfondimento}
+## Ricerca densa, sparsa e ibrida in Qdrant {.approfondimento data-code="src/ragcourse/index.py,src/ragcourse/models.py"}
 
 ```{python}
 #| output: false
@@ -99,7 +99,7 @@ for name, mode in modes.items():
 - Ogni chunk ha **due vettori**: quello di `bge-m3` e quello di BM25
 - Stesso filtro per bando, stesse 227 domande, stesse metriche
 
-## Risultati: confronto tra le ricerche
+## Risultati: confronto tra le ricerche {data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 ```{python}
 results = pd.DataFrame({name: evaluate(qrels, run, metrics) for name, run in runs.items()})
@@ -118,7 +118,7 @@ bar_chart(hit5, gray=["significato"], fmt="{:.0%}",
 percorso["hit@5"]["+ ricerca ibrida"] = hit5["ibrida"]
 ```
 
-## Quando la ricerca per parole aiuta {.approfondimento}
+## Quando la ricerca per parole aiuta {.approfondimento data-code="src/ragcourse/evaluation.py"}
 
 ```{python}
 #| echo: false
@@ -147,7 +147,7 @@ print(f"Su tutto il set, l'ibrida porta tra le prime 5 **{won}** domande che il 
       f"mancava, e ne perde **{lost}**.")
 ```
 
-## Analisi dei risultati sulla ricerca ibrida
+## Analisi dei risultati sulla ricerca ibrida {data-code="src/ragcourse/evaluation.py"}
 
 - **La ricerca per parole da sola** raggiunge un hit@5 del **64%**:
   una baseline economica, senza GPU, da provare

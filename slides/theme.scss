@@ -389,3 +389,75 @@ $arrow: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   background: $m-dark-teal;
   color: #ffffff;
 }
+
+// Study links share the viewport footer with the slide number, without resizing charts.
+.reveal .slide-code-links {
+  display: none;
+}
+
+.reveal .slide-code-footer {
+  position: absolute;
+  bottom: 12px;
+  left: 60px; // leave room for Quarto's slide-menu button
+  z-index: 30;
+  max-width: calc(100% - 180px);
+  padding: 3px 7px;
+  border-radius: 3px;
+  background: $m-background;
+  color: $m-muted;
+  font-family: $font-family-sans-serif;
+  font-size: clamp(10px, 1vw, 14px);
+  line-height: 1.4;
+  text-align: left;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: $m-orange-text;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+  &.on-dark {
+    background: $m-dark-teal;
+    color: $m-rule;
+
+    a {
+      color: #ffa64d;
+    }
+  }
+}
+
+@media print {
+  .reveal .slide-code-footer {
+    display: none;
+  }
+
+  .reveal .slides section.slide > .slide-code-links,
+  .reveal .slides #title-slide > .slide-code-links {
+    display: block;
+    position: absolute;
+    bottom: 12px;
+    left: $gutter;
+    right: $gutter;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: left;
+
+    p {
+      margin: 0;
+      font-size: inherit;
+    }
+  }
+
+  .reveal .slides section.slide.standout > .slide-code-links a {
+    color: #ffa64d;
+  }
+}

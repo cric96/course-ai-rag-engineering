@@ -1,4 +1,4 @@
-# La generazione
+# La generazione {data-code="src/ragcourse/generation.py,src/ragcourse/index.py"}
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -66,7 +66,7 @@ by_id = {q["id"]: q for q in faq}
 example = by_id["faq-002"]
 ```
 
-## Il prompt
+## Il prompt {data-code="src/ragcourse/generation.py"}
 
 ```{python}
 print(PROMPT.messages[0].prompt.template)
@@ -76,7 +76,7 @@ print(PROMPT.messages[0].prompt.template)
 - **Citazioni** `[n]`: indicano le fonti, così chi legge può verificarle
 - **Astensione**: se i documenti non contengono nulla di utile, chiediamo una frase prestabilita, che possiamo riconoscere e contare
 
-## La catena: prompt → modello → testo {.approfondimento}
+## La catena: prompt → modello → testo {.approfondimento data-code="src/ragcourse/generation.py,src/ragcourse/models.py"}
 
 ```{python}
 from langchain_core.output_parsers import StrOutputParser
@@ -100,7 +100,7 @@ print(example["answer"])
 print("\n:::\n::::")
 ```
 
-## "LLM as a judge": come viene fatto in pratica
+## "LLM as a judge": come viene fatto in pratica {data-code="src/ragcourse/judge.py"}
 
 ```{python}
 from pydantic import BaseModel
@@ -120,7 +120,7 @@ print("Corretta:", verdict.correct, "\n", verdict.reason)
 - Il giudizio appena visto è **sì o no**, con una motivazione. Con **DeepEval**
     organizziamo questi controlli in casi di test, metriche e risultati confrontabili
 
-## DeepEval: dal giudizio al test ripetibile {#deepeval-percorso}
+## DeepEval: dal giudizio al test ripetibile {#deepeval-percorso data-code="src/ragcourse/judge.py"}
 
 DeepEval organizza la valutazione della nostra pipeline in tre elementi
 
@@ -163,7 +163,7 @@ Fonte: https://deepeval.com/docs/evaluation-introduction
 Gli esempi di questo blocco sono illustrativi; non avviano nuove valutazioni.
 :::
 
-## Un caso di test: che cosa salviamo? {#deepeval-caso .approfondimento}
+## Un caso di test: che cosa salviamo? {#deepeval-caso .approfondimento data-code="src/ragcourse/generation.py"}
 
 Una domanda del corso diventa un `LLMTestCase`
 
@@ -201,7 +201,7 @@ retrieval_context deve contenere i passaggi effettivamente forniti al generatore
 Fonte: https://deepeval.com/docs/evaluation-test-cases
 :::
 
-## Scegliere la metrica dalla domanda {#deepeval-scegliere-metrica}
+## Scegliere la metrica dalla domanda {#deepeval-scegliere-metrica data-code="src/ragcourse/judge.py"}
 
 ::: {.small}
 | Che cosa vogliamo sapere? | Metrica DeepEval | Che cosa confronta | Serve la FAQ? |
@@ -234,7 +234,7 @@ https://deepeval.com/docs/metrics-faithfulness
 https://deepeval.com/docs/getting-started
 :::
 
-## Eseguire la valutazione e leggere il risultato {#deepeval-eseguire .approfondimento}
+## Eseguire la valutazione e leggere il risultato {#deepeval-eseguire .approfondimento data-code="src/ragcourse/judge.py"}
 
 ```python
 from deepeval import evaluate
@@ -267,7 +267,7 @@ Fonti: https://deepeval.com/docs/evaluation-introduction
 https://deepeval.com/docs/metrics-faithfulness
 :::
 
-## Come si tara la soglia in pratica? {.approfondimento}
+## Come si tara la soglia in pratica? {.approfondimento data-code="src/ragcourse/judge.py"}
 
 Per **Faithfulness**, il test passa se il punteggio è **≥ soglia**.
 Lo **0,8 è un punto di partenza didattico**: va verificato su esempi reali.
@@ -294,7 +294,7 @@ Fonti: https://deepeval.com/docs/metrics-faithfulness
 https://scikit-learn.org/1.8/modules/classification_threshold.html
 :::
 
-## Quali errori vogliamo evitare? {.approfondimento}
+## Quali errori vogliamo evitare? {.approfondimento data-code="src/ragcourse/judge.py"}
 
 Confrontiamo l'esito del test con il **giudizio umano sulle stesse risposte**:
 
@@ -319,7 +319,7 @@ le risposte promosse formano un sottoinsieme di quelle promosse con una soglia i
 Fonte: https://scikit-learn.org/1.8/modules/classification_threshold.html
 :::
 
-## Da una prova a un test di regressione {#deepeval-regressioni .approfondimento}
+## Da una prova a un test di regressione {#deepeval-regressioni .approfondimento data-code="src/ragcourse/judge.py"}
 
 Nel file `test_rag.py`, dopo aver definito `case` e `metric`:
 
@@ -355,7 +355,7 @@ Fonte: https://deepeval.com/docs/evaluation-unit-testing-in-ci-cd
 Guida iniziale: https://deepeval.com/docs/getting-started
 :::
 
-## DeepEval in pratica: verificare la fedeltà
+## DeepEval in pratica: verificare la fedeltà {data-code="src/ragcourse/judge.py"}
 
 ```{python}
 #| output: false
@@ -384,7 +384,7 @@ print(f"\nFedeltà = frasi nei documenti / frasi = {faithfulness.score:.2f}")
 Con `penalize_ambiguous_claims=True` penalizziamo anche le affermazioni non verificabili
 :::
 
-## Fedeltà: quando mancano le prove
+## Fedeltà: quando mancano le prove {data-code="src/ragcourse/judge.py"}
 
 Il giudice confronta ogni affermazione della risposta con i **chunk recuperati**:
 
@@ -397,7 +397,7 @@ alcun importo, l'affermazione non è verificabile
 
 - Per impostazione predefinita DeepEval penalizza solo le contraddizioni esplicite, mentre qui scegliamo di penalizzare anche le affermazioni che non trovano riscontro nei chunk recuperati
 
-## Valutare la qualità delle citazioni {.approfondimento}
+## Valutare la qualità delle citazioni {.approfondimento data-code="src/ragcourse/chat.py"}
 
 La **fedeltà** controlla l'**insieme dei chunk recuperati**, non se i rimandi `[1]`, `[2]` puntano al passaggio giusto:
 
@@ -417,7 +417,7 @@ print("Chunk citati:", indices, "· pagina gold citata:", gold_found(cited_chunk
 Sulle 28 risposte date nelle 50 FAQ: **100%** di citazioni valide (`1..5`); se la pagina *gold* è nei 5 chunk, è citata **20 volte su 21**
 :::
 
-## Correttezza: definire i criteri con GEval {.approfondimento}
+## Correttezza: definire i criteri con GEval {.approfondimento data-code="src/ragcourse/judge.py"}
 
 ```{python}
 from deepeval.metrics import GEval
@@ -439,7 +439,7 @@ correctness = GEval(
 - Per la fedeltà abbiamo usato una metrica predefinita. 
   - Con **GEval** definiamo i criteri di correttezza rispetto alla FAQ ufficiale
 
-## GEval: come valutiamo la correttezza?
+## GEval: come valutiamo la correttezza? {data-code="src/ragcourse/judge.py"}
 
 Il giudice confronta la **risposta generata** con la **risposta ufficiale**,
 seguendo tre criteri:
@@ -451,7 +451,7 @@ seguendo tre criteri:
 Un ufficio può definire criteri adatti ai propri documenti e confrontare i
 giudizi del modello con quelli di revisori umani
 
-## Valutare la generazione su 50 FAQ {.approfondimento}
+## Valutare la generazione su 50 FAQ {.approfondimento data-code="src/ragcourse/generation.py,src/ragcourse/judge.py"}
 
 Passiamo dal singolo caso al confronto su un insieme fisso di domande
 
@@ -490,7 +490,7 @@ with get_usage_metadata_callback() as judge_usage:
 scores = deepeval_table(result)  # one row per question, one column per metric
 ```
 
-## Risultati della valutazione
+## Risultati della valutazione {data-code="src/ragcourse/judge.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -520,7 +520,7 @@ percorso["correttezza"]["partenza: e5-small, 5 chunk"] = means["correttezza"]
 - **Fedeltà e pertinenza**: calcolate sulle 28 risposte effettivamente date
 - **Correttezza e richiamo**: calcolate su tutte le 50 FAQ (non rispondere è un errore, perché la risposta nei documenti c'è)
 
-## Confronto tra diversi generatori {#stessi-documenti-un-altro-generatore .approfondimento}
+## Confronto tra diversi generatori {#stessi-documenti-un-altro-generatore .approfondimento data-code="scripts/compare_generators.py,scripts/plot_generator_comparison.py"}
 
 ![](assets/experiment-generator-comparison-open.svg){.r-stretch}
 
@@ -566,7 +566,7 @@ Il modello giudice non è indipendente da Flash: confronto sul campione,
 non una valutazione generale dei tre modelli.
 :::
 
-## Analisi: perché la correttezza è bassa?
+## Analisi: perché la correttezza è bassa? {data-code="src/ragcourse/judge.py"}
 
 ```{python}
 #| echo: false
@@ -581,7 +581,7 @@ bar_chart(outcome, gray=["risponde"],
 
 - Per adesso, la RAG mette troppo poca informazione a disposizione del modello: il chunk giusto non è tra i 5 recuperati
 
-## Quanto conta trovare la pagina giusta? {.approfondimento}
+## Quanto conta trovare la pagina giusta? {.approfondimento data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -604,7 +604,7 @@ print(f"::: {{.muted}}\nPagina giusta nei 5 chunk: {has_gold.sum()} domande su "
 - La pagina giusta non garantisce una risposta corretta: il chunk può non contenere
     l'informazione necessaria oppure il modello può interpretarla male
 
-## Perché il richiamo del contesto è così basso? {#richiamo-del-contesto .approfondimento}
+## Perché il richiamo del contesto è così basso? {#richiamo-del-contesto .approfondimento data-code="scripts/evaluate_improvements.py,scripts/audit_context_recall.py,src/ragcourse/judge.py"}
 
 ![](assets/experiment-context-coverage-ch04.svg){.r-stretch}
 
@@ -627,7 +627,7 @@ a 0,13 quando la pagina gold manca (16 FAQ) e da 0,13 a 0,61 quando la pagina go
 è presente nei 5 chunk (34 FAQ).
 :::
 
-## Analisi di un caso di errore
+## Analisi di un caso di errore {data-code="src/ragcourse/generation.py"}
 
 ```{python}
 #| echo: false
@@ -652,7 +652,7 @@ print(f"::: {{.small}}\nFedeltà **{scores.loc[miss, 'fedeltà']:.1f}**, "
 
 ⚠️ **Attenzione:** una risposta fedele ai chunk può essere incompleta o scorretta
 
-## Quanto costa generare e giudicare? {.approfondimento}
+## Quanto costa generare e giudicare? {.approfondimento data-code="src/ragcourse/costs.py"}
 
 ```{python}
 #| echo: false

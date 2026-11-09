@@ -29,6 +29,7 @@ RESOURCES = [
     "code.theme",
     "progress.html",
     "chapter-ids.lua",
+    "source-links.lua",
 ]
 
 
@@ -88,12 +89,18 @@ def build_fast_preview(target: Path | None = None) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     # Keep fast rendering independent of normal renders and publishing.
     resources = [SLIDES / name for name in RESOURCES]
+    resources += list(SLIDES.glob("_capitoli/*.qmd"))
     resources += [path for path in (SLIDES / "assets").rglob("*") if path.is_file()]
     for source in resources:
         destination = target.parent / source.relative_to(SLIDES)
         destination.parent.mkdir(parents=True, exist_ok=True)
         if not destination.exists() or source.read_bytes() != destination.read_bytes():
             shutil.copy2(source, destination)
+    # A corso.qmd beside corso.ipynb makes Quarto exclude the notebook from the
+    # project. Keep the include manifest under an ignored, different basename.
+    manifest = target.parent / "_source-links.qmd"
+    if not manifest.exists() or manifest.read_bytes() != MAIN.read_bytes():
+        shutil.copy2(MAIN, manifest)
     with tempfile.TemporaryDirectory(prefix="course-preview-") as scratch:
         source = Path(scratch) / "slides.qmd"
         converted = Path(scratch) / "slides.ipynb"

@@ -83,6 +83,8 @@ def test_fast_preview_copies_resources_into_an_independent_project(
     slides.mkdir()
     main = slides / "corso.qmd"
     main.write_text("# Current prose")
+    (slides / "_capitoli").mkdir()
+    (slides / "_capitoli/one.qmd").write_text("## Slide source")
     for name in preview.RESOURCES:
         (slides / name).write_text(f"resource: {name}")
     (slides / "assets").mkdir()
@@ -109,6 +111,9 @@ def test_fast_preview_copies_resources_into_an_independent_project(
     for name in preview.RESOURCES:
         assert (fast.parent / name).read_bytes() == (slides / name).read_bytes()
     assert (fast.parent / "assets/plot.svg").read_text() == "<svg>saved chart</svg>"
+    assert (fast.parent / "_source-links.qmd").read_bytes() == main.read_bytes()
+    assert (fast.parent / "_capitoli/one.qmd").read_text() == "## Slide source"
+    assert not (fast.parent / "corso.qmd").exists()
     assert not (slides / "corso.ipynb").exists()
 
 

@@ -1,4 +1,4 @@
-# I dati e il set di valutazione
+# I dati e il set di valutazione {data-code="src/ragcourse/parsing.py"}
 
 ::: {.pipeline}
 [Indicizzazione]{.lane}
@@ -42,7 +42,7 @@ def show_qa(question: pd.Series) -> Markdown:
     return Markdown(f"**Domanda.** {q}\n\n**Risposta attesa.** {a}")
 ```
 
-## Documenti e FAQ ufficiali
+## Documenti e FAQ ufficiali {data-code="scripts/download_documents.py,scripts/download_faq.py"}
 
 
 - **PR FESR 2021-2027**: i bandi della Regione per imprese, enti locali e cultura
@@ -54,7 +54,7 @@ def show_qa(question: pd.Series) -> Markdown:
 - In una pipeline reale, questi dati potrebbero già essere disponibili in un **database** o in un **repository di documenti**. 
   - Nota: immagini, file, audio, potrebbero essere tutti parte del corpus!
 
-## Il corpus in numeri
+## Il corpus in numeri {data-code="scripts/extract_pages.py,src/ragcourse/viz.py"}
 
 ```{python}
 import pandas as pd
@@ -77,7 +77,7 @@ Esistono anche versioni più compatte per l'italiano, come
 [multilingual-e5-small-ita-32768](https://huggingface.co/alphaedge-ai/multilingual-e5-small-ita-32768).
 Per oggi utilizzeremo la **versione multilingue generale**
 
-## Quali documenti contiene il corpus? {.approfondimento}
+## Quali documenti contiene il corpus? {.approfondimento data-code="scripts/download_documents.py"}
 
 - **[Bandi](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2022/interventi-di-riqualificazione-energetica-e-miglioramento-adeguamento-sismico-degli-edifici-pubblici-e-dell2019edilizia-residenziale-pubblica-2022/presentazione-domanda/allegato-1-parte-integrante_bando-edifici-pubblici.pdf) e [delibere](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2026/progetti-di-trasferimento-tecnologico/presentazione-domanda/bando-e-modulistica/dgr-1221_2026_approv-bando-trasf-tecnologico.pdf)**: testi amministrativi con requisiti, scadenze e importi
 - **[Manuali e guide](https://fesr.regione.emilia-romagna.it/opportunita/opportunita-di-finanziamento/2023/sostegno-all2019innovazione-e-agli-investimenti-delle-imprese-culturali-e-creative/rendicontazione/manuale-di-rendicontazione.pdf)**: istruzioni operative, spesso con tabelle e schermate
@@ -87,7 +87,7 @@ Un PDF non contiene necessariamente testo estraibile: alcune pagine richiedono
 di leggere immagini e tabelle
 
 
-## Quanto testo c'è in ogni pagina? {.approfondimento}
+## Quanto testo c'è in ogni pagina? {.approfondimento data-code="scripts/extract_pages.py,src/ragcourse/viz.py"}
 
 ```{python}
 chars = pages.text.str.len()  # characters on each page
@@ -99,7 +99,7 @@ bar_chart(groups.value_counts(sort=False), gray=labels[2:],
 
 
 
-## Una pagina "vuota"
+## Una pagina "vuota" {data-code="src/ragcourse/parsing.py"}
 
 ```{python}
 #| echo: false
@@ -149,7 +149,7 @@ Per ogni domanda quindi, ci aspettiamo di avere:
 - **Pagine "gold"** [⟶]{style="color: #eb811b; font-weight: bold;"} misuriamo la precisione del retrieval: il sistema trova le pagine giuste?
 - **Risposta attesa** [⟶]{style="color: #eb811b; font-weight: bold;"} misuriamo la correttezza della risposta: il sistema sa rispondere correttamente, con citazioni e senza inventare?
 
-## Partiamo dalle FAQ ufficiali {.tabella-faq}
+## Partiamo dalle FAQ ufficiali {.tabella-faq data-code="scripts/download_faq.py"}
 
 ```{python}
 faq = pd.read_json(DATA / "eval/faq_questions.jsonl", lines=True)
@@ -160,7 +160,7 @@ with pd.option_context("display.max_colwidth", 120):
   display(examples)
 ```
 
-## Dove sta la risposta? Lo chiediamo a Gemini {.approfondimento .codice-grande}
+## Dove sta la risposta? Lo chiediamo a Gemini {.approfondimento .codice-grande data-code="scripts/label_faq.py,src/ragcourse/evalset.py"}
 
 ::: {.pipeline}
 [Input di un bando<br>pagine + FAQ]{.step} [Gemini associa le FAQ<br>alle pagine di supporto]{.step .active} [Per ogni FAQ<br>pagine gold + tipo di fonte]{.step .store}
@@ -189,7 +189,7 @@ invia l'immagine della singola pagina. I PDF sono quindi già separati in pagine
 LABELING_MODEL = Gemini Argon. Per ogni FAQ chiede al massimo 5 pagine di supporto.
 :::
 
-## L'output strutturato: pagine e tipo di fonte {#faq-output-strutturato .approfondimento .codice-grande}
+## L'output strutturato: pagine e tipo di fonte {#faq-output-strutturato .approfondimento .codice-grande data-code="src/ragcourse/evalset.py"}
 
 Per ogni FAQ chiediamo il suo numero, le pagine che sostengono la risposta
 e dove sta la risposta (testo, tabella o immagine)
@@ -208,7 +208,7 @@ labels = structured_model.invoke([message])
 ```
 
 
-## Domande sulle immagini {.approfondimento}
+## Domande sulle immagini {.approfondimento data-code="scripts/generate_image_questions.py,src/ragcourse/evalset.py"}
 
 Abbiamo creato **20 domande sulle immagini** con Gemini,
 per verificare se il sistema
@@ -235,7 +235,7 @@ show_page(page.path, page.page, width=640)
 :::
 ::::
 
-## Riassunto: struttura del set di valutazione {.approfondimento}
+## Riassunto: struttura del set di valutazione {.approfondimento data-code="src/ragcourse/evalset.py"}
 
 ```{python}
 #| echo: false
@@ -247,7 +247,7 @@ bar_chart(counts, gray=["non nei documenti"],
           title=f"{len(both)} domande: la risposta sta soprattutto nel testo")
 ```
 
-## Un set rappresentativo, oltre il testo {.approfondimento}
+## Un set rappresentativo, oltre il testo {.approfondimento data-code="src/ragcourse/viz.py"}
 
 **Il nostro set è sbilanciato sul testo**: tabelle e immagini sono poche;
 le 20 domande sulle immagini sono state generate ad hoc.
@@ -265,7 +265,7 @@ La generazione diretta da immagini non è documentata: per i casi visivi serve u
 con un modello multimodale, come quella usata qui.
 :::
 
-## Le domande senza risposta nei documenti
+## Le domande senza risposta nei documenti {data-code="src/ragcourse/evalset.py"}
 
 ```{python}
 #| echo: false

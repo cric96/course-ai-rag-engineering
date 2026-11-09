@@ -1,4 +1,4 @@
-# Riepilogo del percorso
+# Riepilogo del percorso {data-code="src/ragcourse/viz.py"}
 
 Ripercorriamo i passaggi visti finora per confrontare il contributo delle singole scelte sulle metriche di retrieval e di generazione
 
@@ -22,7 +22,7 @@ correct = pd.Series(percorso["correttezza"])
 ocr = percorso["ocr"]
 ```
 
-## Riepilogo sul retrieval
+## Riepilogo sul retrieval {data-code="src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -30,7 +30,7 @@ bar_chart(hits, gray=[hits.index[0]], fmt="{:.0%}",
           title=f"Una pagina giusta tra le prime 5: dal {hits.iloc[0]:.0%} al {hits.iloc[-1]:.0%}")
 ```
 
-## Riepilogo sulla generazione
+## Riepilogo sulla generazione {data-code="src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -38,7 +38,7 @@ bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
           title=f"Correttezza delle risposte: da {correct.iloc[0]:.2f} a {correct.iloc[-1]:.2f}")
 ```
 
-## Esperimento: chunk contro pagine intere {.approfondimento}
+## Esperimento: chunk contro pagine intere {.approfondimento data-code="scripts/compare_page_context.py"}
 
 ![](assets/experiment-page-context.svg){.r-stretch}
 
@@ -48,7 +48,7 @@ bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
 - 12 risposte migliorano, 12 peggiorano, 26 restano uguali
 
 
-## Esperimento: una pipeline tutta locale {.approfondimento}
+## Esperimento: una pipeline tutta locale {.approfondimento data-code="scripts/compare_page_context.py,scripts/plot_pipeline_comparison.py"}
 
 ![](assets/experiment-pipeline-comparison.svg){.r-stretch}
 
@@ -57,14 +57,14 @@ bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
 
 
 
-## Confronto complessivo tra le pipeline {.approfondimento}
+## Confronto complessivo tra le pipeline {.approfondimento data-code="scripts/compare_page_context.py,scripts/plot_pipeline_comparison.py"}
 
 ![](assets/experiment-pipeline-comparison-argon.svg){.r-stretch}
 
 - Usando le pagine complete e un generatore più capace la correttezza media sul campione sale da **0,538** a **0,592**, anche se su 50 domande il margine di incertezza resta ampio
 
 
-## Perché la correttezza si ferma intorno a 0,60? {.approfondimento}
+## Perché la correttezza si ferma intorno a 0,60? {.approfondimento data-code="scripts/evaluate_improvements.py"}
 
 ![](assets/experiment-improvements.svg){.r-stretch}
 
@@ -86,7 +86,7 @@ Valutando la correttezza senza penalizzare l'assenza di fonti esterne al contest
 (grounded_correctness_metric), il punteggio medio è 0,946–0,968.
 :::
 
-## Due interventi mirati {.approfondimento .smaller}
+## Due interventi mirati {.approfondimento .smaller data-code="scripts/evaluate_improvements.py"}
 
 Guardando le risposte sbagliate sono emersi due problemi ricorrenti, che abbiamo corretto
 senza cambiare l'indice. Con le pagine complete, la correttezza passa da **0,538 a 0,590**
@@ -108,7 +108,7 @@ nomina, ma che una sua regola include o esclude. Al prompt aggiungiamo:
 > Se i documenti definiscono un elenco tassativo o una regola generale che include o esclude
 > il caso chiesto, trai esplicitamente la conclusione (sì o no) citando la regola.
 
-## Dove sbaglia ancora? Tre tipi di domande {.approfondimento .smaller}
+## Dove sbaglia ancora? Tre tipi di domande {.approfondimento .smaller data-code="scripts/evaluate_improvements.py"}
 
 Abbiamo classificato a mano le 50 FAQ in base a dove si trova la loro risposta:
 
@@ -143,7 +143,7 @@ L'OCR è misurato sulla ricerca ibrida senza reranking. La ricerca ibrida aggiun
 su questo set di valutazione
 :::
 
-## Verso un agente RAG {.approfondimento}
+## Verso un agente RAG {.approfondimento data-code="scripts/compare_agent.py"}
 
 La nostra pipeline cerca sempre, una volta sola, e poi risponde. In un **agente** è il
 modello a decidere se cercare, con quale domanda e quante volte. LangChain trasforma lo
@@ -162,7 +162,7 @@ agente = create_agent(chat_model(), tools=[cerca], system_prompt=REGOLE)
 - **Filtro scelto dal modello** (*self-query*): uno strumento con un parametro `bando` lascia al modello la scelta del filtro
 - **Costi e controllo**: ogni passaggio è una chiamata al modello in più, e le scelte dell'agente vanno valutate come quelle della pipeline
 
-## Esperimento: agente contro pipeline fissa {.approfondimento}
+## Esperimento: agente contro pipeline fissa {.approfondimento data-code="scripts/compare_agent.py,scripts/plot_agent_comparison.py"}
 
 ![](assets/experiment-agent.svg){.r-stretch}
 
@@ -178,7 +178,7 @@ agente = create_agent(chat_model(), tools=[cerca], system_prompt=REGOLE)
 4. **Verificare anche il giudice automatico**, ispezionando i giudizi su un campione di risposte
 5. **Valutare insieme qualità, astensione e costi**, scegliendo il compromesso più adatto al caso d'uso
 
-## Demo: confrontare le scelte {.standout .center background-color="#23373b"}
+## Demo: confrontare le scelte {.standout .center background-color="#23373b" data-code="app/chat.py,src/ragcourse/chat.py"}
 
 Le stesse domande, cambiando una scelta alla volta
 

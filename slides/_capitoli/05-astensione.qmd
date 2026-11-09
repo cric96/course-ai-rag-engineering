@@ -1,4 +1,4 @@
-# L'astensione: saper dire «non lo so»
+# L'astensione: saper dire «non lo so» {data-code="src/ragcourse/generation.py"}
 
 ::: {.pipeline}
 [Interrogazione · per ogni domanda]{.lane}
@@ -64,7 +64,7 @@ answerable = answerable.to_dict("records")  # the 50 questions of the previous d
 by_id = {q["id"]: q for q in faq}
 ```
 
-## Rispondere o astenersi: i due errori
+## Rispondere o astenersi: i due errori {data-code="src/ragcourse/generation.py"}
 
 - **Rispondere senza informazioni sufficienti**: il modello può inventare dettagli
     o fornire una risposta non confermata dai documenti
@@ -74,7 +74,7 @@ by_id = {q["id"]: q for q in faq}
 Quando non trova informazioni utili, il prompt chiede al modello di rispondere:
 «Non lo trovo nei documenti»
 
-## Le domande senza risposta nei documenti
+## Le domande senza risposta nei documenti {data-code="src/ragcourse/evalset.py"}
 
 ```{python}
 #| echo: false
@@ -91,7 +91,7 @@ for qid in ["faq-043", "faq-234"]:
 Etichettate da un LLM, come il resto del set: qualcuna potrebbe avere una risposta parziale
 :::
 
-## Valutare l'astensione sul set di test {.approfondimento}
+## Valutare l'astensione sul set di test {.approfondimento data-code="src/ragcourse/generation.py"}
 
 ```{python}
 questions = answerable + unanswerable  # 50 with the answer in the documents, 48 without
@@ -107,7 +107,7 @@ pd.crosstab(has_answer.map({True: "risposta nei documenti", False: "non nei docu
             abstained.map({True: "si astiene", False: "risponde"})).rename_axis(index=None, columns=None)
 ```
 
-## Un prompt più prudente
+## Un prompt più prudente {data-code="src/ragcourse/generation.py"}
 
 ```{python}
 from ragcourse.generation import COMPLETE_ONLY, PARTIAL_OK, PRUDENT_PROMPT
@@ -121,7 +121,7 @@ prudent = (PRUDENT_PROMPT | llm | StrOutputParser()).batch(inputs, config={"max_
 - Le istruzioni, i documenti e le domande restano gli stessi
     - cambia solo il criterio con cui il modello decide se astenersi
 
-## Risultati: risposta contro astensione
+## Risultati: risposta contro astensione {data-code="src/ragcourse/viz.py,src/ragcourse/generation.py"}
 
 ```{python}
 #| echo: false
@@ -143,7 +143,7 @@ compare_chart(both, fmt="{:.0%}",
 quando è presente nei documenti: riduce il rischio di risposte non confermate,
 al costo di rinunciare a più risposte utili
 
-## Cosa succede quando non si astiene? {.approfondimento}
+## Cosa succede quando non si astiene? {.approfondimento data-code="src/ragcourse/judge.py"}
 
 ```{python}
 #| output: false
@@ -174,7 +174,7 @@ print("- Il rischio vero è il «sì» sicuro di sé, quando la regola ha un'ecc
       "che i documenti non riportano")
 ```
 
-## Esempio: una risposta parziale rischiosa
+## Esempio: una risposta parziale rischiosa {data-code="src/ragcourse/generation.py"}
 
 ```{python}
 #| echo: false
@@ -192,7 +192,7 @@ print(f"\n:::\n::::\n\n::: {{.small}}\nFedeltà **{scores[qid]:.1f}**: "
 
 - Il testo dei bandi e le prassi operative non sempre coincidono: in un sistema in produzione converrebbe indicizzare anche le FAQ, che qui teniamo separate solo per usarle come test
 
-## Come scegliere il livello di prudenza?
+## Come scegliere il livello di prudenza? {data-code="src/ragcourse/generation.py"}
 
 - **La scelta dipende dai destinatari** del servizio:
   - per cittadini e imprese è preferibile un comportamento più prudente, con un rimando agli uffici

@@ -1,4 +1,4 @@
-# I modelli di embedding
+# I modelli di embedding {data-code="src/ragcourse/models.py"}
 
 ::: {.pipeline}
 [Indicizzazione · una volta sola]{.lane}
@@ -60,7 +60,7 @@ qrels = gold_qrels(with_pages)
 metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 ```
 
-## I modelli di embedding a confronto
+## I modelli di embedding a confronto {data-code="src/ragcourse/models.py"}
 
 | Modello | Dove gira | Parametri | Note |
 |---|---|---|---|
@@ -75,7 +75,7 @@ metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 Tutti i modelli si usano allo stesso modo, con `embedding_model("nome")`, perché condividono l'interfaccia di LangChain. Esistono anche modelli **specializzati per settore** (giuridico, medico, finanziario), ma sono addestrati quasi sempre su testi in inglese: per i documenti amministrativi in italiano conviene di solito un buon modello **multilingua** che accetti testi lunghi
 :::
 
-## Valutare i modelli sul retrieval {.approfondimento}
+## Valutare i modelli sul retrieval {.approfondimento data-code="src/ragcourse/models.py,src/ragcourse/index.py,src/ragcourse/evaluation.py"}
 
 ```{python}
 #| output: false
@@ -96,7 +96,7 @@ for name in names:
 
 - Ogni indice si calcola **una volta sola** e resta su disco: `vector_store(...)`
 
-## Risultati: confronto tra gli embedding
+## Risultati: confronto tra gli embedding {data-code="src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -108,7 +108,7 @@ bar_chart(hit5, gray=["e5-small"], fmt="{:.0%}",
           title=f"hit@5: {best} {hit5[best]:.0%}, la baseline e5-small {hit5['e5-small']:.0%}")
 ```
 
-## Tempi di risposta: modelli locali e API
+## Tempi di risposta: modelli locali e API {data-code="src/ragcourse/models.py,src/ragcourse/viz.py"}
 
 ```{python}
 #| echo: false
@@ -121,7 +121,7 @@ bar_chart(ms, gray=[name for name in ms.index if name != "gemini-embedding-2"], 
 - **Modelli via API**: non richiedono hardware dedicato, ma comportano costi a consumo, dipendenza dalla rete e invio dei testi a un servizio esterno
 - A differenza del filtro o di `k`, cambiare il modello di embedding richiede di **ricalcolare l'intero indice**
 
-## Impatto dell'embedding sulla generazione {.approfondimento}
+## Impatto dell'embedding sulla generazione {.approfondimento data-code="src/ragcourse/generation.py,src/ragcourse/judge.py"}
 
 ```{python}
 #| echo: false
@@ -174,7 +174,7 @@ Stesse 50 domande del capitolo sulla generazione, 5 chunk, stesso prompt e stess
 cambia solo l'indice
 :::
 
-## Analisi dei risultati sugli embedding
+## Analisi dei risultati sugli embedding {data-code="src/ragcourse/evaluation.py"}
 
 ```{python}
 #| echo: false

@@ -1,4 +1,4 @@
-# La pipeline di base
+# La pipeline di base {data-code="src/ragcourse/chapters.py"}
 
 ::: {.pipeline}
 [Primo passo · Indicizzazione]{.lane .first-phase}
@@ -48,7 +48,7 @@ names = {"text": "testo", "table": "tabella", "image": "immagine"}
     cambiando il modello di embedding o l'indice
 - Nel nostro caso lo usiamo per assemblare rapidamente la pipeline e confrontare le diverse scelte mantenendo invariato il resto del codice
 
-## LangChain nella nostra pipeline {.approfondimento}
+## LangChain nella nostra pipeline {.approfondimento data-code="src/ragcourse/corpus.py,src/ragcourse/models.py,src/ragcourse/index.py"}
 
 ::: {.pipeline}
 [<span>Pagine<br><code>Document</code></span>]{.step} [<span>Suddivisione<br><code>TextSplitter</code></span>]{.step} [<span>Vettori<br><code>Embeddings</code></span>]{.step} [<span>Indice<br><code>VectorStore</code></span>]{.step .store} [<span>Ricerca<br><code>Retriever</code></span>]{.step}
@@ -60,7 +60,7 @@ names = {"text": "testo", "table": "tabella", "image": "immagine"}
 
 - Vediamo ora uno per uno questi cinque componenti per costruire la nostra prima versione funzionante della pipeline
 
-## Document: testo e provenienza
+## Document: testo e provenienza {data-code="src/ragcourse/corpus.py"}
 
 ```python
 from langchain_core.documents import Document
@@ -74,7 +74,7 @@ doc = Document(page_content="Testo della pagina", metadata={"page": 1})
 
 Nel nostro corpus, ogni pagina con testo è un `Document`
 
-## Le pagine in LangChain {.approfondimento}
+## Le pagine in LangChain {.approfondimento data-code="src/ragcourse/corpus.py"}
 
 ```{python}
 from ragcourse.corpus import load_pages
@@ -119,7 +119,7 @@ for index, chunk in enumerate(chunks[100:103], start=1):
     print(f"Chunk {index} · pagina {chunk.metadata['page']}: {preview}…\n")
 ```
 
-## Embedding: dal testo ai numeri
+## Embedding: dal testo ai numeri {data-code="src/ragcourse/models.py"}
 
 ```python
 vector = embeddings.embed_query(question)
@@ -130,7 +130,7 @@ vectors = embeddings.embed_documents(texts)
 - `embed_documents(texts)`: produce un vettore per ogni testo da indicizzare
 - `Embeddings` è l'interfaccia comune: l'implementazione può essere locale o via API
 
-## Embedding: dal testo ai numeri
+## Embedding: dal testo ai numeri {data-code="src/ragcourse/models.py"}
 
 ```{python}
 from ragcourse.models import embedding_model
@@ -144,7 +144,7 @@ print(len(vector), "numeri:", [round(x, 3) for x in vector[:5]], "…")
 - `embedding_model(...)` restituisce un `Embeddings` di LangChain: modello locale o API,
   per il resto della pipeline non cambia nulla
 
-## Gli embedding su una mappa
+## Gli embedding su una mappa {data-code="scripts/plot_embedding_example.py"}
 
 **Domanda:** "Posso comprare un computer con il contributo?"
 
@@ -153,7 +153,7 @@ print(len(vector), "numeri:", [round(x, 3) for x in vector[:5]], "…")
 Ogni punto è un testo. La mappa riduce **384 dimensioni a 2** con PCA:
 le distanze sono approssimate
 
-## Il testo indicizzato sulla mappa {.approfondimento}
+## Il testo indicizzato sulla mappa {.approfondimento data-code="scripts/plot_corpus_embeddings.py"}
 
 **19.782 pezzi di testo** indicizzati. La stella rappresenta la domanda
 
@@ -161,7 +161,7 @@ le distanze sono approssimate
 
 PCA riduce 384 dimensioni a 2: **le distanze sono approssimate**
 
-## Somiglianza tra domanda e documenti {.approfondimento}
+## Somiglianza tra domanda e documenti {.approfondimento data-code="src/ragcourse/models.py,src/ragcourse/viz.py"}
 
 ```{python}
 import numpy as np
@@ -229,7 +229,7 @@ La scelta dipende da volumi di dati, riservatezza e sistemi già gestiti dall'en
 : {tbl-colwidths="[20,18,31,31]"}
 :::
 
-## Perché usiamo Qdrant nella nostra pipeline
+## Perché usiamo Qdrant nella nostra pipeline {data-code="src/ragcourse/index.py"}
 
 **Qdrant** è tra i database vettoriali specializzati [più diffusi](https://db-engines.com/en/ranking/vector+dbms) e copre sia la sperimentazione sia la produzione:
 
@@ -237,7 +237,7 @@ La scelta dipende da volumi di dati, riservatezza e sistemi già gestiti dall'en
 - **Filtri sui metadati** integrati nella ricerca (cap. 3, per bando) e **ricerca ibrida** denso + BM25 (cap. 9)
 - Usato tramite l'interfaccia `VectorStore` di LangChain: passando a `FAISS`, `Chroma` o `PGVector`, il codice di retrieval e valutazione non cambia
 
-## VectorStore: indice e ricerca con Qdrant {#lindice-qdrant}
+## VectorStore: indice e ricerca con Qdrant {#lindice-qdrant data-code="src/ragcourse/index.py"}
 
 ```{python}
 from langchain_qdrant import QdrantVectorStore
@@ -256,7 +256,7 @@ documents = store.similarity_search(question, k=5)
 - Qui l'indice è in memoria. Per conservarlo su disco: `path="qdrant.db"`
 
 
-## Un esempio di ricerca
+## Un esempio di ricerca {data-code="src/ragcourse/evaluation.py"}
 
 ```{python}
 #| echo: false
@@ -297,7 +297,7 @@ Il retriever ordina le pagine per somiglianza, ma al modello passiamo solo le **
 : {tbl-colwidths="[24,33,43]"}
 :::
 
-## Le tre metriche: Hit@k, Recall@k, MRR
+## Le tre metriche: Hit@k, Recall@k, MRR {data-code="src/ragcourse/metrics.py,src/ragcourse/evaluation.py"}
 
 Fissata la soglia *k*, tre metriche complementari valutano la classifica (mediate sulle domande):
 
@@ -310,7 +310,7 @@ Fissata la soglia *k*, tre metriche complementari valutano la classifica (mediat
 : {tbl-colwidths="[22,16,28,34]"}
 :::
 
-## Come si misura: un esempio in Python {#come-si-misura-un-esempio-in-python .approfondimento}
+## Come si misura: un esempio in Python {#come-si-misura-un-esempio-in-python .approfondimento data-code="src/ragcourse/metrics.py"}
 
 Guardiamo i **primi 3 risultati**. Le pagine utili sono **B e D**
 
@@ -330,7 +330,7 @@ reciprocal_rank(found, gold_pages)    # 0.5
 - **Recall:** recuperiamo metà delle pagine utili: B c'è, D manca
 - **Reciprocal rank:** la prima pagina utile è al secondo posto
 
-## Retriever: cercare documenti {.approfondimento}
+## Retriever: cercare documenti {.approfondimento data-code="src/ragcourse/index.py"}
 
 ```python
 retriever = store.as_retriever(search_kwargs={"k": 20})
@@ -341,7 +341,7 @@ documents = retriever.invoke(question)
 - `search_kwargs`: imposta le opzioni della ricerca, come il numero `k` di risultati
 - `invoke(question)`: cerca i documenti rilevanti e restituisce una lista di `Document`
 
-## Che cos'è ranx?
+## Che cos'è ranx? {data-code="src/ragcourse/evaluation.py"}
 
 **ranx** è una libreria Python per valutare e confrontare sistemi di ricerca
 
@@ -351,7 +351,7 @@ documents = retriever.invoke(question)
     metriche come hit@k, recall@k e MRR, mediandole sulle domande
 
 
-## Risultati della baseline {.approfondimento}
+## Risultati della baseline {.approfondimento data-code="src/ragcourse/evaluation.py"}
 ```{python}
 from ranx import evaluate
 from ragcourse.evaluation import gold_qrels, retrieval_run
@@ -366,7 +366,7 @@ results = pd.Series(evaluate(gold_qrels(answerable), run, metrics))
 results.round(3)
 ```
 
-## La baseline in un grafico
+## La baseline in un grafico {data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 ```{python}
 hits = results[["hit_rate@1", "hit_rate@3", "hit_rate@5", "hit_rate@10"]]
@@ -383,7 +383,7 @@ percorso = {"hit@5": {"partenza: e5-small": results["hit_rate@5"]}, "correttezza
 - Già con questa configurazione iniziale troviamo una pagina rilevante tra le prime 5 per il **31% delle domande** (e al primo posto per il **13%**)
 - Però, come vedremo, la **qualità della risposta** dipende anche da quale pagina viene trovata
 
-## Risultati per tipo di fonte {.approfondimento}
+## Risultati per tipo di fonte {.approfondimento data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 ```{python}
 scores = pd.DataFrame(run.scores)  # ranx keeps one score per question
@@ -395,7 +395,7 @@ bar_chart(by_evidence, title="hit@5 per tipo di fonte", fmt="{:.0%}")
 - La ricerca testuale non vede il testo contenuto nelle immagini: servirà l'OCR
 o una ricerca sulle immagini
 
-## Analisi: cosa sta sbagliando?
+## Analisi: cosa sta sbagliando? {data-code="src/ragcourse/evaluation.py"}
 
 Un esperto di dominio può riconoscere la causa di un errore. La usiamo per
 correggere la pipeline e misurare di nuovo la baseline

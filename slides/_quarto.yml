@@ -6,6 +6,7 @@ lang: it
 date-format: "D MMMM YYYY"
 
 filters:
+  - source-links.lua  # source and implementation links for every slide
   - chapter-ids.lua  # chapter number in each slide address: #/03-...
 
 execute:

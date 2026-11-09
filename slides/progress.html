@@ -6,6 +6,35 @@
       slide.style.setProperty("--progress", `${(100 * i) / (slides.length - 1)}%`);
     });
 
+    // Keep the study links outside the scaled canvas, like Reveal's slide number.
+    // Each slide retains its own links in the HTML for printing and inspection.
+    const title = document.getElementById("title-slide");
+    const firstLinks = document.querySelector(".slide-code-links");
+    if (title && firstLinks) {
+      const links = document.createElement("div");
+      links.className = "slide-code-links";
+      const link = document.createElement("a");
+      link.href = firstLinks.dataset.titleSource;
+      link.textContent = "Sorgente slide";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      links.append(link);
+      title.append(links);
+    }
+    const footer = document.createElement("nav");
+    footer.className = "slide-code-footer";
+    footer.setAttribute("aria-label", "Codice della slide");
+    document.querySelector(".reveal").append(footer);
+    const updateLinks = () => {
+      const slide = Reveal.getCurrentSlide();
+      const links = slide?.querySelector(":scope > .slide-code-links");
+      footer.replaceChildren(...(links ? [...links.childNodes].map(node => node.cloneNode(true)) : []));
+      footer.classList.toggle("on-dark", slide?.classList.contains("standout") || false);
+    };
+    Reveal.on("ready", updateLinks);
+    Reveal.on("slidechanged", updateLinks);
+    if (Reveal.isReady()) updateLinks();
+
     const walker = document.createTreeWalker(document.querySelector(".reveal .slides"), NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
         const parent = node.parentElement;
