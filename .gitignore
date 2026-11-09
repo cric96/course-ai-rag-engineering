@@ -63,3 +63,6 @@ AGENTS.md
 
 # --- DeepEval local runs and cache ---
 .deepeval/
+
+/.quarto/
+**/*.quarto_ipynb

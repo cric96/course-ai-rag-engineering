@@ -134,7 +134,7 @@ show_page(slide.path, slide.page, width=600)
 :::
 ::::
 
-## Che cos'è un set di valutazione
+## Che cos'è un set di valutazione {.smaller}
 
 > Un set di valutazione è un insieme di domande contenenti la risposta, i documenti e le pagine che la contengono. Serve a misurare la qualità di un sistema RAG
 
@@ -163,7 +163,7 @@ with pd.option_context("display.max_colwidth", 120):
 ## Dove sta la risposta? Lo chiediamo a Gemini {.approfondimento .codice-grande}
 
 ::: {.pipeline}
-[Input di un bando<br>pagine + FAQ]{.step} [Una richiesta<br>a Gemini]{.step .active} [Per ogni FAQ<br>pagine gold + tipo di fonte]{.step .store}
+[Input di un bando<br>pagine + FAQ]{.step} [Gemini associa le FAQ<br>alle pagine di supporto]{.step .active} [Per ogni FAQ<br>pagine gold + tipo di fonte]{.step .store}
 :::
 
 In **una richiesta per bando**, Gemini riceve tutte le pagine (`[P1]`, `[P2]`…)
@@ -176,8 +176,9 @@ pages_by_id = label_pages(call_pages)
 message = labeling_message(call_faqs, pages_by_id)
 ```
 
-Ogni pagina è un blocco distinto del messaggio: testo estratto oppure immagine
-se contiene poco testo. Il modello riceve tutti i blocchi nella stessa chiamata
+**NOTA: questa è una semplificazione.** Ogni pagina è un blocco distinto del messaggio:
+testo estratto oppure immagine se contiene poco testo. Il modello riceve tutti i blocchi
+nella stessa chiamata
 
 ::: {.notes}
 scripts/label_faq.py esegue una richiesta per bando, tramite ask_labels.
@@ -206,13 +207,13 @@ structured_model = model.with_structured_output(FaqLabels)
 labels = structured_model.invoke([message])
 ```
 
-Lo schema valida **il formato**, non la correttezza delle pagine proposte:
-queste richiedono una **verifica degli esperti dei bandi**
 
 ## Domande sulle immagini {.approfondimento}
 
-Abbiamo creato **20 domande sulle immagini** con Gemini, per verificare se il sistema
-trova informazioni che l'estrazione del testo può perdere, come date e importi
+Abbiamo creato **20 domande sulle immagini** con Gemini,
+per verificare se il sistema
+sia in grado di trovare le informazioni che nel testo non ci sono,
+come ad esempio date, importi e scadenze.
 
 :::: {.columns}
 ::: {.column .small width="40%"}
@@ -237,6 +238,7 @@ show_page(page.path, page.page, width=640)
 ## Riassunto: struttura del set di valutazione {.approfondimento}
 
 ```{python}
+#| echo: false
 images = pd.read_json(DATA / "eval/image_questions.jsonl", lines=True)
 both = pd.concat([faq, images])
 names = {"text": "testo", "table": "tabella", "image": "immagine", "none": "non nei documenti"}
@@ -244,6 +246,24 @@ counts = both.evidence.map(names).value_counts()
 bar_chart(counts, gray=["non nei documenti"],
           title=f"{len(both)} domande: la risposta sta soprattutto nel testo")
 ```
+
+## Un set rappresentativo, oltre il testo {.approfondimento}
+
+**Il nostro set è sbilanciato sul testo**: tabelle e immagini sono poche;
+le 20 domande sulle immagini sono state generate ad hoc.
+
+- Il risultato complessivo descrive soprattutto le **prestazioni sul testo**
+- In un sistema reale, distribuire le domande in base all'**uso previsto**, con
+  abbastanza esempi per tipo e **metriche separate** per testo, tabelle e immagini
+- Costruire il set in modo **sistematico**: campionare le fonti per tipo, raccogliere
+  domande reali e integrare i casi mancanti con esempi sintetici da validare
+
+::: {.small}
+Il [Synthesizer di DeepEval](https://deepeval.com/docs/synthesizer-generate-from-contexts)
+genera domande e risposte attese da contesti testuali, anche da tabelle convertite in testo.
+La generazione diretta da immagini non è documentata: per i casi visivi serve una pipeline
+con un modello multimodale, come quella usata qui.
+:::
 
 ## Le domande senza risposta nei documenti
 
@@ -262,9 +282,9 @@ show_qa(faq.set_index("id").loc["faq-062"])
 In un progetto reale la verità di riferimento la costruiscono, o almeno la validano,
 **le persone che conoscono i bandi**. Etichette e domande scritte da un modello:
 
-- possono sbagliare: pagine mancanti, "non nei documenti" errati, valori letti male
-- favoriscono le domande facili per un modello
-- rendono la valutazione circolare se anche il giudice è un modello simile
+- Possono sbagliare: pagine mancanti, "non nei documenti" errati, valori letti male
+- Favoriscono le domande facili per un modello
+- Rendono la valutazione circolare se anche il giudice è un modello simile
 
 - Qui lo usiamo così com'è, per scopo didattico:
   - In un progetto vero questo golden set va **validato a mano** almeno su un campione

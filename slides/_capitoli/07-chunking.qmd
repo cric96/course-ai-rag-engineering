@@ -110,16 +110,22 @@ bar_chart(hit5.rename(lambda name: name if name == "pagina" else f"{name} caratt
 
 ## Analisi dei risultati sul chunking
 
-```{python}
-#| echo: false
-#| output: asis
-p = p_value(qrels, runs["500"], runs["1000"], "hit_rate@5")  # ranx's paired test
-print(f"- **500 e 1000 caratteri hanno risultati simili** (hit@5 {hit5['500']:.1%} e {hit5['1000']:.1%}): "
-      f"Teniamo 1000: metà dei vettori")
-print(f"- **Chunk più grandi peggiorano**, la pagina intera di più ({hit5['pagina']:.1%}): "
-      f"il vettore mescola argomenti, e il {(tokens > limit).mean():.0%} delle pagine "
-      "supera i token che il modello legge")
-print("- Qui il chunking non è il collo di bottiglia: il prossimo indiziato è l'embedding")
-```
+- **500 e 1000 caratteri danno risultati simili**: hit@5 **65,6%** e **64,8%**.
+  Il paired test non rileva una differenza significativa (**p = 0,73**).
+  Teniamo 1000: meno vettori da memorizzare e cercare
+- **La pagina intera scende al 59,0%**. Un vettore deve rappresentare più argomenti;
+  inoltre il **43% delle pagine** supera il limite di token del modello
+- In questo confronto il chunking cambia poco tra 500 e 1000 caratteri:
+  il prossimo esperimento riguarda il **modello di embedding**
 
-- Verificare che una modifica non porti miglioramenti significativi è comunque utile, perché ci permette di mantenere la configurazione più semplice ed economica
+Verificare che una modifica non porti miglioramenti significativi è comunque utile:
+ci permette di mantenere la configurazione più semplice ed economica.
+
+::: {.notes}
+Valori ricavati dall'esecuzione salvata del corso: 227 domande con pagine gold,
+filtro per bando, embedding e5-small. Il paired test confronta hit@5 per domanda.
+Un p-value di 0,73 non dimostra equivalenza: non abbiamo rilevato una differenza
+significativa con questo campione. Mescolanza di argomenti e troncamento sono
+spiegazioni plausibili del peggioramento, non effetti isolati da questo esperimento.
+Il testo dell'analisi è esplicito per restare visibile anche nella preview senza esecuzione.
+:::

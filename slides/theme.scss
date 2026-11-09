@@ -80,7 +80,7 @@ $gutter: 56px; // left and right margin of the slide content
   &::before {
     content: "Approfondimento";
     position: absolute;
-    top: 4px;
+    top: 10px;
     right: $gutter;
     font-size: 0.38em;
     line-height: 1;
@@ -225,6 +225,18 @@ $gutter: 56px; // left and right margin of the slide content
 
   tbody tr:last-child td {
     border-bottom: none;
+  }
+}
+
+// Metric comparisons: keep each pair together, with the course's orange accent.
+.reveal .metric-comparison {
+  white-space: nowrap;
+
+  .comparison-arrow {
+    color: $m-orange-text;
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 0 0.15em;
   }
 }
 

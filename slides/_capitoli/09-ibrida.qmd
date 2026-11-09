@@ -149,16 +149,23 @@ print(f"Su tutto il set, l'ibrida porta tra le prime 5 **{won}** domande che il 
 
 ## Analisi dei risultati sulla ricerca ibrida
 
-```{python}
-#| echo: false
-#| output: asis
-print(f"- **Le parole da sole** arrivano al {hit5['parole']:.0%}: una baseline economica "
-      "e senza GPU, da provare sempre")
-p = p_value(qrels, runs["ibrida"], runs["significato"], "hit_rate@5")
-print(f"- **L'ibrida** aggiunge {(hit5['ibrida'] - hit5['significato']) * 100:.0f} punti a "
-      f"`bge-m3`: qualche domanda guadagnata, qualcuna persa")
-print("- Costa poco (un secondo vettore per chunk) e porta candidati più vari: "
-      "la usiamo come primo passo del reranking")
-```
+- **La ricerca per parole da sola** raggiunge un hit@5 del **64%**:
+  una baseline economica, senza GPU, da provare
+- **L'ibrida aggiunge circa 2 punti percentuali** a `bge-m3`:
+  alcune domande guadagnate, altre perse. Il paired test non rileva
+  una differenza significativa (**p = 0,42**)
+- Combinare parole e significato offre **candidati diversi** al reranker:
+  usiamo l'ibrida come punto di partenza del prossimo esperimento
 
-- Su questo corpus, partendo già da un buon modello di embedding, il contributo della ricerca per parole è limitato: come sempre, conviene verificare l'effetto sui propri dati
+Su questo corpus il contributo aggiuntivo delle parole è limitato:
+conviene misurarne l'effetto sui propri dati.
+
+::: {.notes}
+Valori ricavati dall'esecuzione salvata del corso, sulle 227 domande con pagine gold
+e con filtro per bando. Il 64% e i 2 punti percentuali sono arrotondati.
+Il p-value di 0,42 non dimostra equivalenza: non rileviamo una differenza significativa
+con questo campione. L'indice ibrido aggiunge un vettore sparso per chunk; costo e
+latenza vanno misurati nel proprio ambiente. La diversità dei candidati motiva
+l'esperimento successivo, senza dimostrare da sola un beneficio sul risultato finale.
+Il testo è esplicito per restare visibile anche nella preview senza esecuzione.
+:::

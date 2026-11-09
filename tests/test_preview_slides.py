@@ -32,6 +32,17 @@ def test_fast_preview_preserves_new_prose_and_saved_outputs():
     assert current["cells"][1]["outputs"] == []  # the source stays untouched
 
 
+def test_hiding_code_preserves_saved_output():
+    current = {"cells": [code("#| echo: false\nplot(results)")]}
+    cached = {"cells": [code("setup"), code("plot(results)", "saved plot")]}
+
+    result, missing = preview.reuse_outputs(current, cached)
+
+    assert missing == 0
+    assert result["cells"][0]["outputs"] == [{"text": "saved plot"}]
+    assert result["cells"][0]["source"] == "#| echo: false\nplot(results)"
+
+
 def test_inserted_or_changed_cells_do_not_get_old_outputs():
     current = {"cells": [code("a()"), code("new()"), code("b()"), code("changed()")]}
     cached = {

@@ -206,10 +206,10 @@ Fonte: https://deepeval.com/docs/evaluation-test-cases
 ::: {.small}
 | Che cosa vogliamo sapere? | Metrica DeepEval | Che cosa confronta | Serve la FAQ? |
 |---|---|---|---|
-| La risposta è **corretta**? | **Correttezza** (*GEval*) | risposta ↔ FAQ | sì |
-| Ha **inventato** dettagli? | **Fedeltà** (*Faithfulness*) | risposta ↔ chunk | no |
-| **Risponde** alla domanda? | **Pertinenza** (*Answer Relevancy*) | risposta ↔ domanda | no |
-| I chunk **coprono** la FAQ? | **Richiamo** (*Contextual Recall*) | chunk ↔ FAQ | sì |
+| La risposta è **corretta**? | **Correttezza** (*GEval*) | [risposta [↔︎]{.comparison-arrow} FAQ]{.metric-comparison} | sì |
+| Ha **inventato** dettagli? | **Fedeltà** (*Faithfulness*) | [risposta [↔︎]{.comparison-arrow} chunk]{.metric-comparison} | no |
+| **Risponde** alla domanda? | **Pertinenza** (*Answer Relevancy*) | [risposta [↔︎]{.comparison-arrow} domanda]{.metric-comparison} | no |
+| I chunk **coprono** la FAQ? | **Richiamo** (*Contextual Recall*) | [chunk [↔︎]{.comparison-arrow} FAQ]{.metric-comparison} | sì |
 : {tbl-colwidths="[30,34,22,14]"}
 :::
 
@@ -265,6 +265,58 @@ caso possiamo anche chiamare metric.measure(case), come nella demo che segue.
 Nel report leggiamo i singoli casi e le motivazioni, oltre alle medie.
 Fonti: https://deepeval.com/docs/evaluation-introduction
 https://deepeval.com/docs/metrics-faithfulness
+:::
+
+## Come si tara la soglia in pratica? {.approfondimento}
+
+Per **Faithfulness**, il test passa se il punteggio è **≥ soglia**.
+Lo **0,8 è un punto di partenza didattico**: va verificato su esempi reali.
+
+1. Preparare un **validation set** di risposte generate e relativi contesti recuperati
+2. Far etichettare agli esperti le risposte come **fedeli o non fedeli al contesto**
+3. Calcolare il punteggio DeepEval sugli stessi esempi e provare più soglie
+4. Contare le risposte **non fedeli promosse** e quelle **fedeli bocciate**
+5. Scegliere in base al costo dei due errori e verificare su un **test set separato**
+
+::: {.small}
+La fedeltà riguarda il supporto nel contesto, non la correttezza rispetto alla FAQ.
+La soglia decide l'esito del test: non modifica la risposta e non attiva da sola
+l'astensione del sistema.
+:::
+
+::: {.notes}
+Separare casi duplicati o quasi identici tra validation e test. Usare una griglia
+esplicita per i revisori e risolvere i disaccordi. Tenere fissi metrica, modello giudice
+(e relativa versione), prompt e penalize_ambiguous_claims durante la taratura.
+La selezione della soglia è un problema di classificazione: il riferimento è il giudizio
+umano, il punteggio DeepEval è il segnale da confrontare con la soglia.
+Fonti: https://deepeval.com/docs/metrics-faithfulness
+https://scikit-learn.org/1.8/modules/classification_threshold.html
+:::
+
+## Quali errori vogliamo evitare? {.approfondimento}
+
+Confrontiamo l'esito del test con il **giudizio umano sulle stesse risposte**:
+
+| Giudizio umano | Esito DeepEval | Errore |
+|---|---|---|
+| **Non fedele** | Test superato | Promuoviamo una risposta senza supporto |
+| **Fedele** | Test fallito | Bocciamo una risposta sostenuta dalle fonti |
+
+- **Alzare la soglia** riduce le risposte promosse, ma può bocciarne di fedeli
+- **Abbassarla** riduce le bocciature, ma può promuovere risposte non fedeli
+- Scegliere sul **validation set** in base al costo degli errori; verificare sul **test set**
+
+
+::: {.notes}
+La tabella descrive i due errori possibili, senza attribuire conteggi non misurati.
+Le FAQ ufficiali danno la risposta attesa, ma non sono etichette umane di fedeltà
+per ciascuna risposta generata rispetto ai chunk effettivamente recuperati.
+Per tarare la soglia occorre aggiungere queste revisioni ai casi reali del corso,
+conservando domanda, risposta, contesto e punteggio. Tenere fissi giudice e configurazione.
+La scelta esprime un compromesso tra falsi positivi e falsi negativi: alzando la soglia
+le risposte promosse formano un sottoinsieme di quelle promosse con una soglia inferiore.
+Fonte: https://scikit-learn.org/1.8/modules/classification_threshold.html
 :::
 
 ## Da una prova a un test di regressione {#deepeval-regressioni .approfondimento}

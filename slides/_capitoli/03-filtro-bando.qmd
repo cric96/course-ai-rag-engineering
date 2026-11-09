@@ -139,7 +139,7 @@ compare_chart(hits.rename(lambda m: m.replace("hit_rate", "hit")), fmt="{:.0%}",
 
 ## Il miglioramento potrebbe essere casuale? {.approfondimento}
 
-Confrontiamo le due configurazioni sulle **stesse 227 domande**: è un test *appaiato*
+Confrontiamo le due configurazioni sulle **stesse 227 domande**: è un *paired test*
 
 ::: {.columns}
 ::: {.column width="33%"}
@@ -163,7 +163,7 @@ Differenza media attesa: **zero**
 ::: {.column width="33%"}
 **3. Valutiamo il risultato**
 
-Il **test t appaiato** confronta il guadagno medio con la variabilità delle differenze tra domande
+Il **paired t-test** confronta il guadagno medio con la variabilità delle differenze tra domande
 :::
 :::
 

@@ -54,12 +54,17 @@ def expand_includes(path: Path) -> str:
 
 def reuse_outputs(notebook: dict, cached: dict) -> tuple[dict, int]:
     """Reuse outputs only for matching code cells, preserving their order."""
+
+    def matching_source(cell: dict) -> str:
+        # Showing or hiding code does not change the cell's computed output.
+        return re.sub(r"(?m)^#\|\s*echo\s*:.*\n?", "", "".join(cell["source"])).strip()
+
     notebook = copy.deepcopy(notebook)
     current = [cell for cell in notebook["cells"] if cell["cell_type"] == "code"]
     previous = [cell for cell in cached["cells"] if cell["cell_type"] == "code"][1:]
     matcher = SequenceMatcher(
-        a=["".join(cell["source"]).strip() for cell in previous],
-        b=["".join(cell["source"]).strip() for cell in current],
+        a=[matching_source(cell) for cell in previous],
+        b=[matching_source(cell) for cell in current],
         autojunk=False,
     )
     matched = 0

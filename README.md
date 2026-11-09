@@ -55,6 +55,21 @@ uv run python scripts/ocr_pages.py gemini    # OCR delle pagine-immagine (anche 
 
 Le FAQ non entrano mai nel corpus: contengono le risposte attese.
 
+## Esperimento: 20, 30 o 50 candidati per il reranker
+
+```bash
+uv run python scripts/compare_rerank_candidates.py
+```
+
+Confronta Gemini Flash e Qwen3-Reranker-0.6B sulle 227 domande con pagine gold,
+con ricerca ibrida filtrata per bando e 10 chunk finali. Riusa le cache e salva
+lo stato in `.cache/rerank-candidates.json`, così un'esecuzione interrotta riprende
+senza ripetere i casi completati. Misura il retrieval, senza generare risposte
+o chiamare un giudice. Gemini usa API a pagamento; Qwen3 gira in locale.
+`--budget-usd` (default 8) limita la spesa stimata prima di ogni gruppo di chiamate;
+non è un limite di fatturazione del provider. Report e grafico finiscono in
+`slides/assets/experiment-rerank-candidates.*`.
+
 ## Esperimento: associare le FAQ una pagina alla volta
 
 Per confrontare le etichette originali con richieste che contengono una sola pagina
