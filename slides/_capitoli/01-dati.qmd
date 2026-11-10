@@ -8,9 +8,6 @@
 
 Il punto di partenza: analisi dei documenti e costruzione del set di valutazione
 
-::: {.notes}
-≈ 15 minuti · da 0:15 a 0:30
-:::
 
 ```{python}
 #| echo: false
@@ -52,7 +49,6 @@ def show_qa(question: pd.Series) -> Markdown:
 - Le **[FAQ ufficiali](https://fesr.regione.emilia-romagna.it/servizi/domande-frequenti-faq)**: domande vere dei beneficiari, con la risposta della Regione
   - Queste possono essere usate come **set di valutazione**: per ogni domanda, sappiamo qual è la risposta attesa e quali pagine del bando la contengono
 - In una pipeline reale, questi dati potrebbero già essere disponibili in un **database** o in un **repository di documenti**. 
-  - Nota: immagini, file, audio, potrebbero essere tutti parte del corpus!
 
 ## Il corpus in numeri {data-code="scripts/extract_pages.py,src/ragcourse/viz.py"}
 
@@ -96,7 +92,6 @@ groups = pd.cut(chars, bins=[-1, 0, 49, 499, chars.max()], labels=labels)
 bar_chart(groups.value_counts(sort=False), gray=labels[2:],
           title=f"{sum(chars < 50)} pagine su {len(pages)} hanno meno di 50 caratteri")
 ```
-
 
 
 ## Una pagina "vuota" {data-code="src/ragcourse/parsing.py"}
@@ -176,18 +171,6 @@ pages_by_id = label_pages(call_pages)
 message = labeling_message(call_faqs, pages_by_id)
 ```
 
-**NOTA: questa è una semplificazione.** Ogni pagina è un blocco distinto del messaggio:
-testo estratto oppure immagine se contiene poco testo. Il modello riceve tutti i blocchi
-nella stessa chiamata
-
-::: {.notes}
-scripts/label_faq.py esegue una richiesta per bando, tramite ask_labels.
-labeling_message costruisce un solo HumanMessage con tutti i blocchi delle pagine,
-seguiti da tutte le FAQ del bando (domanda e risposta ufficiale).
-page_parts usa testo per le pagine con almeno 50 caratteri estratti; altrimenti
-invia l'immagine della singola pagina. I PDF sono quindi già separati in pagine.
-LABELING_MODEL = Gemini Argon. Per ogni FAQ chiede al massimo 5 pagine di supporto.
-:::
 
 ## L'output strutturato: pagine e tipo di fonte {#faq-output-strutturato .approfondimento .codice-grande data-code="src/ragcourse/evalset.py"}
 
@@ -249,8 +232,8 @@ bar_chart(counts, gray=["non nei documenti"],
 
 ## Un set rappresentativo, oltre il testo {.approfondimento data-code="src/ragcourse/viz.py"}
 
-**Il nostro set è sbilanciato sul testo**: tabelle e immagini sono poche;
-le 20 domande sulle immagini sono state generate ad hoc.
+- **Il nostro set è sbilanciato sul testo**: tabelle e immagini sono poche
+  - Le 20 domande sulle immagini sono state generate ad hoc
 
 - Il risultato complessivo descrive soprattutto le **prestazioni sul testo**
 - In un sistema reale, distribuire le domande in base all'**uso previsto**, con
@@ -297,4 +280,3 @@ In un progetto reale la verità di riferimento la costruiscono, o almeno la vali
 - **Astensione**: confrontiamo 48 FAQ senza risposta nei documenti con 50 che ce l'hanno. Il sistema sa quando dire "non lo trovo"?
 
 - Con questo set di valutazione possiamo ora costruire la pipeline passo dopo passo e misurare l'effetto di ogni scelta su ricerca, generazione e astensione
-

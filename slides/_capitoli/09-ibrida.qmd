@@ -8,9 +8,6 @@
 
 Partendo dalla nuova configurazione di riferimento (`bge-m3`, chunk da 1000 caratteri e filtro per bando), affianchiamo alla ricerca semantica quella per parole chiave
 
-::: {.notes}
-≈ 7 minuti · da 2:05 a 2:12
-:::
 
 ```{python}
 #| echo: false
@@ -19,7 +16,7 @@ from ragcourse.chapters import new_chapter
 
 new_chapter()  # a clean start: indexes closed, variables forgotten (but `percorso`)
 
-# New baseline: bge-m3, 1000-character chunks, filter by call; ranx on 227 questions.
+# New baseline: bge-m3, 1000-character chunks, filter by call, ranx on 227 questions.
 import ragcourse  # first: turns DeepEval telemetry off
 
 import pandas as pd
@@ -60,6 +57,51 @@ metrics = ["hit_rate@1", "hit_rate@5", "mrr@10"]
 - Poiché la ricerca semantica e quella lessicale hanno punti di forza complementari, combinarle può aiutare a gestire sia le parafrasi sia i termini tecnici esatti
 
 ## Reciprocal Rank Fusion: unire i risultati {.approfondimento}
+
+$$
+\operatorname{RRF}(d) = \sum_{r \in \mathcal{R}:\, d \in r}
+\frac{1}{c + \operatorname{pos}_r(d)}
+$$
+
+- Per ogni chunk $d$, sommiamo i contributi delle classifiche **semantica** e **BM25**
+- La posizione parte da **1**, un chunk assente contribuisce **0**
+- $c = 60$ attenua il vantaggio delle prime posizioni
+  - È una costante della fusione, diversa dal numero di risultati *top-k*
+- Vince il **punteggio più alto**, senza confrontare i punteggi grezzi dei due metodi
+
+## RRF: un esempio numerico {.approfondimento}
+
+:::: {.columns}
+::: {.column width="44%"}
+
+| Posizione | Ricerca semantica | BM25 |
+|---|---|---|
+| 1 | `p40` | `p12` |
+| 2 | `p12` | `p3` |
+| 3 | `p7` | `p40` |
+
+:::
+::: {.column width="56%"}
+
+**Punteggi con $c = 60$**
+
+$$
+\operatorname{RRF}(\text{p12}) = \frac{1}{62} + \frac{1}{61} \approx 0{,}03252
+$$
+
+$$
+\operatorname{RRF}(\text{p40}) = \frac{1}{61} + \frac{1}{63} \approx 0{,}03227
+$$
+
+`p3` e `p7`: un solo contributo, $1/62$ e $1/63$
+
+:::
+::::
+
+- **Ordine finale**: `p12`, `p40`, `p3`, `p7`
+  - `p12` ha le posizioni migliori nel complesso delle due classifiche
+
+## RRF: dalla formula al codice {.approfondimento}
 
 ```{python}
 def rrf(*rankings, k=60):
@@ -159,13 +201,3 @@ print(f"Su tutto il set, l'ibrida porta tra le prime 5 **{won}** domande che il 
 
 Su questo corpus il contributo aggiuntivo delle parole è limitato:
 conviene misurarne l'effetto sui propri dati.
-
-::: {.notes}
-Valori ricavati dall'esecuzione salvata del corso, sulle 227 domande con pagine gold
-e con filtro per bando. Il 64% e i 2 punti percentuali sono arrotondati.
-Il p-value di 0,42 non dimostra equivalenza: non rileviamo una differenza significativa
-con questo campione. L'indice ibrido aggiunge un vettore sparso per chunk; costo e
-latenza vanno misurati nel proprio ambiente. La diversità dei candidati motiva
-l'esperimento successivo, senza dimostrare da sola un beneficio sul risultato finale.
-Il testo è esplicito per restare visibile anche nella preview senza esecuzione.
-:::

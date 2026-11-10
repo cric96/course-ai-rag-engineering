@@ -2,9 +2,6 @@
 
 Ripercorriamo i passaggi visti finora per confrontare il contributo delle singole scelte sulle metriche di retrieval e di generazione
 
-::: {.notes}
-≈ 20 minuti · da 2:40 a 3:00, inclusi demo finale e domande
-:::
 
 ```{python}
 #| echo: false
@@ -56,7 +53,6 @@ bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
 - **Stesso reranker e pagine:** Gemini **0,508**, Qwen **0,368**
 
 
-
 ## Confronto complessivo tra le pipeline {.approfondimento data-code="scripts/compare_page_context.py,scripts/plot_pipeline_comparison.py"}
 
 ![](assets/experiment-pipeline-comparison-argon.svg){.r-stretch}
@@ -70,21 +66,6 @@ bar_chart(correct, gray=[correct.index[0]], fmt="{:.2f}",
 
 - Con due interventi mirati la correttezza sale a **0,59** (Flash) e **0,63** (Argon). Sulle FAQ la cui risposta è scritta nei bandi arriviamo a **0,81**, e rispetto ai soli documenti recuperati a **0,95**: nelle prossime slide vediamo da dove vengono questi numeri
 
-
-::: {.notes}
-Esperimento con scripts/evaluate_improvements.py sulle stesse 50 FAQ (random_state=0).
-Passando titolo del documento e pagina al reranker (with_titles=True) e alle pagine
-(with_headers), e consentendo nel prompt di trarre conclusioni da elenchi tassativi
-(DEDUCTIVE_PROMPT), la correttezza standard sale da 0,538 a 0,590 con Flash e da
-0,592 a 0,628 con Argon (0,630 coi chunk). Sulle 13 FAQ deduttive (es. apprendistato
-faq-014, collaboratore occasionale faq-006/020, diagnosi energetiche faq-100) Flash
-sale da 0,292 a 0,415. Sulle 28 FAQ la cui risposta è esplicitamente nei documenti,
-Argon raggiunge 0,811 (Flash 0,768). Le restanti 9 FAQ dipendono da leggi esterne
-non presenti nel corpus (L.R. 14/2003 in faq-180 e faq-189, iperammortamento in faq-182),
-da un refuso del bando corretto nella FAQ (faq-107) o da dettagli operativi del portale.
-Valutando la correttezza senza penalizzare l'assenza di fonti esterne al contesto
-(grounded_correctness_metric), il punteggio medio è 0,946–0,968.
-:::
 
 ## Due interventi mirati {.approfondimento .smaller data-code="scripts/evaluate_improvements.py"}
 
@@ -182,13 +163,6 @@ agente = create_agent(chat_model(), tools=[cerca], system_prompt=REGOLE)
 
 Le stesse domande, cambiando una scelta alla volta
 
-::: {.notes}
-Nella chat, bando «Supporto ad interventi energetici e prevenzione sismica delle imprese»:
-domanda di esempio sul 70% dei rifiuti da costruzione (risposta in una slide senza testo).
-Con OCR la trova («letto con OCR» nei chunk letti); spegnere l'OCR e rifarla.
-Poi su un'altra domanda: reranking nessuno → bge → Gemini (guardare «posizione nella ricerca»),
-prompt prudente, 5 o 20 chunk. ≈ 10 minuti.
-:::
 
 ## Domande? {.standout .center background-color="#23373b"}
 

@@ -13,9 +13,6 @@
 Il retrieval fornisce fino a 5 chunk. Un LLM li usa per generare una risposta:
 ora valutiamo anche la qualità della risposta
 
-::: {.notes}
-≈ 25 minuti · da 1:05 a 1:30
-:::
 
 ```{python}
 #| echo: false
@@ -100,6 +97,13 @@ print(example["answer"])
 print("\n:::\n::::")
 ```
 
+## Il campione di valutazione
+
+- **50 FAQ estratte a caso**, con un seme fisso per ripetere il confronto
+- Le **risposte ufficiali sono scritte da persone**, pubblicate dalla Regione
+  - Le usiamo come riferimento per valutare la correttezza delle risposte generate
+- Prima vediamo un singolo caso, poi valutiamo l’intero campione
+
 ## "LLM as a judge": come viene fatto in pratica {data-code="src/ragcourse/judge.py"}
 
 ```{python}
@@ -154,14 +158,6 @@ criteri, registrando il modello giudice scelto
 Riprende le metriche introdotte da **RAGAS** (*Faithfulness*, *Answer Relevancy*, *Contextual Recall*), integrandole con test di regressione (`pytest`) e criteri personalizzabili (`GEval`)
 :::
 
-::: {.notes}
-Circa 5 minuti per questo blocco di cinque slide. Nel nostro progetto DeepEval
-è già installato. I test girano localmente, mentre il giudice scelto nel corso
-usa le API Google. L'account Confident AI e la dashboard sono opzionali.
-Fonte: https://deepeval.com/docs/getting-started
-Fonte: https://deepeval.com/docs/evaluation-introduction
-Gli esempi di questo blocco sono illustrativi; non avviano nuove valutazioni.
-:::
 
 ## Un caso di test: che cosa salviamo? {#deepeval-caso .approfondimento data-code="src/ragcourse/generation.py"}
 
@@ -194,12 +190,6 @@ case = LLMTestCase(
 Il riferimento serve per confrontare la risposta con la FAQ ufficiale. Per
 valutarne la fedeltà ai chunk bastano domanda, risposta e contesto
 
-::: {.notes}
-example, answer e found sono gli stessi dell'esempio già mostrato nel capitolo.
-actual_output è la risposta da valutare; expected_output è il riferimento.
-retrieval_context deve contenere i passaggi effettivamente forniti al generatore.
-Fonte: https://deepeval.com/docs/evaluation-test-cases
-:::
 
 ## Scegliere la metrica dalla domanda {#deepeval-scegliere-metrica data-code="src/ragcourse/judge.py"}
 
@@ -217,22 +207,6 @@ Fonte: https://deepeval.com/docs/evaluation-test-cases
 - **Richiamo del contesto** confronta i chunk solo con la FAQ, senza leggere la domanda
 - Per confrontare direttamente domanda e chunk, DeepEval offre anche *Contextual Relevancy*
 
-::: {.notes}
-Contextual Relevancy misura la pertinenza delle informazioni recuperate rispetto
-alla domanda: non garantisce che bastino per rispondere in modo completo.
-Answer Relevancy controlla la risposta generata; Faithfulness il suo allineamento
-fattuale al contesto. Nella configurazione del corso penalizziamo anche le
-affermazioni non verificabili, con penalize_ambiguous_claims=True.
-GEval permette di definire criteri personalizzati; qui li usiamo per la correttezza.
-La tabella descrive il confronto concettuale: ciascuna classe può richiedere
-anche altri campi nel test case. Negli esperimenti che seguono, la pertinenza
-misurata è Answer Relevancy; Contextual Relevancy è un possibile controllo del
-retrieval. Il richiamo alla risposta attesa è ancora una metrica distinta.
-Fonti: https://deepeval.com/docs/metrics-contextual-relevancy
-https://deepeval.com/docs/metrics-answer-relevancy
-https://deepeval.com/docs/metrics-faithfulness
-https://deepeval.com/docs/getting-started
-:::
 
 ## Eseguire la valutazione e leggere il risultato {#deepeval-eseguire .approfondimento data-code="src/ragcourse/judge.py"}
 
@@ -256,16 +230,6 @@ result = evaluate([case], [metric])
 - **Attenzione:** una soglia di 0,8 stabilisce quando il test viene superato!
   - non indica una probabilità dell'80% che la risposta sia corretta
 
-::: {.notes}
-La soglia 0,8 è un esempio didattico, da calibrare su casi revisionati da persone;
-non modifica le soglie usate negli esperimenti del corso. judge_model() è il nostro
-adattatore per usare Gemini Flash come giudice DeepEval, già presente nel progetto.
-Con evaluate possiamo passare una lista di casi e più metriche. Per un singolo
-caso possiamo anche chiamare metric.measure(case), come nella demo che segue.
-Nel report leggiamo i singoli casi e le motivazioni, oltre alle medie.
-Fonti: https://deepeval.com/docs/evaluation-introduction
-https://deepeval.com/docs/metrics-faithfulness
-:::
 
 ## Come si tara la soglia in pratica? {.approfondimento data-code="src/ragcourse/judge.py"}
 
@@ -278,21 +242,6 @@ Lo **0,8 è un punto di partenza didattico**: va verificato su esempi reali.
 4. Contare le risposte **non fedeli promosse** e quelle **fedeli bocciate**
 5. Scegliere in base al costo dei due errori e verificare su un **test set separato**
 
-::: {.small}
-La fedeltà riguarda il supporto nel contesto, non la correttezza rispetto alla FAQ.
-La soglia decide l'esito del test: non modifica la risposta e non attiva da sola
-l'astensione del sistema.
-:::
-
-::: {.notes}
-Separare casi duplicati o quasi identici tra validation e test. Usare una griglia
-esplicita per i revisori e risolvere i disaccordi. Tenere fissi metrica, modello giudice
-(e relativa versione), prompt e penalize_ambiguous_claims durante la taratura.
-La selezione della soglia è un problema di classificazione: il riferimento è il giudizio
-umano, il punteggio DeepEval è il segnale da confrontare con la soglia.
-Fonti: https://deepeval.com/docs/metrics-faithfulness
-https://scikit-learn.org/1.8/modules/classification_threshold.html
-:::
 
 ## Quali errori vogliamo evitare? {.approfondimento data-code="src/ragcourse/judge.py"}
 
@@ -305,19 +254,9 @@ Confrontiamo l'esito del test con il **giudizio umano sulle stesse risposte**:
 
 - **Alzare la soglia** riduce le risposte promosse, ma può bocciarne di fedeli
 - **Abbassarla** riduce le bocciature, ma può promuovere risposte non fedeli
-- Scegliere sul **validation set** in base al costo degli errori; verificare sul **test set**
+- Scegliere sul **validation set** in base al costo degli errori
+  - Verificare sul **test set**
 
-
-::: {.notes}
-La tabella descrive i due errori possibili, senza attribuire conteggi non misurati.
-Le FAQ ufficiali danno la risposta attesa, ma non sono etichette umane di fedeltà
-per ciascuna risposta generata rispetto ai chunk effettivamente recuperati.
-Per tarare la soglia occorre aggiungere queste revisioni ai casi reali del corso,
-conservando domanda, risposta, contesto e punteggio. Tenere fissi giudice e configurazione.
-La scelta esprime un compromesso tra falsi positivi e falsi negativi: alzando la soglia
-le risposte promosse formano un sottoinsieme di quelle promosse con una soglia inferiore.
-Fonte: https://scikit-learn.org/1.8/modules/classification_threshold.html
-:::
 
 ## Da una prova a un test di regressione {#deepeval-regressioni .approfondimento data-code="src/ragcourse/judge.py"}
 
@@ -343,17 +282,6 @@ uv run deepeval test run test_rag.py
 Un test che fallisce richiede l'esame del caso: il peggioramento può dipendere
 dalla pipeline oppure da un diverso giudizio del modello
 
-::: {.notes}
-Esempio schematico: test_rag.py deve contenere anche le definizioni di case e metric
-mostrate prima. assert_test verifica le soglie delle metriche e si integra con pytest.
-Conservare i risultati permette di confrontare esecuzioni e cambiamenti della pipeline.
-Nel corso abbiamo anche visto che il giudice può cambiare verdetto: un fallimento
-richiede ispezione, non equivale automaticamente a una regressione reale.
-Il comando mostrato esegue valutazioni LLM, quindi usa il modello giudice configurato.
-Da qui passiamo alla demo: osserviamo come Faithfulness valuta le singole affermazioni.
-Fonte: https://deepeval.com/docs/evaluation-unit-testing-in-ci-cd
-Guida iniziale: https://deepeval.com/docs/getting-started
-:::
 
 ## DeepEval in pratica: verificare la fedeltà {data-code="src/ragcourse/judge.py"}
 
@@ -396,26 +324,6 @@ Per esempio, se la risposta indica **5 milioni di euro** ma i chunk non indicano
 alcun importo, l'affermazione non è verificabile
 
 - Per impostazione predefinita DeepEval penalizza solo le contraddizioni esplicite, mentre qui scegliamo di penalizzare anche le affermazioni che non trovano riscontro nei chunk recuperati
-
-## Valutare la qualità delle citazioni {.approfondimento data-code="src/ragcourse/chat.py"}
-
-La **fedeltà** controlla l'**insieme dei chunk recuperati**, non se i rimandi `[1]`, `[2]` puntano al passaggio giusto:
-
-- **Validità formale**: gli indici `[n]` citati rientrano tutti nei $k$ chunk forniti (`1 ≤ n ≤ k`)?
-- **Precisione**: la frase è sostenuta proprio dal chunk `[n]` citato (`FaithfulnessMetric` sui soli chunk citati)?
-- **Pertinenza della fonte**: i chunk citati provengono dalle pagine *gold* della domanda?
-
-```{python}
-from ragcourse.chat import cited
-
-indices = cited(answer, found)                  # valid citations in 1..len(found)
-cited_chunks = [found[n - 1] for n in indices]  # only the passages the answer actually cites
-print("Chunk citati:", indices, "· pagina gold citata:", gold_found(cited_chunks, example))
-```
-
-::: {.muted .small}
-Sulle 28 risposte date nelle 50 FAQ: **100%** di citazioni valide (`1..5`); se la pagina *gold* è nei 5 chunk, è citata **20 volte su 21**
-:::
 
 ## Correttezza: definire i criteri con GEval {.approfondimento data-code="src/ragcourse/judge.py"}
 
@@ -465,7 +373,6 @@ with get_usage_metadata_callback() as generation_usage:  # count the tokens
     answers = chain.batch(inputs, config={"max_concurrency": 8})  # 8 requests at a time
 ```
 
-- 50 FAQ estratte a caso: le **risposte ufficiali sono scritte da persone**
 - `batch`: le chiamate al modello partono in parallelo, il retrieval resta sequenziale
 
 ```{python}
@@ -520,6 +427,27 @@ percorso["correttezza"]["partenza: e5-small, 5 chunk"] = means["correttezza"]
 - **Fedeltà e pertinenza**: calcolate sulle 28 risposte effettivamente date
 - **Correttezza e richiamo**: calcolate su tutte le 50 FAQ (non rispondere è un errore, perché la risposta nei documenti c'è)
 
+## Valutare la qualità delle citazioni {.approfondimento data-code="src/ragcourse/chat.py"}
+
+La **fedeltà** controlla l'**insieme dei chunk recuperati**, non se i rimandi `[1]`, `[2]` puntano al passaggio giusto:
+
+- **Validità formale**: gli indici `[n]` citati rientrano tutti nei $k$ chunk forniti (`1 ≤ n ≤ k`)?
+- **Precisione**: la frase è sostenuta proprio dal chunk `[n]` citato (`FaithfulnessMetric` sui soli chunk citati)?
+- **Pertinenza della fonte**: i chunk citati provengono dalle pagine *gold* della domanda?
+
+```{python}
+from ragcourse.chat import cited
+
+indices = cited(answer, found)                  # valid citations in 1..len(found)
+cited_chunks = [found[n - 1] for n in indices]  # only the passages the answer actually cites
+print("Chunk citati:", indices, "· pagina gold citata:", gold_found(cited_chunks, example))
+```
+
+::: {.muted .small}
+- Sulle 28 risposte date nelle 50 FAQ: **100%** di citazioni valide (`1..5`)
+  - Se la pagina *gold* è nei 5 chunk, è citata **20 volte su 21**
+:::
+
 ## Confronto tra diversi generatori {#stessi-documenti-un-altro-generatore .approfondimento data-code="scripts/compare_generators.py,scripts/plot_generator_comparison.py"}
 
 ![](assets/experiment-generator-comparison-open.svg){.r-stretch}
@@ -530,41 +458,6 @@ percorso["correttezza"]["partenza: e5-small, 5 chunk"] = means["correttezza"]
 Gemma (pesi aperti, via API), giudice Flash. Fedeltà e pertinenza sono calcolate sulle 29 risposte comuni ai tre modelli
 :::
 
-::: {.notes}
-Esperimento del 7 novembre 2026: Gemini 3.8 Flash, Gemini 4 Argon e Gemma 4 31B IT,
-stesse 50 FAQ estratte con random_state=0, stesso prompt e identici 5 chunk. Retrieval e5-small,
-chunk di 1000 caratteri con overlap 200, filtro per bando, senza reranking.
-Gemma è un modello a pesi aperti eseguito tramite API Google, senza inferenza locale.
-Il giudice resta Gemini Flash, in chiamate separate, con gli stessi quattro criteri.
-Correttezza Flash / Argon / Gemma: 0,252 / 0,356 / 0,328. Astensioni: 21 / 5 / 12.
-Argon rispetto a Flash: +0,104; IC bootstrap appaiato al 95% +0,044 / +0,170;
-26 miglioramenti, 16 parità, 8 peggioramenti.
-Gemma rispetto a Flash: +0,076; IC +0,028 / +0,128; 19 miglioramenti, 27 parità,
-4 peggioramenti. Non abbiamo misurato un intervallo Argon contro Gemma.
-Tutti e tre rispondono alle 29 domande a cui risponde Flash. Su queste stesse
-domande: fedeltà 0,744 / 0,759 / 0,731; pertinenza 0,980 / 0,877 / 0,961.
-Correttezza e richiamo includono tutte le 50 FAQ. Il richiamo è 0,106 per tutti:
-misura la quota di frasi della risposta ufficiale sostenute dal contesto, mediata
-sulle FAQ. 40 FAQ su 50 hanno richiamo nullo secondo il giudice. Una pagina gold
-compare nei chunk di 34 FAQ, ma 25 di queste hanno comunque richiamo zero nella
-prima valutazione: il giudice non attribuisce la frase completa ai frammenti.
-Esempio faq-014: la FAQ esclude l'apprendistato; i chunk non esplicitano tale
-esclusione. Il punteggio da solo non distingue tra passaggi mancanti e un giudizio
-troppo severo su una frase solo parzialmente supportata: serve ispezionare i casi.
-Audit successivo sui 25 zeri con pagina gold recuperata, senza cache LLM né
-cache dei risultati DeepEval: stessi cinque chunk, 24 restano a zero e faq-144
-passa a 0,5. Valutando separatamente i 46 chunk delle pagine gold già presenti,
-faq-198 e faq-210 arrivano a 1 su almeno un chunk, pur avendo 0 sul contesto
-completo. I cambi di verdetto mostrano sensibilità del giudice: non stabiliscono
-automaticamente quale dei due giudizi sia corretto. FAQ-090 mostra invece un
-taglio concreto: il chunk si interrompe prima del limite del 25%, che è presente
-nella pagina completa. Inoltre il prompt Contextual Recall non include la domanda:
-risposte FAQ come «È corretto» perdono il riferimento necessario a interpretarle.
-L'audit è salvato separatamente: slides/assets/experiment-context-recall-audit.json.
-Il valore 0,11 non va quindi interpretato come prova di 25 fallimenti certi del retrieval.
-Il modello giudice non è indipendente da Flash: confronto sul campione,
-non una valutazione generale dei tre modelli.
-:::
 
 ## Analisi: perché la correttezza è bassa? {data-code="src/ragcourse/judge.py"}
 
@@ -614,18 +507,6 @@ print(f"::: {{.muted}}\nPagina giusta nei 5 chunk: {has_gold.sum()} domande su "
 Stessi 5 chunk e stesso giudice (Gemini Flash). I casi a zero scendono da 41 a 10 su 50
 :::
 
-::: {.notes}
-ContextualRecallMetric di DeepEval passa al giudice solo expected_output e
-retrieval_context, senza la domanda (input). Risposte ufficiali brevi o ellittiche
-come «Confermata» (faq-109) o «Sì, quindi il termine è il 28/08/2025» (faq-037),
-oppure FAQ che deducono un caso particolare da una regola generale del bando
-(es. apprendistato in faq-014), ricevono 0,00 anche quando la pagina gold è nei
-5 chunk. Con context_coverage_metric (GEval con INPUT, EXPECTED_OUTPUT e
-RETRIEVAL_CONTEXT) valutiamo se i chunk contengono le regole necessarie per
-rispondere alla domanda: la media sale da 0,10 a 0,46 su tutte le 50 FAQ, da 0,03
-a 0,13 quando la pagina gold manca (16 FAQ) e da 0,13 a 0,61 quando la pagina gold
-è presente nei 5 chunk (34 FAQ).
-:::
 
 ## Analisi di un caso di errore {data-code="src/ragcourse/generation.py"}
 

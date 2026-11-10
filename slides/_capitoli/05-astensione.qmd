@@ -8,9 +8,6 @@
 
 Quando i documenti non contengono la risposta, è preferibile che il sistema si astenga piuttosto che fornire informazioni non confermate dai documenti
 
-::: {.notes}
-≈ 10 minuti · da 1:30 a 1:40
-:::
 
 ```{python}
 #| echo: false

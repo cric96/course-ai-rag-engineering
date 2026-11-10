@@ -8,9 +8,6 @@
 
 Come ultimo passaggio del retrieval, proviamo a riordinare i chunk recuperati usando un modello più accurato
 
-::: {.notes}
-≈ 8 minuti · da 2:12 a 2:20, poi 10 minuti di pausa
-:::
 
 ```{python}
 #| echo: false
@@ -19,7 +16,7 @@ from ragcourse.chapters import new_chapter
 
 new_chapter()  # a clean start: indexes closed, variables forgotten (but `percorso`)
 
-# Baseline: hybrid search (bge-m3 + BM25), filter by call, 10 chunks; ranx on 227 questions.
+# Baseline: hybrid search (bge-m3 + BM25), filter by call, 10 chunks, ranx on 227 questions.
 import ragcourse  # first: turns DeepEval telemetry off
 
 import gc
@@ -170,7 +167,7 @@ for name in ["nessuno", *rerankers]:
                                     top_n=10)
     runs[name] = retrieval_run(retriever, with_pages, name=name, by_call=True)
     del retriever
-    free_gpu()  # "nessuno": the 10 hybrid chunks; the others: best 10 of 30 candidates
+    free_gpu()  # "nessuno": the 10 hybrid chunks, the others: best 10 of 30 candidates
 ```
 
 ```{python}
@@ -191,6 +188,9 @@ rerank_seconds["gemini (lista)"] = gemini.seconds
 
 ## Risultati: confronto tra i reranker {data-code="src/ragcourse/viz.py"}
 
+:::: {.columns}
+::: {.column width="50%"}
+
 ```{python}
 #| echo: false
 results = pd.DataFrame({name: evaluate(qrels, run, metrics) for name, run in runs.items()})
@@ -201,7 +201,8 @@ bar_chart(hit5, gray=["nessuno"], fmt="{:.0%}",
           title=f"hit@5: {best} {hit5[best]:.0%}, senza reranking {hit5['nessuno']:.0%}")
 ```
 
-## Tempi di risposta del reranking {data-code="src/ragcourse/rerank.py,src/ragcourse/viz.py"}
+:::
+::: {.column width="50%"}
 
 ```{python}
 #| echo: false
@@ -211,6 +212,9 @@ bar_chart(ms, gray=[name for name in ms.index if name != "gemini (lista)"], fmt=
           title="Tempo per riordinare 30 candidati, per domanda")
 ```
 
+:::
+::::
+
 - Su GPU, i reranker locali valutano le 30 coppie domanda-chunk in poche centinaia di millisecondi
 - Il riordinamento tramite LLM *listwise* valuta tutti i candidati insieme, ma richiede diversi secondi e una chiamata API a pagamento
 
@@ -218,23 +222,11 @@ bar_chart(ms, gray=[name for name in ms.index if name != "gemini (lista)"], fmt=
 
 ![](assets/experiment-rerank-candidates.svg){.r-stretch}
 
-- **Gemini**: hit@5 **86,3% con 30**; salire a 50 non migliora il risultato (**85,9%**)
-- **Qwen3**: hit@5 quasi invariato (**78,0–78,4%**); 20 candidati richiedono meno calcolo
+- **Gemini**: hit@5 **86,3% con 30**
+  - Salire a 50 non migliora il risultato (**85,9%**)
+- **Qwen3**: hit@5 quasi invariato (**78,0–78,4%**)
+  - 20 candidati richiedono meno calcolo
 
-::: {.notes}
-Esperimento sulle stesse 227 domande con pagine gold: bge-m3 + BM25, filtro per bando,
-chunk da 1000 caratteri, 10 chunk finali. Gemini 3.8 Flash listwise con thinking low;
-Qwen3-Reranker-0.6B in locale. Le ricerche a 20, 30 e 50 sono eseguite separatamente:
-con la fusione RRF non assumiamo che i primi 20 di una lista da 50 coincidano
-con una ricerca a 20. La presenza di una pagina gold nella rosa iniziale passa
-da 88,1% a 89,9% a 91,2%, ma non si traduce in un miglioramento di hit@5 dopo il reranking.
-Il confronto è esplorativo: piccole differenze non dimostrano una superiorità generale.
-Il report include intervalli bootstrap appaiati sulle domande. Non sono ripetizioni
-indipendenti del modello: gli intervalli non misurano la variabilità tra chiamate LLM.
-Misuriamo il retrieval; non abbiamo ripetuto la valutazione della generazione.
-Riproduzione: uv run python scripts/compare_rerank_candidates.py
-Risultati: assets/experiment-rerank-candidates.json
-:::
 
 ## Quanto costa ampliare la ricerca? {.approfondimento data-code="scripts/compare_rerank_candidates.py"}
 
@@ -253,21 +245,6 @@ senza cache. Per questa prova la nuova spesa stimata è **2,88 USD**:
 le 227 chiamate a 30 candidati erano già salvate.
 :::
 
-::: {.notes}
-Tempi medi Qwen3: 0,3718 / 0,5843 / 0,9215 secondi. Esclusi caricamento del modello e
-retrieval. Per 30 candidati riusiamo punteggi e tempi dell'esecuzione precedente;
-20 e 50 sono stati misurati durante questa prova. I tempi possono variare con il carico GPU.
-Token Gemini, ingresso/uscita: 991164/20985 (20), 1479031/34638 (30),
-2434732/61602 (50). Prezzi introduttivi verificati il 9 novembre 2026:
-0,75 USD/M in ingresso e 3,75 USD/M in uscita, inclusi i token di ragionamento.
-Stime a prezzo pieno: eventuali sconti di caching del provider e la fattura possono differire.
-Nuove chiamate: 454, per 20 e 50 candidati; costo stimato 0,8221 + 2,0571 = 2,8791 USD.
-La cache locale rende gratuita la riproduzione delle chiamate identiche già completate.
-La pipeline del resto del corso resta a 30 candidati; il confronto consente di motivare
-la scelta di 30 per Gemini e di provare 20 per Qwen3, soprattutto se conta hit@5.
-Fonte prezzi: https://ai.google.dev/gemini-api/docs/pricing
-Risultati: assets/experiment-rerank-candidates.json
-:::
 
 ## Impatto del reranking sulla generazione {data-code="src/ragcourse/generation.py,src/ragcourse/judge.py,src/ragcourse/rerank.py"}
 

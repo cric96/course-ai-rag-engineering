@@ -8,9 +8,6 @@
 
 Finora abbiamo utilizzato solo il testo direttamente estraibile dai PDF, lasciando fuori le pagine composte da immagini o scansioni
 
-::: {.notes}
-≈ 10 minuti · da 2:30 a 2:40
-:::
 
 ```{python}
 #| echo: false
@@ -19,7 +16,7 @@ from ragcourse.chapters import new_chapter
 
 new_chapter()  # a clean start: indexes closed, variables forgotten (but `percorso`)
 
-# Baseline: hybrid index (bge-m3 + BM25), filter by call; OCR results from scripts/ocr_pages.py.
+# Baseline: hybrid index (bge-m3 + BM25), filter by call, OCR results from scripts/ocr_pages.py.
 import ragcourse  # first: turns DeepEval telemetry off
 
 import textwrap
@@ -79,10 +76,10 @@ Nei documenti reali contano anche **tabelle a più colonne, moduli, intestazioni
 ::: {.small}
 | Approccio | Strumenti tipici | Che cosa restituisce | Quando serve |
 |---|---|---|---|
-| **Solo testo** | `PyMuPDF` (`fitz`), `pypdf` | Flusso di caratteri del PDF, senza struttura | Testi discorsivi e bandi con impaginazione semplice |
-| **OCR classico** | `Tesseract`, `EasyOCR` | Testo riga per riga dall'immagine della pagina | Scansioni di testo semplice, su CPU |
-| **Parsing strutturato** | `Docling`, `Marker`, `Unstructured` | **Markdown / JSON** con sezioni e tabelle ricostruite | Tabelle complesse, bilanci, impaginazione su più colonne |
-| **Modelli visivi (VLM)** | `Qwen3-VL`, `Gemini Flash` | Testo o Markdown letto guardando la pagina | Slide, infografiche e scansioni difficili |
+| **Solo testo** | [PyMuPDF](https://pymupdf.readthedocs.io/){target="_blank" rel="noopener noreferrer"} (`fitz`), [pypdf](https://pypdf.readthedocs.io/){target="_blank" rel="noopener noreferrer"} | Flusso di caratteri del PDF, senza struttura | Testi discorsivi e bandi con impaginazione semplice |
+| **OCR classico** | [Tesseract](https://tesseract-ocr.github.io/){target="_blank" rel="noopener noreferrer"}, [EasyOCR](https://github.com/JaidedAI/EasyOCR){target="_blank" rel="noopener noreferrer"} | Testo riga per riga dall'immagine della pagina | Scansioni di testo semplice, su CPU |
+| **Parsing strutturato** | [Docling](https://docling-project.github.io/docling/){target="_blank" rel="noopener noreferrer"}, [Marker](https://github.com/datalab-to/marker){target="_blank" rel="noopener noreferrer"}, [Unstructured](https://docs.unstructured.io/){target="_blank" rel="noopener noreferrer"} | **Markdown / JSON** con sezioni e tabelle ricostruite | Tabelle complesse, bilanci, impaginazione su più colonne |
+| **Modelli visivi (VLM)** | [Qwen3-VL](https://github.com/QwenLM/Qwen3-VL){target="_blank" rel="noopener noreferrer"}, [Gemini Flash](https://ai.google.dev/gemini-api/docs/models){target="_blank" rel="noopener noreferrer"} | Testo o Markdown letto guardando la pagina | Slide, infografiche e scansioni difficili |
 : {tbl-colwidths="[22,22,28,28]"}
 :::
 
@@ -138,7 +135,8 @@ for engine, label in engines.items():
 ::::
 
 ::: {.muted}
-Tesseract scrive "gererali", "Irmoltre": errori che la ricerca per parole non perdona
+Tesseract scrive "gererali", "Irmoltre":
+errori che potrebbero confondere il modello di generazione (e la ricerca)
 :::
 
 ## Tempi di estrazione e testo prodotto {.approfondimento data-code="scripts/ocr_pages.py,src/ragcourse/viz.py"}

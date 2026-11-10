@@ -12,9 +12,6 @@
 
 In alternativa all'OCR, possiamo indicizzare direttamente le immagini delle pagine e passarle a un modello multimodale in fase di generazione
 
-::: {.notes}
-Approfondimento facoltativo: saltare nel percorso di tre ore. Se lo si mostra, ridurre altri blocchi.
-:::
 
 ```{python}
 #| echo: false
@@ -216,7 +213,7 @@ from langchain_core.callbacks import get_usage_metadata_callback
 answers, tokens = {}, {}
 sources = {"OCR Tesseract": lambda q: from_text(tesseract_retriever, q),
            "OCR Gemini": lambda q: from_text(ocr_retriever, q),
-           "guarda le pagine": from_pictures}
+           "Visual RAG (immagini)": from_pictures}
 for name, answer in sources.items():
     with get_usage_metadata_callback() as usage:  # input tokens, also from the cache
         answers[name] = [answer(q) for q in on_images]
@@ -249,13 +246,14 @@ compare_chart(scores.mean().to_frame("correttezza").T, fmt="{:.2f}",
 ```
 
 ::: {.muted}
-Risposte attese scritte da Gemini guardando la pagina (capitolo sui dati): un vantaggio per chi guarda
+- Le risposte attese sono state generate da Gemini a partire dalle immagini delle pagine
+  - Questo può favorire la valutazione dell'approccio visivo
 :::
 
 ## Analisi: OCR contro Visual RAG {.approfondimento data-code="src/ragcourse/evaluation.py,src/ragcourse/viz.py"}
 
 - **Trovare**: l'indice delle immagini trova la pagina giusta nel **100%** delle domande sulle immagini, senza leggere una parola
-- **Rispondere**: guardare la pagina (**0,95**) vale quanto un buon OCR (**0,97**), mentre un OCR con errori ottiene un punteggio più basso (**0,88**)
+- **Rispondere**: generare dalle immagini delle pagine (**0,95**) dà risultati simili a un buon OCR (**0,97**), mentre un OCR con errori ottiene un punteggio più basso (**0,88**)
 - **Costi**: **2.396** token in ingresso per risposta con 10 chunk di testo contro **3.452** con 3 immagini (e l'indice delle immagini richiede una GPU)
 - **In pratica**: conviene usare l'OCR come base perché è semplice e compatibile con la ricerca testuale, riservando le immagini ai casi in cui contano impaginazione, tabelle e grafici
 

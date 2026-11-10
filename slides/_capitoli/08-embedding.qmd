@@ -12,9 +12,6 @@
 
 Il modello di embedding trasforma in vettori sia i documenti sia le domande: confrontiamo diverse alternative locali e via API
 
-::: {.notes}
-≈ 8 minuti · da 1:57 a 2:05
-:::
 
 ```{python}
 #| echo: false

@@ -31,7 +31,7 @@
 |------|-----------------------|
 | Retrieval | filtri sui metadati (es. per bando), quanti chunk in input al modello, ricerca ibrida, reranking |
 | Generazione | che prompt scegliere, che vincoli applicare |
-| Chunking | dimensione dei chunk, metodi di splitting |
+| Chunking | dimensione dei chunk |
 | Embedding | modelli di embedding, dimensioni, on-device vs. cloud |
 | Lettura dei documenti | OCR o pagine lette come immagini |
 : {tbl-colwidths="[30,70]"}
@@ -61,21 +61,4 @@ Quindi, proveremo a:
 3. Cambiare **una scelta alla volta** e vedere l'impatto sulle prestazioni
 
 
-
-> _Nota_: non faremo in tempo a rieseguire tutti gli esperimenti, ma i risultati mostrati
-nelle slide derivano dall'esecuzione della pipeline. Potete riusare il codice per fare
-le vostre prove o come base per costruire la vostra pipeline RAG
-
 ## Demo: RAG su documenti regionali {.standout .center background-color="#23373b" data-code="app/chat.py"}
-
-
-::: {.notes}
-Percorso di tre ore: apertura e demo entro 0:15. Le slide viola sono approfondimenti
-facoltativi: saltarle per mantenere il tempo per la demo finale e le domande.
-
-`uv run streamlit run app/chat.py`, aperta prima della lezione (carica i modelli in ~20 s).
-Bando «Sostegno allo sviluppo delle startup innovative», ragionamento basso.
-Domanda: «Le startup innovative possono chiedere il contributo per l'affitto dei locali?».
-Mostrare: Dietro le quinte, le citazioni cliccabili, le fonti, il prompt. Poi spegnere
-«Usa i documenti» e rifare la domanda: risponde «sì», in modo generico. ≈ 5 minuti.
-:::

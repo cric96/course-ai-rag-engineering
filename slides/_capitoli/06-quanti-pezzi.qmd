@@ -8,9 +8,6 @@
 
 Finora abbiamo passato 5 chunk al modello. Aumentare il numero di chunk alza la probabilità di includere le informazioni giuste, ma introduce anche più testo irrilevante e aumenta i costi
 
-::: {.notes}
-≈ 10 minuti · da 1:40 a 1:50
-:::
 
 ```{python}
 #| echo: false
@@ -115,7 +112,7 @@ bar_chart(in_context, gray=["5 chunk"], fmt="{:.0%}",
 ```{python}
 #| output: false
 def answer_with(k: int):
-    """Every answer, with k chunks in the prompt; also counts the tokens."""
+    """Every answer, with k chunks in the prompt, also counts the tokens."""
     retriever = store.as_retriever(search_kwargs={"k": k})
     found = [retriever.invoke(q["question"], filter=metadata_filter(call=q["call"]))
              for q in questions]
@@ -157,21 +154,6 @@ percorso["correttezza"]["+ 10 chunk al modello"] = results.loc["correttezza", "1
 - **Correttezza e richiamo**: calcolati sulle 50 FAQ con risposta attesa (giudice Flash)
 - **Fedeltà**: calcolata sulle sole risposte effettivamente date
 
-::: {.notes}
-Richiamo ricalcolato il 7 novembre 2026 con scripts/compare_context_recall_k.py,
-senza rigenerare risposte. Contesti effettivi di questo capitolo recuperati dalla
-cache memory:e5-small-1000, con filtro per bando; stesse 50 FAQ (random_state=0).
-Misuriamo ContextualRecallMetric standard contro la FAQ ufficiale, con giudice
-Gemini 3.8 Flash. I contesti sono annidati 5 ⊆ 10 ⊆ 20 per tutte le 50 domande.
-Medie: 0,09956 / 0,16011 / 0,18367; casi a zero: 41 / 36 / 36.
-Il dato descrive la copertura stimata dal giudice, non l'uso del contesto da parte
-del generatore. Restano i limiti emersi nell'audit: il prompt di questa metrica
-non include la domanda e alcuni giudizi cambiano isolando un chunk.
-Il riferimento a 5 chunk è quello di questo capitolo: non riutilizziamo il valore
-del confronto tra generatori, che usa l'indice su disco e differisce in 3 contesti.
-Risultati per FAQ: slides/assets/experiment-context-recall-k.json; contesti e
-motivazioni complete: .cache/context-recall-k.json.
-:::
 
 ## Copertura del contesto al variare di k {.approfondimento data-code="scripts/evaluate_improvements.py,src/ragcourse/judge.py"}
 
@@ -183,15 +165,6 @@ motivazioni complete: .cache/context-recall-k.json.
 Stessi contesti salvati (5, 10, 20 chunk) e stesso giudice (Gemini Flash) sulle 50 FAQ
 :::
 
-::: {.notes}
-ContextualRecallMetric di DeepEval confronta solo le frasi della risposta ufficiale
-con i chunk recuperati, senza includere la domanda nel prompt del giudice. Risposte
-brevi o ellittiche come «Confermata» (faq-109) o «Sì, quindi il termine è il 28/08/2025»
-(faq-037) ricevono 0,00 anche quando la pagina gold è nei chunk. Con context_coverage_metric
-(GEval con INPUT, EXPECTED_OUTPUT e RETRIEVAL_CONTEXT) valutiamo se i chunk contengono
-le regole necessarie per rispondere alla domanda: la media sale a 0,46 / 0,57 / 0,64
-per 5, 10 e 20 chunk, e gli zeri passano da 41 / 36 / 36 a 10 / 7 / 5.
-:::
 
 ## Analisi: perché la fedeltà cala con k=20? {.approfondimento data-code="src/ragcourse/judge.py"}
 

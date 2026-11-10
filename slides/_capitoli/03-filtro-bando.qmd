@@ -12,9 +12,6 @@
 
 Prima correzione: filtriamo la ricerca per bando, senza cambiare modello
 
-::: {.notes}
-≈ 15 minuti · da 0:50 a 1:05
-:::
 
 ```{python}
 #| echo: false
@@ -246,9 +243,3 @@ print(f"- **In basso** → riordinare i risultati: *reranking*\n"
 - **Dal contesto**: la domanda è fatta dalla pagina del bando, o da un menu
 - **Dalla domanda**: se la nomina, un LLM può estrarre il filtro (*self-query*)
 - **Non si sa**: chiederlo all'utente, o cercare in tutto l'indice
-
-::: {.callout-note}
-## Un'ipotesi favorevole
-Nel nostro set ogni FAQ appartiene a un bando, quindi il bando giusto è sempre noto.
-In produzione va verificato: un filtro sbagliato esclude proprio le pagine giuste
-:::
