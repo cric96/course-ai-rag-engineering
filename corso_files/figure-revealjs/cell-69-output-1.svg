@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-09T13:07:06.969350</dc:date>
+    <dc:date>2026-11-10T17:36:24.182374</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -45,7 +45,7 @@ L 295.797439 48.709505
 L 295.797439 81.34704 
 L 100.449687 81.34704 
 z
-" clip-path="url(#p0c40bd8021)" style="fill: #c3c9ca"/>
+" clip-path="url(#p39518a4c44)" style="fill: #c3c9ca"/>
    </g>
    <g id="patch_4">
     <path d="M 100.449687 177.54188 
@@ -53,7 +53,7 @@ L 684.10395 177.54188
 L 684.10395 210.179415 
 L 100.449687 210.179415 
 z
-" clip-path="url(#p0c40bd8021)" style="fill: #c3c9ca"/>
+" clip-path="url(#p39518a4c44)" style="fill: #c3c9ca"/>
    </g>
    <g id="patch_5">
     <path d="M 100.449687 83.064805 
@@ -61,7 +61,7 @@ L 392.689924 83.064805
 L 392.689924 115.70234 
 L 100.449687 115.70234 
 z
-" clip-path="url(#p0c40bd8021)" style="fill: #eb811b"/>
+" clip-path="url(#p39518a4c44)" style="fill: #eb811b"/>
    </g>
    <g id="patch_6">
     <path d="M 100.449687 211.89718 
@@ -69,7 +69,7 @@ L 625.126124 211.89718
 L 625.126124 244.534715 
 L 100.449687 244.534715 
 z
-" clip-path="url(#p0c40bd8021)" style="fill: #eb811b"/>
+" clip-path="url(#p39518a4c44)" style="fill: #eb811b"/>
    </g>
    <g id="patch_7">
     <path d="M 100.449687 117.420105 
@@ -77,7 +77,7 @@ L 436.447821 117.420105
 L 436.447821 150.05764 
 L 100.449687 150.05764 
 z
-" clip-path="url(#p0c40bd8021)" style="fill: #23373b"/>
+" clip-path="url(#p39518a4c44)" style="fill: #23373b"/>
    </g>
    <g id="patch_8">
     <path d="M 100.449687 246.25248 
@@ -85,7 +85,7 @@ L 408.047845 246.25248
 L 408.047845 278.890015 
 L 100.449687 278.890015 
 z
-" clip-path="url(#p0c40bd8021)" style="fill: #23373b"/>
+" clip-path="url(#p39518a4c44)" style="fill: #23373b"/>
    </g>
    <g id="matplotlib.axis_1">
     <g id="ytick_1">
@@ -1134,7 +1134,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p0c40bd8021">
+  <clipPath id="p39518a4c44">
    <rect x="100.449687" y="37.20048" width="612.836976" height="253.19856"/>
   </clipPath>
  </defs>
