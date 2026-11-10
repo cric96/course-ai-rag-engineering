@@ -1,6 +1,13 @@
 from langchain_core.documents import Document
 
-from ragcourse.chat import call_label, cited, link_citations
+from ragcourse.chat import (
+    call_label,
+    cited,
+    dollars,
+    link_citations,
+    seconds,
+    thousands,
+)
 
 
 def chunk(url: str, page: int) -> Document:
@@ -36,3 +43,15 @@ def test_link_citations_keeps_lists_and_unknown_numbers_readable():
     linked = link_citations("Vedi [1, 7].", CHUNKS)
 
     assert linked == r"Vedi \[[1](https://x/bando.pdf#page=4), 7\]."
+
+
+def test_numbers_use_the_italian_separators():
+    assert seconds(1.25) == "1,2 s"
+    assert thousands(12345) == "12.345"
+
+
+def test_dollars_shows_tiny_and_missing_costs():
+    assert dollars(None) == "non disponibile"
+    assert dollars(0) == "0,00 USD"
+    assert dollars(1e-9) == "< 0,000001 USD"
+    assert dollars(0.0123) == "0,012300 USD"

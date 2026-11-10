@@ -38,3 +38,22 @@ def link_citations(answer: str, chunks: list[Document]) -> str:
         return r"\[" + ", ".join(link(n) for n in numbers(match)) + r"\]"
 
     return CITATION.sub(replace, answer)
+
+
+def seconds(t: float) -> str:
+    return f"{t:.1f} s".replace(".", ",")
+
+
+def thousands(n: int) -> str:
+    return f"{n:,}".replace(",", ".")
+
+
+def dollars(value: float | None) -> str:
+    """A cost in USD, readable even when tiny or unknown."""
+    if value is None:
+        return "non disponibile"
+    if value == 0:
+        return "0,00 USD"
+    if value < 0.000001:
+        return "< 0,000001 USD"
+    return f"{value:.6f} USD".replace(".", ",")
