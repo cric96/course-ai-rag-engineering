@@ -20,7 +20,7 @@ format:
     width: 1280
     height: 720
     margin: 0  # title bars reach the screen edges, as in Metropolis
-    slide-number: c/t
+    slide-number: false  # no page counter in the corner
     hash: true
     transition: none
     syntax-highlighting: code.theme  # bold orange keywords, Metropolis palette

@@ -184,13 +184,6 @@ $footer-band: 40px; // bottom of the slide kept free for the study links
   color: $m-orange;
 }
 
-.reveal .slide-number {
-  color: $m-muted;
-  font-family: $font-family-sans-serif;
-  background: transparent;
-  font-size: 0.5em;
-}
-
 // Lists: orange markers, a little air between items.
 .reveal ul li::marker,
 .reveal ol li::marker {
@@ -402,7 +395,7 @@ $arrow: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   bottom: 8px;
   left: $gutter - 7px; // text aligned with the slide content
   z-index: 30;
-  max-width: calc(100% - 2 * $gutter - 80px); // clear of the slide number
+  max-width: calc(100% - 2 * $gutter);
   padding: 3px 7px;
   border-radius: 3px;
   background: $m-background;
