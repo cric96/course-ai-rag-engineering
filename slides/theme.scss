@@ -392,7 +392,8 @@ $arrow: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
 
 .reveal .slide-code-footer {
   position: absolute;
-  bottom: 8px;
+  // Screen bottom, also below the top-pinned canvas on screens taller than 16:9 (e.g. 16:10).
+  bottom: calc(8px - max(0px, 100vh / var(--slide-scale, 1) - var(--slide-height, 100vh)));
   left: $gutter - 7px; // text aligned with the slide content
   z-index: 30;
   max-width: calc(100% - 2 * $gutter);
