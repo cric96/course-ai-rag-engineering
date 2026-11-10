@@ -6,7 +6,7 @@
       slide.style.setProperty("--progress", `${(100 * i) / (slides.length - 1)}%`);
     });
 
-    // Keep the study links outside the scaled canvas, like Reveal's slide number.
+    // One footer shows the current slide's study links, in the canvas band theme.scss keeps free.
     // Each slide retains its own links in the HTML for printing and inspection.
     const title = document.getElementById("title-slide");
     const firstLinks = document.querySelector(".slide-code-links");
@@ -24,7 +24,8 @@
     const footer = document.createElement("nav");
     footer.className = "slide-code-footer";
     footer.setAttribute("aria-label", "Codice della slide");
-    document.querySelector(".reveal").append(footer);
+    const canvas = document.querySelector(".reveal .slides");
+    canvas.append(footer);  // scaled with the slide, so the band is the same on every screen
     const updateLinks = () => {
       const slide = Reveal.getCurrentSlide();
       const links = slide?.querySelector(":scope > .slide-code-links");
@@ -34,6 +35,29 @@
     Reveal.on("ready", updateLinks);
     Reveal.on("slidechanged", updateLinks);
     if (Reveal.isReady()) updateLinks();
+
+    // Long slides: shrink the body (not the title bar) until it clears the footer band.
+    const fit = (slide) => {
+      if (!slide || slide.dataset.fit || !slide.offsetHeight) return;  // done, or not laid out yet
+      const body = [...slide.children].filter((child) => !child.matches("h1, h2, .slide-code-links, aside"));
+      const box = canvas.getBoundingClientRect();
+      const band = parseFloat(getComputedStyle(slide).paddingBottom);  // $footer-band
+      const limit = box.bottom - (band * box.height) / Reveal.getConfig().height;
+      const bottom = () => Math.max(0, ...body.map((child) => child.getBoundingClientRect().bottom));
+      let zoom = 1;
+      while (bottom() > limit && zoom > 0.8) {
+        zoom = Math.round(100 * zoom - 2) / 100;
+        body.forEach((child) => { child.style.zoom = zoom; });
+      }
+      slide.dataset.fit = zoom;
+      if (bottom() > limit) console.warn(`Slide too long even at ${zoom}:`, slide.id);
+    };
+    const startFitting = () => {
+      Reveal.layout();  // stretched charts measured again with the web fonts loaded
+      Reveal.getSlides().forEach(fit);  // slides not laid out yet are fitted when shown
+      Reveal.on("slidechanged", (event) => fit(event.currentSlide));
+    };
+    document.fonts.ready.then(() => (Reveal.isReady() ? startFitting() : Reveal.on("ready", startFitting)));
 
     const walker = document.createTreeWalker(document.querySelector(".reveal .slides"), NodeFilter.SHOW_TEXT, {
       acceptNode(node) {

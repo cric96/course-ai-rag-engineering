@@ -33,6 +33,7 @@ $code-block-border-color: $m-tint;
 
 /*-- scss:rules --*/
 $gutter: 56px; // left and right margin of the slide content
+$footer-band: 40px; // bottom of the slide kept free for the study links
 
 // Keep the slide at the top when the viewport is taller than its 16:9 canvas.
 .reveal .slides {
@@ -45,9 +46,10 @@ $gutter: 56px; // left and right margin of the slide content
 }
 
 // The slide fills the screen (margin: 0 in _quarto.yml); the gutter is inside it.
+// The bottom padding shrinks stretched charts; progress.html compacts longer slides.
 .reveal .slides section.slide {
   box-sizing: border-box;
-  padding: 0 $gutter;
+  padding: 0 $gutter $footer-band;
 }
 
 // Stretched charts (.r-stretch) are sized to the full slide: keep them inside the gutter.
@@ -132,7 +134,7 @@ $gutter: 56px; // left and right margin of the slide content
 
 // Section slides: big title over a progress bar (filled by progress.html).
 .reveal .slides section.slide.level1 {
-  padding: 0 $gutter * 1.5;
+  padding: 0 $gutter * 1.5 $footer-band;
 
   h1 {
     font-size: 1.6em;
@@ -390,25 +392,26 @@ $arrow: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   color: #ffffff;
 }
 
-// Study links share the viewport footer with the slide number, without resizing charts.
+// Study links: one footer inside the scaled canvas, in the band no slide content uses.
 .reveal .slide-code-links {
   display: none;
 }
 
 .reveal .slide-code-footer {
   position: absolute;
-  bottom: 12px;
-  left: 60px; // leave room for Quarto's slide-menu button
+  bottom: 8px;
+  left: $gutter - 7px; // text aligned with the slide content
   z-index: 30;
-  max-width: calc(100% - 180px);
+  max-width: calc(100% - 2 * $gutter - 80px); // clear of the slide number
   padding: 3px 7px;
   border-radius: 3px;
   background: $m-background;
   color: $m-muted;
   font-family: $font-family-sans-serif;
-  font-size: clamp(10px, 1vw, 14px);
+  font-size: 13px;
   line-height: 1.4;
   text-align: left;
+  pointer-events: auto; // .slides ignores the pointer outside sections
 
   p {
     margin: 0;
@@ -433,6 +436,10 @@ $arrow: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
       color: #ffa64d;
     }
   }
+}
+
+.reveal.overview .slide-code-footer {
+  display: none;
 }
 
 @media print {
